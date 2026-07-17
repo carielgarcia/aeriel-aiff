@@ -1,0 +1,632 @@
+/* ==========================================================================
+   ÆRIEL BRUTALIST DESIGN SYSTEM (MONOCHROMATIC & STRUCTURAL)
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Uncompromising Raw Monochromatic */
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #121212;
+  --text-primary: #FFFFFF;
+  --text-muted: #7F7F7F;
+  
+  /* Borders - Highly Visible Grid Layouts */
+  --border-thick: 2px solid #FFFFFF;
+  --border-thin: 1px solid #FFFFFF;
+  --border-muted: 1px solid #7F7F7F;
+  
+  /* Typography - Monospace and Blocky Structure */
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Monaco, "Courier New", Courier, monospace;
+  
+  /* Margins & Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 48px;
+  --spacing-xl: 80px;
+  --container-width: 1200px;
+}
+
+/* Custom Typography Accents */
+.ae-char {
+  font-family: Helvetica, Arial, sans-serif !important;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   RESET & SYSTEM BASE (SHARP 90-DEGREE ANGLES)
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important; /* Forces strict brutalist angularity */
+}
+
+html {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  text-transform: uppercase; /* Accentuate blocky structure */
+}
+
+/* Headings, Navigation & Titles System - Full Helvetica Upper Case */
+h1, h2, h3, h4, h5, h6, 
+.intent-header, 
+.logo-block, 
+.logo-link,
+.grid-cell-title, 
+.nav-link, 
+.footer-nav-link,
+.form-label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  text-transform: uppercase !important;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, svg {
+  display: block;
+}
+
+/* Raw accessibility focus state */
+a:focus-visible, 
+button:focus-visible, 
+input:focus-visible, 
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #FFFFFF;
+  background-color: #FFFFFF !important;
+  color: #0A0A0A !important;
+}
+
+/* Brutalist Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-left: var(--border-thin);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-primary);
+}
+
+/* ==========================================================================
+   BRUTALIST LAYOUT BLOCKS & CONTAINERS
+   ========================================================================== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+.structural-row {
+  border-bottom: var(--border-thick);
+  padding: var(--spacing-xl) 0;
+}
+
+.structural-row:last-of-type {
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   HEADER & NAVIGATION
+   ========================================================================== */
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: var(--bg-primary);
+  border-bottom: var(--border-thick);
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 70px;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+.logo-block {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  border-right: var(--border-thin);
+  padding-right: var(--spacing-md);
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* Language Toggle Button Block */
+.lang-toggle-block {
+  display: flex;
+  align-items: center;
+  border-left: var(--border-thin);
+  padding-left: var(--spacing-md);
+  height: 100%;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.lang-btn {
+  background: transparent;
+  color: var(--text-primary);
+  border: var(--border-thin);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  cursor: pointer;
+  text-transform: uppercase !important;
+  transition: none;
+}
+
+.lang-btn:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.lang-btn.active {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* Language Visibility Controller */
+html[lang="en"] [lang="es"],
+html[lang="en"] [lang="pt"] {
+  display: none !important;
+}
+html[lang="es"] [lang="en"],
+html[lang="es"] [lang="pt"] {
+  display: none !important;
+}
+html[lang="pt"] [lang="en"],
+html[lang="pt"] [lang="es"] {
+  display: none !important;
+}
+
+#main-navigation {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: stretch;
+  list-style: none;
+  height: 100%;
+}
+
+.nav-item {
+  display: flex;
+  border-left: var(--border-thin);
+}
+
+.nav-item:first-child {
+  border-left: none;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  height: 100%;
+  /* Instant hover state */
+  transition: none; 
+}
+
+.nav-link:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* ==========================================================================
+   HERO / SYSTEM ENTRY
+   ========================================================================== */
+.hero-block {
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
+  border-bottom: var(--border-thick);
+}
+
+.hero-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.hero-main-title {
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -3px;
+  word-break: break-all;
+}
+
+.hero-sub-block {
+  border: var(--border-thick);
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  background: var(--bg-secondary);
+}
+
+.sonic-markers {
+  font-size: clamp(0.9rem, 1.8vw, 1.8rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.hero-description {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 800px;
+  line-height: 1.6;
+  margin-top: var(--spacing-sm);
+  text-transform: none; /* Keep text readable, only transform headings where required */
+}
+
+/* Hard block CTA */
+.btn-brutal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: var(--border-thick);
+  cursor: pointer;
+  width: max-content;
+  transition: none; /* Instant feedback */
+}
+
+.btn-brutal:hover {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.btn-secondary-brutal {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: var(--border-thick);
+}
+
+.btn-secondary-brutal:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   DIGITAL DISCOGRAPHY GRID
+   ========================================================================== */
+.discography-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  border-top: var(--border-thick);
+  border-left: var(--border-thick);
+}
+
+.grid-cell {
+  border-right: var(--border-thick);
+  border-bottom: var(--border-thick);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+  background-color: var(--bg-secondary);
+  transition: none;
+}
+
+.grid-cell:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.grid-cell-meta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.grid-cell:hover .grid-cell-meta {
+  color: var(--bg-primary);
+}
+
+.grid-cell-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: var(--spacing-sm) 0;
+}
+
+.grid-cell-action {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   ARTIST INTENT
+   ========================================================================== */
+.intent-layout {
+  max-width: 800px;
+  margin-left: 0;
+  text-align: left;
+}
+
+.intent-header {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: var(--spacing-md);
+  border-bottom: var(--border-thin);
+  padding-bottom: var(--spacing-xs);
+  display: inline-block;
+}
+
+.intent-content {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+  text-transform: none; /* Intimate read readability */
+}
+
+.intent-content p {
+  margin-bottom: var(--spacing-md);
+}
+
+/* ==========================================================================
+   HARDWARE UTILITY (TECH RIDER TABLE)
+   ========================================================================== */
+.rider-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: var(--spacing-md);
+  border: var(--border-thick);
+}
+
+.rider-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.rider-table th {
+  background-color: var(--bg-secondary);
+  border-bottom: var(--border-thick);
+  border-right: var(--border-thin);
+  padding: var(--spacing-sm);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.rider-table td {
+  border-bottom: var(--border-thin);
+  border-right: var(--border-thin);
+  padding: var(--spacing-sm);
+  font-size: 0.9rem;
+}
+
+.rider-table th:last-child, 
+.rider-table td:last-child {
+  border-right: none;
+}
+
+.rider-table tr:last-child td {
+  border-bottom: none;
+}
+
+.rider-table tr:hover td {
+  background-color: var(--bg-secondary);
+}
+
+/* ==========================================================================
+   GIG INTAKE PORTAL
+   ========================================================================== */
+.portal-form-container {
+  border: var(--border-thick);
+  padding: var(--spacing-lg);
+  background: var(--bg-secondary);
+}
+
+.portal-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.form-input {
+  background: var(--bg-primary);
+  border: var(--border-thick);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  padding: var(--spacing-sm);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  width: 100%;
+  transition: none;
+}
+
+.form-input:focus {
+  outline: none;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+
+.form-textarea {
+  min-height: 150px;
+  resize: vertical;
+  text-transform: none; /* Keep messages natural */
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer {
+  border-top: var(--border-thick);
+  padding: var(--spacing-lg) 0;
+  background: var(--bg-primary);
+}
+
+.footer-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-nav {
+  display: flex;
+  gap: var(--spacing-md);
+  list-style: none;
+}
+
+.footer-nav-link {
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+
+.footer-nav-link:hover {
+  color: var(--text-primary);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (RESPONSIVENESS IN A BRUTALIST GRID)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .header-container {
+    height: auto;
+    flex-direction: column;
+    padding: 0;
+  }
+  
+  .logo-block {
+    border-right: none;
+    border-bottom: var(--border-thin);
+    padding: var(--spacing-sm) var(--spacing-md);
+    justify-content: center;
+  }
+  
+  .nav-menu {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .nav-item {
+    border-left: none;
+    border-bottom: var(--border-thin);
+  }
+  
+  .nav-item:last-child {
+    border-bottom: none;
+  }
+  
+  .nav-link {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    justify-content: center;
+  }
+  
+  .hero-main-title {
+    font-size: clamp(3rem, 10vw, 5rem);
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-brutal {
+    width: 100%;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .portal-form-container {
+    padding: var(--spacing-md);
+  }
+  
+  .footer-layout {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footer-nav {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .lang-toggle-block {
+    border-left: none;
+    border-bottom: var(--border-thin);
+    padding: var(--spacing-sm) var(--spacing-md);
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Official mix archives & technical booking registry for ÆRIEL. Sound profile: Hypnotic Techno and Hardgroove. Raw, cyclic, vinyl & digital selections.">
+  
+  <!-- Predefined Title and Meta Description for Spanish -->
+  <title>ÆRIEL | HYPNOTIC TECHNO & HARDGROOVE DJ</title>
+  
+  <!-- Linking Monochromatic Brutalist Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HEADER & STRUCTURAL NAVIGATION
+       ========================================================================== -->
+  <header class="header-wrapper" id="site-header">
+    <div class="container header-container">
+      <div class="logo-block">
+        <a href="#hero" class="logo-link" aria-label="ÆRIEL Home Page">ÆRIEL</a>
+      </div>
+      
+      <nav id="main-navigation" aria-label="Brutalist System Navigation">
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="#hero" class="nav-link" id="nav-system">
+              <span lang="en">SYSTEM</span>
+              <span lang="es">SISTEMA</span>
+              <span lang="pt">SISTEMA</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#archives" class="nav-link" id="nav-mixes">
+              <span lang="en">MIX_ARCHIVES</span>
+              <span lang="es">ARCHIVOS_MIX</span>
+              <span lang="pt">ARQUIVO_DE_MIXES</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#intent" class="nav-link" id="nav-philosophy">
+              <span lang="en">INTENT</span>
+              <span lang="es">INTENCIÓN</span>
+              <span lang="pt">INTENÇÃO</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#brand" class="nav-link" id="nav-brand">Æ000.X</a>
+          </li>
+          <li class="nav-item">
+            <a href="#message" class="nav-link" id="nav-message">
+              <span lang="en">MESSAGE</span>
+              <span lang="es">MENSAJE</span>
+              <span lang="pt">MENSAGEM</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Language Toggle Buttons -->
+      <div class="lang-toggle-block">
+        <button onclick="setLanguage('en')" class="lang-btn active" id="btn-lang-en" aria-label="English">EN</button>
+        <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
+        <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN SYSTEM BLOCKS (<main>)
+       ========================================================================== -->
+  <main id="main-content">
+    
+    <!-- SECTION 1: SYSTEM ENTRY (HERO) -->
+    <section class="hero-block" id="hero">
+      <div class="container hero-layout">
+        <h1 id="main-title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 4rem; font-weight: 900; font-stretch: ultra-expanded; text-transform: uppercase; letter-spacing: -0.05em; display: block; line-height: 1;">
+          ÆRIEL
+        </h1>
+        
+        <div class="hero-sub-block" id="genre-box">
+          <div class="sonic-markers" id="sound-profile-markers">
+            Techno // Trance // House // Italo Disco
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: DIGITAL ARCHIVES -->
+    <section class="structural-row" id="archives">
+      <div class="container">
+        <h2 class="intent-header">
+          <span lang="en">DIGITAL_ARCHIVES</span>
+          <span lang="es">ARCHIVOS_DIGITALES</span>
+          <span lang="pt">ARQUIVOS_DIGITAIS</span>
+        </h2>
+        
+        <div class="discography-grid" id="releases-grid">
+          <!-- Mix Portal 1: SoundCloud -->
+          <a href="https://soundcloud.com/aeriel-aiff" target="_blank" rel="noopener noreferrer" class="grid-cell" id="portal-soundcloud" aria-label="ÆRIEL on SoundCloud">
+            <span class="grid-cell-meta">
+              <span lang="en">PORTAL_01 // MIX_SERIES</span>
+              <span lang="es">PORTAL_01 // SERIE_DE_MIXES</span>
+              <span lang="pt">PORTAL_01 // SÉRIE_DE_MIXES</span>
+            </span>
+            <span class="grid-cell-title">SOUNDCLOUD</span>
+            <span class="grid-cell-action">
+              <span lang="en">STREAM_MIXES →</span>
+              <span lang="es">ESCUCHAR_MIXES →</span>
+              <span lang="pt">OUVIR_MIXES →</span>
+            </span>
+          </a>
+
+          <!-- Mix Portal 2: Instagram -->
+          <a href="https://www.instagram.com/aeriel.aiff" target="_blank" rel="noopener noreferrer" class="grid-cell" id="portal-instagram" aria-label="ÆRIEL on Instagram">
+            <span class="grid-cell-meta">
+              <span lang="en">PORTAL_02 // SOCIAL_ARCHIVE</span>
+              <span lang="es">PORTAL_02 // ARCHIVO_SOCIAL</span>
+              <span lang="pt">PORTAL_02 // ARQUIVO_SOCIAL</span>
+            </span>
+            <span class="grid-cell-title">INSTAGRAM</span>
+            <span class="grid-cell-action">
+              <span lang="en">FOLLOW_UPDATES →</span>
+              <span lang="es">SEGUIR_NOVEDADES →</span>
+              <span lang="pt">ACOMPANHAR_NOVIDADES →</span>
+            </span>
+          </a>
+
+          <!-- Mix Portal 3: Bandcamp -->
+          <a href="https://bandcamp.com/aeriel_aiff" target="_blank" rel="noopener noreferrer" class="grid-cell" id="portal-bandcamp" aria-label="ÆRIEL on Bandcamp">
+            <span class="grid-cell-meta">
+              <span lang="en">PORTAL_03 // COLLECTION</span>
+              <span lang="es">PORTAL_03 // COLECCIÓN</span>
+              <span lang="pt">PORTAL_03 // COLEÇÃO</span>
+            </span>
+            <span class="grid-cell-title">BANDCAMP</span>
+            <span class="grid-cell-action">
+              <span lang="en">COLLECTION OF TRACKS →</span>
+              <span lang="es">COLECCIÓN DE TRACKS →</span>
+              <span lang="pt">COLEÇÃO DE TRACKS →</span>
+            </span>
+          </a>
+
+          <!-- Mix Portal 4: YouTube -->
+          <a href="https://youtube.com/@aeriel-aiff" target="_blank" rel="noopener noreferrer" class="grid-cell" id="portal-youtube" aria-label="ÆRIEL on YouTube">
+            <span class="grid-cell-meta">
+              <span lang="en">PORTAL_04 // LIVE_STREAM_RECORDINGS</span>
+              <span lang="es">PORTAL_04 // GRABACIONES_EN_VIVO</span>
+              <span lang="pt">PORTAL_04 // GRAVAÇÕES_AO_VIVO</span>
+            </span>
+            <span class="grid-cell-title">YOUTUBE</span>
+            <span class="grid-cell-action">
+              <span lang="en">WATCH_PERFORMANCE →</span>
+              <span lang="es">VER_PERFORMANCE →</span>
+              <span lang="pt">ASSISTIR_PERFORMANCE →</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INTENT -->
+    <section class="structural-row" id="intent">
+      <div class="container">
+        <div class="intent-layout">
+          <h2 class="intent-header">
+            <span lang="en">INTENT</span>
+            <span lang="es">INTENCIÓN</span>
+            <span lang="pt">INTENÇÃO</span>
+          </h2>
+          <div class="intent-content" id="artist-philosophy-text">
+            <p lang="en">
+              The dancefloor is an ephemeral sanctuary built on sweat, friction, and desire. On a dancefloor, individual sovereignty and collective freedom can coexist; safer spaces can be built and sustained. It is a space where we can reclaim, even if briefly, our body and desire. While I reject the notion of joy as resistance, dancefloors have proven that alternative forms of organisation and coexistence are possible, and as a DJ I feel honoured to contribute to and nurture them.
+            </p>
+            <p lang="es">
+              La pista de baile es un santuario efímero construido a base de sudor, fricción y deseo. En la pista, la soberanía individual y la libertad colectiva pueden coexistir; se pueden construir y sostener espacios más seguros. Es un espacio donde podemos reclamar, aunque sea brevemente, nuestro cuerpo y nuestro deseo. Si bien rechazo la noción del goce como resistencia, las pistas de baile han demostrado que existen formas alternativas de organización y convivencia, y como DJ me siento honrado de contribuir a ellas y cultivarlas.
+            </p>
+            <p lang="pt">
+              A pista de dança é um santuário efêmero construído sobre suor, fricção e desejo. Na pista, a soberania individual e a liberdade coletiva coexistem; espaços mais seguros podem ser construídos e sustentados. É um espaço onde podemos reivindicar, mesmo que brevemente, nosso corpo e nosso desejo. Embora eu rejeite a noção de alegria como resistência, as pistas de dança provaram que formas alternativas de organização e coexistência são possíveis, e como DJ me sinto honrado em contribuir para elas e cultivá-las.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: BRAND CURATION (Æ000.X) -->
+    <section class="structural-row" id="brand">
+      <div class="container">
+        <h2 class="intent-header">Æ000.X</h2>
+        <div class="intent-content" id="brand-curation-text">
+          <p lang="en">
+            Æ000.X is a concept born out of the need to curate both the music, performances, and the dancefloor. This project is fundamentally an intentional community. We do not seek to become a nightclub, nor to become the most popular party in town. The purpose of Æ000.X is, through iteration and word of mouth, to build a network of queers and artists that nurture the dancefloor with their energy, intent, and passion.
+          </p>
+          <p lang="en">
+            Curating the dancefloor means that access to Æ000.X parties is granted through trust. People receive a message inviting them and their friends to attend. Once a person has attended, joined the community, and respected its codes, that person will continue to receive invitations, and will continue to have the capacity to bring more people to Æ000.X events. People can also request an invitation if they heard from us from their friends.
+          </p>
+          <p lang="en">
+            We avoid using algorithmic recommendations and advertisements. Firstly, because we do not want to depend on platforms that actively seek to undermine artists, creators, and queer communities, such as Meta; but also because we want to build our community through genuine connection rather than commercial synergy.
+          </p>
+          <p lang="en">
+            Æ000.X is constantly evolving, but we do have some firm ideas about our party. We know that we want to be a sex-positive space, and we will often (if not always) have a dark room and spaces where people can interact beyond dancing. Acknowledging that substance use is part of club culture, we want to make harm reduction services available always (and we believe alcohol and tobacco to be yet another recreational substance, regardless of their legality). We are working on how to incentivize the participation of FLINTA+ (female, lesbian, intersex, non binary, trans, agender and others) communities to avoid becoming yet another cis-gay space.
+          </p>
+
+          <p lang="es">
+            Æ000.X es un concepto que nace de la necesidad de curar tanto la música y las performances como la pista de baile. Este proyecto es, fundamentalmente, una intento de construir comunidad. No buscamos ser un club nocturno ni convertirnos en la fiesta más popular de la ciudad. El propósito de Æ000.X es construir, a través de la iteración y el boca a boca, una red de personas queer y artistas que nutran la pista de baile con su energía, intención y pasión.
+          </p>
+          <p lang="es">
+            Curar la pista significa que el acceso a las fiestas de Æ000.X se concede a través de la confianza. Las personas reciben un mensaje invitándolas a asistir junto con sus amigues. Una vez que alguien asiste, se integra a la comunidad y respeta sus códigos, seguirá recibiendo invitaciones y tendrá la capacidad de sumar a más personas a los eventos de Æ000.X. También se puede solicitar una invitación si se enteraron de nosotros a través de amigos.
+          </p>
+          <p lang="es">
+            Evitamos el uso de recomendaciones algorítmicas y publicidad. En primer lugar, porque no queremos depender de plataformas como Meta, que buscan activamente socavar a artistas, creadores y comunidades queer; pero también porque queremos construir nuestra comunidad mediante conexiones reales y no mediante sinergias comerciales.
+          </p>
+          <p lang="es">
+            Æ000.X está en constante evolución, pero tenemos ideas muy firmes sobre nuestra fiesta. Sabemos que queremos ser un espacio sex-positive, y que a menudo (si no siempre) contaremos con un cuarto oscuro y zonas donde la gente pueda interactuar más allá del baile. Reconociendo que el consumo de sustancias es parte de la noche, queremos que los servicios de reducción de daños estén siempre disponibles (y consideramos al alcohol y al tabaco como una sustancia recreativa más, independientemente de su estatus legal). Estamos siempre trabajando en estrategias para incentivar la participación de las identidades FLINTA+ (Mujeres, Lesbianas, No Binaries, Trans, Agénero y otres) y así evitar convertirnos en otro espacio más hegemonizado por hombres cis-gay.
+          </p>
+
+          <p lang="pt">
+            Æ000.X é um conceito que nasce da necessidade de curar tanto a música e as performances quanto a pista de dança. Este projeto é, fundamentalmente, uma tentativa de construir comunidade. Não buscamos ser uma boate nem nos tornarmos a festa mais popular da cidade. O propósito do Æ000.X é construir, através da iteração e do boca a boca, uma rede de pessoas queer e artistas que nutram a pista de dança com sua energia, intenção e paixão.
+          </p>
+          <p lang="pt">
+            Curar a pista significa que o acesso às festas do Æ000.X é concedido através da confiança. Las pessoas recebem uma mensagem convidando elas e seus amigues a comparecer. Uma vez que alguém comparece, integra-se à comunidade e respeita seus códigos, continuará recebendo convites e terá a capacidade de trazer mais pessoas para os eventos do Æ000.X. Também é possível solicitar um convite caso tenham ouvido falar de nós através de amigos.
+          </p>
+          <p lang="pt">
+            Evitamos o uso de recomendações algorítmicas e publicidade. Em primeiro lugar, porque não queremos depender de plataformas como a Meta, que buscam ativamente enfraquecer artistas, criadores e comunidades queer; mas também porque queremos construir nossa comunidade por meio de conexões reais e não mediante sinergias comerciais.
+          </p>
+          <p lang="pt">
+            O Æ000.X está em constante evolução, mas temos ideias muito firmes sobre a nossa festa. Sabemos que queremos ser um espaço sex-positive, e que frequentemente (se não sempre) teremos um dark room e espaços onde as pessoas possam interagir além da dança. Reconhecendo que o consumo de substâncias faz parte da noite, queremos que os serviços de redução de danos estejam sempre disponíveis (e consideramos o álcool e o tabaco como mais uma substância recreativa, independentemente da sua legalidade). Estamos sempre trabalhando em estratégias para incentivar a participação das identidades FLINTA+ (Mulheres, Lésbicas, Não Binárias, Trans, Agênero e outres) e assim evitar nos tornarmos mais um espaço hegemonizado por homens cis-gays.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: MESSAGE PORTAL -->
+    <section class="structural-row" id="message">
+      <div class="container">
+        <h2 class="intent-header">
+          <span lang="en">LEAVE_A_MESSAGE</span>
+          <span lang="es">DEJA_UN_MENSAJE</span>
+          <span lang="pt">DEIXE_UMA_MENSAGEM</span>
+        </h2>
+        
+        <div class="portal-form-container">
+          <form class="portal-form" id="contact-message-form" action="#" method="POST" onsubmit="handleFormSubmit(event)">
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name" class="form-label">
+                  <span lang="en">YOUR_NAME</span>
+                  <span lang="es">TU_NOMBRE</span>
+                  <span lang="pt">SEU_NOME</span>
+                </label>
+                <input type="text" id="contact-name" name="name" class="form-input" placeholder="NAME / MONIKER" required="true">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact-email" class="form-label">
+                  <span lang="en">YOUR_EMAIL</span>
+                  <span lang="es">TU_CORREO</span>
+                  <span lang="pt">SEU_E-MAIL</span>
+                </label>
+                <input type="email" id="contact-email" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required="true">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-social" class="form-label">
+                  <span lang="en">SOCIAL_HANDLE (OPTIONAL)</span>
+                  <span lang="es">RED_SOCIAL (OPCIONAL)</span>
+                  <span lang="pt">REDES_SOCIAIS (OPCIONAL)</span>
+                </label>
+                <input type="text" id="contact-social" name="social" class="form-input" placeholder="@HANDLE / LINK">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact-phone" class="form-label">
+                  <span lang="en">PHONE_NUMBER (OPTIONAL)</span>
+                  <span lang="es">TELÉFONO (OPCIONAL)</span>
+                  <span lang="pt">TELEFONE (OPCIONAL)</span>
+                </label>
+                <input type="tel" id="contact-phone" name="phone" class="form-input" placeholder="+123...">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="contact-message-text" class="form-label">
+                <span lang="en">TRANSMISSION_DATA</span>
+                <span lang="es">DATOS_DE_TRANSMISIÓN</span>
+                <span lang="pt">DADOS_DE_TRANSMISSÃO</span>
+              </label>
+              <textarea id="contact-message-text" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." required="true"></textarea>
+            </div>
+            
+            <button type="submit" class="btn-brutal" id="message-submit-btn">
+              <span lang="en">TRANSMIT_DATA</span>
+              <span lang="es">TRANSMITIR_DATOS</span>
+              <span lang="pt">TRANSMITIR_DADOS</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="footer" id="site-footer">
+    <div class="container footer-layout">
+      <div class="footer-copy" id="footer-copyright-text">
+        <span lang="en">SYSTEM RECORD // ÆRIEL &copy; 2026 // BRUTALIST GRID IMPLEMENTATION</span>
+        <span lang="es">REGISTRO DEL SISTEMA // ÆRIEL &copy; 2026 // IMPLEMENTACIÓN DE REJILLA BRUTALISTA</span>
+        <span lang="pt">REGISTRO DO SISTEMA // ÆRIEL &copy; 2026 // IMPLEMENTAÇÃO DE GRADE BRUTALISTA</span>
+      </div>
+      
+      <ul class="footer-nav" id="footer-navigation-links">
+        <li>
+          <a href="#hero" class="footer-nav-link">
+            <span lang="en">SYSTEM</span>
+            <span lang="es">SISTEMA</span>
+            <span lang="pt">SISTEMA</span>
+          </a>
+        </li>
+        <li>
+          <a href="#archives" class="footer-nav-link">
+            <span lang="en">MIXES</span>
+            <span lang="es">MEZCLAS</span>
+            <span lang="pt">MIXES</span>
+          </a>
+        </li>
+        <li>
+          <a href="#intent" class="footer-nav-link">
+            <span lang="en">INTENT</span>
+            <span lang="es">INTENCIÓN</span>
+            <span lang="pt">INTENÇÃO</span>
+          </a>
+        </li>
+        <li>
+          <a href="#brand" class="footer-nav-link">Æ000.X</a>
+        </li>
+        <li>
+          <a href="#message" class="footer-nav-link">
+            <span lang="en">MESSAGE</span>
+            <span lang="es">MENSAJE</span>
+            <span lang="pt">MENSAGEM</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Language Selection and Form Transmission Handler Scripts -->
+  <script>
+    function setLanguage(lang) {
+      const html = document.documentElement;
+      html.setAttribute('lang', lang);
+      localStorage.setItem('preferred-lang', lang);
+      
+      // Update active button state
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      const targetBtn = document.getElementById(`btn-lang-${lang}`);
+      if (targetBtn) {
+        targetBtn.classList.add('active');
+      }
+      
+      updateTitleAndMeta(lang);
+    }
+    
+    function updateTitleAndMeta(lang) {
+      const descMeta = document.querySelector('meta[name="description"]');
+      if (lang === 'es') {
+        document.title = "ÆRIEL | DJ DE TECHNO HIPNÓTICO Y HARDGROOVE";
+        if (descMeta) {
+          descMeta.setAttribute('content', "Archivos de mezclas oficiales y registro técnico de contrataciones para ÆRIEL. Perfil de sonido: Techno Hipnótico y Hardgroove. Selecciones crudas, cíclicas, en vinilo y digital.");
+        }
+      } else if (lang === 'pt') {
+        document.title = "ÆRIEL | DJ DE TECHNO HIPNÓTICO & HARDGROOVE";
+        if (descMeta) {
+          descMeta.setAttribute('content', "Arquivos de mixes oficiais e registro técnico de contratação para ÆRIEL. Perfil sonoro: Techno Hipnótico e Hardgroove. Seleções brutas, cíclicas, em vinil e digital.");
+        }
+      } else {
+        document.title = "ÆRIEL | HYPNOTIC TECHNO & HARDGROOVE DJ";
+        if (descMeta) {
+          descMeta.setAttribute('content', "Official mix archives & technical booking registry for ÆRIEL. Sound profile: Hypnotic Techno and Hardgroove. Raw, cyclic, vinyl & digital selections.");
+        }
+      }
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      
+      const submitBtn = document.getElementById("message-submit-btn");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+      }
+      
+      const payload = {
+        name: document.getElementById("contact-name").value,
+        email: document.getElementById("contact-email").value,
+        social: document.getElementById("contact-social").value,
+        phone: document.getElementById("contact-phone").value,
+        message: document.getElementById("contact-message-text").value
+      };
+      
+      fetch("https://formsubmit.co/ajax/camiloarielsa@gmail.com", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+        }
+        const currentLang = document.documentElement.getAttribute('lang') || 'en';
+        if (response.ok) {
+          if (currentLang === 'es') {
+            alert('MENSAJE TRANSMITIDO CON ÉXITO.');
+          } else if (currentLang === 'pt') {
+            alert('MENSAGEM TRANSMITIDA COM SUCESSO.');
+          } else {
+            alert('MESSAGE SUCCESSFULLY TRANSMITTED.');
+          }
+          event.target.reset();
+        } else {
+          if (currentLang === 'es') {
+            alert('ERROR AL ENVIAR. INTENTA DE NUEVO.');
+          } else if (currentLang === 'pt') {
+            alert('ERRO AO ENVIAR. TENTE NOVAMENTE.');
+          } else {
+            alert('ERROR TRANSMITTING MESSAGE. PLEASE TRY AGAIN.');
+          }
+        }
+      })
+      .catch(error => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+        }
+        const currentLang = document.documentElement.getAttribute('lang') || 'en';
+        if (currentLang === 'es') {
+          alert('ERROR DE CONEXIÓN. INTENTA DE NUEVO.');
+        } else if (currentLang === 'pt') {
+          alert('ERRO DE CONEXÃO. TENTE NOVAMENTE.');
+        } else {
+          alert('CONNECTION ERROR. PLEASE TRY AGAIN.');
+        }
+      });
+    }
+    
+    // Restore language preference on load, default to English
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('preferred-lang') || 'en';
+      setLanguage(savedLang);
+    });
+  </script>
+
+</body>
+</html>
