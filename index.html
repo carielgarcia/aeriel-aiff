@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Official mix archives & technical booking registry for ÆRIEL. Sound profile: Hypnotic Techno and Hardgroove. Raw, cyclic, vinyl & digital selections.">
   
-  <!-- Predefined Title and Meta Description for Spanish -->
-  <title>ÆRIEL | HYPNOTIC TECHNO & HARDGROOVE DJ</title>
+  <!-- Predefined Title and Meta Description -->
+  <title>ÆRIEL | TECHNO, TRANCE, HOUSE, ITALO DISCO</title>
   
-  <!-- Linking Monochromatic Brutalist Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
+  <link rel="stylesheet" href="style.css?v=3.0">
 </head>
 <body>
 
@@ -33,9 +33,9 @@
           </li>
           <li class="nav-item">
             <a href="#archives" class="nav-link" id="nav-mixes">
-              <span lang="en">MIX_ARCHIVES</span>
-              <span lang="es">ARCHIVOS_MIX</span>
-              <span lang="pt">ARQUIVO_DE_MIXES</span>
+              <span lang="en">ARCHIVES</span>
+              <span lang="es">ARCHIVOS</span>
+              <span lang="pt">ARQUIVO</span>
             </a>
           </li>
           <li class="nav-item">
@@ -46,7 +46,14 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#brand" class="nav-link" id="nav-brand">Æ000.X</a>
+            <a href="#ae000x-subsite" class="nav-link" id="nav-brand" onclick="openAe000xSubsite(event)">Æ000.X</a>
+          </li>
+          <li class="nav-item">
+            <a href="#writing-subsite" class="nav-link" id="nav-writing" onclick="openWritingSubsite(event)">
+              <span lang="en">WRITING</span>
+              <span lang="es">ENSAYOS</span>
+              <span lang="pt">ESCRITOS</span>
+            </a>
           </li>
           <li class="nav-item">
             <a href="#message" class="nav-link" id="nav-message">
@@ -81,19 +88,19 @@
         
         <div class="hero-sub-block" id="genre-box">
           <div class="sonic-markers" id="sound-profile-markers">
-            Techno // Trance // House // Italo Disco
+            <span class="easter-egg-trigger" id="trigger-techno" onclick="setThemeMode('default')">Techno</span> // <span class="easter-egg-trigger" id="trigger-trance" onclick="setThemeMode('default')">Trance</span> // <span class="easter-egg-trigger" id="trigger-house" onclick="setThemeMode('disco')">House</span> // <span class="easter-egg-trigger" id="trigger-italo" onclick="setThemeMode('disco')">Italo Disco</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 2: DIGITAL ARCHIVES -->
+    <!-- SECTION 2: ARCHIVES -->
     <section class="structural-row" id="archives">
       <div class="container">
         <h2 class="intent-header">
-          <span lang="en">DIGITAL_ARCHIVES</span>
-          <span lang="es">ARCHIVOS_DIGITALES</span>
-          <span lang="pt">ARQUIVOS_DIGITAIS</span>
+          <span lang="en">ARCHIVES</span>
+          <span lang="es">ARCHIVOS</span>
+          <span lang="pt">ARQUIVO</span>
         </h2>
         
         <div class="discography-grid" id="releases-grid">
@@ -184,60 +191,101 @@
       </div>
     </section>
 
-    <!-- SECTION 4: BRAND CURATION (Æ000.X) -->
+    <!-- SECTION 4: BRAND CURATION PORTAL (Æ000.X) -->
     <section class="structural-row" id="brand">
       <div class="container">
         <h2 class="intent-header">Æ000.X</h2>
-        <div class="intent-content" id="brand-curation-text">
-          <p lang="en">
-            Æ000.X is a concept born out of the need to curate both the music, performances, and the dancefloor. This project is fundamentally an intentional community. We do not seek to become a nightclub, nor to become the most popular party in town. The purpose of Æ000.X is, through iteration and word of mouth, to build a network of queers and artists that nurture the dancefloor with their energy, intent, and passion.
-          </p>
-          <p lang="en">
-            Curating the dancefloor means that access to Æ000.X parties is granted through trust. People receive a message inviting them and their friends to attend. Once a person has attended, joined the community, and respected its codes, that person will continue to receive invitations, and will continue to have the capacity to bring more people to Æ000.X events. People can also request an invitation if they heard from us from their friends.
-          </p>
-          <p lang="en">
-            We avoid using algorithmic recommendations and advertisements. Firstly, because we do not want to depend on platforms that actively seek to undermine artists, creators, and queer communities, such as Meta; but also because we want to build our community through genuine connection rather than commercial synergy.
-          </p>
-          <p lang="en">
-            Æ000.X is constantly evolving, but we do have some firm ideas about our party. We know that we want to be a sex-positive space, and we will often (if not always) have a dark room and spaces where people can interact beyond dancing. Acknowledging that substance use is part of club culture, we want to make harm reduction services available always (and we believe alcohol and tobacco to be yet another recreational substance, regardless of their legality). We are working on how to incentivize the participation of FLINTA+ (female, lesbian, intersex, non binary, trans, agender and others) communities to avoid becoming yet another cis-gay space.
-          </p>
-
-          <p lang="es">
-            Æ000.X es un concepto que nace de la necesidad de curar tanto la música y las performances como la pista de baile. Este proyecto es, fundamentalmente, una intento de construir comunidad. No buscamos ser un club nocturno ni convertirnos en la fiesta más popular de la ciudad. El propósito de Æ000.X es construir, a través de la iteración y el boca a boca, una red de personas queer y artistas que nutran la pista de baile con su energía, intención y pasión.
-          </p>
-          <p lang="es">
-            Curar la pista significa que el acceso a las fiestas de Æ000.X se concede a través de la confianza. Las personas reciben un mensaje invitándolas a asistir junto con sus amigues. Una vez que alguien asiste, se integra a la comunidad y respeta sus códigos, seguirá recibiendo invitaciones y tendrá la capacidad de sumar a más personas a los eventos de Æ000.X. También se puede solicitar una invitación si se enteraron de nosotros a través de amigos.
-          </p>
-          <p lang="es">
-            Evitamos el uso de recomendaciones algorítmicas y publicidad. En primer lugar, porque no queremos depender de plataformas como Meta, que buscan activamente socavar a artistas, creadores y comunidades queer; pero también porque queremos construir nuestra comunidad mediante conexiones reales y no mediante sinergias comerciales.
-          </p>
-          <p lang="es">
-            Æ000.X está en constante evolución, pero tenemos ideas muy firmes sobre nuestra fiesta. Sabemos que queremos ser un espacio sex-positive, y que a menudo (si no siempre) contaremos con un cuarto oscuro y zonas donde la gente pueda interactuar más allá del baile. Reconociendo que el consumo de sustancias es parte de la noche, queremos que los servicios de reducción de daños estén siempre disponibles (y consideramos al alcohol y al tabaco como una sustancia recreativa más, independientemente de su estatus legal). Estamos siempre trabajando en estrategias para incentivar la participación de las identidades FLINTA+ (Mujeres, Lesbianas, No Binaries, Trans, Agénero y otres) y así evitar convertirnos en otro espacio más hegemonizado por hombres cis-gay.
-          </p>
-
-          <p lang="pt">
-            Æ000.X é um conceito que nasce da necessidade de curar tanto a música e as performances quanto a pista de dança. Este projeto é, fundamentalmente, uma tentativa de construir comunidade. Não buscamos ser uma boate nem nos tornarmos a festa mais popular da cidade. O propósito do Æ000.X é construir, através da iteração e do boca a boca, uma rede de pessoas queer e artistas que nutram a pista de dança com sua energia, intenção e paixão.
-          </p>
-          <p lang="pt">
-            Curar a pista significa que o acesso às festas do Æ000.X é concedido através da confiança. Las pessoas recebem uma mensagem convidando elas e seus amigues a comparecer. Uma vez que alguém comparece, integra-se à comunidade e respeita seus códigos, continuará recebendo convites e terá a capacidade de trazer mais pessoas para os eventos do Æ000.X. Também é possível solicitar um convite caso tenham ouvido falar de nós através de amigos.
-          </p>
-          <p lang="pt">
-            Evitamos o uso de recomendações algorítmicas e publicidade. Em primeiro lugar, porque não queremos depender de plataformas como a Meta, que buscam ativamente enfraquecer artistas, criadores e comunidades queer; mas também porque queremos construir nossa comunidade por meio de conexões reais e não mediante sinergias comerciais.
-          </p>
-          <p lang="pt">
-            O Æ000.X está em constante evolução, mas temos ideias muito firmes sobre a nossa festa. Sabemos que queremos ser um espaço sex-positive, e que frequentemente (se não sempre) teremos um dark room e espaços onde as pessoas possam interagir além da dança. Reconhecendo que o consumo de substâncias faz parte da noite, queremos que os serviços de redução de danos estejam sempre disponíveis (e consideramos o álcool e o tabaco como mais uma substância recreativa, independentemente da sua legalidade). Estamos sempre trabalhando em estratégias para incentivar a participação das identidades FLINTA+ (Mulheres, Lésbicas, Não Binárias, Trans, Agênero e outres) e assim evitar nos tornarmos mais um espaço hegemonizado por homens cis-gays.
-          </p>
+        <div class="portal-cta-box" id="brand-curation-portal">
+          <div class="portal-cta-content">
+            <p lang="en">
+              Æ000.X is a concept born out of the need to curate both the music, performances, and the dancefloor. This project is fundamentally an intentional community. We do not seek to become a nightclub, nor to become the most popular party in town. The purpose of Æ000.X is, through iteration and word of mouth, to build a network of queers and artists that nurture the dancefloor with their energy, intent, and passion.
+            </p>
+            <p lang="es">
+              Æ000.X es un concepto que nace de la necesidad de curar tanto la música y las performances como la pista de baile. Este proyecto es, fundamentalmente, una intento de construir comunidad. No buscamos ser un club nocturno ni convertirnos en la fiesta más popular de la ciudad. El propósito de Æ000.X es construir, a través de la iteración y el boca a boca, una red de personas queer y artistas que nutran la pista de baile con su energía, intención y pasión.
+            </p>
+            <p lang="pt">
+              Æ000.X é um conceito que nasce da necessidade de curar tanto a música e as performances quanto a pista de dança. Este projeto é, fundamentalmente, uma tentativa de construir comunidade. Não buscamos ser uma boate nem nos tornarmos a festa mais popular da cidade. O propósito do Æ000.X é construir, através da iteração e do boca a boca, uma rede de pessoas queer e artistas que nutram a pista de dança com sua energia, intenção e paixão.
+            </p>
+            <button class="btn-brutal portal-btn" onclick="openAe000xSubsite(event)">
+              <span lang="en">ENTER Æ000.X SUB-SITE →</span>
+              <span lang="es">ENTRAR AL SUB-SITIO Æ000.X →</span>
+              <span lang="pt">ENTRAR NO SUB-SITE Æ000.X →</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 5: MESSAGE PORTAL -->
+    <!-- SECTION 5: WRITING PREVIEW -->
+    <section class="structural-row" id="writing">
+      <div class="container">
+        <h2 class="intent-header">
+          <span lang="en">WRITING</span>
+          <span lang="es">ENSAYOS</span>
+          <span lang="pt">ESCRITOS</span>
+        </h2>
+        
+        <div class="dj-grid">
+          <!-- Essay Snippet Card 1 -->
+          <div class="dj-card" style="cursor: pointer;" onclick="openWritingSubsiteAndArticle('essay-ephemeral-sanctuary')">
+            <span class="dj-card-role">2026.07.24 // 6 MIN READ</span>
+            <h3 class="dj-card-name" style="font-size: 1.4rem; font-weight: 900;">THE ARCHITECTURE OF THE EPHEMERAL SANCTUARY</h3>
+            
+            <blockquote class="writing-preview-quote" lang="en" style="border-left: 3px solid var(--text-primary); padding-left: 12px; font-style: italic; font-size: 0.95rem; margin: 10px 0;">
+              "We do not dance to escape reality; we dance to construct an alternative model of coexistence, even if only for six hours."
+            </blockquote>
+            <blockquote class="writing-preview-quote" lang="es" style="border-left: 3px solid var(--text-primary); padding-left: 12px; font-style: italic; font-size: 0.95rem; margin: 10px 0;">
+              "No bailamos para escapar de la realidad; bailamos para construir un modelo alternativo de convivencia, aunque solo sea por seis horas."
+            </blockquote>
+            <blockquote class="writing-preview-quote" lang="pt" style="border-left: 3px solid var(--text-primary); padding-left: 12px; font-style: italic; font-size: 0.95rem; margin: 10px 0;">
+              "Não dançamos para escapar da realidade; dançamos para construir um modelo alternativo de coexistência, mesmo que seja apenas por seis horas."
+            </blockquote>
+
+            <p class="dj-card-bio" lang="en">
+              The dancefloor is an architectural construct existing only in motion, friction, and shared desire. It reclaims the body from functional productivity to establish ephemeral sanctuaries of collective devotion.
+            </p>
+            <p class="dj-card-bio" lang="es">
+              La pista de baile es una construcción arquitectónica que existe únicamente en el movimiento, la fricción y el deseo compartido. Reclama el cuerpo de la productividad funcional para establecer santuarios efímeros de devoción colectiva.
+            </p>
+            <p class="dj-card-bio" lang="pt">
+              A pista de dança é uma construção arquitetônica que existe apenas no movimento, na fricção e no desejo compartilhado. Reivindica o corpo da produtividade funcional para estabelecer santuários efêmeros de devoção coletiva.
+            </p>
+
+            <div class="article-card-meta" style="margin-top: 10px;">
+              <span class="article-tag">#CLUB_CULTURE</span>
+              <span class="article-tag">#SAFETIES</span>
+              <span class="article-tag">#DANCEFLOOR</span>
+            </div>
+
+            <div class="dj-links" style="margin-top: auto; padding-top: 12px;">
+              <span class="dj-link" style="width: 100%; text-align: center;">
+                <span lang="en">READ ESSAY →</span>
+                <span lang="es">LEER ENSAYO →</span>
+                <span lang="pt">LER ENSAIO →</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section CTA to full WRITING subsite -->
+        <div style="margin-top: var(--spacing-lg); text-align: center;">
+          <button class="btn-brutal portal-btn" onclick="openWritingSubsite(event)">
+            <span lang="en">EXPLORE ALL ESSAYS →</span>
+            <span lang="es">EXPLORAR TODOS LOS ENSAYOS →</span>
+            <span lang="pt">EXPLORAR TODOS OS ESCRITOS →</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 6: MESSAGE PORTAL -->
     <section class="structural-row" id="message">
       <div class="container">
         <h2 class="intent-header">
-          <span lang="en">LEAVE_A_MESSAGE</span>
-          <span lang="es">DEJA_UN_MENSAJE</span>
-          <span lang="pt">DEIXE_UMA_MENSAGEM</span>
+          <span lang="en">MESSAGE</span>
+          <span lang="es">MENSAJE</span>
+          <span lang="pt">MENSAGEM</span>
         </h2>
         
         <div class="portal-form-container">
@@ -305,14 +353,604 @@
   </main>
 
   <!-- ==========================================================================
+       DEDICATED Æ000.X SUB-WEBSITE (<section id="ae000x-subsite">)
+       ========================================================================== -->
+  <section id="ae000x-subsite" class="subsite-container">
+    
+    <!-- Sub-Website Sticky Navigation Bar -->
+    <div class="subsite-header-bar">
+      <div class="container subsite-header-layout">
+        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event, '#hero')">
+          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
+          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
+          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+        </button>
+        <div class="subsite-header-title">Æ000.X</div>
+      </div>
+    </div>
+
+    <!-- Sub-Website Hero -->
+    <section class="hero-block subsite-hero" id="ae000x-hero">
+      <div class="container hero-layout">
+        <h1 class="subsite-main-title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 4rem; font-weight: 900; font-stretch: ultra-expanded; text-transform: uppercase; letter-spacing: -0.05em; display: block; line-height: 1;">
+          Æ000.X
+        </h1>
+      </div>
+    </section>
+
+    <!-- Section A: Concept & Intent -->
+    <section class="structural-row" id="ae000x-concept">
+      <div class="container">
+        <div class="intent-content">
+          <p lang="en">
+            Æ000.X is a concept born out of the need to curate both the music, performances, and the dancefloor. This project is fundamentally an intentional community. We do not seek to become a nightclub, nor to become the most popular party in town. The purpose of Æ000.X is, through iteration and word of mouth, to build a network of queers and artists that nurture the dancefloor with their energy, intent, and passion.
+          </p>
+          <p lang="es">
+            Æ000.X es un concepto que nace de la necesidad de curar tanto la música y las performances como la pista de baile. Este proyecto es, fundamentalmente, una intento de construir comunidad. No buscamos ser un club nocturno ni convertirnos en la fiesta más popular de la ciudad. El propósito de Æ000.X es construir, a través de la iteración y el boca a boca, una red de personas queer y artistas que nutran la pista de baile con su energía, intención y pasión.
+          </p>
+          <p lang="pt">
+            Æ000.X é um conceito que nasce da necessidade de curar tanto a música e as performances quanto a pista de dança. Este projeto é, fundamentalmente, uma tentativa de construir comunidade. Não buscamos ser uma boate nem nos tornarmos a festa mais popular da cidade. O propósito do Æ000.X é construir, através da iteração e do boca a boca, uma rede de pessoas queer e artistas que nutram a pista de dança com sua energia, intenção e paixão.
+          </p>
+
+          <p lang="en">
+            Curating the dancefloor means that access to Æ000.X parties is granted through trust. People receive a message inviting them and their friends to attend. Once a person has attended, joined the community, and respected its codes, that person will continue to receive invitations, and will continue to have the capacity to bring more people to Æ000.X events. People can also request an invitation if they heard from us from their friends.
+          </p>
+          <p lang="es">
+            Curar la pista significa que el acceso a las fiestas de Æ000.X se concede a través de la confianza. Las personas reciben un mensaje invitándolas a asistir junto con sus amigues. Una vez que alguien asiste, se integra a la comunidad y respeta sus códigos, seguirá recibiendo invitaciones y tendrá la capacidad de sumar a más personas a los eventos de Æ000.X. También se puede solicitar una invitación si se enteraron de nosotros a través de amigos.
+          </p>
+          <p lang="pt">
+            Curar a pista significa que o acesso às festas do Æ000.X é concedido através da confiança. Las pessoas recebem uma mensagem convidando elas e seus amigues a comparecer. Uma vez que alguém comparece, integra-se à comunidade e respeita seus códigos, continuará recebendo convites e terá a capacidade de trazer mais pessoas para os eventos do Æ000.X. Também é possível solicitar um convite caso tenham ouvido falar de nós através de amigos.
+          </p>
+
+          <p lang="en">
+            We avoid using algorithmic recommendations and advertisements. Firstly, because we do not want to depend on platforms that actively seek to undermine artists, creators, and queer communities, such as Meta; but also because we want to build our community through genuine connection rather than commercial synergy.
+          </p>
+          <p lang="es">
+            Evitamos el uso de recomendaciones algorítmicas y publicidad. En primer lugar, porque no queremos depender de plataformas como Meta, que buscan activamente socavar a artistas, creadores y comunidades queer; pero también porque queremos construir nuestra comunidad mediante conexiones reales y no mediante sinergias comerciales.
+          </p>
+          <p lang="pt">
+            Evitamos o uso de recomendações algorítmicas e publicidade. Em primeiro lugar, porque não queremos depender de plataformas como a Meta, que buscam ativamente enfraquecer artistas, criadores e comunidades queer; mas também porque queremos construir nossa comunidade por meio de conexões reais e não mediante sinergias comerciais.
+          </p>
+
+          <p lang="en">
+            Æ000.X is constantly evolving, but we do have some firm ideas about our party. We know that we want to be a sex-positive space, and we will often (if not always) have a dark room and spaces where people can interact beyond dancing. Acknowledging that substance use is part of club culture, we want to make harm reduction services available always (and we believe alcohol and tobacco to be yet another recreational substance, regardless of their legality). We are working on how to incentivize the participation of FLINTA+ (female, lesbian, intersex, non binary, trans, agender and others) communities to avoid becoming yet another cis-gay space.
+          </p>
+          <p lang="es">
+            Æ000.X está en constante evolución, pero tenemos ideas muy firmes sobre nuestra fiesta. Sabemos que queremos ser un espacio sex-positive, y que a menudo (si no siempre) contaremos con un cuarto oscuro y zonas donde la gente pueda interactuar más allá del baile. Reconociendo que el consumo de sustancias es parte de la noche, queremos que los servicios de reducción de daños estén siempre disponibles (y consideramos al alcohol y al tabaco como una sustancia recreativa más, independientemente de su estatus legal). Estamos siempre trabajando en estrategias para incentivar la participación de las identidades FLINTA+ (Mujeres, Lesbianas, No Binaries, Trans, Agénero y otres) y así evitar convertirnos en otro espacio más hegemonizado por hombres cis-gay.
+          </p>
+          <p lang="pt">
+            O Æ000.X está em constante evolução, mas temos ideias muito firmes sobre a nossa festa. Sabemos que queremos ser um espaço sex-positive, e que frequentemente (se não sempre) teremos um dark room e espaços onde as pessoas possam interagir além da dança. Reconhecendo que o consumo de substâncias faz parte da noite, queremos que os serviços de redução de danos estejam sempre disponíveis (e consideramos o álcool e o tabaco como mais uma substância recreativa, independentemente da sua legalidade). Estamos sempre trabalhando em estratégias para incentivar a participação das identidades FLINTA+ (Mulheres, Lésbicas, Não Binárias, Trans, Agênero e outres) e assim evitar nos tornarmos mais um espaço hegemonizado por homens cis-gays.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section B: Resident DJs Grid -->
+    <section class="structural-row" id="ae000x-residents">
+      <div class="container">
+        <h2 class="intent-header">
+          <span lang="en">RESIDENTS</span>
+          <span lang="es">RESIDENTES</span>
+          <span lang="pt">RESIDENTES</span>
+        </h2>
+        <div class="dj-grid">
+          
+          <!-- DJ 1: ÆRIEL -->
+          <div class="dj-card">
+            <span class="dj-card-role">RESIDENT_01 // CO-FOUNDER</span>
+            <h3 class="dj-card-name">ÆRIEL</h3>
+            <p class="dj-card-bio">
+              is the founder and conceptual lead of Æ000.X - They like to tell stories through music in their DJ sets, often transitioning between genres, speeds and sonic spaces throughout the session.
+            </p>
+            <div class="dj-links">
+              <a href="https://www.instagram.com/aeriel.aiff/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
+              <a href="https://soundcloud.com/aeriel-aiff" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+            </div>
+          </div>
+
+          <!-- DJ 2: FRAMES SHELL -->
+          <div class="dj-card">
+            <span class="dj-card-role">RESIDENT_02 // CURATOR</span>
+            <h3 class="dj-card-name">FRAMES SHELL</h3>
+            <p class="dj-card-bio">
+              southern girl living in Santiago. His sets have long groovy energy and clean transitions. Prefers early sets so he can go to bed at a decent time.
+            </p>
+            <div class="dj-links">
+              <a href="https://www.instagram.com/frames.shell/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
+              <a href="https://soundcloud.com/frames-shell" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+            </div>
+          </div>
+
+          <!-- DJ 3: APÜD -->
+          <div class="dj-card">
+            <span class="dj-card-role">RESIDENT_03 // CURATOR</span>
+            <h3 class="dj-card-name">APÜD</h3>
+            <p class="dj-card-bio">
+              full of energy and intention, his sets combine techno, trance, and hard bounce to conduct the crowd into a state of joy.
+            </p>
+            <div class="dj-links">
+              <a href="https://www.instagram.com/diego.apud_/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
+              <a href="https://soundcloud.com/diego-apud" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section C: Invitation Archives Carousel -->
+    <section class="structural-row" id="ae000x-invitation-archives">
+      <div class="container">
+        <h2 class="intent-header">
+          <span lang="en">INVITATION_ARCHIVES</span>
+          <span lang="es">ARCHIVO_DE_INVITACIONES</span>
+          <span lang="pt">ARQUIVO_DE_CONVITES</span>
+        </h2>
+
+        <div class="poster-carousel-wrapper">
+          
+          <!-- Carousel Controls Header -->
+          <div class="carousel-controls">
+            <button class="btn-brutal carousel-btn" onclick="prevPosterSlide()" aria-label="Previous Poster">
+              <span lang="en">← PREV</span>
+              <span lang="es">← ANTERIOR</span>
+              <span lang="pt">← ANTERIOR</span>
+            </button>
+            <div class="carousel-counter" id="carousel-slide-counter">01 / 03</div>
+            <button class="btn-brutal carousel-btn" onclick="nextPosterSlide()" aria-label="Next Poster">
+              <span lang="en">NEXT →</span>
+              <span lang="es">SIGUIENTE →</span>
+              <span lang="pt">SEGUINTE →</span>
+            </button>
+          </div>
+
+          <!-- Poster Slides Track -->
+          <div class="carousel-track-container">
+            <div class="carousel-track" id="poster-carousel-track">
+              
+              <!-- Slide 1: Æ000.1 -->
+              <div class="carousel-slide active" data-index="0" onclick="openPosterLightbox('./assets/posters/poster_ae000_1.jpg', 'Æ000.1')">
+                <div class="poster-frame">
+                  <div class="poster-badge">
+                    <span>Æ000.1</span>
+                    <span>2026.04</span>
+                  </div>
+                  <div class="poster-img-container">
+                    <img src="./assets/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster" class="poster-img" loading="lazy">
+                    <div class="poster-overlay-hint">
+                      <span lang="en">FULL SCREEN ↗</span>
+                      <span lang="es">VER ↗</span>
+                      <span lang="pt">VER ↗</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2: Æ000.2 -->
+              <div class="carousel-slide" data-index="1" onclick="openPosterLightbox('./assets/posters/poster_ae000_2.jpg', 'Æ000.2')">
+                <div class="poster-frame">
+                  <div class="poster-badge">
+                    <span>Æ000.2</span>
+                    <span>2026.06</span>
+                  </div>
+                  <div class="poster-img-container">
+                    <img src="./assets/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster" class="poster-img" loading="lazy">
+                    <div class="poster-overlay-hint">
+                      <span lang="en">FULL SCREEN ↗</span>
+                      <span lang="es">VER ↗</span>
+                      <span lang="pt">VER ↗</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 3: Æ000.3 -->
+              <div class="carousel-slide" data-index="2" onclick="openPosterLightbox('./assets/posters/poster_ae000_3.jpg', 'Æ000.3')">
+                <div class="poster-frame">
+                  <div class="poster-badge">
+                    <span>Æ000.3</span>
+                    <span>2026.07</span>
+                  </div>
+                  <div class="poster-img-container">
+                    <img src="./assets/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster" class="poster-img" loading="lazy">
+                    <div class="poster-overlay-hint">
+                      <span lang="en">FULL SCREEN ↗</span>
+                      <span lang="es">VER ↗</span>
+                      <span lang="pt">VER ↗</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 4: Æ000.4 (Empty Frame) -->
+              <div class="carousel-slide" data-index="3">
+                <div class="poster-frame poster-frame-empty">
+                  <div class="poster-badge">
+                    <span>Æ000.4</span>
+                    <span>TBA</span>
+                  </div>
+                  <div class="poster-img-container poster-empty-container">
+                    <div class="empty-frame-text">
+                      <span lang="en">[EMPTY FRAME]</span>
+                      <span lang="es">[MARCO VACÍO]</span>
+                      <span lang="pt">[QUADRO VAZIO]</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 5: Æ000.5 (Empty Frame) -->
+              <div class="carousel-slide" data-index="4">
+                <div class="poster-frame poster-frame-empty">
+                  <div class="poster-badge">
+                    <span>Æ000.5</span>
+                    <span>TBA</span>
+                  </div>
+                  <div class="poster-img-container poster-empty-container">
+                    <div class="empty-frame-text">
+                      <span lang="en">[EMPTY FRAME]</span>
+                      <span lang="es">[MARCO VACÍO]</span>
+                      <span lang="pt">[QUADRO VAZIO]</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section D: Invitation Registration Form -->
+    <section class="structural-row" id="ae000x-invite-section">
+      <div class="container">
+        <h2 class="intent-header">
+          <span lang="en">REGISTRATION</span>
+          <span lang="es">REGISTRO</span>
+          <span lang="pt">REGISTRO</span>
+        </h2>
+
+        <div class="portal-form-container">
+          <form class="portal-form" id="ae000x-invitation-form" action="#" method="POST" onsubmit="handleInvitationFormSubmit(event)">
+            
+            <!-- Field 1: Full Name / Moniker -->
+            <div class="form-group">
+              <label for="invite-name" class="form-label">
+                <span lang="en">FULL NAME / MONIKER (REQUIRED)</span>
+                <span lang="es">NOMBRE COMPLETO / SEUDÓNIMO (REQUERIDO)</span>
+                <span lang="pt">NOME COMPLETO / NOME ARTÍSTICO (OBRIGATÓRIO)</span>
+              </label>
+              <input type="text" id="invite-name" name="name" class="form-input" placeholder="NAME / MONIKER" required>
+            </div>
+
+            <div class="form-row">
+              <!-- Field 2: Social Media Handle -->
+              <div class="form-group">
+                <label for="invite-social" class="form-label">
+                  <span lang="en">SOCIAL MEDIA HANDLE (REQUIRED)</span>
+                  <span lang="es">RED SOCIAL (REQUERIDO)</span>
+                  <span lang="pt">REDES SOCIAIS (OBRIGATÓRIO)</span>
+                </label>
+                <input type="text" id="invite-social" name="social" class="form-input" placeholder="@HANDLE / LINK" required>
+              </div>
+
+              <!-- Field 3: WhatsApp -->
+              <div class="form-group">
+                <label for="invite-whatsapp" class="form-label">
+                  <span lang="en">WHATSAPP — PHONE OR USERNAME (REQUIRED)</span>
+                  <span lang="es">WHATSAPP — TELÉFONO O USUARIO (REQUERIDO)</span>
+                  <span lang="pt">WHATSAPP — TELEFONE OU USUÁRIO (OBRIGATÓRIO)</span>
+                </label>
+                <input type="text" id="invite-whatsapp" name="whatsapp" class="form-input" placeholder="+123... / @username" required>
+              </div>
+            </div>
+
+            <!-- Field 4: Email Address -->
+            <div class="form-group">
+              <label for="invite-email" class="form-label">
+                <span lang="en">EMAIL ADDRESS (REQUIRED)</span>
+                <span lang="es">CORREO ELECTRÓNICO (REQUERIDO)</span>
+                <span lang="pt">ENDEREÇO DE E-MAIL (OBRIGATÓRIO)</span>
+              </label>
+              <input type="email" id="invite-email" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required>
+            </div>
+
+            <!-- Field 5: Preferred Contact Method -->
+            <div class="form-group">
+              <label class="form-label">
+                <span lang="en">PREFERRED CONTACT METHOD</span>
+                <span lang="es">MÉTODO DE CONTACTO PREFERIDO</span>
+                <span lang="pt">MÉTODO DE CONTATO PREFERIDO</span>
+              </label>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="contact_method" value="Email">
+                  <span lang="en">Email</span>
+                  <span lang="es">Correo electrónico</span>
+                  <span lang="pt">E-mail</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="contact_method" value="WhatsApp">
+                  <span>WhatsApp</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="contact_method" value="Social Media">
+                  <span lang="en">Social Media</span>
+                  <span lang="es">Redes Sociales</span>
+                  <span lang="pt">Redes Sociais</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Minimalist Disclaimer Notice Box -->
+            <div class="disclaimer-box">
+              <p lang="en" style="margin-bottom: 12px;">
+                Your contact information will ONLY be used to send invitations and direct communications regarding Æ000.X editions. We respect your inbox and will never add you to commercial or spam lists.
+              </p>
+              <p lang="es" style="margin-bottom: 12px;">
+                Tu información de contacto SOLO se utilizará para enviar invitaciones y comunicaciones directas sobre las ediciones de Æ000.X. Respetamos tu bandeja de entrada y nunca te añadiremos a listas comerciales o de spam.
+              </p>
+              <p lang="pt" style="margin-bottom: 12px;">
+                Suas informações de contato serão usadas APENAS para enviar convites e comunicações diretas sobre as edições do Æ000.X. Respeitamos sua caixa de entrada e nunca adicionaremos você a listas comerciais ou de spam.
+              </p>
+
+              <p lang="en">
+                Please note: Registering through this form does not automatically guarantee an invitation. The Æ000.X team reviews all submissions to verify connections within our community and maintain a safe, intentional dancefloor.
+              </p>
+              <p lang="es">
+                Nota importante: Registrarse a través de este formulario no garantiza automáticamente una invitación. El equipo de Æ000.X revisa todas las solicitudes para verificar las conexiones dentro de nuestra comunidad y mantener una pista de baile segura e intencional.
+              </p>
+              <p lang="pt">
+                Nota importante: O registro por meio deste formulário não garante automaticamente um convite. A equipe do Æ000.X analisa todos os envios para verificar as conexões dentro da nossa comunidade e manter uma pista de dança segura e intencional.
+              </p>
+            </div>
+
+            <button type="submit" class="btn-brutal" id="invite-submit-btn">
+              <span lang="en">REQUEST_INVITATION</span>
+              <span lang="es">SOLICITAR_INVITACIÓN</span>
+              <span lang="pt">SOLICITAR_CONVITE</span>
+            </button>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ==========================================================================
+       DEDICATED WRITING / ESSAYS SUB-WEBSITE (<section id="writing-subsite">)
+       ========================================================================== -->
+  <section id="writing-subsite" class="subsite-container">
+    
+    <!-- Sub-Website Sticky Navigation Bar -->
+    <div class="subsite-header-bar">
+      <div class="container subsite-header-layout">
+        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event, '#hero')">
+          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
+          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
+          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+        </button>
+        <div class="subsite-header-title">
+          <span lang="en">WRITING</span>
+          <span lang="es">ENSAYOS</span>
+          <span lang="pt">ESCRITOS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Writing Hero & Topic Filter Bar -->
+    <section class="hero-block subsite-hero" id="writing-hero">
+      <div class="container hero-layout">
+        <h1 class="subsite-main-title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 4rem; font-weight: 900; font-stretch: ultra-expanded; text-transform: uppercase; letter-spacing: -0.05em; display: block; line-height: 1;">
+          <span lang="en">WRITING</span>
+          <span lang="es">ENSAYOS</span>
+          <span lang="pt">ESCRITOS</span>
+        </h1>
+
+        <!-- Minimalist Tag Filter Bar -->
+        <div class="filter-bar">
+          <span class="filter-label">
+            <span lang="en">TOPIC_FILTER:</span>
+            <span lang="es">FILTRAR_TEMA:</span>
+            <span lang="pt">FILTRAR_TÓPICO:</span>
+          </span>
+          <button class="filter-btn active" data-filter="all" onclick="filterArticles('all')">[ALL]</button>
+          <button class="filter-btn" data-filter="club_culture" onclick="filterArticles('club_culture')">[#CLUB_CULTURE]</button>
+          <button class="filter-btn" data-filter="music" onclick="filterArticles('music')">[#MUSIC]</button>
+          <button class="filter-btn" data-filter="philosophy" onclick="filterArticles('philosophy')">[#PHILOSOPHY]</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Article Index Section -->
+    <section class="structural-row" id="writing-index-section">
+      <div class="container">
+        <div id="articles-index" class="articles-index">
+          
+          <!-- Essay Card 1: The Architecture of the Ephemeral Sanctuary -->
+          <article class="article-card" data-tag="club_culture" id="card-essay-ephemeral-sanctuary" onclick="openArticleReader('essay-ephemeral-sanctuary')">
+            <div class="article-card-meta">
+              <span class="article-date">2026.07.24</span>
+              <span class="article-tag">#CLUB_CULTURE</span>
+              <span class="article-read-time">
+                <span lang="en">6 MIN READ</span>
+                <span lang="es">6 MIN LECTURA</span>
+                <span lang="pt">6 MIN LEITURA</span>
+              </span>
+            </div>
+            <h2 class="article-card-title">THE ARCHITECTURE OF THE EPHEMERAL SANCTUARY</h2>
+            <p class="article-card-teaser" lang="en">
+              The dancefloor is an architectural construct existing only in motion, friction, and shared desire. It reclaims the body from functional productivity to establish ephemeral sanctuaries of collective devotion.
+            </p>
+            <p class="article-card-teaser" lang="es">
+              La pista de baile es una construcción arquitectónica que existe únicamente en el movimiento, la fricción y el deseo compartido. Reclama el cuerpo de la productividad funcional para establecer santuarios efímeros de devoción colectiva.
+            </p>
+            <p class="article-card-teaser" lang="pt">
+              A pista de dança é uma construção arquitetônica que existe apenas no movimento, na fricção e no desejo compartilhado. Reivindica o corpo da produtividade funcional para estabelecer santuários efêmeros de devoção coletiva.
+            </p>
+            <div class="article-card-action">
+              <span lang="en">READ ESSAY →</span>
+              <span lang="es">LEER ENSAYO →</span>
+              <span lang="pt">LER ENSAIO →</span>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Article Reader Component Container -->
+        <div id="article-reader-container" class="article-reader-container" style="display: none;">
+          
+          <div class="reader-header-bar">
+            <button class="btn-brutal back-btn" onclick="closeArticleReader()">
+              <span lang="en">← BACK TO ESSAYS</span>
+              <span lang="es">← VOLVER A ENSAYOS</span>
+              <span lang="pt">← VOLTAR PARA ESCRITOS</span>
+            </button>
+          </div>
+
+          <article class="reader-content" id="essay-ephemeral-sanctuary">
+            <header class="reader-meta-header">
+              <div class="article-card-meta">
+                <span class="article-date">2026.07.24</span>
+                <span class="article-tag">#CLUB_CULTURE</span>
+                <span class="article-read-time">
+                  <span lang="en">6 MIN READ</span>
+                  <span lang="es">6 MIN LECTURA</span>
+                  <span lang="pt">6 MIN LEITURA</span>
+                </span>
+              </div>
+              <h1 class="reader-title">THE ARCHITECTURE OF THE EPHEMERAL SANCTUARY</h1>
+            </header>
+
+            <div class="reader-body">
+              
+              <!-- English Version -->
+              <div lang="en">
+                <h3>I. The Dissolution of Functional Space</h3>
+                <p>
+                  The modern city operates on strict vectors of utility: motion, consumption, and surveillance. Every square meter demands a rational economic justification. In contrast, the dancefloor exists as a deliberate counter-architecture. It is a space defined not by static concrete walls, but by acoustic pressure, intentional darkness, and collective kinetic motion.
+                </p>
+                <p>
+                  When sub-bass frequencies saturate a room, the physical room ceases to be a container; it becomes an active agent that reorganizes human perception and social proximity.
+                </p>
+
+                <hr>
+
+                <h3>II. Friction and Sweat as Social Currency</h3>
+                <p>
+                  On the floor, social hierarchies dissolved under acoustic velocity. Sweat functions as an egalitarian equalizer. When we step into the sanctuary, individual sovereignty and collective freedom cease to be opposing forces; they become mutually reinforcing conditions.
+                </p>
+
+                <blockquote>
+                  "We do not dance to escape reality; we dance to construct an alternative model of coexistence, even if only for six hours."
+                </blockquote>
+
+                <p>
+                  The ephemeral sanctuary is inherently temporary. Its power lies precisely in its fragility. It cannot be permanently captured, commercialized, or fixed in place without destroying the fluid friction that makes it vital.
+                </p>
+
+                <hr>
+
+                <h3>III. The Politics of Safer Spaces</h3>
+                <p>
+                  An ephemeral sanctuary cannot survive on nostalgia or naive optimism alone; it requires active, intentional curation. From sex-positive dark rooms to FLINTA+ inclusion and harm reduction, safer spaces are built through continuous trust, clear community codes, and absolute respect for physical boundaries.
+                </p>
+                <p>
+                  By reclaiming the body from functional productivity, the dancefloor remains one of the last remaining zones where human connection is forged through rhythm, passion, and absolute collective devotion.
+                </p>
+              </div>
+
+              <!-- Spanish Version -->
+              <div lang="es">
+                <h3>I. La Disolución del Espacio Funcional</h3>
+                <p>
+                  La ciudad moderna opera sobre vectores estrictos de utilidad: movimiento, consumo y vigilancia. Cada metro cuadrado exige una justificación económica racional. En contraste, la pista de baile existe como una contra-arquitectura deliberada. Es un espacio definido no por muros estáticos de concreto, sino por presión acústica, oscuridad intencional y movimiento cinético colectivo.
+                </p>
+                <p>
+                  Cuando las frecuencias de subgraves saturan un recinto, la habitación física deja de ser un simple contenedor; se convierte en un agente activo que reorganiza la percepción humana y la proximidad social.
+                </p>
+
+                <hr>
+
+                <h3>II. Fricción y Sudor como Moneda Social</h3>
+                <p>
+                  En la pista, las jerarquías sociales se disuelven bajo la velocidad acústica. El sudor funciona como un ecualizador igualitario. Cuando entramos al santuario, la soberanía individual y la libertad colectiva dejan de ser fuerzas opuestas; se convierten en condiciones que se refuerzan mutuamente.
+                </p>
+
+                <blockquote>
+                  "No bailamos para escapar de la realidad; bailamos para construir un modelo alternativo de convivencia, aunque solo sea por seis horas."
+                </blockquote>
+
+                <p>
+                  El santuario efímero es inherentemente temporal. Su poder reside precisamente en su fragilidad. No puede ser capturado permanentemente, comercializado ni fijado en un lugar sin destruir la fricción fluida que lo hace vital.
+                </p>
+
+                <hr>
+
+                <h3>III. La Política de los Espacios Más Seguros</h3>
+                <p>
+                  Un santuario efímero no puede sobrevivir solo de nostalgia o de optimismo ingenuo; requiere una curaduría activa e intencional. Desde cuartos oscuros sex-positive hasta la inclusión FLINTA+ y la reducción de daños, los espacios más seguros se construyen mediante la confianza continua, códigos comunitarios claros y respeto absoluto por los límites físicos.
+                </p>
+                <p>
+                  Al reclamar el cuerpo de la productividad funcional, la pista de baile sigue siendo una de las últimas zonas donde la conexión humana se forja a través del ritmo, la pasión y la devoción colectiva absoluta.
+                </p>
+              </div>
+
+              <!-- Portuguese Version -->
+              <div lang="pt">
+                <h3>I. A Dissolução do Espaço Funcional</h3>
+                <p>
+                  A cidade moderna opera sobre vetores estritos de utilidade: movimento, consumo e vigilância. Cada metro quadrado exige uma justificativa econômica racional. Em contraste, a pista de dança existe como uma contra-arquitetura deliberada. É um espaço definido não por paredes estáticas de concreto, mas por pressão acústica, escuridão intencional e movimento cinético coletivo.
+                </p>
+                <p>
+                  Quando as frequências de subgraves saturam o recinto, a sala física deixa de ser um simples recipiente; torna-se um agente ativo que reorganiza a percepção humana e a proximidade social.
+                </p>
+
+                <hr>
+
+                <h3>II. Fricção e Suor como Moeda Social</h3>
+                <p>
+                  Na pista, as hierarquias sociais se dissolvem sob a velocidade acústica. O suor funciona como um equalizador igualitário. Quando entramos no santuário, a soberania individual e a liberdade coletiva deixam de ser forças opostas; tornam-se condições que se reforçam mutuamente.
+                </p>
+
+                <blockquote>
+                  "Não dançamos para escapar da realidade; dançamos para construir um modelo alternativo de coexistência, mesmo que seja apenas por seis horas."
+                </blockquote>
+
+                <p>
+                  O santuário efêmero é inerentemente temporário. Seu poder reside justamente na sua fragilidade. Não pode ser capturado permanentemente, comercializado ou fixado em um lugar sem destruir a fricção fluida que o torna vital.
+                </p>
+
+                <hr>
+
+                <h3>III. A Política dos Espaços Mais Seguros</h3>
+                <p>
+                  Um santuário efêmero não pode sobreviver apenas de nostalgia ou otimismo ingênuo; requer uma curadoria ativa e intencional. Desde dark rooms sex-positive até a inclusão FLINTA+ e redução de danos, espaços mais seguros são construídos por meio da confiança contínua, códigos comunitários claros e respeito absoluto pelos limites físicos.
+                </p>
+                <p>
+                  Ao reivindicar o corpo da produtividade funcional, a pista de dança continua sendo uma das últimas zonas onde a conexão humana é forjada por meio do ritmo, da paixão e da absoluta devoção coletiva.
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ==========================================================================
        FOOTER
        ========================================================================== -->
   <footer class="footer" id="site-footer">
     <div class="container footer-layout">
       <div class="footer-copy" id="footer-copyright-text">
-        <span lang="en">SYSTEM RECORD // ÆRIEL &copy; 2026 // BRUTALIST GRID IMPLEMENTATION</span>
-        <span lang="es">REGISTRO DEL SISTEMA // ÆRIEL &copy; 2026 // IMPLEMENTACIÓN DE REJILLA BRUTALISTA</span>
-        <span lang="pt">REGISTRO DO SISTEMA // ÆRIEL &copy; 2026 // IMPLEMENTAÇÃO DE GRADE BRUTALISTA</span>
+        ÆRIEL &copy; 2026
       </div>
       
       <ul class="footer-nav" id="footer-navigation-links">
@@ -325,9 +963,9 @@
         </li>
         <li>
           <a href="#archives" class="footer-nav-link">
-            <span lang="en">MIXES</span>
-            <span lang="es">MEZCLAS</span>
-            <span lang="pt">MIXES</span>
+            <span lang="en">ARCHIVES</span>
+            <span lang="es">ARCHIVOS</span>
+            <span lang="pt">ARQUIVO</span>
           </a>
         </li>
         <li>
@@ -338,7 +976,14 @@
           </a>
         </li>
         <li>
-          <a href="#brand" class="footer-nav-link">Æ000.X</a>
+          <a href="#ae000x-subsite" class="footer-nav-link" onclick="openAe000xSubsite(event)">Æ000.X</a>
+        </li>
+        <li>
+          <a href="#writing-subsite" class="footer-nav-link" onclick="openWritingSubsite(event)">
+            <span lang="en">WRITING</span>
+            <span lang="es">ENSAYOS</span>
+            <span lang="pt">ESCRITOS</span>
+          </a>
         </li>
         <li>
           <a href="#message" class="footer-nav-link">
@@ -351,8 +996,104 @@
     </div>
   </footer>
 
+  <!-- Lightbox Fullscreen Poster Modal Overlay -->
+  <div id="poster-lightbox" class="poster-lightbox" onclick="closePosterLightbox(event)">
+    <div class="lightbox-header">
+      <span id="lightbox-title" class="lightbox-title">Æ000.1</span>
+      <button class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(event)">[× CLOSE]</button>
+    </div>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Full Screen Poster">
+    </div>
+  </div>
+
   <!-- Language Selection and Form Transmission Handler Scripts -->
   <script>
+    let currentPosterIndex = 0;
+    const totalPosterSlides = 5;
+
+    function updatePosterCarousel() {
+      const counter = document.getElementById('carousel-slide-counter');
+      if (counter) {
+        counter.textContent = `0${currentPosterIndex + 1} / 0${totalPosterSlides}`;
+      }
+    }
+
+    function prevPosterSlide() {
+      const container = document.querySelector('.carousel-track-container');
+      if (container) {
+        container.scrollBy({ left: -220, behavior: 'smooth' });
+        currentPosterIndex = Math.max(0, currentPosterIndex - 1);
+        updatePosterCarousel();
+      }
+    }
+
+    function nextPosterSlide() {
+      const container = document.querySelector('.carousel-track-container');
+      if (container) {
+        container.scrollBy({ left: 220, behavior: 'smooth' });
+        currentPosterIndex = Math.min(totalPosterSlides - 1, currentPosterIndex + 1);
+        updatePosterCarousel();
+      }
+    }
+
+    function openPosterLightbox(imgSrc, title) {
+      const lightbox = document.getElementById('poster-lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxTitle = document.getElementById('lightbox-title');
+
+      if (lightboxImg) lightboxImg.src = imgSrc;
+      if (lightboxTitle) lightboxTitle.textContent = title;
+      if (lightbox) {
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closePosterLightbox(event) {
+      if (event) {
+        if (event.target.tagName === 'IMG' && event.target.id === 'lightbox-img') {
+          return;
+        }
+      }
+      const lightbox = document.getElementById('poster-lightbox');
+      if (lightbox) {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('poster-lightbox');
+      if (lightbox && lightbox.style.display === 'flex') {
+        if (e.key === 'Escape') {
+          closePosterLightbox();
+        }
+      } else {
+        const ae000xView = document.body.getAttribute('data-view') === 'ae000x';
+        if (ae000xView) {
+          if (e.key === 'ArrowLeft') prevPosterSlide();
+          if (e.key === 'ArrowRight') nextPosterSlide();
+        }
+      }
+    });
+
+    window.prevPosterSlide = prevPosterSlide;
+    window.nextPosterSlide = nextPosterSlide;
+    window.openPosterLightbox = openPosterLightbox;
+    window.closePosterLightbox = closePosterLightbox;
+    function updatePageTitle() {
+      const currentView = document.body.getAttribute('data-view') || 'main';
+      if (currentView === 'ae000x') {
+        document.title = "ÆRIEL | Æ000.X";
+      } else if (currentView === 'writing') {
+        document.title = "ÆRIEL | WRITING";
+      } else {
+        document.title = "ÆRIEL | TECHNO, TRANCE, HOUSE, ITALO DISCO";
+      }
+    }
+    window.updatePageTitle = updatePageTitle;
+
     function setLanguage(lang) {
       const html = document.documentElement;
       html.setAttribute('lang', lang);
@@ -373,22 +1114,34 @@
     function updateTitleAndMeta(lang) {
       const descMeta = document.querySelector('meta[name="description"]');
       if (lang === 'es') {
-        document.title = "ÆRIEL | DJ DE TECHNO HIPNÓTICO Y HARDGROOVE";
         if (descMeta) {
-          descMeta.setAttribute('content', "Archivos de mezclas oficiales y registro técnico de contrataciones para ÆRIEL. Perfil de sonido: Techno Hipnótico y Hardgroove. Selecciones crudas, cíclicas, en vinilo y digital.");
+          descMeta.setAttribute('content', "Archivos de mezclas oficiales y registro técnico de contrataciones para ÆRIEL. Perfil de sonido: Techno, Trance, House e Italo Disco. Selecciones crudas, cíclicas, en vinilo y digital.");
         }
       } else if (lang === 'pt') {
-        document.title = "ÆRIEL | DJ DE TECHNO HIPNÓTICO & HARDGROOVE";
         if (descMeta) {
-          descMeta.setAttribute('content', "Arquivos de mixes oficiais e registro técnico de contratação para ÆRIEL. Perfil sonoro: Techno Hipnótico e Hardgroove. Seleções brutas, cíclicas, em vinil e digital.");
+          descMeta.setAttribute('content', "Arquivos de mixes oficiais e registro técnico de contratação para ÆRIEL. Perfil sonoro: Techno, Trance, House e Italo Disco. Seleções brutas, cíclicas, em vinil e digital.");
         }
       } else {
-        document.title = "ÆRIEL | HYPNOTIC TECHNO & HARDGROOVE DJ";
         if (descMeta) {
-          descMeta.setAttribute('content', "Official mix archives & technical booking registry for ÆRIEL. Sound profile: Hypnotic Techno and Hardgroove. Raw, cyclic, vinyl & digital selections.");
+          descMeta.setAttribute('content', "Official mix archives & technical booking registry for ÆRIEL. Sound profile: Techno, Trance, House, and Italo Disco. Raw, cyclic, vinyl & digital selections.");
         }
       }
+      updatePageTitle();
     }
+
+    function setThemeMode(mode) {
+      const html = document.documentElement;
+      html.classList.remove('disco-mode', 'trance-mode', 'house-mode');
+      if (mode === 'disco') {
+        html.classList.add('disco-mode');
+      } else if (mode === 'trance') {
+        html.classList.add('trance-mode');
+      } else if (mode === 'house') {
+        html.classList.add('house-mode');
+      }
+      localStorage.setItem('theme-mode', mode);
+    }
+    window.setThemeMode = setThemeMode;
 
     function handleFormSubmit(event) {
       event.preventDefault();
@@ -453,10 +1206,231 @@
       });
     }
     
-    // Restore language preference on load, default to English
+    function openAe000xSubsite(event) {
+      if (event) event.preventDefault();
+      document.body.setAttribute('data-view', 'ae000x');
+      updatePageTitle();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.location.hash !== '#ae000x-subsite') {
+        history.pushState({ view: 'ae000x' }, '', '#ae000x-subsite');
+      }
+    }
+
+    function openMainPortfolio(event, targetHash) {
+      if (event) event.preventDefault();
+      document.body.setAttribute('data-view', 'main');
+      updatePageTitle();
+      if (targetHash) {
+        const el = document.querySelector(targetHash);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          history.pushState({ view: 'main' }, '', targetHash);
+          return;
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      history.pushState({ view: 'main' }, '', '#');
+    }
+
+    function handleInvitationFormSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById("invite-submit-btn");
+      if (submitBtn) submitBtn.disabled = true;
+
+      const selectedMethods = Array.from(document.querySelectorAll('#ae000x-invitation-form input[name="contact_method"]:checked')).map(cb => cb.value);
+
+      const payload = {
+        _subject: "Æ000.X Invitation Request",
+        name: document.getElementById("invite-name").value,
+        social: document.getElementById("invite-social").value,
+        whatsapp: document.getElementById("invite-whatsapp").value,
+        email: document.getElementById("invite-email").value,
+        preferred_contact_methods: selectedMethods.join(", ") || "None specified"
+      };
+
+      fetch("https://formsubmit.co/ajax/camiloarielsa@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (submitBtn) submitBtn.disabled = false;
+        const currentLang = document.documentElement.getAttribute('lang') || 'en';
+        if (response.ok) {
+          if (currentLang === 'es') {
+            alert('SOLICITUD DE INVITACIÓN TRANSMITIDA CON ÉXITO.');
+          } else if (currentLang === 'pt') {
+            alert('SOLICITAÇÃO DE CONVITE TRANSMITIDA COM SUCESSO.');
+          } else {
+            alert('INVITATION REQUEST TRANSMITTED SUCCESSFULLY.');
+          }
+          event.target.reset();
+        } else {
+          if (currentLang === 'es') {
+            alert('ERROR AL ENVIAR LA SOLICITUD. INTENTA DE NUEVO.');
+          } else if (currentLang === 'pt') {
+            alert('ERRO AO ENVIAR A SOLICITAÇÃO. TENTE NOVAMENTE.');
+          } else {
+            alert('ERROR TRANSMITTING INVITATION REQUEST. PLEASE TRY AGAIN.');
+          }
+        }
+      })
+      .catch(error => {
+        if (submitBtn) submitBtn.disabled = false;
+        const currentLang = document.documentElement.getAttribute('lang') || 'en';
+        if (currentLang === 'es') {
+          alert('ERROR DE CONEXIÓN. INTENTA DE NUEVO.');
+        } else if (currentLang === 'pt') {
+          alert('ERRO DE CONEXÃO. TENTE NOVAMENTE.');
+        } else {
+          alert('CONNECTION ERROR. PLEASE TRY AGAIN.');
+        }
+      });
+    }
+
+    function openWritingSubsite(event) {
+      if (event) event.preventDefault();
+      document.body.setAttribute('data-view', 'writing');
+      updatePageTitle();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.location.hash !== '#writing-subsite') {
+        history.pushState({ view: 'writing' }, '', '#writing-subsite');
+      }
+    }
+
+    function openWritingSubsiteAndArticle(articleId) {
+      openWritingSubsite();
+      openArticleReader(articleId);
+    }
+    window.openWritingSubsiteAndArticle = openWritingSubsiteAndArticle;
+
+    function filterArticles(tag) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === tag) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      document.querySelectorAll('.article-card').forEach(card => {
+        if (tag === 'all' || card.getAttribute('data-tag') === tag) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function openArticleReader(articleId) {
+      const indexEl = document.getElementById('articles-index');
+      const heroEl = document.getElementById('writing-hero');
+      const readerContainer = document.getElementById('article-reader-container');
+
+      if (indexEl) indexEl.style.display = 'none';
+      if (heroEl) heroEl.style.display = 'none';
+      if (readerContainer) readerContainer.style.display = 'block';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeArticleReader() {
+      const indexEl = document.getElementById('articles-index');
+      const heroEl = document.getElementById('writing-hero');
+      const readerContainer = document.getElementById('article-reader-container');
+
+      if (indexEl) indexEl.style.display = 'flex';
+      if (heroEl) heroEl.style.display = 'block';
+      if (readerContainer) readerContainer.style.display = 'none';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.openWritingSubsite = openWritingSubsite;
+    window.filterArticles = filterArticles;
+    window.openArticleReader = openArticleReader;
+    window.closeArticleReader = closeArticleReader;
+
+    window.openAe000xSubsite = openAe000xSubsite;
+    window.openMainPortfolio = openMainPortfolio;
+    window.handleInvitationFormSubmit = handleInvitationFormSubmit;
+
+    // Restore language, subsite view & theme preference on load
     window.addEventListener('DOMContentLoaded', () => {
       const savedLang = localStorage.getItem('preferred-lang') || 'en';
       setLanguage(savedLang);
+      
+      const savedTheme = localStorage.getItem('theme-mode') || (localStorage.getItem('disco-mode') === 'true' ? 'disco' : 'default');
+      setThemeMode(savedTheme);
+
+      if (window.location.hash === '#ae000x-subsite') {
+        document.body.setAttribute('data-view', 'ae000x');
+      } else if (window.location.hash === '#writing-subsite') {
+        document.body.setAttribute('data-view', 'writing');
+      } else {
+        document.body.setAttribute('data-view', 'main');
+      }
+      updatePageTitle();
+
+      // Attach direct event listeners to theme triggers
+      const defaultTriggers = [document.getElementById('trigger-techno')];
+      const tranceTriggers = [document.getElementById('trigger-trance')];
+      const houseTriggers = [document.getElementById('trigger-house')];
+      const discoTriggers = [document.getElementById('trigger-italo')];
+      
+      defaultTriggers.forEach(el => {
+        if (el) {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setThemeMode('default');
+          });
+        }
+      });
+
+      tranceTriggers.forEach(el => {
+        if (el) {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setThemeMode('trance');
+          });
+        }
+      });
+
+      houseTriggers.forEach(el => {
+        if (el) {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setThemeMode('house');
+          });
+        }
+      });
+
+      discoTriggers.forEach(el => {
+        if (el) {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setThemeMode('disco');
+          });
+        }
+      });
+    });
+
+    window.addEventListener('popstate', (e) => {
+      if ((e.state && e.state.view === 'ae000x') || window.location.hash === '#ae000x-subsite') {
+        document.body.setAttribute('data-view', 'ae000x');
+      } else if ((e.state && e.state.view === 'writing') || window.location.hash === '#writing-subsite') {
+        document.body.setAttribute('data-view', 'writing');
+      } else {
+        document.body.setAttribute('data-view', 'main');
+      }
+      updatePageTitle();
     });
   </script>
 
