@@ -136,10 +136,11 @@ select:focus-visible {
   z-index: 1000;
 }
 
-.top-header-bar {
+.right-header-controls {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  border-left: var(--border-thin);
+  height: 100%;
 }
 
 .mobile-nav-toggle-btn {
@@ -630,31 +631,35 @@ html[lang="pt"] [lang="es"] {
   }
 
   .header-container {
-    flex-direction: column;
-    height: auto;
-    padding: 0;
-  }
-
-  .top-header-bar {
-    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    height: 48px;
+    height: auto;
+    min-height: 48px;
     padding: 0 12px;
     box-sizing: border-box;
-    background: var(--bg-primary);
   }
 
   .logo-block {
     border-right: none;
     border-bottom: none;
     padding: 0;
+    display: flex;
+    align-items: center;
   }
 
   .logo-link {
     font-size: 1.3rem;
     letter-spacing: 2px;
+  }
+
+  .right-header-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: none;
+    height: auto;
   }
 
   .lang-toggle-block {
@@ -693,15 +698,16 @@ html[lang="pt"] [lang="es"] {
     color: var(--bg-primary);
   }
 
-  /* Collapsible Navigation Drawer */
-  .mobile-collapsible-nav {
-    display: none;
+  /* Target #main-navigation directly by ID to override desktop flex display */
+  #main-navigation {
+    display: none !important;
     width: 100%;
+    flex-basis: 100%;
     border-top: 1px solid var(--border-color);
     background: var(--bg-primary);
   }
 
-  .mobile-collapsible-nav.open {
+  #main-navigation.open {
     display: block !important;
     max-height: 60vh;
     overflow-y: auto;
