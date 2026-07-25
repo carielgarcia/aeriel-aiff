@@ -9,7 +9,7 @@
   <title>ÆRIEL | TECHNO, TRANCE, HOUSE, ITALO DISCO</title>
   
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=4.0">
+  <link rel="stylesheet" href="style.css?v=5.0">
 </head>
 <body>
 
@@ -18,27 +18,13 @@
        ========================================================================== -->
   <header class="header-wrapper" id="site-header">
     <div class="container header-container">
-      <!-- Top Sticky Bar for Mobile & Desktop -->
-      <div class="top-header-bar">
-        <div class="logo-block">
-          <a href="#hero" class="logo-link" aria-label="ÆRIEL Home Page" onclick="closeMobileNav()">ÆRIEL</a>
-        </div>
-
-        <!-- Language Toggle Buttons -->
-        <div class="lang-toggle-block">
-          <button onclick="setLanguage('en')" class="lang-btn active" id="btn-lang-en" aria-label="English">EN</button>
-          <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
-          <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
-        </div>
-
-        <!-- Mobile Navigation Toggle Button -->
-        <button class="mobile-nav-toggle-btn" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu">
-          <span class="toggle-icon">NAV ▼</span>
-        </button>
+      <!-- Logo Block -->
+      <div class="logo-block">
+        <a href="#hero" class="logo-link" aria-label="ÆRIEL Home Page" onclick="closeMobileNav()">ÆRIEL</a>
       </div>
 
-      <!-- Collapsible Mobile Navigation Drawer -->
-      <nav id="main-navigation" class="mobile-collapsible-nav" aria-label="Brutalist System Navigation">
+      <!-- Navigation Links -->
+      <nav id="main-navigation" aria-label="Brutalist System Navigation">
         <ul class="nav-menu">
           <li class="nav-item">
             <a href="#hero" class="nav-link" id="nav-system" onclick="closeMobileNav()">
@@ -80,6 +66,19 @@
           </li>
         </ul>
       </nav>
+
+      <!-- Right Header Controls: Language Selector on Far Right + Mobile Arrow Button -->
+      <div class="right-header-controls">
+        <div class="lang-toggle-block">
+          <button onclick="setLanguage('en')" class="lang-btn active" id="btn-lang-en" aria-label="English">EN</button>
+          <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
+          <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
+        </div>
+
+        <button class="mobile-nav-toggle-btn" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu">
+          <span class="toggle-icon">NAV ▼</span>
+        </button>
+      </div>
     </div>
   </header>
 
