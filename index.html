@@ -18,45 +18,61 @@
        ========================================================================== -->
   <header class="header-wrapper" id="site-header">
     <div class="container header-container">
-      <div class="logo-block">
-        <a href="#hero" class="logo-link" aria-label="ÆRIEL Home Page">ÆRIEL</a>
+      <!-- Top Sticky Bar for Mobile & Desktop -->
+      <div class="top-header-bar">
+        <div class="logo-block">
+          <a href="#hero" class="logo-link" aria-label="ÆRIEL Home Page" onclick="closeMobileNav()">ÆRIEL</a>
+        </div>
+
+        <!-- Language Toggle Buttons -->
+        <div class="lang-toggle-block">
+          <button onclick="setLanguage('en')" class="lang-btn active" id="btn-lang-en" aria-label="English">EN</button>
+          <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
+          <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
+        </div>
+
+        <!-- Mobile Navigation Toggle Button -->
+        <button class="mobile-nav-toggle-btn" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu">
+          <span class="toggle-icon">NAV ▼</span>
+        </button>
       </div>
-      
-      <nav id="main-navigation" aria-label="Brutalist System Navigation">
+
+      <!-- Collapsible Mobile Navigation Drawer -->
+      <nav id="main-navigation" class="mobile-collapsible-nav" aria-label="Brutalist System Navigation">
         <ul class="nav-menu">
           <li class="nav-item">
-            <a href="#hero" class="nav-link" id="nav-system">
+            <a href="#hero" class="nav-link" id="nav-system" onclick="closeMobileNav()">
               <span lang="en">SYSTEM</span>
               <span lang="es">SISTEMA</span>
               <span lang="pt">SISTEMA</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#archives" class="nav-link" id="nav-mixes">
+            <a href="#archives" class="nav-link" id="nav-mixes" onclick="closeMobileNav()">
               <span lang="en">ARCHIVES</span>
               <span lang="es">ARCHIVOS</span>
               <span lang="pt">ARQUIVO</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#intent" class="nav-link" id="nav-philosophy">
+            <a href="#intent" class="nav-link" id="nav-philosophy" onclick="closeMobileNav()">
               <span lang="en">INTENT</span>
               <span lang="es">INTENCIÓN</span>
               <span lang="pt">INTENÇÃO</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#ae000x-subsite" class="nav-link" id="nav-brand" onclick="openAe000xSubsite(event)">Æ000.X</a>
+            <a href="#ae000x-subsite" class="nav-link" id="nav-brand" onclick="openAe000xSubsite(event); closeMobileNav();">Æ000.X</a>
           </li>
           <li class="nav-item">
-            <a href="#writing-subsite" class="nav-link" id="nav-writing" onclick="openWritingSubsite(event)">
+            <a href="#writing-subsite" class="nav-link" id="nav-writing" onclick="openWritingSubsite(event); closeMobileNav();">
               <span lang="en">WRITING</span>
               <span lang="es">ENSAYOS</span>
               <span lang="pt">ESCRITOS</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#message" class="nav-link" id="nav-message">
+            <a href="#message" class="nav-link" id="nav-message" onclick="closeMobileNav()">
               <span lang="en">MESSAGE</span>
               <span lang="es">MENSAJE</span>
               <span lang="pt">MENSAGEM</span>
@@ -64,13 +80,6 @@
           </li>
         </ul>
       </nav>
-
-      <!-- Language Toggle Buttons -->
-      <div class="lang-toggle-block">
-        <button onclick="setLanguage('en')" class="lang-btn active" id="btn-lang-en" aria-label="English">EN</button>
-        <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
-        <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
-      </div>
     </div>
   </header>
 
@@ -1007,8 +1016,48 @@
     </div>
   </div>
 
+  <!-- Floating Back-to-Top Button for Mobile Web App View -->
+  <button class="mobile-back-to-top" id="mobile-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to Top">[↑ TOP]</button>
+
   <!-- Language Selection and Form Transmission Handler Scripts -->
   <script>
+    function toggleMobileNav() {
+      const nav = document.getElementById('main-navigation');
+      const toggleBtn = document.getElementById('mobile-nav-toggle');
+      if (nav) {
+        nav.classList.toggle('open');
+        const isOpen = nav.classList.contains('open');
+        if (toggleBtn) {
+          toggleBtn.querySelector('.toggle-icon').textContent = isOpen ? 'NAV ▲' : 'NAV ▼';
+        }
+      }
+    }
+
+    function closeMobileNav() {
+      const nav = document.getElementById('main-navigation');
+      const toggleBtn = document.getElementById('mobile-nav-toggle');
+      if (nav && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        if (toggleBtn) {
+          toggleBtn.querySelector('.toggle-icon').textContent = 'NAV ▼';
+        }
+      }
+    }
+
+    window.toggleMobileNav = toggleMobileNav;
+    window.closeMobileNav = closeMobileNav;
+
+    // Mobile Back-to-Top Visibility Controller
+    window.addEventListener('scroll', () => {
+      const topBtn = document.getElementById('mobile-back-to-top');
+      if (topBtn) {
+        if (window.scrollY > 350) {
+          topBtn.classList.add('visible');
+        } else {
+          topBtn.classList.remove('visible');
+        }
+      }
+    });
     let currentPosterIndex = 0;
     const totalPosterSlides = 5;
 

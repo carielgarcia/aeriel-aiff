@@ -136,6 +136,20 @@ select:focus-visible {
   z-index: 1000;
 }
 
+.top-header-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.mobile-nav-toggle-btn {
+  display: none !important;
+}
+
+.mobile-back-to-top {
+  display: none !important;
+}
+
 .header-container {
   display: flex;
   justify-content: center;
@@ -605,62 +619,163 @@ html[lang="pt"] [lang="es"] {
     padding: 0 var(--spacing-sm);
   }
 
-  /* Header Navigation Mobile Optimization */
+  /* Mobile Sticky Header Bar with Collapsible Navigation Drawer */
+  .header-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--bg-primary);
+    border-bottom: 2px solid var(--border-color);
+    backdrop-filter: blur(10px);
+  }
+
   .header-container {
     flex-direction: column;
     height: auto;
     padding: 0;
   }
 
-  .logo-block {
+  .top-header-bar {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
+    height: 48px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    background: var(--bg-primary);
+  }
+
+  .logo-block {
     border-right: none;
-    border-bottom: var(--border-thin);
-    padding: 10px var(--spacing-sm);
-    justify-content: center;
+    border-bottom: none;
+    padding: 0;
   }
 
   .logo-link {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+  }
+
+  .lang-toggle-block {
+    border: none;
+    padding: 0;
+    height: auto;
+    width: auto;
+    margin: 0;
+    gap: 4px;
+  }
+
+  .lang-btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  /* Mobile Collapsible Navigation Button with Arrow */
+  .mobile-nav-toggle-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .mobile-nav-toggle-btn:active {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+  }
+
+  /* Collapsible Navigation Drawer */
+  .mobile-collapsible-nav {
+    display: none;
+    width: 100%;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-primary);
+  }
+
+  .mobile-collapsible-nav.open {
+    display: block !important;
+    max-height: 60vh;
+    overflow-y: auto;
+    border-bottom: 2px solid var(--text-primary);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   }
 
   .nav-menu {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     width: 100%;
-    justify-content: center;
   }
 
   .nav-item {
-    flex: 1 1 33.33%; /* 3-column compact brutalist nav grid on mobile */
+    width: 100%;
     border-left: none;
-    border-right: var(--border-thin);
-    border-bottom: var(--border-thin);
-    text-align: center;
-    box-sizing: border-box;
-  }
-
-  .nav-item:nth-child(3n) {
     border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
   }
 
   .nav-link {
     width: 100%;
-    padding: 10px 4px;
-    font-size: 0.72rem;
+    padding: 12px;
+    font-size: 0.85rem;
     justify-content: center;
-    min-height: 44px;
+    min-height: 48px; /* Touch friendly height */
     box-sizing: border-box;
   }
 
-  .lang-toggle-block {
-    width: 100%;
-    border-left: none;
-    border-bottom: var(--border-thin);
-    padding: 8px var(--spacing-sm);
-    justify-content: center;
-    margin-left: 0;
-    min-height: 44px;
+  /* Touch Feedback for Native Web-App Experience */
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-brutal:active,
+  .grid-cell:active,
+  .dj-card:active,
+  .article-card:active,
+  .poster-frame:active,
+  .nav-link:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  /* Floating Back-to-Top Button for Mobile */
+  .mobile-back-to-top {
+    display: flex !important;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 999;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 2px solid var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 10px 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+  }
+
+  .mobile-back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-back-to-top:active {
+    transform: scale(0.92);
+    background: var(--text-primary);
+    color: var(--bg-primary);
   }
 
   /* Hero Section Mobile */
