@@ -1141,7 +1141,9 @@
 
     function closePosterLightbox(event) {
       if (event) {
-        if (event.target.closest('.lightbox-content') || event.target.closest('.lightbox-nav-btn') || event.target.closest('.lightbox-header')) {
+        if (event.target.closest('.lightbox-close-btn')) {
+          // Explicitly close when close button is clicked
+        } else if (event.target.closest('.lightbox-content') || event.target.closest('.lightbox-nav-btn') || event.target.closest('.lightbox-header')) {
           return;
         }
       }
