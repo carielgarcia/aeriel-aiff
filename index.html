@@ -1010,7 +1010,7 @@
       <span id="lightbox-title" class="lightbox-title">Æ000.1</span>
       <div class="lightbox-header-actions">
         <span id="lightbox-counter" class="lightbox-counter">01 / 03</span>
-        <button class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(event)">[× CLOSE]</button>
+        <button class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(); if (event) event.stopPropagation();">[× CLOSE]</button>
       </div>
     </div>
     <div class="lightbox-body">
@@ -1140,10 +1140,8 @@
     }
 
     function closePosterLightbox(event) {
-      if (event) {
-        if (event.target.closest('.lightbox-close-btn')) {
-          // Explicitly close when close button is clicked
-        } else if (event.target.closest('.lightbox-content') || event.target.closest('.lightbox-nav-btn') || event.target.closest('.lightbox-header')) {
+      if (event && event.target) {
+        if (event.target.closest('.lightbox-content img') || event.target.closest('.lightbox-nav-btn')) {
           return;
         }
       }
