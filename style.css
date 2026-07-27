@@ -625,6 +625,34 @@ html[lang="pt"] [lang="es"] {
     padding: 0 var(--spacing-sm);
   }
 
+  /* Mobile Line-Height & Compact Text Line Spacing Optimization */
+  body, p, span, li, a {
+    line-height: 1.32;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .intent-header,
+  .subsite-header-title,
+  .dj-card-name,
+  .article-card-title,
+  .reader-title {
+    line-height: 1.12;
+  }
+
+  .dj-card-bio,
+  .article-card-excerpt,
+  .disclaimer-box p,
+  .reader-body p {
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+
+  .writing-preview-quote,
+  .reader-body blockquote {
+    line-height: 1.32;
+    margin: 8px 0;
+  }
+
   /* iOS Safari Auto-Zoom Viewport Jump Prevention */
   .form-input,
   .form-textarea,
