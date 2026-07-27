@@ -90,7 +90,7 @@
     <!-- SECTION 1: SYSTEM ENTRY (HERO) -->
     <section class="hero-block" id="hero">
       <div class="container hero-layout">
-        <h1 id="main-title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 4rem; font-weight: 900; font-stretch: ultra-expanded; text-transform: uppercase; letter-spacing: -0.05em; display: block; line-height: 1;">
+        <h1 id="main-title" class="hero-main-title">
           ÆRIEL
         </h1>
         
@@ -380,7 +380,7 @@
     <!-- Sub-Website Hero -->
     <section class="hero-block subsite-hero" id="ae000x-hero">
       <div class="container hero-layout">
-        <h1 class="subsite-main-title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 4rem; font-weight: 900; font-stretch: ultra-expanded; text-transform: uppercase; letter-spacing: -0.05em; display: block; line-height: 1;">
+        <h1 class="subsite-main-title">
           Æ000.X
         </h1>
       </div>
@@ -517,7 +517,7 @@
             <div class="carousel-track" id="poster-carousel-track">
               
               <!-- Slide 1: Æ000.1 -->
-              <div class="carousel-slide active" data-index="0" onclick="openPosterLightbox('./public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)">
+              <div class="carousel-slide active" data-index="0" onpointerdown="handlePosterPointerDown(event)" onclick="handlePosterTap(event, './public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)">
                 <div class="poster-frame">
                   <div class="poster-badge">
                     <span>Æ000.1</span>
@@ -535,7 +535,7 @@
               </div>
 
               <!-- Slide 2: Æ000.2 -->
-              <div class="carousel-slide" data-index="1" onclick="openPosterLightbox('./public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)">
+              <div class="carousel-slide" data-index="1" onpointerdown="handlePosterPointerDown(event)" onclick="handlePosterTap(event, './public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)">
                 <div class="poster-frame">
                   <div class="poster-badge">
                     <span>Æ000.2</span>
@@ -553,7 +553,7 @@
               </div>
 
               <!-- Slide 3: Æ000.3 -->
-              <div class="carousel-slide" data-index="2" onclick="openPosterLightbox('./public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)">
+              <div class="carousel-slide" data-index="2" onpointerdown="handlePosterPointerDown(event)" onclick="handlePosterTap(event, './public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)">
                 <div class="poster-frame">
                   <div class="poster-badge">
                     <span>Æ000.3</span>
@@ -752,7 +752,7 @@
     <!-- Writing Hero & Topic Filter Bar -->
     <section class="hero-block subsite-hero" id="writing-hero">
       <div class="container hero-layout">
-        <h1 class="subsite-main-title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 4rem; font-weight: 900; font-stretch: ultra-expanded; text-transform: uppercase; letter-spacing: -0.05em; display: block; line-height: 1;">
+        <h1 class="subsite-main-title">
           <span lang="en">WRITING</span>
           <span lang="es">ENSAYOS</span>
           <span lang="pt">ESCRITOS</span>
@@ -1115,6 +1115,63 @@
       if (lightboxCounter) lightboxCounter.textContent = `0${currentLightboxIndex + 1} / 0${posterGallery.length}`;
     }
 
+    // Carousel Pointer Guard (Prevents Carousel Drag from Triggering Lightbox Launch)
+    let posterPointerStartX = 0;
+    let posterPointerStartY = 0;
+
+    function handlePosterPointerDown(e) {
+      posterPointerStartX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+      posterPointerStartY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+    }
+
+    function handlePosterTap(e, imgSrc, title, index) {
+      const endX = e.clientX || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : 0);
+      const endY = e.clientY || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : 0);
+      const deltaX = Math.abs(endX - posterPointerStartX);
+      const deltaY = Math.abs(endY - posterPointerStartY);
+      const distance = Math.hypot(deltaX, deltaY);
+
+      if (distance < 8) {
+        openPosterLightbox(imgSrc, title, index);
+      }
+    }
+
+    // Lightbox Touch Swipe Controller & Event Handlers
+    let lightboxTouchStartX = 0;
+    let lightboxTouchEndX = 0;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const lightboxEl = document.getElementById('poster-lightbox');
+      if (lightboxEl) {
+        lightboxEl.addEventListener('touchstart', (e) => {
+          lightboxTouchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        lightboxEl.addEventListener('touchend', (e) => {
+          lightboxTouchEndX = e.changedTouches[0].screenX;
+          const deltaX = lightboxTouchEndX - lightboxTouchStartX;
+          if (deltaX < -50) {
+            navigatePosterLightbox(1);
+          } else if (deltaX > 50) {
+            navigatePosterLightbox(-1);
+          }
+        }, { passive: true });
+      }
+    });
+
+    // History Popstate Navigation Guard (Swiping / Back Button Closes Modals First)
+    window.addEventListener('popstate', () => {
+      const lightbox = document.getElementById('poster-lightbox');
+      const readerContainer = document.getElementById('article-reader-container');
+
+      if (lightbox && lightbox.style.display === 'flex') {
+        closePosterLightbox(null, true);
+      }
+      if (readerContainer && readerContainer.style.display === 'block') {
+        closeArticleReader(true);
+      }
+    });
+
     function openPosterLightbox(imgSrc, title, index) {
       const lightbox = document.getElementById('poster-lightbox');
 
@@ -1128,8 +1185,12 @@
       updateLightboxDisplay();
 
       if (lightbox) {
+        const wasOpen = lightbox.style.display === 'flex';
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        if (!wasOpen && window.location.hash !== '#overlay') {
+          history.pushState({ modal: 'lightbox' }, '', '#overlay');
+        }
       }
     }
 
@@ -1139,16 +1200,23 @@
       updateLightboxDisplay();
     }
 
-    function closePosterLightbox(event) {
+    window.MapsPosterLightbox = function(dir) {
+      navigatePosterLightbox(dir);
+    };
+
+    function closePosterLightbox(event, fromPopState = false) {
       if (event && event.target) {
         if (event.target.closest('.lightbox-content img') || event.target.closest('.lightbox-nav-btn')) {
           return;
         }
       }
       const lightbox = document.getElementById('poster-lightbox');
-      if (lightbox) {
+      if (lightbox && lightbox.style.display === 'flex') {
         lightbox.style.display = 'none';
         document.body.style.overflow = '';
+        if (!fromPopState && window.location.hash === '#overlay') {
+          history.back();
+        }
       }
     }
 
@@ -1424,23 +1492,35 @@
       const heroEl = document.getElementById('writing-hero');
       const readerContainer = document.getElementById('article-reader-container');
 
+      const wasOpen = readerContainer && readerContainer.style.display === 'block';
+
       if (indexEl) indexEl.style.display = 'none';
       if (heroEl) heroEl.style.display = 'none';
       if (readerContainer) readerContainer.style.display = 'block';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (!wasOpen && window.location.hash !== '#overlay') {
+        history.pushState({ modal: 'article' }, '', '#overlay');
+      }
     }
 
-    function closeArticleReader() {
+    function closeArticleReader(fromPopState = false) {
       const indexEl = document.getElementById('articles-index');
       const heroEl = document.getElementById('writing-hero');
       const readerContainer = document.getElementById('article-reader-container');
+
+      const wasOpen = readerContainer && readerContainer.style.display === 'block';
 
       if (indexEl) indexEl.style.display = 'flex';
       if (heroEl) heroEl.style.display = 'block';
       if (readerContainer) readerContainer.style.display = 'none';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (wasOpen && !fromPopState && window.location.hash === '#overlay') {
+        history.back();
+      }
     }
 
     window.openWritingSubsite = openWritingSubsite;
