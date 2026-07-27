@@ -235,17 +235,17 @@
         
         <div class="dj-grid">
           <!-- Essay Snippet Card 1 -->
-          <div class="dj-card" style="cursor: pointer;" onclick="openWritingSubsiteAndArticle('essay-ephemeral-sanctuary')">
+          <div class="dj-card dj-card-clickable" onclick="openWritingSubsiteAndArticle('essay-ephemeral-sanctuary')">
             <span class="dj-card-role">2026.07.24 // 6 MIN READ</span>
-            <h3 class="dj-card-name" style="font-size: 1.4rem; font-weight: 900;">THE ARCHITECTURE OF THE EPHEMERAL SANCTUARY</h3>
+            <h3 class="dj-card-name dj-card-title-lg">THE ARCHITECTURE OF THE EPHEMERAL SANCTUARY</h3>
             
-            <blockquote class="writing-preview-quote" lang="en" style="border-left: 3px solid var(--text-primary); padding-left: 12px; font-style: italic; font-size: 0.95rem; margin: 10px 0;">
+            <blockquote class="writing-preview-quote" lang="en">
               "We do not dance to escape reality; we dance to construct an alternative model of coexistence, even if only for six hours."
             </blockquote>
-            <blockquote class="writing-preview-quote" lang="es" style="border-left: 3px solid var(--text-primary); padding-left: 12px; font-style: italic; font-size: 0.95rem; margin: 10px 0;">
+            <blockquote class="writing-preview-quote" lang="es">
               "No bailamos para escapar de la realidad; bailamos para construir un modelo alternativo de convivencia, aunque solo sea por seis horas."
             </blockquote>
-            <blockquote class="writing-preview-quote" lang="pt" style="border-left: 3px solid var(--text-primary); padding-left: 12px; font-style: italic; font-size: 0.95rem; margin: 10px 0;">
+            <blockquote class="writing-preview-quote" lang="pt">
               "Não dançamos para escapar da realidade; dançamos para construir um modelo alternativo de coexistência, mesmo que seja apenas por seis horas."
             </blockquote>
 
@@ -259,14 +259,14 @@
               A pista de dança é uma construção arquitetônica que existe apenas no movimento, na fricção e no desejo compartilhado. Reivindica o corpo da produtividade funcional para estabelecer santuários efêmeros de devoção coletiva.
             </p>
 
-            <div class="article-card-meta" style="margin-top: 10px;">
+            <div class="article-card-meta">
               <span class="article-tag">#CLUB_CULTURE</span>
               <span class="article-tag">#SAFETIES</span>
               <span class="article-tag">#DANCEFLOOR</span>
             </div>
 
-            <div class="dj-links" style="margin-top: auto; padding-top: 12px;">
-              <span class="dj-link" style="width: 100%; text-align: center;">
+            <div class="dj-links dj-links-auto">
+              <span class="dj-link dj-link-full">
                 <span lang="en">READ ESSAY →</span>
                 <span lang="es">LEER ENSAYO →</span>
                 <span lang="pt">LER ENSAIO →</span>
@@ -276,7 +276,7 @@
         </div>
 
         <!-- Section CTA to full WRITING subsite -->
-        <div style="margin-top: var(--spacing-lg); text-align: center;">
+        <div class="section-action-wrapper">
           <button class="btn-brutal portal-btn" onclick="openWritingSubsite(event)">
             <span lang="en">EXPLORE ALL ESSAYS →</span>
             <span lang="es">EXPLORAR TODOS LOS ENSAYOS →</span>
@@ -694,13 +694,13 @@
 
             <!-- Minimalist Disclaimer Notice Box -->
             <div class="disclaimer-box">
-              <p lang="en" style="margin-bottom: 12px;">
+              <p lang="en" class="disclaimer-text-spaced">
                 Your contact information will ONLY be used to send invitations and direct communications regarding Æ000.X editions. We respect your inbox and will never add you to commercial or spam lists.
               </p>
-              <p lang="es" style="margin-bottom: 12px;">
+              <p lang="es" class="disclaimer-text-spaced">
                 Tu información de contacto SOLO se utilizará para enviar invitaciones y comunicaciones directas sobre las ediciones de Æ000.X. Respetamos tu bandeja de entrada y nunca te añadiremos a listas comerciales o de spam.
               </p>
-              <p lang="pt" style="margin-bottom: 12px;">
+              <p lang="pt" class="disclaimer-text-spaced">
                 Suas informações de contato serão usadas APENAS para enviar convites e comunicações diretas sobre as edições do Æ000.X. Respeitamos sua caixa de entrada e nunca adicionaremos você a listas comerciais ou de spam.
               </p>
 
@@ -809,7 +809,7 @@
         </div>
 
         <!-- Article Reader Component Container -->
-        <div id="article-reader-container" class="article-reader-container" style="display: none;">
+        <div id="article-reader-container" class="article-reader-container" role="region" aria-label="Article Reader">
           
           <div class="reader-header-bar">
             <button class="btn-brutal back-btn" onclick="closeArticleReader()">
@@ -1005,12 +1005,12 @@
   </footer>
 
   <!-- Lightbox Fullscreen Poster Modal Overlay -->
-  <div id="poster-lightbox" class="poster-lightbox" onclick="closePosterLightbox(event)">
+  <div id="poster-lightbox" class="poster-lightbox" onclick="closePosterLightbox(event)" role="dialog" aria-modal="true" aria-label="Poster Fullscreen View">
     <div class="lightbox-header">
       <span id="lightbox-title" class="lightbox-title">Æ000.1</span>
       <div class="lightbox-header-actions">
         <span id="lightbox-counter" class="lightbox-counter">01 / 03</span>
-        <button class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(); if (event) event.stopPropagation();">[× CLOSE]</button>
+        <button class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(); if (event) event.stopPropagation();" aria-label="Close Poster Lightbox">[× CLOSE]</button>
       </div>
     </div>
     <div class="lightbox-body">
@@ -1172,6 +1172,16 @@
       }
     });
 
+    let lastActiveElement = null;
+
+    function trapFocusInModal(modalEl) {
+      if (!modalEl) return;
+      const focusables = modalEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (focusables.length > 0) {
+        focusables[0].focus();
+      }
+    }
+
     function openPosterLightbox(imgSrc, title, index) {
       const lightbox = document.getElementById('poster-lightbox');
 
@@ -1185,9 +1195,11 @@
       updateLightboxDisplay();
 
       if (lightbox) {
+        lastActiveElement = document.activeElement;
         const wasOpen = lightbox.style.display === 'flex';
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        trapFocusInModal(lightbox);
         if (!wasOpen && window.location.hash !== '#overlay') {
           history.pushState({ modal: 'lightbox' }, '', '#overlay');
         }
@@ -1214,6 +1226,9 @@
       if (lightbox && lightbox.style.display === 'flex') {
         lightbox.style.display = 'none';
         document.body.style.overflow = '';
+        if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+          lastActiveElement.focus();
+        }
         if (!fromPopState && window.location.hash === '#overlay') {
           history.back();
         }
@@ -1229,6 +1244,19 @@
           navigatePosterLightbox(-1);
         } else if (e.key === 'ArrowRight') {
           navigatePosterLightbox(1);
+        } else if (e.key === 'Tab') {
+          const focusables = lightbox.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+          if (focusables.length > 0) {
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+              last.focus();
+              e.preventDefault();
+            } else if (!e.shiftKey && document.activeElement === last) {
+              first.focus();
+              e.preventDefault();
+            }
+          }
         }
       } else {
         const ae000xView = document.body.getAttribute('data-view') === 'ae000x';
@@ -1488,6 +1516,7 @@
     }
 
     function openArticleReader(articleId) {
+      lastActiveElement = document.activeElement;
       const indexEl = document.getElementById('articles-index');
       const heroEl = document.getElementById('writing-hero');
       const readerContainer = document.getElementById('article-reader-container');
@@ -1496,7 +1525,10 @@
 
       if (indexEl) indexEl.style.display = 'none';
       if (heroEl) heroEl.style.display = 'none';
-      if (readerContainer) readerContainer.style.display = 'block';
+      if (readerContainer) {
+        readerContainer.style.display = 'block';
+        trapFocusInModal(readerContainer);
+      }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -1517,6 +1549,10 @@
       if (readerContainer) readerContainer.style.display = 'none';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+        lastActiveElement.focus();
+      }
 
       if (wasOpen && !fromPopState && window.location.hash === '#overlay') {
         history.back();

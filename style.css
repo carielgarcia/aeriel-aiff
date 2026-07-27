@@ -1929,8 +1929,50 @@ body[data-view="writing"] #writing-subsite {
   margin-top: var(--spacing-xs);
 }
 
+/* Card, Utility & Disclaimer Component Classes */
+.dj-card-clickable {
+  cursor: pointer;
+}
+
+.dj-card-title-lg {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.writing-preview-quote {
+  border-left: 3px solid var(--text-primary);
+  padding-left: 12px;
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 10px 0;
+}
+
+.article-card-meta {
+  margin-top: 10px;
+}
+
+.dj-links-auto {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.dj-link-full {
+  width: 100%;
+  text-align: center;
+}
+
+.section-action-wrapper {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+}
+
+.disclaimer-text-spaced {
+  margin-bottom: 12px;
+}
+
 /* Article Reader Overlay & Typography */
 .article-reader-container {
+  display: none;
   padding-top: var(--spacing-md);
 }
 
