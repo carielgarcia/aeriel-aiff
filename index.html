@@ -783,6 +783,8 @@
             <span lang="pt">FILTRAR_TÓPICO:</span>
           </span>
           <button class="filter-btn active" data-filter="all" onclick="filterArticles('all')">[ALL]</button>
+          <button class="filter-btn" data-filter="flinta" onclick="filterArticles('flinta')">[#FLINTA]</button>
+          <button class="filter-btn" data-filter="sex" onclick="filterArticles('sex')">[#SEX]</button>
           <button class="filter-btn" data-filter="harm_reduction" onclick="filterArticles('harm_reduction')">[#HARM_REDUCTION]</button>
           <button class="filter-btn" data-filter="club_culture" onclick="filterArticles('club_culture')">[#CLUB_CULTURE]</button>
           <button class="filter-btn" data-filter="essay" onclick="filterArticles('essay')">[#ESSAY]</button>
@@ -796,7 +798,7 @@
         <div id="articles-index" class="articles-index">
           
           <!-- Essay Card 1: Beyond Moral Panic -->
-          <article class="article-card" data-tag="harm_reduction" id="card-essay-harm-reduction" onclick="openArticleReader('essay-harm-reduction')">
+          <article class="article-card" data-tag="harm_reduction club_culture essay" id="card-essay-harm-reduction" onclick="openArticleReader('essay-harm-reduction')">
             <div class="article-card-meta">
               <span class="article-date">2026.07.28</span>
               <span class="article-tag">#HARM_REDUCTION</span>
@@ -821,6 +823,40 @@
             </p>
             <p class="article-card-teaser" lang="pt">
               Uma abordagem ao consumo de substâncias psicoativas, a hipocrisia comercial da vida noturna e a necessidade de uma infraestrutura coletiva de cuidado na pista de dança.
+            </p>
+            <div class="article-card-action">
+              <span lang="en">READ ESSAY →</span>
+              <span lang="es">LEER ENSAYO →</span>
+              <span lang="pt">LER ENSAIO →</span>
+            </div>
+          </article>
+
+          <!-- Essay Card 2: The Emancipation of Desire -->
+          <article class="article-card" data-tag="flinta sex club_culture essay" id="card-essay-emancipation-desire" onclick="openArticleReader('essay-emancipation-desire')">
+            <div class="article-card-meta">
+              <span class="article-date">2026.07.28</span>
+              <span class="article-tag">#FLINTA</span>
+              <span class="article-tag">#SEX</span>
+              <span class="article-tag">#CLUB_CULTURE</span>
+              <span class="article-read-time">
+                <span lang="en">9 MIN READ</span>
+                <span lang="es">9 MIN LECTURA</span>
+                <span lang="pt">9 MIN LEITURA</span>
+              </span>
+            </div>
+            <h2 class="article-card-title">
+              <span lang="en">THE EMANCIPATION OF DESIRE AND THE POLITICS OF SEX-POSITIVE SPACES</span>
+              <span lang="es">LA EMANCIPACIÓN DEL DESEO Y LA POLÍTICA DE LOS ESPACIOS SEX-POSITIVOS</span>
+              <span lang="pt">A EMANCIPAÇÃO DO DESEJO E A POLÍTICA DOS ESPAÇOS SEX-POSITIVOS</span>
+            </h2>
+            <p class="article-card-teaser" lang="en">
+              An inquiry into bodily sovereignty, cruising architectures, FLINTA community inclusion barriers, and the politics of sex-positive nightlife spaces.
+            </p>
+            <p class="article-card-teaser" lang="es">
+              Una aproximación a la soberanía corporal, las arquitecturas del cruising, las barreras de inclusión para la comunidad FLINTA y la política de los espacios sex-positivos.
+            </p>
+            <p class="article-card-teaser" lang="pt">
+              Uma abordagem à soberania corporal, às arquiteturas de cruising, às barreiras de inclusão para a comunidade FLINTA e à política dos espaços sex-positivos.
             </p>
             <div class="article-card-action">
               <span lang="en">READ ESSAY →</span>
@@ -1108,6 +1144,191 @@
                     </tbody>
                   </table>
                 </div>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- Article 2: The Emancipation of Desire -->
+          <article class="reader-content" id="essay-emancipation-desire" style="display: none;">
+            <header class="reader-meta-header">
+              <div class="article-card-meta">
+                <span class="article-date">2026.07.28</span>
+                <span class="article-tag">#FLINTA</span>
+                <span class="article-tag">#SEX</span>
+                <span class="article-tag">#CLUB_CULTURE</span>
+                <span class="article-read-time">
+                  <span lang="en">9 MIN READ</span>
+                  <span lang="es">9 MIN LECTURA</span>
+                  <span lang="pt">9 MIN LEITURA</span>
+                </span>
+              </div>
+              <h1 class="reader-title">
+                <span lang="en">THE EMANCIPATION OF DESIRE AND THE POLITICS OF SEX-POSITIVE SPACES</span>
+                <span lang="es">LA EMANCIPACIÓN DEL DESEO Y LA POLÍTICA DE LOS ESPACIOS SEX-POSITIVOS</span>
+                <span lang="pt">A EMANCIPAÇÃO DO DESEJO E A POLÍTICA DOS ESPAÇOS SEX-POSITIVOS</span>
+              </h1>
+            </header>
+
+            <div class="reader-body">
+              
+              <!-- English Version -->
+              <div lang="en">
+                <p class="reader-subtitle">
+                  Is the dancefloor merely a release valve for weekly stress, or does it constitute one of the final trenches for bodily sovereignty and the reclamation of space?
+                </p>
+
+                <p>
+                  For decades, club culture has been analyzed as a mere phenomenon of commercial consumption and leisure. However, when observing the dynamics traversing the nightlife scene, it becomes clear that dancing is only one layer of a much broader social articulation: the opportunity to extend political liberation into the arena of desire and explicit sexuality.
+                </p>
+
+                <p>
+                  In a social structure shaped by institutional puritanism and the strict regulation of affection and desire, the emergence of sex-positive spaces and cruising practices are responses and acts of resistance against structural violence. Nightlife has always played with desire. Demanding that dissident communities who have found refuge in the night strip their experience of all sexual dimensions is a naive and depoliticized expectation. On the contrary, blurring the boundaries of sexual interaction is a natural culmination of constructing safe and free spaces.
+                </p>
+
+                <p>
+                  An analysis of the economy of desire in nightlife cannot fall into uncritical triumphalism. Sexual liberation within nightlife culture has not been distributed homogeneously or equitably. Historically, cisgender gay men have been the primary architects and beneficiaries of cruising zones and sex-positive parties. This stems from institutional incentives and patriarchal socialization patterns that educate men to occupy space with greater sexual assertiveness and significantly lower social cost when expressing their drives.
+                </p>
+
+                <p>
+                  Kudos to the gay community for building and institutionalizing these infrastructures of pleasure. However, contrasting this with the reality of the FLINTA community (female, lesbian, intersex, non-binary, trans, and agender) exposes a profound community design flaw.
+                </p>
+
+                <p>
+                  Barriers of entry for the FLINTA community into sex-positive environments are systemic. Persistent stigmatization of feminized bodies conditions the experience of desire in public or semi-public spaces. Simultaneously, dynamics within queer culture itself reproduce forms of rejection or invalidation of femininity, broadly impacting numerous bodies in their desire for interaction: trans women pursuing an elusive male gaze, trans men fighting against phallocentrism and stigma, cis lesbians carrying the weight of moral judgment when attempting to navigate these spaces, and, of course, the inability of some gay men to share space or look beyond the hegemonic male ideal.
+                </p>
+
+                <p>
+                  Enjoying pleasure in freedom remains an unequally distributed privilege. Breaking these barriers is an ethical imperative to ensure that justice reaches the realm of pleasure as well.
+                </p>
+
+                <p>
+                  In response to conservative discourses labeling club sex as degradation, reframing is urgent: sexual interaction in nightlife venues represents an exercise of bodily autonomy. Despite existing access asymmetries, offering safe sites for exploring desire provides invaluable added worth to dissident nightlife. The key to these environments lies in space governance. The clear demarcation of dedicated cruising areas stems not from taboos or imposed secrecy, but from a deliberate architecture of consent. Clear boundaries protect everyone's autonomy: promoting consensual exchanges while safeguarding those who legitimately prefer not to participate. In spaces where such demarcation is absent, rules must be explicit. A sex-free space is neither morally superior nor ethically purer than a space where sex occurs freely. The ethical quality of a venue is measured not by abstinence, but by the density of mutual care and respect for another's sovereignty.
+                </p>
+
+                <p>
+                  Sex-positive parties possess a pedagogical and defensive dimension that often goes unnoticed: their subcultural filtering capacity. By explicating codes of conduct oriented toward bodily liberation, these events function as Temporary Autonomous Zones that raise entry costs for intolerant or reactionary profiles. This self-selection is not arbitrary exclusion; it filters those who perceive the floor as a predatory consumption space and offers transformative incentives to those wishing to integrate into collective freedom codes. Sex-positive radicality thus operates as an ideological barrier protecting dissidence from commercial homogenization.
+                </p>
+
+                <p>
+                  For nightlife promoters and producers, managing these spaces demands transformative pragmatism. Creating dark rooms and disengaging from the dynamics that emerge within them is insufficient. Active political responsibility is required to enable and solve challenges:
+                </p>
+
+                <ol>
+                  <li><strong>Conceptual balance:</strong> Maintain harmony between the artistic/musical offer and the sex-positive proposal, preventing one dimension from negating the other, or providing absolute clarity on the predominant focus.</li>
+                  <li><strong>Care culture & risk management:</strong> Provide prevention materials, objective information on safe practices, and effective protocols for handling harassment or non-consensual situations.</li>
+                  <li><strong>Substantive FLINTA inclusion:</strong> Design affirmative strategies for access, communication, and protection so that cruising areas are environments where FLINTA identities feel invited to exercise their desire without being hyper-surveilled or judged.</li>
+                </ol>
+
+                <p>
+                  <strong>Æ000.X embraces pleasure and space as a political trench. Guaranteeing infrastructures where sex, art, and collective care dignity coexist is the affirmation that in the night, the right to exist and enjoy is exercised communally and in freedom.</strong>
+                </p>
+              </div>
+
+              <!-- Spanish Version -->
+              <div lang="es">
+                <p class="reader-subtitle">
+                  ¿Es la pista de baile simplemente una válvula de escape para el estrés semanal o constituye, en el fondo, una de las últimas trincheras para la soberanía de los cuerpos y la reclamación del espacio?
+                </p>
+
+                <p>
+                  Durante décadas, la cultura de clubes ha sido analizada como un mero fenómeno de consumo y ocio comercial. Sin embargo, cuando observamos algunas de las dinámicas que atraviesan la escena nocturna, resulta evidente que el baile es solo una capa de una articulación social mucho más amplia: la posibilidad de extender la liberación política hacia la arena del deseo y la sexualidad explícita.
+                </p>
+
+                <p>
+                  En una estructura social atravesada por el puritanismo institucional y la regulación estricta de los afectos y deseos, el surgimiento de espacios sex-positivos y la práctica del cruising son respuestas y actos de resistencia frente a la violencia estructural. La noche siempre ha jugado con el deseo. Pretender que las comunidades disidentes que han encontrado refugio en la nocturnidad deban despojar su experiencia de toda dimensión sexual es una exigencia ingenua y despolitizada. Por el contrario, es natural que uno de los puntos cúlmine de la construcción de espacios seguros y de libertad sea el desdibujar las reglas de la interacción sexual.
+                </p>
+
+                <p>
+                  Un análisis de la economía del deseo en la noche no puede caer en triunfalismos acríticos. La liberación sexual dentro de la cultura nocturna no se ha distribuido de forma homogénea ni equitativa. Históricamente, los hombres gay cisgénero han sido los principales articuladores y beneficiarios de las zonas de cruising y las fiestas sex-positivas. Esto responde a incentivos institucionales y esquemas de socialización patriarcal que educan a los hombres para habitar el espacio con mayor asertividad sexual y con un menor costo social por expresar sus pulsiones.
+                </p>
+
+                <p>
+                  Bien por la comunidad gay que ha sabido construir e institucionalizar estas infraestructuras de placer. Sin embargo, el contraste con la realidad de la comunidad FLINTA (mujeres, lesbianas, intersex, no binaries, trans y agénero) expone una profunda falla de diseño comunitario.
+                </p>
+
+                <p>
+                  Las barreras de entrada para la comunidad FLINTA a los entornos sex-positivos son de carácter sistémico. La constante estigmatización sobre los cuerpos feminizados condiciona la vivencia del deseo en espacios públicos o semipúblicos. Al mismo tiempo, dinámicas dentro de la misma cultura queer donde se reproducen formas de rechazo o invalidación de la feminidad, que afectan de manera amplia a numerosos cuerpos en su deseo de interacción: mujeres trans que persiguen una esquiva mirada masculina, hombres trans que deben luchar contra el falocentrismo y el estigma, lesbianas cis que acarrean el peso del juicio moral al momento de intentar usar estos espacios. Y, por supuesto, la incapacidad de algunos gays de compartir el espacio o mirar más allá del ideal hegemónico masculino.
+                </p>
+
+                <p>
+                  Gozar en libertad sigue siendo un privilegio desigualmente distribuido. Romper estas barreras es un imperativo ético para garantizar que la justicia alcance también al ámbito del placer.
+                </p>
+
+                <p>
+                  Frente al discurso conservador que cataloga el sexo en los clubes como degradación, es urgente desplazar el foco (Reframing): la interacción sexual en recintos de ocio constituye un ejercicio de autonomía corporal. A pesar de las asimetrías de acceso existentes, ofrecer sitios seguros para la exploración del deseo es un valor agregado inestimable para la noche disidente. La clave de estos entornos reside en la gobernanza del espacio. La delimitación de zonas específicas para el cruising no responde al tabú ni a la imposición del secreto, sino a una arquitectura deliberada del consentimiento. La demarcación clara protege la autonomía de todas las partes: promueve intercambios consensuados a la vez que resguarda a quienes legítimamente prefieren no involucrarse en tales prácticas. En espacios donde esta demarcación no existe, las reglas deben ser claras y explícitas. Un espacio libre de sexo no es moralmente superior ni éticamente más puro que un espacio donde el sexo ocurre libremente. La calidad ética de un recinto no se mide por la abstinencia, sino por la densidad del cuidado mutuo y el respeto a la soberanía del otro.
+                </p>
+
+                <p>
+                  Existe una dimensión pedagógica y defensiva en las fiestas sex-positivas que suele pasar desapercibida: su capacidad de filtro subcultural. Al explicitar códigos de conducta orientados a la liberación del cuerpo, estos eventos funcionan como Zonas Temporalmente Autónomas que elevan el costo de entrada para perfiles intolerantes o alineados con valores reaccionarios. Esta auto-selección no es una exclusión arbitraria. Filtra a quienes conciben la pista como un espacio de consumo predatorio y ofrece incentivos de transformación a quienes desean integrarse a los códigos de libertad colectiva. La radicalidad sex-positiva opera así como una barrera ideológica que protege las disidencias de la homogenización comercial.
+                </p>
+
+                <p>
+                  Para las promotoras y productoras de la escena nocturna, la gestión de estos espacios exige un pragmatismo transformador. No basta con habilitar cuartos oscuros y desentenderse de las dinámicas que allí emergen. Se requiere una responsabilidad política activa orientada a habilitar y resolver desafíos:
+                </p>
+
+                <ol>
+                  <li><strong>Equilibrio conceptual:</strong> Mantener un balance entre la propuesta artística/musical y la propuesta sex-positiva, evitando que una dimensión anule a la otra, o ser claros en cuál es la propuesta predominante.</li>
+                  <li><strong>Cultura del cuidado y gestión de riesgos:</strong> Facilitar insumos de prevención, información objetiva sobre prácticas seguras y protocolos efectivos ante agresiones o situaciones no consentidas.</li>
+                  <li><strong>Inclusión sustantiva de personas FLINTA:</strong> Diseñar estrategias afirmativas de acceso, comunicación y resguardo para que las áreas de cruising sean espacios donde las identidades FLINTA se sientan invitadas a ejercer su deseo sin ser hipervigiladas o juzgadas.</li>
+                </ol>
+
+                <p>
+                  <strong>Æ000.X asume el placer y el espacio como una trinchera política. Garantizar infraestructuras donde el sexo, el arte y el cuidado colectivo coexisten con dignidad es la afirmación de que en la noche, el derecho a existir y gozar se ejerce de manera comunitaria y en libertad.</strong>
+                </p>
+              </div>
+
+              <!-- Portuguese Version -->
+              <div lang="pt">
+                <p class="reader-subtitle">
+                  A pista de dança é apenas uma válvula de escape para o estresse semanal ou constitui, no fundo, uma das últimas trincheiras para a soberania dos corpos e a retomada do espaço?
+                </p>
+
+                <p>
+                  Durante décadas, a cultura club foi analisada como um mero fenômeno de consumo e lazer comercial. No entanto, quando observamos as dinâmicas que atravessam a cena noturna, fica evidente que a dança é apenas uma camada de uma articulação social muito mais ampla: a possibilidade de estender a libertação política para a arena do desejo e da sexualidade explícita.
+                </p>
+
+                <p>
+                  Em uma estrutura social marcada pelo puritanismo institucional e pela regulação estrita dos afetos e desejos, o surgimento de espaços sex-positivos e a prática do cruising são respostas e atos de resistência frente à violência estrutural. A noite sempre jogou com o desejo. Pretender que as comunidades dissidentes que encontraram refúgio na nocturnidade devam despojar sua experiência de toda dimensão sexual é uma exigência ingênua e despolitizada. Pelo contrário, é natural que um dos pontos culminantes da construção de espaços seguros e de liberdade seja a atenuação das regras da interação sexual.
+                </p>
+
+                <p>
+                  Uma análise da economia do desejo na noite não pode cair em triunfalismos acríticos. A libertação sexual dentro da cultura noturna não foi distribuída de forma homogênea nem equitativa. Historicamente, os homens gay cisgênero foram os principais articuladores e beneficiários das zonas de cruising e das festas sex-positivas. Isso responde a incentivos institucionais e esquemas de socialização patriarcal que educam os homens a habitar o espaço com maior assertividade sexual e com menor custo social por expressar suas pulsões.
+                </p>
+
+                <p>
+                  Parabéns à comunidade gay que soube construir e institucionalizar essas infraestruturas de prazer. No entanto, o contraste com a realidade da comunidade FLINTA (mulheres, lésbicas, intersexo, não binárias, trans e agênero) expõe uma profunda falha no design comunitário.
+                </p>
+
+                <p>
+                  As barreiras de entrada para a comunidade FLINTA em ambientes sex-positivos são de caráter sistêmico. A constante estigmatização sobre os corpos feminilizados condiciona a vivência do desejo em espaços públicos ou semipúblicos. Ao mesmo tempo, dinâmicas dentro da própria cultura queer reproduzem formas de rejeição ou invalidação da feminilidade, que afetam amplamente numerosos corpos em seu desejo de interação: mulheres trans que perseguem um esquivo olhar masculino, homens trans que precisam lutar contra o falocentrismo e o estigma, lésbicas cis que carregam o peso do julgamento moral ao tentar frequentar esses espaços. E, claro, a incapacidade de alguns gays de compartilhar o espaço ou olhar além do ideal hegemônico masculino.
+                </p>
+
+                <p>
+                  Gozar em liberdade continua sendo um privilégio desigualmente distribuído. Romper essas barreiras é um imperativo ético para garantir que a justiça alcance também o âmbito do prazer.
+                </p>
+
+                <p>
+                  Frente ao discurso conservador que rotula o sexo nos clubes como degradação, é urgente mudar o foco (Reframing): a interação sexual em estabelecimentos noturnos constitui um exercício de autonomia corporal. Apesar das assimetrias de acesso existentes, oferecer locais seguros para a exploração do desejo é um valor agregado inestimável para a noite dissidente. A chave desses ambientes reside na governança do espaço. A delimitação de zonas específicas para o cruising não responde ao tabu nem à imposição do segredo, mas a uma arquitetura deliberada do consentimento. A demarcação clara protege a autonomia de todas as partes: promove trocas consensuais enquanto resguarda quem legitimamente prefere não se envolver em tais práticas. Em espaços onde essa demarcação não existe, as regras devem ser claras e explícitas. Um espaço livre de sexo não é moralmente superior nem eticamente mais puro do que um espaço onde o sexo ocorre livremente. A qualidade ética de um recinto não se mede pela abstinência, mas pela densidade do cuidado mútuo e pelo respeito à soberania do outro.
+                </p>
+
+                <p>
+                  Existe uma dimensão pedagógica e defensiva nas festas sex-positivas que costuma passar despercebida: sua capacidade de filtro subcultural. Ao explicitar códigos de conduta orientados à libertação do corpo, esses eventos funcionam como Zonas Temporariamente Autônomas que elevam o custo de entrada para perfis intolerantes ou alinhados a valores reacionários. Essa autoseleção não é uma exclusão arbitrária. Filtra quem concebe a pista como um espaço de consumo predatório e oferece incentivos de transformação a quem deseja se integrar aos códigos de liberdade coletiva. A radicalidade sex-positiva opera assim como uma barreira ideológica que protege as dissidências da homogeneização comercial.
+                </p>
+
+                <p>
+                  Para as produtoras e promotoras da cena noturna, a gestão desses espaços exige um pragmatismo transformador. Não basta disponibilizar dark rooms e se desentender das dinâmicas que ali emergen. É necessária uma responsabilidade política ativa orientada a viabilizar e resolver desafios:
+                </p>
+
+                <ol>
+                  <li><strong>Equilíbrio conceitual:</strong> Manter um balanço entre a proposta artística/musical e a proposta sex-positiva, evitando que uma dimensão anule a outra, ou ser claro sobre qual é a proposta predominante.</li>
+                  <li><strong>Cultura do cuidado e gestão de riscos:</strong> Disponibilizar insumos de prevenção, informação objetiva sobre práticas seguras e protocolos eficazes diante de agressões ou situações não consensuais.</li>
+                  <li><strong>Inclusão substantiva de pessoas FLINTA:</strong> Criar estratégias afirmativas de acesso, comunicação e acolhimento para que as áreas de cruising sejam espaços onde as identidades FLINTA se sintam convidadas a exercer seu desejo sem serem hipervigiladas ou julgadas.</li>
+                </ol>
+
+                <p>
+                  <strong>O Æ000.X assume o prazer e o espaço como uma trincheira política. Garantir infraestruturas onde o sexo, a arte e o cuidado coletivo coexistam com dignidade é a afirmação de que, na noite, o direito de existir e gozar é exercido de forma comunitária e em liberdade.</strong>
+                </p>
               </div>
 
             </div>
@@ -1681,7 +1902,8 @@
       });
 
       document.querySelectorAll('.article-card').forEach(card => {
-        if (tag === 'all' || card.getAttribute('data-tag') === tag) {
+        const cardTags = (card.getAttribute('data-tag') || '').split(/\s+|,/);
+        if (tag === 'all' || cardTags.includes(tag)) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
@@ -1696,6 +1918,16 @@
       const readerContainer = document.getElementById('article-reader-container');
 
       const wasOpen = readerContainer && readerContainer.style.display === 'block';
+
+      if (readerContainer) {
+        readerContainer.querySelectorAll('.reader-content').forEach(art => {
+          if (art.id === articleId) {
+            art.style.display = 'block';
+          } else {
+            art.style.display = 'none';
+          }
+        });
+      }
 
       if (indexEl) indexEl.style.display = 'none';
       if (heroEl) heroEl.style.display = 'none';
