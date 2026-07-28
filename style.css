@@ -2039,7 +2039,7 @@ body[data-view="writing"] #writing-subsite {
 .reader-meta-header {
   border-bottom: var(--border-thin);
   padding-bottom: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 0;
 }
 
 .reader-title {
@@ -2089,10 +2089,11 @@ body[data-view="writing"] #writing-subsite {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.4;
+  margin-top: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
   opacity: 0.9;
   border-bottom: var(--border-thin);
-  padding-bottom: var(--spacing-md);
 }
 
 .reader-body ul {
