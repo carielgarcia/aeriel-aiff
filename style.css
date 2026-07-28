@@ -2442,3 +2442,49 @@ html.house-mode .poster-frame:hover { border-color: #FFF8E7 !important; box-shad
 html.house-mode .poster-badge { color: #FFF8E7 !important; border-bottom-color: #FF7B00 !important; }
 html.house-mode .poster-img-container { border-color: #FF7B00 !important; }
 html.house-mode .poster-carousel-wrapper { background: #1F130E !important; border-color: #FF7B00 !important; }
+
+/* Brutalist Contact Form Feedback Banner */
+.contact-feedback-banner {
+  display: none;
+  margin-top: var(--spacing-md);
+  padding: 14px 18px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: var(--border-thick);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.contact-feedback-banner.success {
+  display: block;
+  background: #000000;
+  color: #00FF66;
+  border-color: #00FF66;
+}
+
+.contact-feedback-banner.error {
+  display: block;
+  background: #000000;
+  color: #FF3333;
+  border-color: #FF3333;
+}
+
+html.disco-mode .contact-feedback-banner.success {
+  background: #170421;
+  color: #FFC72C;
+  border-color: #FFC72C;
+}
+
+html.trance-mode .contact-feedback-banner.success {
+  background: #040814;
+  color: #00F0FF;
+  border-color: #00F0FF;
+}
+
+html.house-mode .contact-feedback-banner.success {
+  background: #120A07;
+  color: #FF7B00;
+  border-color: #FF7B00;
+}

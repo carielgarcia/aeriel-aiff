@@ -326,7 +326,7 @@
                   <span lang="es">RED_SOCIAL (OPCIONAL)</span>
                   <span lang="pt">REDES_SOCIAIS (OPCIONAL)</span>
                 </label>
-                <input type="text" id="contact-social" name="social" class="form-input" placeholder="@HANDLE / LINK">
+                <input type="text" id="contact-social" name="social_handle" class="form-input" placeholder="@HANDLE / LINK">
               </div>
               
               <div class="form-group">
@@ -353,6 +353,8 @@
               <span lang="es">TRANSMITIR_DATOS</span>
               <span lang="pt">TRANSMITIR_DADOS</span>
             </button>
+
+            <div id="contact-form-feedback" class="contact-feedback-banner" aria-live="polite"></div>
           </form>
         </div>
       </div>
@@ -1336,20 +1338,31 @@
     function handleFormSubmit(event) {
       event.preventDefault();
       
+      const form = event.target;
       const submitBtn = document.getElementById("message-submit-btn");
+      const feedbackBanner = document.getElementById("contact-form-feedback");
+      const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
+
       if (submitBtn) {
         submitBtn.disabled = true;
+        submitBtn.textContent = "[ TRANSMITTING... ]";
       }
-      
+
+      if (feedbackBanner) {
+        feedbackBanner.className = "contact-feedback-banner";
+        feedbackBanner.style.display = "none";
+        feedbackBanner.textContent = "";
+      }
+
       const payload = {
-        name: document.getElementById("contact-name").value,
-        email: document.getElementById("contact-email").value,
-        social: document.getElementById("contact-social").value,
-        phone: document.getElementById("contact-phone").value,
-        message: document.getElementById("contact-message-text").value
+        name: (document.getElementById("contact-name")?.value || "").trim(),
+        email: (document.getElementById("contact-email")?.value || "").trim(),
+        social_handle: (document.getElementById("contact-social")?.value || "").trim(),
+        phone: (document.getElementById("contact-phone")?.value || "").trim(),
+        message: (document.getElementById("contact-message-text")?.value || "").trim()
       };
       
-      fetch("https://formsubmit.co/ajax/camiloarielsa@gmail.com", {
+      fetch("/api/contact", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
@@ -1357,41 +1370,31 @@
         },
         body: JSON.stringify(payload)
       })
-      .then(response => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-        }
-        const currentLang = document.documentElement.getAttribute('lang') || 'en';
-        if (response.ok) {
-          if (currentLang === 'es') {
-            alert('MENSAJE TRANSMITIDO CON ÉXITO.');
-          } else if (currentLang === 'pt') {
-            alert('MENSAGEM TRANSMITIDA COM SUCESSO.');
-          } else {
-            alert('MESSAGE SUCCESSFULLY TRANSMITTED.');
+      .then(async (response) => {
+        const result = await response.json().catch(() => ({}));
+        if (response.ok && result.status === "success") {
+          form.reset();
+          if (feedbackBanner) {
+            feedbackBanner.className = "contact-feedback-banner success";
+            feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
           }
-          event.target.reset();
         } else {
-          if (currentLang === 'es') {
-            alert('ERROR AL ENVIAR. INTENTA DE NUEVO.');
-          } else if (currentLang === 'pt') {
-            alert('ERRO AO ENVIAR. TENTE NOVAMENTE.');
-          } else {
-            alert('ERROR TRANSMITTING MESSAGE. PLEASE TRY AGAIN.');
+          if (feedbackBanner) {
+            feedbackBanner.className = "contact-feedback-banner error";
+            feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
+        if (feedbackBanner) {
+          feedbackBanner.className = "contact-feedback-banner error";
+          feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
+        }
+      })
+      .finally(() => {
         if (submitBtn) {
           submitBtn.disabled = false;
-        }
-        const currentLang = document.documentElement.getAttribute('lang') || 'en';
-        if (currentLang === 'es') {
-          alert('ERROR DE CONEXIÓN. INTENTA DE NUEVO.');
-        } else if (currentLang === 'pt') {
-          alert('ERRO DE CONEXÃO. TENTE NOVAMENTE.');
-        } else {
-          alert('CONNECTION ERROR. PLEASE TRY AGAIN.');
+          submitBtn.innerHTML = originalBtnHTML;
         }
       });
     }
