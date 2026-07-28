@@ -297,7 +297,7 @@
         </h2>
         
         <div class="portal-form-container">
-          <form class="portal-form" id="contact-form">
+          <form class="portal-form" id="contact-form" onsubmit="handleContactFormSubmit(event)">
             
             <div class="form-row">
               <div class="form-group">
@@ -623,7 +623,7 @@
         </h2>
 
         <div class="portal-form-container">
-          <form class="portal-form" id="ae000x-invitation-form">
+          <form class="portal-form" id="ae000x-invitation-form" onsubmit="handleInvitationFormSubmit(event)">
             
             <!-- Field 1: Full Name / Moniker -->
             <div class="form-group">
@@ -1160,113 +1160,104 @@
         }, { passive: true });
       }
 
-      // Google Apps Script Contact Form Submission Event Listener
+      // Google Apps Script Contact Form Submission Controller
       const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxSHvB9SCFmynBZ9Mc2i_wsfS5Rzh07COAm1w5dzKE0m06pxAd6zHwaQ77POOSD3zgjcw/exec";
 
-      const contactForm = document.getElementById('contact-form') || document.querySelector('#contact form');
-      if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-          e.preventDefault(); // Prevents native browser form redirection
-          
-          const submitBtn = contactForm.querySelector('button[type="submit"]');
-          const feedbackBanner = document.getElementById('contact-form-feedback');
-          const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
+      async function handleContactFormSubmit(event) {
+        if (event) event.preventDefault();
+        
+        const contactForm = document.getElementById('contact-form') || document.querySelector('#contact form');
+        if (!contactForm) return;
 
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = "[ TRANSMITTING... ]";
-          }
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const feedbackBanner = document.getElementById('contact-form-feedback');
+        const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
 
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "[ TRANSMITTING... ]";
+        }
+
+        if (feedbackBanner) {
+          feedbackBanner.className = "contact-feedback-banner";
+          feedbackBanner.style.display = "none";
+          feedbackBanner.textContent = "";
+        }
+
+        const payload = {
+          name: (contactForm.querySelector('[name="name"]')?.value || '').trim(),
+          email: (contactForm.querySelector('[name="email"]')?.value || '').trim(),
+          message: (contactForm.querySelector('[name="message"]')?.value || '').trim(),
+          social_handle: (contactForm.querySelector('[name="social_handle"]')?.value || '').trim(),
+          phone: (contactForm.querySelector('[name="phone"]')?.value || '').trim()
+        };
+
+        try {
+          await fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+
+          contactForm.reset();
           if (feedbackBanner) {
-            feedbackBanner.className = "contact-feedback-banner";
-            feedbackBanner.style.display = "none";
-            feedbackBanner.textContent = "";
+            feedbackBanner.className = "contact-feedback-banner success";
+            feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
+          } else {
+            alert('[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]');
           }
-
-          const payload = {
-            name: (contactForm.querySelector('[name="name"]')?.value || '').trim(),
-            email: (contactForm.querySelector('[name="email"]')?.value || '').trim(),
-            message: (contactForm.querySelector('[name="message"]')?.value || '').trim(),
-            social_handle: (contactForm.querySelector('[name="social_handle"]')?.value || '').trim(),
-            phone: (contactForm.querySelector('[name="phone"]')?.value || '').trim()
-          };
-
-          try {
-            const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify(payload)
-            });
-
-            const result = await response.json().catch(() => ({}));
-
-            if (response.ok && (result.result === 'success' || result.status === 'success' || response.type === 'opaque')) {
-              contactForm.reset();
-              if (feedbackBanner) {
-                feedbackBanner.className = "contact-feedback-banner success";
-                feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
-              } else {
-                alert('[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]');
-              }
-            } else {
-              throw new Error(result.error || 'Failed to transmit message.');
-            }
-          } catch (err) {
-            console.error('Contact Form Submission Exception:', err);
-            if (feedbackBanner) {
-              feedbackBanner.className = "contact-feedback-banner error";
-              feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
-            } else {
-              alert('[ TRANSMISSION ERROR // TRY AGAIN ]');
-            }
-          } finally {
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = originalBtnHTML;
-            }
+        } catch (err) {
+          console.error('Contact Form Submission Exception:', err);
+          if (feedbackBanner) {
+            feedbackBanner.className = "contact-feedback-banner error";
+            feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
+          } else {
+            alert('[ TRANSMISSION ERROR // TRY AGAIN ]');
           }
-        });
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHTML;
+          }
+        }
       }
 
-      // Æ000.X Invitation Form Submission Listener
-      const inviteForm = document.getElementById('ae000x-invitation-form');
-      if (inviteForm) {
-        inviteForm.addEventListener('submit', async function(e) {
-          e.preventDefault();
-          const submitBtn = document.getElementById("invite-submit-btn");
-          if (submitBtn) submitBtn.disabled = true;
+      async function handleInvitationFormSubmit(event) {
+        if (event) event.preventDefault();
+        const inviteForm = document.getElementById('ae000x-invitation-form');
+        const submitBtn = document.getElementById("invite-submit-btn");
+        if (submitBtn) submitBtn.disabled = true;
 
-          const selectedMethods = Array.from(document.querySelectorAll('#ae000x-invitation-form input[name="contact_method"]:checked')).map(cb => cb.value);
+        const selectedMethods = Array.from(document.querySelectorAll('#ae000x-invitation-form input[name="contact_method"]:checked')).map(cb => cb.value);
 
-          const payload = {
-            name: (document.getElementById("invite-name")?.value || "").trim(),
-            email: (document.getElementById("invite-email")?.value || "").trim(),
-            social_handle: (document.getElementById("invite-social")?.value || "").trim(),
-            phone: (document.getElementById("invite-whatsapp")?.value || "").trim(),
-            message: `[Æ000.X Invitation Request] Preferred contact methods: ${selectedMethods.join(", ") || "None specified"}`
-          };
+        const payload = {
+          name: (document.getElementById("invite-name")?.value || "").trim(),
+          email: (document.getElementById("invite-email")?.value || "").trim(),
+          social_handle: (document.getElementById("invite-social")?.value || "").trim(),
+          phone: (document.getElementById("invite-whatsapp")?.value || "").trim(),
+          message: `[Æ000.X Invitation Request] Preferred contact methods: ${selectedMethods.join(", ") || "None specified"}`
+        };
 
-          try {
-            const response = await fetch('/api/contact', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            const result = await response.json().catch(() => ({}));
+        try {
+          await fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
 
-            if (response.ok && result.status === 'success') {
-              inviteForm.reset();
-              alert('SOLICITUD DE INVITACIÓN TRANSMITIDA CON ÉXITO.');
-            } else {
-              alert('ERROR AL ENVIAR. INTENTA DE NUEVO.');
-            }
-          } catch (err) {
-            alert('ERROR DE CONEXIÓN. INTENTA DE NUEVO.');
-          } finally {
-            if (submitBtn) submitBtn.disabled = false;
-          }
-        });
+          if (inviteForm) inviteForm.reset();
+          alert('SOLICITUD DE INVITACIÓN TRANSMITIDA CON ÉXITO.');
+        } catch (err) {
+          alert('ERROR AL ENVIAR LA SOLICITUD. INTENTA DE NUEVO.');
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+        }
       }
+
+      window.handleContactFormSubmit = handleContactFormSubmit;
+      window.handleInvitationFormSubmit = handleInvitationFormSubmit;
     });
 
     // History Popstate Navigation Guard (Swiping / Back Button Closes Modals First)
