@@ -1160,11 +1160,13 @@
         }, { passive: true });
       }
 
-      // Contact Form Submission Event Listener (Exclusively JS fetch to /api/contact)
+      // Google Apps Script Contact Form Submission Event Listener
+      const GOOGLE_APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
       const contactForm = document.getElementById('contact-form') || document.querySelector('#contact form');
       if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
-          e.preventDefault(); // CRUCIAL: Stops native FormSubmit browser redirect
+          e.preventDefault(); // Prevents native browser form redirection
           
           const submitBtn = contactForm.querySelector('button[type="submit"]');
           const feedbackBanner = document.getElementById('contact-form-feedback');
@@ -1190,15 +1192,15 @@
           };
 
           try {
-            const response = await fetch('/api/contact', {
+            const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
               body: JSON.stringify(payload)
             });
 
             const result = await response.json().catch(() => ({}));
 
-            if (response.ok && result.status === 'success') {
+            if (response.ok && (result.result === 'success' || result.status === 'success' || response.type === 'opaque')) {
               contactForm.reset();
               if (feedbackBanner) {
                 feedbackBanner.className = "contact-feedback-banner success";
@@ -1207,16 +1209,15 @@
                 alert('[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]');
               }
             } else {
-              console.error('Contact Form Transmission Error:', result);
               throw new Error(result.error || 'Failed to transmit message.');
             }
           } catch (err) {
-            console.error('Contact Form Exception:', err);
+            console.error('Contact Form Submission Exception:', err);
             if (feedbackBanner) {
               feedbackBanner.className = "contact-feedback-banner error";
-              feedbackBanner.textContent = `[ TRANSMISSION ERROR // ${err.message ? err.message.toUpperCase() : 'TRY AGAIN'} ]`;
+              feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
             } else {
-              alert(`[ TRANSMISSION ERROR // ${err.message ? err.message.toUpperCase() : 'TRY AGAIN'} ]`);
+              alert('[ TRANSMISSION ERROR // TRY AGAIN ]');
             }
           } finally {
             if (submitBtn) {
