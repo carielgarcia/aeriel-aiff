@@ -6,11 +6,11 @@ export async function onRequestPost(context) {
     const { name, email, message, phone } = data;
     const social_handle = data.social_handle || data.social || '';
 
-    // Validate required fields
+    // Validate required fields (name, email, message mandatory)
     if (!name || !email || !message) {
       return new Response(
-        JSON.stringify({ status: "error", error: "Missing required fields (name, email, message)." }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        JSON.stringify({ status: "error", error: "Missing required fields: Name, Email, and Message are mandatory." }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
 
@@ -21,23 +21,19 @@ export async function onRequestPost(context) {
       );
     }
 
-    // Cleanly formatted plain-text email body
+    // Cleanly formatted plain-text email body containing all fields
     const emailText = [
-      "========================================",
-      "AERIEL.NET - NEW CONTACT TRANSMISSION",
-      "========================================",
+      "New Contact Transmission from AERIEL.NET:",
       "",
       `Name: ${name}`,
       `Email: ${email}`,
       `Social Handle: ${social_handle ? social_handle : "N/A"}`,
       `Phone: ${phone ? phone : "N/A"}`,
       "",
-      "MESSAGE BODY:",
+      "Message Body:",
       "----------------------------------------",
       message,
-      "----------------------------------------",
-      "",
-      `Sent at: ${new Date().toISOString()}`
+      "----------------------------------------"
     ].join("\n");
 
     const resendResponse = await fetch("https://api.resend.com/emails", {
@@ -49,7 +45,7 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         from: "AERIEL Website <onboarding@resend.dev>",
         to: ["contact@aeriel.net"],
-        subject: `[AERIEL.NET] New Message from ${name}`,
+        subject: "[AERIEL.NET] New Message from " + name,
         text: emailText
       })
     });
