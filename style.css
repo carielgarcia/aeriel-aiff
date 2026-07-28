@@ -554,6 +554,16 @@ html[lang="pt"] [lang="es"] {
   color: var(--text-muted);
 }
 
+.footer-email-link {
+  color: inherit;
+  text-decoration: underline;
+  transition: opacity var(--transition-fast);
+}
+
+.footer-email-link:hover {
+  color: var(--text-primary);
+}
+
 .footer-nav {
   display: flex;
   gap: var(--spacing-md);
