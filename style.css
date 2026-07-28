@@ -2085,6 +2085,75 @@ body[data-view="writing"] #writing-subsite {
   margin: var(--spacing-lg) 0;
 }
 
+.reader-subtitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.9;
+  border-bottom: var(--border-thin);
+  padding-bottom: var(--spacing-md);
+}
+
+.reader-body ul {
+  margin-bottom: var(--spacing-md);
+  padding-left: var(--spacing-lg);
+}
+
+.reader-body li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.reader-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border: var(--border-thick);
+}
+
+.reader-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.reader-table th {
+  background-color: var(--bg-primary);
+  border-bottom: var(--border-thick);
+  border-right: var(--border-thin);
+  padding: var(--spacing-sm);
+  font-weight: 900;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+}
+
+.reader-table td {
+  border-bottom: var(--border-thin);
+  border-right: var(--border-thin);
+  padding: var(--spacing-sm);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.reader-table th:last-child,
+.reader-table td:last-child {
+  border-right: none;
+}
+
+.reader-table tr:last-child td {
+  border-bottom: none;
+}
+
+.tldr-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.03em;
+}
+
 @media (max-width: 768px) {
   .reader-content {
     padding: var(--spacing-md);
