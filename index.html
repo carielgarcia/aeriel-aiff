@@ -297,7 +297,7 @@
         </h2>
         
         <div class="portal-form-container">
-          <form class="portal-form" id="contact-message-form" action="#" method="POST" onsubmit="handleFormSubmit(event)">
+          <form class="portal-form" id="contact-form">
             
             <div class="form-row">
               <div class="form-group">
@@ -623,7 +623,7 @@
         </h2>
 
         <div class="portal-form-container">
-          <form class="portal-form" id="ae000x-invitation-form" action="#" method="POST" onsubmit="handleInvitationFormSubmit(event)">
+          <form class="portal-form" id="ae000x-invitation-form">
             
             <!-- Field 1: Full Name / Moniker -->
             <div class="form-group">
@@ -1159,6 +1159,111 @@
           }
         }, { passive: true });
       }
+
+      // Contact Form Submission Event Listener (Exclusively JS fetch to /api/contact)
+      const contactForm = document.getElementById('contact-form') || document.querySelector('#contact form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault(); // CRUCIAL: Stops native FormSubmit browser redirect
+          
+          const submitBtn = contactForm.querySelector('button[type="submit"]');
+          const feedbackBanner = document.getElementById('contact-form-feedback');
+          const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
+
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "[ TRANSMITTING... ]";
+          }
+
+          if (feedbackBanner) {
+            feedbackBanner.className = "contact-feedback-banner";
+            feedbackBanner.style.display = "none";
+            feedbackBanner.textContent = "";
+          }
+
+          const payload = {
+            name: (contactForm.querySelector('[name="name"]')?.value || '').trim(),
+            email: (contactForm.querySelector('[name="email"]')?.value || '').trim(),
+            message: (contactForm.querySelector('[name="message"]')?.value || '').trim(),
+            social_handle: (contactForm.querySelector('[name="social_handle"]')?.value || '').trim(),
+            phone: (contactForm.querySelector('[name="phone"]')?.value || '').trim()
+          };
+
+          try {
+            const response = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok && result.status === 'success') {
+              contactForm.reset();
+              if (feedbackBanner) {
+                feedbackBanner.className = "contact-feedback-banner success";
+                feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
+              } else {
+                alert('[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]');
+              }
+            } else {
+              throw new Error(result.error || 'Failed to send');
+            }
+          } catch (err) {
+            if (feedbackBanner) {
+              feedbackBanner.className = "contact-feedback-banner error";
+              feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
+            } else {
+              alert('[ TRANSMISSION ERROR // TRY AGAIN ]');
+            }
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalBtnHTML;
+            }
+          }
+        });
+      }
+
+      // Æ000.X Invitation Form Submission Listener
+      const inviteForm = document.getElementById('ae000x-invitation-form');
+      if (inviteForm) {
+        inviteForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const submitBtn = document.getElementById("invite-submit-btn");
+          if (submitBtn) submitBtn.disabled = true;
+
+          const selectedMethods = Array.from(document.querySelectorAll('#ae000x-invitation-form input[name="contact_method"]:checked')).map(cb => cb.value);
+
+          const payload = {
+            name: (document.getElementById("invite-name")?.value || "").trim(),
+            email: (document.getElementById("invite-email")?.value || "").trim(),
+            social_handle: (document.getElementById("invite-social")?.value || "").trim(),
+            phone: (document.getElementById("invite-whatsapp")?.value || "").trim(),
+            message: `[Æ000.X Invitation Request] Preferred contact methods: ${selectedMethods.join(", ") || "None specified"}`
+          };
+
+          try {
+            const response = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok && result.status === 'success') {
+              inviteForm.reset();
+              alert('SOLICITUD DE INVITACIÓN TRANSMITIDA CON ÉXITO.');
+            } else {
+              alert('ERROR AL ENVIAR. INTENTA DE NUEVO.');
+            }
+          } catch (err) {
+            alert('ERROR DE CONEXIÓN. INTENTA DE NUEVO.');
+          } finally {
+            if (submitBtn) submitBtn.disabled = false;
+          }
+        });
+      }
     });
 
     // History Popstate Navigation Guard (Swiping / Back Button Closes Modals First)
@@ -1334,70 +1439,6 @@
       localStorage.setItem('theme-mode', mode);
     }
     window.setThemeMode = setThemeMode;
-
-    function handleFormSubmit(event) {
-      event.preventDefault();
-      
-      const form = event.target;
-      const submitBtn = document.getElementById("message-submit-btn");
-      const feedbackBanner = document.getElementById("contact-form-feedback");
-      const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "[ TRANSMITTING... ]";
-      }
-
-      if (feedbackBanner) {
-        feedbackBanner.className = "contact-feedback-banner";
-        feedbackBanner.style.display = "none";
-        feedbackBanner.textContent = "";
-      }
-
-      const payload = {
-        name: (document.getElementById("contact-name")?.value || "").trim(),
-        email: (document.getElementById("contact-email")?.value || "").trim(),
-        social_handle: (document.getElementById("contact-social")?.value || "").trim(),
-        phone: (document.getElementById("contact-phone")?.value || "").trim(),
-        message: (document.getElementById("contact-message-text")?.value || "").trim()
-      };
-      
-      fetch("/api/contact", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(async (response) => {
-        const result = await response.json().catch(() => ({}));
-        if (response.ok && result.status === "success") {
-          form.reset();
-          if (feedbackBanner) {
-            feedbackBanner.className = "contact-feedback-banner success";
-            feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
-          }
-        } else {
-          if (feedbackBanner) {
-            feedbackBanner.className = "contact-feedback-banner error";
-            feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
-          }
-        }
-      })
-      .catch((error) => {
-        if (feedbackBanner) {
-          feedbackBanner.className = "contact-feedback-banner error";
-          feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
-        }
-      })
-      .finally(() => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnHTML;
-        }
-      });
-    }
     
     function openAe000xSubsite(event) {
       if (event) event.preventDefault();
@@ -1425,54 +1466,6 @@
       history.pushState({ view: 'main' }, '', '#');
     }
 
-    function handleInvitationFormSubmit(event) {
-      event.preventDefault();
-      const submitBtn = document.getElementById("invite-submit-btn");
-      if (submitBtn) submitBtn.disabled = true;
-
-      const selectedMethods = Array.from(document.querySelectorAll('#ae000x-invitation-form input[name="contact_method"]:checked')).map(cb => cb.value);
-
-      const payload = {
-        _subject: "Æ000.X Invitation Request",
-        name: document.getElementById("invite-name").value,
-        social: document.getElementById("invite-social").value,
-        whatsapp: document.getElementById("invite-whatsapp").value,
-        email: document.getElementById("invite-email").value,
-        preferred_contact_methods: selectedMethods.join(", ") || "None specified"
-      };
-
-      fetch("https://formsubmit.co/ajax/camiloarielsa@gmail.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(response => {
-        if (submitBtn) submitBtn.disabled = false;
-        const currentLang = document.documentElement.getAttribute('lang') || 'en';
-        if (response.ok) {
-          if (currentLang === 'es') {
-            alert('SOLICITUD DE INVITACIÓN TRANSMITIDA CON ÉXITO.');
-          } else if (currentLang === 'pt') {
-            alert('SOLICITAÇÃO DE CONVITE TRANSMITIDA COM SUCESSO.');
-          } else {
-            alert('INVITATION REQUEST TRANSMITTED SUCCESSFULLY.');
-          }
-          event.target.reset();
-        } else {
-          if (currentLang === 'es') {
-            alert('ERROR AL ENVIAR LA SOLICITUD. INTENTA DE NUEVO.');
-          } else if (currentLang === 'pt') {
-            alert('ERRO AO ENVIAR A SOLICITAÇÃO. TENTE NOVAMENTE.');
-          } else {
-            alert('ERROR TRANSMITTING INVITATION REQUEST. PLEASE TRY AGAIN.');
-          }
-        }
-      })
-      .catch(error => {
-        if (submitBtn) submitBtn.disabled = false;
         const currentLang = document.documentElement.getAttribute('lang') || 'en';
         if (currentLang === 'es') {
           alert('ERROR DE CONEXIÓN. INTENTA DE NUEVO.');
@@ -1569,7 +1562,6 @@
 
     window.openAe000xSubsite = openAe000xSubsite;
     window.openMainPortfolio = openMainPortfolio;
-    window.handleInvitationFormSubmit = handleInvitationFormSubmit;
 
     // Restore language, subsite view & theme preference on load
     window.addEventListener('DOMContentLoaded', () => {
