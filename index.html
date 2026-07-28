@@ -1207,14 +1207,16 @@
                 alert('[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]');
               }
             } else {
-              throw new Error(result.error || 'Failed to send');
+              console.error('Contact Form Transmission Error:', result);
+              throw new Error(result.error || 'Failed to transmit message.');
             }
           } catch (err) {
+            console.error('Contact Form Exception:', err);
             if (feedbackBanner) {
               feedbackBanner.className = "contact-feedback-banner error";
-              feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
+              feedbackBanner.textContent = `[ TRANSMISSION ERROR // ${err.message ? err.message.toUpperCase() : 'TRY AGAIN'} ]`;
             } else {
-              alert('[ TRANSMISSION ERROR // TRY AGAIN ]');
+              alert(`[ TRANSMISSION ERROR // ${err.message ? err.message.toUpperCase() : 'TRY AGAIN'} ]`);
             }
           } finally {
             if (submitBtn) {
