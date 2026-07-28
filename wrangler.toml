@@ -1,6 +1,0 @@
-name = "aeriel-aiff"
-pages_build_output_dir = "."
-compatibility_date = "2026-01-01"
-
-[vars]
-RESEND_API_KEY = "re_ZuwS8vg9_AouX8LMapLhFoQ4qrx6dkTV7"
