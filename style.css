@@ -290,18 +290,69 @@ html[lang="pt"] [lang="es"] {
   word-break: break-all;
 }
 
-.hero-sub-block {
-  border: var(--border-thick);
-  padding: var(--spacing-md);
+/* Genre Button Strip */
+.genre-button-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
   margin-top: var(--spacing-sm);
-  background: var(--bg-secondary);
+  margin-bottom: 24px;
 }
 
-.sonic-markers {
-  font-size: clamp(0.9rem, 1.8vw, 1.8rem);
-  font-weight: 700;
+.genre-btn {
+  border: var(--border-thin);
+  background: var(--bg-secondary);
   color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 12px 8px;
   letter-spacing: 1px;
+  transition: background 0.15s ease, color 0.15s ease;
+  min-height: 44px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.genre-btn:hover,
+.genre-btn:focus-visible,
+.genre-btn.active {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* SoundCloud Player Wrapper */
+.soundcloud-player-wrapper {
+  border: var(--border-thin);
+  padding: 12px;
+  margin-bottom: 32px;
+  background: var(--bg-secondary);
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.soundcloud-player-wrapper .player-header {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.soundcloud-player-wrapper iframe {
+  width: 100%;
+  display: block;
+  border: none;
+}
+
+@media (max-width: 600px) {
+  .genre-button-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .hero-description {

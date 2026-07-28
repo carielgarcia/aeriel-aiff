@@ -94,10 +94,16 @@
           ÆRIEL
         </h1>
         
-        <div class="hero-sub-block" id="genre-box">
-          <div class="sonic-markers" id="sound-profile-markers">
-            <span class="easter-egg-trigger" id="trigger-techno" onclick="setThemeMode('default')">Techno</span> // <span class="easter-egg-trigger" id="trigger-trance" onclick="setThemeMode('default')">Trance</span> // <span class="easter-egg-trigger" id="trigger-house" onclick="setThemeMode('disco')">House</span> // <span class="easter-egg-trigger" id="trigger-italo" onclick="setThemeMode('disco')">Italo Disco</span>
-          </div>
+        <div class="genre-button-strip" id="genre-box">
+          <button class="genre-btn" id="trigger-techno" onclick="setThemeMode('default')">TECHNO</button>
+          <button class="genre-btn" id="trigger-trance" onclick="setThemeMode('trance')">TRANCE</button>
+          <button class="genre-btn" id="trigger-house" onclick="setThemeMode('house')">HOUSE</button>
+          <button class="genre-btn" id="trigger-italo" onclick="setThemeMode('disco')">ITALO DISCO</button>
+        </div>
+
+        <div class="soundcloud-player-wrapper">
+          <div class="player-header">[ CURRENT_STREAM // Æ000.2 ]</div>
+          <iframe width="100%" height="120" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2340719378&color=%23111111&inverse=true&auto_play=false&show_user=true"></iframe>
         </div>
       </div>
     </section>
