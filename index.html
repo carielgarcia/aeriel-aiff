@@ -1207,12 +1207,14 @@
           contactForm.reset();
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
+            feedbackBanner.style.display = "block";
             feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
           }
         } catch (err) {
           console.error('Contact Form Submission Exception:', err);
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner error";
+            feedbackBanner.style.display = "block";
             feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
           }
         } finally {
@@ -1265,12 +1267,14 @@
           if (inviteForm) inviteForm.reset();
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
+            feedbackBanner.style.display = "block";
             feedbackBanner.textContent = "[ REGISTRATION LOGGED // AWAIT TRANSMISSION ]";
           }
         } catch (err) {
           console.error('Registration Form Submission Exception:', err);
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner error";
+            feedbackBanner.style.display = "block";
             feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
           }
         } finally {
