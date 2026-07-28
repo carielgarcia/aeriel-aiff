@@ -298,6 +298,7 @@
         
         <div class="portal-form-container">
           <form class="portal-form" id="contact-form" onsubmit="handleContactFormSubmit(event)">
+            <input type="text" name="hp_check" id="contact-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
             
             <div class="form-row">
               <div class="form-group">
@@ -624,6 +625,7 @@
 
         <div class="portal-form-container">
           <form class="portal-form" id="ae000x-invitation-form" onsubmit="handleInvitationFormSubmit(event)">
+            <input type="text" name="hp_check" id="invite-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
             
             <!-- Field 1: Full Name / Moniker -->
             <div class="form-group">
@@ -1187,6 +1189,7 @@
 
         const payload = {
           formType: 'contact',
+          hp_check: (contactForm.querySelector('[name="hp_check"]')?.value || '').trim(),
           name: (contactForm.querySelector('[name="name"]')?.value || '').trim(),
           email: (contactForm.querySelector('[name="email"]')?.value || '').trim(),
           message: (contactForm.querySelector('[name="message"]')?.value || '').trim(),
@@ -1247,6 +1250,7 @@
 
         const payload = {
           formType: 'registration',
+          hp_check: (document.getElementById("invite-hp")?.value || "").trim(),
           name: (document.getElementById("invite-name")?.value || "").trim(),
           email: (document.getElementById("invite-email")?.value || "").trim(),
           social_handle: (document.getElementById("invite-social")?.value || "").trim(),
