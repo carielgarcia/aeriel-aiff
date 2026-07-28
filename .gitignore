@@ -1,0 +1,8 @@
+# Environment & Secrets
+.env
+.env.*
+*.pem
+
+# Cloudflare / Wrangler
+.dev.vars
+.wrangler/
