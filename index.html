@@ -723,6 +723,7 @@
               <span lang="pt">SOLICITAR_CONVITE</span>
             </button>
 
+            <div id="invite-form-feedback" class="contact-feedback-banner" aria-live="polite"></div>
           </form>
         </div>
       </div>
@@ -1185,6 +1186,7 @@
         }
 
         const payload = {
+          formType: 'contact',
           name: (contactForm.querySelector('[name="name"]')?.value || '').trim(),
           email: (contactForm.querySelector('[name="email"]')?.value || '').trim(),
           message: (contactForm.querySelector('[name="message"]')?.value || '').trim(),
@@ -1193,27 +1195,25 @@
         };
 
         try {
-          await fetch(GOOGLE_APPS_SCRIPT_URL, {
+          const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
           });
+
+          const result = await response.json();
+          if (!result || result.ok !== true) throw new Error(result?.error || 'SERVER_REJECTED');
 
           contactForm.reset();
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
             feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
-          } else {
-            alert('[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]');
           }
         } catch (err) {
           console.error('Contact Form Submission Exception:', err);
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner error";
             feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
-          } else {
-            alert('[ TRANSMISSION ERROR // TRY AGAIN ]');
           }
         } finally {
           if (submitBtn) {
@@ -1227,32 +1227,57 @@
         if (event) event.preventDefault();
         const inviteForm = document.getElementById('ae000x-invitation-form');
         const submitBtn = document.getElementById("invite-submit-btn");
-        if (submitBtn) submitBtn.disabled = true;
+        const feedbackBanner = document.getElementById("invite-form-feedback");
+        const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "[ TRANSMITTING... ]";
+        }
+
+        if (feedbackBanner) {
+          feedbackBanner.className = "contact-feedback-banner";
+          feedbackBanner.style.display = "none";
+          feedbackBanner.textContent = "";
+        }
 
         const selectedMethods = Array.from(document.querySelectorAll('#ae000x-invitation-form input[name="contact_method"]:checked')).map(cb => cb.value);
 
         const payload = {
+          formType: 'registration',
           name: (document.getElementById("invite-name")?.value || "").trim(),
           email: (document.getElementById("invite-email")?.value || "").trim(),
           social_handle: (document.getElementById("invite-social")?.value || "").trim(),
           phone: (document.getElementById("invite-whatsapp")?.value || "").trim(),
-          message: `[Æ000.X Invitation Request] Preferred contact methods: ${selectedMethods.join(", ") || "None specified"}`
+          contact_method: selectedMethods.join(", ") || "None specified"
         };
 
         try {
-          await fetch(GOOGLE_APPS_SCRIPT_URL, {
+          const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
           });
 
+          const result = await response.json();
+          if (!result || result.ok !== true) throw new Error(result?.error || 'SERVER_REJECTED');
+
           if (inviteForm) inviteForm.reset();
-          alert('SOLICITUD DE INVITACIÓN TRANSMITIDA CON ÉXITO.');
+          if (feedbackBanner) {
+            feedbackBanner.className = "contact-feedback-banner success";
+            feedbackBanner.textContent = "[ REGISTRATION LOGGED // AWAIT TRANSMISSION ]";
+          }
         } catch (err) {
-          alert('ERROR AL ENVIAR LA SOLICITUD. INTENTA DE NUEVO.');
+          console.error('Registration Form Submission Exception:', err);
+          if (feedbackBanner) {
+            feedbackBanner.className = "contact-feedback-banner error";
+            feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
+          }
         } finally {
-          if (submitBtn) submitBtn.disabled = false;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHTML;
+          }
         }
       }
 
