@@ -10,18 +10,16 @@
   <!-- Open Graph / Social Media -->
   <meta property="og:title" content="ITALO DISCO AND HOUSE NIGHT // LANGAPALOOZA">
   <meta property="og:description" content="musicalizado por ÆRIEL + open pendrive. Confirma tu asistencia escribiendo a @benjalang">
-  <meta property="og:image" content="/party/langapalooza/flyer-art.jpg">
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:image" content="/party/langapalooza/flyer-art.jpg">
+  <meta property="twitter:card" content="summary">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,700&family=Space+Grotesk:wght@700;900&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
-       ITALO DISCO DESIGN SYSTEM & A4 FLYER STYLES
+       ITALO DISCO PURE TYPOGRAPHIC DESIGN SYSTEM & A4 FLYER STYLES
        ========================================================================== */
     :root {
       --bg-dark: #170421;
@@ -45,8 +43,8 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(217, 78, 31, 0.25) 0%, transparent 60%),
-        radial-gradient(circle at 80% 100%, rgba(255, 199, 44, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 0%, rgba(217, 78, 31, 0.3) 0%, transparent 65%),
+        radial-gradient(circle at 80% 100%, rgba(255, 199, 44, 0.2) 0%, transparent 55%),
         linear-gradient(rgba(23, 4, 33, 0.95), rgba(23, 4, 33, 0.95));
       color: var(--text-white);
       font-family: var(--font-mono);
@@ -92,34 +90,34 @@
       background: var(--bg-card);
       border: 3px solid var(--border-color);
       box-shadow: 
-        0 0 30px rgba(217, 78, 31, 0.35),
-        0 0 10px rgba(255, 199, 44, 0.2),
-        inset 0 0 20px rgba(0, 0, 0, 0.6);
+        0 0 35px rgba(217, 78, 31, 0.4),
+        0 0 15px rgba(255, 199, 44, 0.25),
+        inset 0 0 25px rgba(0, 0, 0, 0.7);
       position: relative;
       padding: 32px 28px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 20px;
+      gap: 22px;
       box-sizing: border-box;
     }
 
     /* Corner Crop Marks (Brutalist A4 Print Poster Feel) */
     .crop-mark {
       position: absolute;
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       border-color: var(--accent-yellow);
       border-style: solid;
       pointer-events: none;
-      opacity: 0.8;
+      opacity: 0.85;
     }
     .crop-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
     .crop-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
     .crop-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
     .crop-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
 
-    /* Top Stamp Badge */
+    /* Top Stamp Bar */
     .flyer-top-bar {
       display: flex;
       justify-content: space-between;
@@ -141,78 +139,94 @@
       letter-spacing: 1px;
     }
 
-    /* Header Section & Main Title */
-    .flyer-header {
+    /* ==========================================================================
+       PURE CSS TYPOGRAPHIC HERO BANNER (NO IMAGES NEEDED)
+       ========================================================================== */
+    .flyer-hero-banner {
+      border: 2px solid var(--border-color);
+      background: #0f0217;
+      background-image: 
+        linear-gradient(to bottom, rgba(217, 78, 31, 0.15), rgba(15, 2, 23, 0.95)),
+        repeating-linear-gradient(90deg, rgba(255, 199, 44, 0.05) 0px, rgba(255, 199, 44, 0.05) 1px, transparent 1px, transparent 24px),
+        repeating-linear-gradient(0deg, rgba(217, 78, 31, 0.05) 0px, rgba(217, 78, 31, 0.05) 1px, transparent 1px, transparent 24px);
+      padding: 24px 16px;
       text-align: center;
-      margin: 8px 0;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-ticker {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 6px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
     }
 
     .flyer-title {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-size: clamp(2.2rem, 7vw, 3.6rem);
       font-weight: 900;
-      line-height: 0.95;
-      letter-spacing: -1px;
+      line-height: 0.92;
+      letter-spacing: -1.5px;
       text-transform: uppercase;
       color: var(--text-white);
       text-shadow: 
         3px 3px 0px var(--accent-orange),
-        6px 6px 0px rgba(0, 0, 0, 0.8);
-      margin-bottom: 14px;
+        6px 6px 0px #000;
+      margin: 6px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .flyer-title-accent {
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--accent-yellow) 50%, var(--accent-orange) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
     }
 
     .flyer-subtitle {
-      font-size: clamp(1rem, 3vw, 1.25rem);
+      font-size: clamp(0.95rem, 2.8vw, 1.2rem);
       font-weight: 800;
       color: var(--accent-yellow);
       letter-spacing: 1px;
       text-transform: uppercase;
-      background: rgba(217, 78, 31, 0.15);
-      border: 1px solid var(--border-color);
+      background: rgba(217, 78, 31, 0.2);
+      border: 1.5px solid var(--border-color);
       padding: 10px 14px;
-      display: inline-block;
       width: 100%;
       text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    /* Artwork Image Poster Box */
-    .flyer-art-container {
+    .hero-decor-line {
       width: 100%;
-      border: 2px solid var(--border-color);
-      position: relative;
-      overflow: hidden;
-      max-height: 240px;
-      background: #000;
-    }
-
-    .flyer-art-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      filter: contrast(1.1) saturate(1.2);
-    }
-
-    .flyer-art-overlay {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: linear-gradient(to top, rgba(38, 7, 52, 0.95), transparent);
-      padding: 12px 14px 6px;
-      font-size: 0.75rem;
-      color: var(--accent-yellow);
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      display: flex;
-      justify-content: space-between;
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--accent-orange),
+        var(--accent-orange) 12px,
+        var(--accent-yellow) 12px,
+        var(--accent-yellow) 24px
+      );
+      margin-top: 4px;
     }
 
     /* Body Vibe Quote */
     .flyer-quote {
       border-left: 4px solid var(--accent-yellow);
-      background: rgba(0, 0, 0, 0.35);
-      padding: 14px 16px;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 16px 18px;
       font-size: 0.95rem;
       line-height: 1.6;
       color: var(--text-white);
@@ -223,23 +237,23 @@
     .flyer-details {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      background: rgba(0, 0, 0, 0.4);
+      gap: 14px;
+      background: rgba(0, 0, 0, 0.5);
       border: 1px solid var(--border-color);
-      padding: 18px 16px;
+      padding: 20px 18px;
     }
 
     .detail-item {
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
     }
 
     .detail-icon {
       color: var(--accent-yellow);
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       line-height: 1;
       flex-shrink: 0;
     }
@@ -259,29 +273,14 @@
       color: var(--accent-orange);
     }
 
-    /* Soundcloud Player Container */
-    .flyer-audio-box {
-      border: 1px solid var(--border-color);
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-    }
-    .flyer-audio-title {
-      font-size: 0.75rem;
-      letter-spacing: 1.5px;
-      color: var(--accent-yellow);
-      margin-bottom: 8px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
     /* Bottom Disclaimer */
     .flyer-disclaimer {
       border-top: 2px dashed var(--border-color);
-      padding-top: 14px;
+      padding-top: 16px;
       margin-top: 4px;
       text-align: center;
-      font-size: 0.82rem;
-      font-weight: 700;
+      font-size: 0.85rem;
+      font-weight: 800;
       color: var(--accent-yellow);
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -367,7 +366,7 @@
         padding: 0 !important;
       }
       body::before { display: none !important; }
-      .action-bar, .toast, .flyer-audio-box { display: none !important; }
+      .action-bar, .toast { display: none !important; }
       .a4-flyer {
         width: 100% !important;
         max-width: 100% !important;
@@ -377,7 +376,9 @@
         color: #000 !important;
         page-break-inside: avoid;
       }
+      .flyer-hero-banner { background: #fff !important; border-color: #000 !important; }
       .flyer-title { color: #000 !important; text-shadow: none !important; }
+      .flyer-title-accent { -webkit-text-fill-color: #000 !important; }
       .flyer-subtitle, .detail-text, .flyer-quote, .flyer-disclaimer { color: #000 !important; }
       .flyer-subtitle { border-color: #000 !important; background: #eee !important; }
     }
@@ -401,22 +402,24 @@
         <span class="badge-stamp">PRIVATE FLYER</span>
       </div>
 
-      <!-- Main Title Header -->
-      <header class="flyer-header">
-        <h1 class="flyer-title">ITALO DISCO AND HOUSE NIGHT</h1>
+      <!-- Pure CSS Typographic Hero Poster Banner -->
+      <section class="flyer-hero-banner" aria-label="Poster Banner">
+        <div class="hero-ticker">
+          <span>MILANO // ROMA</span>
+          <span>NYC // SANTIAGO</span>
+        </div>
+
+        <h1 class="flyer-title">
+          <span class="flyer-title-accent">ITALO DISCO</span>
+          <span>AND HOUSE NIGHT</span>
+        </h1>
+
         <div class="flyer-subtitle">
           musicalizado por ÆRIEL + open pendrive
         </div>
-      </header>
 
-      <!-- Poster Artwork Graphic -->
-      <div class="flyer-art-container">
-        <img src="/party/langapalooza/flyer-art.jpg" alt="Italo Disco and House Night Artwork" class="flyer-art-img">
-        <div class="flyer-art-overlay">
-          <span>ESCAPIST RHYTHMS</span>
-          <span>SANTIAGO // 2026</span>
-        </div>
-      </div>
+        <div class="hero-decor-line"></div>
+      </section>
 
       <!-- Vibe Quote -->
       <blockquote class="flyer-quote">
@@ -443,12 +446,6 @@
           </span>
         </div>
       </section>
-
-      <!-- Embedded Italo Disco Player -->
-      <div class="flyer-audio-box">
-        <div class="flyer-audio-title">▶ ITALO DISCO & HOUSE SELECTOR PREVIEW</div>
-        <iframe width="100%" height="120" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1149723709&color=%23d94e1f&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
-      </div>
 
       <!-- Bottom Disclaimer -->
       <footer class="flyer-disclaimer">
