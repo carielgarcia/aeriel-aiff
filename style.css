@@ -2151,6 +2151,25 @@ body[data-view="writing"] #writing-subsite {
   border-bottom: var(--border-thin);
 }
 
+.article-author {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.article-author-signature {
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: var(--border-thin);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
 .reader-body ul {
   margin-bottom: var(--spacing-md);
   padding-left: var(--spacing-lg);
