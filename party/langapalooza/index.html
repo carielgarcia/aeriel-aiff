@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITALO DISCO AND HOUSE NIGHT // LANGAPALOOZA</title>
+  <meta name="description" content="musicalizado por ÆRIEL + open pendrive // Diagonal Paraguay 390 depto 145">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="ITALO DISCO AND HOUSE NIGHT // LANGAPALOOZA">
+  <meta property="og:description" content="musicalizado por ÆRIEL + open pendrive. Confirma tu asistencia escribiendo a @benjalang">
+  <meta property="og:image" content="/party/langapalooza/flyer-art.jpg">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:image" content="/party/langapalooza/flyer-art.jpg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       ITALO DISCO DESIGN SYSTEM & A4 FLYER STYLES
+       ========================================================================== */
+    :root {
+      --bg-dark: #170421;
+      --bg-card: #260734;
+      --border-color: #D94E1F;
+      --accent-orange: #D94E1F;
+      --accent-yellow: #FFC72C;
+      --accent-pink: #FF3366;
+      --text-white: #FFFFFF;
+      --text-muted: #D3B8E0;
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(217, 78, 31, 0.25) 0%, transparent 60%),
+        radial-gradient(circle at 80% 100%, rgba(255, 199, 44, 0.15) 0%, transparent 50%),
+        linear-gradient(rgba(23, 4, 33, 0.95), rgba(23, 4, 33, 0.95));
+      color: var(--text-white);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Ambient CRT Scanline Overlay Effect */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.12),
+        rgba(0, 0, 0, 0.12) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Outer Wrapper */
+    .flyer-wrapper {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* A4 Paper Proportion Container (1 : 1.414) */
+    .a4-flyer {
+      width: 100%;
+      background: var(--bg-card);
+      border: 3px solid var(--border-color);
+      box-shadow: 
+        0 0 30px rgba(217, 78, 31, 0.35),
+        0 0 10px rgba(255, 199, 44, 0.2),
+        inset 0 0 20px rgba(0, 0, 0, 0.6);
+      position: relative;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Corner Crop Marks (Brutalist A4 Print Poster Feel) */
+    .crop-mark {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--accent-yellow);
+      border-style: solid;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    .crop-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .crop-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+    .crop-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+    .crop-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    /* Top Stamp Badge */
+    .flyer-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      color: var(--accent-yellow);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-stamp {
+      background: var(--accent-orange);
+      color: var(--bg-dark);
+      padding: 3px 8px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* Header Section & Main Title */
+    .flyer-header {
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .flyer-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      color: var(--text-white);
+      text-shadow: 
+        3px 3px 0px var(--accent-orange),
+        6px 6px 0px rgba(0, 0, 0, 0.8);
+      margin-bottom: 14px;
+    }
+
+    .flyer-subtitle {
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      font-weight: 800;
+      color: var(--accent-yellow);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: rgba(217, 78, 31, 0.15);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Artwork Image Poster Box */
+    .flyer-art-container {
+      width: 100%;
+      border: 2px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+      max-height: 240px;
+      background: #000;
+    }
+
+    .flyer-art-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: contrast(1.1) saturate(1.2);
+    }
+
+    .flyer-art-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(38, 7, 52, 0.95), transparent);
+      padding: 12px 14px 6px;
+      font-size: 0.75rem;
+      color: var(--accent-yellow);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Body Vibe Quote */
+    .flyer-quote {
+      border-left: 4px solid var(--accent-yellow);
+      background: rgba(0, 0, 0, 0.35);
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-white);
+      font-style: italic;
+    }
+
+    /* Details Grid Box */
+    .flyer-details {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      padding: 18px 16px;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.92rem;
+    }
+
+    .detail-icon {
+      color: var(--accent-yellow);
+      font-weight: 800;
+      font-size: 1.1rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .detail-text {
+      color: var(--text-white);
+      font-weight: 700;
+    }
+
+    .detail-link {
+      color: var(--accent-yellow);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+    .detail-link:hover {
+      color: var(--accent-orange);
+    }
+
+    /* Soundcloud Player Container */
+    .flyer-audio-box {
+      border: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+    }
+    .flyer-audio-title {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      color: var(--accent-yellow);
+      margin-bottom: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Bottom Disclaimer */
+    .flyer-disclaimer {
+      border-top: 2px dashed var(--border-color);
+      padding-top: 14px;
+      margin-top: 4px;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-yellow);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Interactive External Buttons */
+    .action-bar {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      color: var(--text-white);
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-action:hover {
+      background: var(--accent-orange);
+      color: var(--bg-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-action:active {
+      transform: translateY(0);
+    }
+
+    .btn-highlight {
+      background: var(--accent-orange);
+      color: var(--bg-dark);
+    }
+    .btn-highlight:hover {
+      background: var(--accent-yellow);
+      color: var(--bg-dark);
+    }
+
+    /* Copy Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--accent-yellow);
+      color: var(--bg-dark);
+      padding: 12px 24px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 2px solid var(--bg-dark);
+      box-shadow: 4px 4px 0 #000;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Print Styles (A4 Page Print Target) */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        padding: 0 !important;
+      }
+      body::before { display: none !important; }
+      .action-bar, .toast, .flyer-audio-box { display: none !important; }
+      .a4-flyer {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: 2px solid #000 !important;
+        background: #fff !important;
+        color: #000 !important;
+        page-break-inside: avoid;
+      }
+      .flyer-title { color: #000 !important; text-shadow: none !important; }
+      .flyer-subtitle, .detail-text, .flyer-quote, .flyer-disclaimer { color: #000 !important; }
+      .flyer-subtitle { border-color: #000 !important; background: #eee !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flyer-wrapper">
+
+    <!-- A4 FLYER POSTER CONTAINER -->
+    <main class="a4-flyer" id="printable-flyer">
+      <!-- Crop Marks for A4 Poster Look -->
+      <div class="crop-mark crop-tl"></div>
+      <div class="crop-mark crop-tr"></div>
+      <div class="crop-mark crop-bl"></div>
+      <div class="crop-mark crop-br"></div>
+
+      <!-- Top Stamp Bar -->
+      <div class="flyer-top-bar">
+        <span>Æ000.X // SPECIAL EVENT</span>
+        <span class="badge-stamp">PRIVATE FLYER</span>
+      </div>
+
+      <!-- Main Title Header -->
+      <header class="flyer-header">
+        <h1 class="flyer-title">ITALO DISCO AND HOUSE NIGHT</h1>
+        <div class="flyer-subtitle">
+          musicalizado por ÆRIEL + open pendrive
+        </div>
+      </header>
+
+      <!-- Poster Artwork Graphic -->
+      <div class="flyer-art-container">
+        <img src="/party/langapalooza/flyer-art.jpg" alt="Italo Disco and House Night Artwork" class="flyer-art-img">
+        <div class="flyer-art-overlay">
+          <span>ESCAPIST RHYTHMS</span>
+          <span>SANTIAGO // 2026</span>
+        </div>
+      </div>
+
+      <!-- Vibe Quote -->
+      <blockquote class="flyer-quote">
+        "ven a bailar con ritmos escapistas de cuando los italianos se sacaban los ojos entre ellos, pero soñaban con vivir en nueva york."
+      </blockquote>
+
+      <!-- Details List Box -->
+      <section class="flyer-details" aria-label="Event Details">
+        <div class="detail-item">
+          <span class="detail-icon">🍷</span>
+          <span class="detail-text">trae tu consumo y ganas de bailar</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">📍</span>
+          <span class="detail-text">
+            Diagonal Paraguay 390 depto 145
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">📩</span>
+          <span class="detail-text">
+            Confirma tu asistencia escribiendo a 
+            <a href="https://instagram.com/benjalang" target="_blank" rel="noopener noreferrer" class="detail-link">@benjalang</a>
+          </span>
+        </div>
+      </section>
+
+      <!-- Embedded Italo Disco Player -->
+      <div class="flyer-audio-box">
+        <div class="flyer-audio-title">▶ ITALO DISCO & HOUSE SELECTOR PREVIEW</div>
+        <iframe width="100%" height="120" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1149723709&color=%23d94e1f&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+      </div>
+
+      <!-- Bottom Disclaimer -->
+      <footer class="flyer-disclaimer">
+        "el dj no muerde, salvo que le pidan reggaetón"
+      </footer>
+    </main>
+
+    <!-- Interactive Actions Bar -->
+    <div class="action-bar">
+      <a href="https://instagram.com/benjalang" target="_blank" rel="noopener noreferrer" class="btn-action btn-highlight">
+        <span>📩 CONFIRMAR VÍA @BENJALANG</span>
+      </a>
+      <button class="btn-action" onclick="copyAddress()">
+        <span>📍 COPIAR DIRECCIÓN</span>
+      </button>
+      <button class="btn-action" onclick="window.print()">
+        <span>🖨️ IMPRIMIR FLYER (A4)</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-msg">Dirección copiada al portapapeles</div>
+
+  <script>
+    function copyAddress() {
+      const address = "Diagonal Paraguay 390 depto 145";
+      navigator.clipboard.writeText(address).then(() => {
+        showToast("📍 DIRECCIÓN COPIADA AL PORTAPAPELAS");
+      }).catch(() => {
+        showToast("📍 DIAGONAL PARAGUAY 390 DEPTO 145");
+      });
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("toast-msg");
+      toast.textContent = text;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
