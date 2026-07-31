@@ -1996,6 +1996,9 @@ body[data-view="writing"] #writing-subsite {
 .article-card:hover .article-card-title,
 .article-card:hover .article-card-teaser,
 .article-card:hover .article-card-meta,
+.article-card:hover .article-card-meta *,
+.article-card:hover .article-author,
+.article-card:hover .article-author *,
 .article-card:hover .article-card-action {
   color: var(--bg-primary) !important;
 }
@@ -2158,6 +2161,11 @@ body[data-view="writing"] #writing-subsite {
   letter-spacing: 1px;
 }
 
+.article-card:hover .article-author,
+.article-card:hover .article-author * {
+  color: inherit !important;
+}
+
 .article-author-signature {
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
@@ -2244,6 +2252,7 @@ html.disco-mode .filter-btn { border-color: #D94E1F !important; color: #FFC72C !
 html.disco-mode .filter-btn:hover, html.disco-mode .filter-btn.active { background: #D94E1F !important; color: #170421 !important; }
 html.disco-mode .article-card, html.disco-mode .reader-content { background: #260734 !important; border-color: #D94E1F !important; }
 html.disco-mode .article-card:hover { background: #D94E1F !important; color: #170421 !important; }
+html.disco-mode .article-card:hover .article-card-title, html.disco-mode .article-card:hover .article-card-teaser, html.disco-mode .article-card:hover .article-card-meta, html.disco-mode .article-card:hover .article-card-meta *, html.disco-mode .article-card:hover .article-author, html.disco-mode .article-card:hover .article-author *, html.disco-mode .article-card:hover .article-card-action { color: #170421 !important; }
 html.disco-mode .reader-body blockquote { border-left-color: #FFC72C !important; }
 html.disco-mode .reader-body hr { border-top-color: #D94E1F !important; }
 
@@ -2252,6 +2261,7 @@ html.trance-mode .filter-btn { border-color: #00F0FF !important; color: #E0F2FE 
 html.trance-mode .filter-btn:hover, html.trance-mode .filter-btn.active { background: #00F0FF !important; color: #040814 !important; }
 html.trance-mode .article-card, html.trance-mode .reader-content { background: #0A1224 !important; border-color: #00F0FF !important; }
 html.trance-mode .article-card:hover { background: #00F0FF !important; color: #040814 !important; }
+html.trance-mode .article-card:hover .article-card-title, html.trance-mode .article-card:hover .article-card-teaser, html.trance-mode .article-card:hover .article-card-meta, html.trance-mode .article-card:hover .article-card-meta *, html.trance-mode .article-card:hover .article-author, html.trance-mode .article-card:hover .article-author *, html.trance-mode .article-card:hover .article-card-action { color: #040814 !important; }
 html.trance-mode .reader-body blockquote { border-left-color: #00F0FF !important; }
 html.trance-mode .reader-body hr { border-top-color: #00F0FF !important; }
 
@@ -2260,6 +2270,7 @@ html.house-mode .filter-btn { border-color: #FF7B00 !important; color: #FFF8E7 !
 html.house-mode .filter-btn:hover, html.house-mode .filter-btn.active { background: #FF7B00 !important; color: #120A07 !important; }
 html.house-mode .article-card, html.house-mode .reader-content { background: #1F130E !important; border-color: #FF7B00 !important; }
 html.house-mode .article-card:hover { background: #FF7B00 !important; color: #120A07 !important; }
+html.house-mode .article-card:hover .article-card-title, html.house-mode .article-card:hover .article-card-teaser, html.house-mode .article-card:hover .article-card-meta, html.house-mode .article-card:hover .article-card-meta *, html.house-mode .article-card:hover .article-author, html.house-mode .article-card:hover .article-author *, html.house-mode .article-card:hover .article-card-action { color: #120A07 !important; }
 html.house-mode .reader-body blockquote { border-left-color: #FF7B00 !important; }
 html.house-mode .reader-body hr { border-top-color: #FF7B00 !important; }
 
