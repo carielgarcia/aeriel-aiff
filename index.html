@@ -67,7 +67,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#ae000x-subsite" class="nav-link" id="nav-brand" onclick="openAe000xSubsite(event); closeMobileNav();">Æ000.X</a>
+            <a href="/ae000x" class="nav-link" id="nav-brand" onclick="openAe000xSubsite(event); closeMobileNav();">Æ000.X</a>
           </li>
           <li class="nav-item">
             <a href="#writing-subsite" class="nav-link" id="nav-writing" onclick="openWritingSubsite(event); closeMobileNav();">
@@ -239,11 +239,11 @@
             <p lang="pt">
               Æ000.X é um conceito que nasce da necessidade de curar tanto a música e as performances quanto a pista de dança. Este projeto é, fundamentalmente, uma tentativa de construir comunidade. Não buscamos ser uma boate nem nos tornarmos a festa mais popular da cidade. O propósito do Æ000.X é construir, através da iteração e do boca a boca, uma rede de pessoas queer e artistas que nutram a pista de dança com sua energia, intenção e paixão.
             </p>
-            <button class="btn-brutal portal-btn" onclick="openAe000xSubsite(event)">
+            <a href="/ae000x" class="btn-brutal portal-btn" onclick="openAe000xSubsite(event)">
               <span lang="en">ENTER Æ000.X SUB-SITE →</span>
               <span lang="es">ENTRAR AL SUB-SITIO Æ000.X →</span>
               <span lang="pt">ENTRAR NO SUB-SITE Æ000.X →</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -564,7 +564,9 @@
             <span class="dj-card-role">RESIDENT_03 // CURATOR</span>
             <h3 class="dj-card-name">APÜD</h3>
             <p class="dj-card-bio">
-              full of energy and intention, his sets combine techno, trance, and hard bounce to conduct the crowd into a state of joy.
+              <span lang="en">APÜD creates fresh and energetic sets where groove, versatility and narrative tension maintain the dancefloor in motion</span>
+              <span lang="es">APÜD construye sets frescos y energéticos donde el groove, la versatilidad y una narrativa en constante tensión mantienen a la pista en movimiento</span>
+              <span lang="pt">APÜD constrói sets frescos e energéticos onde o groove, a versatilidade e uma narrativa em constante tensão mantêm a pista em movimento</span>
             </p>
             <div class="dj-links">
               <a href="https://www.instagram.com/diego.apud_/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
@@ -1479,7 +1481,7 @@
           </a>
         </li>
         <li>
-          <a href="#ae000x-subsite" class="footer-nav-link" onclick="openAe000xSubsite(event)">Æ000.X</a>
+          <a href="/ae000x" class="footer-nav-link" onclick="openAe000xSubsite(event)">Æ000.X</a>
         </li>
         <li>
           <a href="#writing-subsite" class="footer-nav-link" onclick="openWritingSubsite(event)">
@@ -1962,8 +1964,8 @@
       document.body.setAttribute('data-view', 'ae000x');
       updatePageTitle();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.location.hash !== '#ae000x-subsite') {
-        history.pushState({ view: 'ae000x' }, '', '#ae000x-subsite');
+      if (window.location.pathname !== '/ae000x') {
+        history.pushState({ view: 'ae000x' }, '', '/ae000x');
       }
     }
 
@@ -2088,10 +2090,18 @@
       const savedTheme = localStorage.getItem('theme-mode') || (localStorage.getItem('disco-mode') === 'true' ? 'disco' : 'default');
       setThemeMode(savedTheme);
 
-      if (window.location.hash === '#ae000x-subsite') {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if (path === '/ae000x' || path === '/ae000x/' || hash === '#ae000x-subsite' || hash === '#ae000x') {
         document.body.setAttribute('data-view', 'ae000x');
-      } else if (window.location.hash === '#writing-subsite') {
+        if (hash === '#ae000x-subsite' || hash === '#ae000x') {
+          history.replaceState({ view: 'ae000x' }, '', '/ae000x');
+        }
+      } else if (path === '/writing' || path === '/writing/' || hash === '#writing-subsite' || hash === '#writing') {
         document.body.setAttribute('data-view', 'writing');
+        if (hash === '#writing-subsite' || hash === '#writing') {
+          history.replaceState({ view: 'writing' }, '', '/writing');
+        }
       } else {
         document.body.setAttribute('data-view', 'main');
       }
@@ -2145,9 +2155,11 @@
     });
 
     window.addEventListener('popstate', (e) => {
-      if ((e.state && e.state.view === 'ae000x') || window.location.hash === '#ae000x-subsite') {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if ((e.state && e.state.view === 'ae000x') || path === '/ae000x' || path === '/ae000x/' || hash === '#ae000x-subsite' || hash === '#ae000x') {
         document.body.setAttribute('data-view', 'ae000x');
-      } else if ((e.state && e.state.view === 'writing') || window.location.hash === '#writing-subsite') {
+      } else if ((e.state && e.state.view === 'writing') || path === '/writing' || path === '/writing/' || hash === '#writing-subsite' || hash === '#writing') {
         document.body.setAttribute('data-view', 'writing');
       } else {
         document.body.setAttribute('data-view', 'main');

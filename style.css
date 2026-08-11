@@ -381,6 +381,7 @@ html[lang="pt"] [lang="es"] {
   border: var(--border-thick);
   cursor: pointer;
   width: max-content;
+  text-decoration: none;
   transition: none; /* Instant feedback */
 }
 
