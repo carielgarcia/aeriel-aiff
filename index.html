@@ -120,9 +120,40 @@
           <button class="genre-btn" id="trigger-italo" onclick="setThemeMode('disco')">ITALO DISCO</button>
         </div>
 
-        <div class="soundcloud-player-wrapper">
-          <div class="player-header">[ CURRENT_STREAM // Æ000.2 ]</div>
-          <iframe width="100%" height="120" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2340719378&color=%23111111&inverse=true&auto_play=false&show_user=true"></iframe>
+        <div class="soundcloud-drawer-wrapper" id="soundcloud-drawer">
+          <div class="drawer-header-bar">
+            <div class="player-header" id="sc-stream-label">[ CURRENT_STREAM // PRÆCTICE001 ]</div>
+            <button type="button" class="drawer-toggle-btn" id="sc-drawer-toggle" onclick="toggleSoundCloudDrawer()" aria-expanded="true" aria-controls="sc-drawer-content">
+              <span class="toggle-text-open">[ HIDE STREAM ▲ ]</span>
+              <span class="toggle-text-closed">[ SHOW STREAM ▼ ]</span>
+            </button>
+          </div>
+          
+          <div class="soundcloud-drawer-content" id="sc-drawer-content">
+            <!-- TECHNO PANEL (DEFAULT) -->
+            <div class="sc-track-panel active" data-genre="default" data-title="PRÆCTICE001">
+              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2377687646&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/praectice001" title="PRÆCTICE001" target="_blank" rel="noopener noreferrer">PRÆCTICE001</a></div>
+            </div>
+
+            <!-- TRANCE PANEL -->
+            <div class="sc-track-panel" data-genre="trance" data-title="Æ000.2">
+              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2340719378&color=%2300f0ff&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/ae0002-mix" title="Æ000.2" target="_blank" rel="noopener noreferrer">Æ000.2</a></div>
+            </div>
+
+            <!-- HOUSE PANEL -->
+            <div class="sc-track-panel" data-genre="house" data-title="ÆNDY001">
+              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2360585036&color=%23ff7b00&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/aendy001" title="ÆNDY001" target="_blank" rel="noopener noreferrer">ÆNDY001</a></div>
+            </div>
+
+            <!-- ITALO DISCO PANEL -->
+            <div class="sc-track-panel" data-genre="disco" data-title="LÆNG001">
+              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2373878768&color=%23d94e1f&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/laeng001" title="LÆNG001" target="_blank" rel="noopener noreferrer">LÆNG001</a></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1949,6 +1980,41 @@
       updatePageTitle();
     }
 
+    function updateSoundCloudDrawerForMode(mode) {
+      const panels = document.querySelectorAll('.sc-track-panel');
+      let activeTitle = 'PRÆCTICE001';
+      panels.forEach(panel => {
+        if (panel.getAttribute('data-genre') === mode) {
+          panel.classList.add('active');
+          activeTitle = panel.getAttribute('data-title') || activeTitle;
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+
+      const labelEl = document.getElementById('sc-stream-label');
+      if (labelEl) {
+        labelEl.textContent = `[ CURRENT_STREAM // ${activeTitle} ]`;
+      }
+    }
+
+    function toggleSoundCloudDrawer() {
+      const drawer = document.getElementById('soundcloud-drawer');
+      const toggleBtn = document.getElementById('sc-drawer-toggle');
+      if (!drawer || !toggleBtn) return;
+      
+      const isCollapsed = drawer.classList.contains('is-collapsed');
+      if (isCollapsed) {
+        drawer.classList.remove('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        drawer.classList.add('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+    window.toggleSoundCloudDrawer = toggleSoundCloudDrawer;
+    window.updateSoundCloudDrawerForMode = updateSoundCloudDrawerForMode;
+
     function setThemeMode(mode) {
       const html = document.documentElement;
       html.classList.remove('disco-mode', 'trance-mode', 'house-mode');
@@ -1965,6 +2031,8 @@
       const activeId = mode === 'disco' ? 'trigger-italo' : (mode === 'trance' ? 'trigger-trance' : (mode === 'house' ? 'trigger-house' : 'trigger-techno'));
       const activeBtn = document.getElementById(activeId);
       if (activeBtn) activeBtn.classList.add('active');
+
+      updateSoundCloudDrawerForMode(mode);
     }
     window.setThemeMode = setThemeMode;
     

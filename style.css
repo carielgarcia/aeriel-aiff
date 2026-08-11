@@ -325,29 +325,125 @@ html[lang="pt"] [lang="es"] {
   color: var(--bg-primary);
 }
 
-/* SoundCloud Player Wrapper */
-.soundcloud-player-wrapper {
+/* Dynamic SoundCloud Genre Drawer */
+.soundcloud-drawer-wrapper {
   border: var(--border-thin);
-  padding: 12px;
   margin-bottom: 32px;
   background: var(--bg-secondary);
   box-sizing: border-box;
   max-width: 100%;
   overflow: hidden;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-.soundcloud-player-wrapper .player-header {
+.soundcloud-drawer-wrapper .drawer-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: var(--border-thin);
+  user-select: none;
+  gap: 12px;
+}
+
+.soundcloud-drawer-wrapper .player-header {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 1px;
   color: var(--text-muted);
-  margin-bottom: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.soundcloud-player-wrapper iframe {
+.drawer-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.drawer-toggle-btn:hover,
+.drawer-toggle-btn:focus-visible {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.soundcloud-drawer-wrapper.is-collapsed .drawer-header-bar {
+  border-bottom: none;
+}
+
+.soundcloud-drawer-content {
+  padding: 12px;
+  max-height: 400px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, padding 0.3s ease;
+}
+
+.soundcloud-drawer-wrapper.is-collapsed .soundcloud-drawer-content {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+}
+
+.soundcloud-drawer-wrapper.is-collapsed .toggle-text-open {
+  display: none;
+}
+
+.soundcloud-drawer-wrapper:not(.is-collapsed) .toggle-text-closed {
+  display: none;
+}
+
+.sc-track-panel {
+  display: none;
+}
+
+.sc-track-panel.active {
+  display: block;
+}
+
+.sc-track-panel iframe {
   width: 100%;
   display: block;
   border: none;
+  border-radius: 0;
+}
+
+.sc-credit-bar {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-break: anywhere;
+  word-break: normal;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  margin-top: 8px;
+}
+
+.sc-credit-bar a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.sc-credit-bar a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
 }
 
 @media (max-width: 600px) {
