@@ -10,6 +10,7 @@
   --text-muted: #7F7F7F;
   
   /* Borders - Highly Visible Grid Layouts */
+  --border-color: #FFFFFF;
   --border-thick: 2px solid #FFFFFF;
   --border-thin: 1px solid #FFFFFF;
   --border-muted: 1px solid #7F7F7F;
@@ -819,7 +820,7 @@ html[lang="pt"] [lang="es"] {
     align-items: center;
     justify-content: center;
     background: transparent;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color, #FFFFFF);
     color: var(--text-primary);
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -827,7 +828,14 @@ html[lang="pt"] [lang="es"] {
     padding: 6px 10px;
     cursor: pointer;
     border-radius: 0;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mobile-nav-toggle-btn:hover,
+  .mobile-nav-toggle-btn:focus-visible {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--text-primary);
   }
 
   .mobile-nav-toggle-btn:active {

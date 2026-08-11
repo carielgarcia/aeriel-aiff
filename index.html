@@ -1960,6 +1960,11 @@
         html.classList.add('house-mode');
       }
       localStorage.setItem('theme-mode', mode);
+
+      document.querySelectorAll('.genre-btn').forEach(btn => btn.classList.remove('active'));
+      const activeId = mode === 'disco' ? 'trigger-italo' : (mode === 'trance' ? 'trigger-trance' : (mode === 'house' ? 'trigger-house' : 'trigger-techno'));
+      const activeBtn = document.getElementById(activeId);
+      if (activeBtn) activeBtn.classList.add('active');
     }
     window.setThemeMode = setThemeMode;
     
@@ -2091,7 +2096,7 @@
       const savedLang = localStorage.getItem('preferred-lang') || 'en';
       setLanguage(savedLang);
       
-      const savedTheme = localStorage.getItem('theme-mode') || (localStorage.getItem('disco-mode') === 'true' ? 'disco' : 'default');
+      const savedTheme = localStorage.getItem('theme-mode') || 'default';
       setThemeMode(savedTheme);
 
       const path = window.location.pathname;
