@@ -665,7 +665,7 @@ html[lang="pt"] [lang="es"] {
 
   .discography-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
+    gap: 0;
   }
 
   .dj-grid {
@@ -959,7 +959,16 @@ html[lang="pt"] [lang="es"] {
   }
 
   /* Structural Content Grids Mobile Stack */
-  .discography-grid,
+  .discography-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .grid-cell {
+    min-height: 160px;
+    box-sizing: border-box;
+  }
+
   .dj-grid,
   .writing-grid {
     grid-template-columns: 1fr;
