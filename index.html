@@ -2159,25 +2159,62 @@
     window.openAe000xSubsite = openAe000xSubsite;
     window.openMainPortfolio = openMainPortfolio;
 
+    function detectInitialLanguage() {
+      // 1. Check URL query parameters (e.g. ?lang=es)
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryLang = urlParams.get('lang');
+      if (queryLang && ['en', 'es', 'pt'].includes(queryLang.toLowerCase())) {
+        return queryLang.toLowerCase();
+      }
+
+      // 2. Check Spanish-specific URL routes (/ae000x/es, /ensayos)
+      const path = window.location.pathname.toLowerCase();
+      if (path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || path.startsWith('/writing/es')) {
+        return 'es';
+      }
+
+      // 3. Check explicit user preference stored in localStorage
+      const savedLang = localStorage.getItem('preferred-lang');
+      if (savedLang && ['en', 'es', 'pt'].includes(savedLang)) {
+        return savedLang;
+      }
+
+      // 4. Automatic device / browser language detection
+      const userLangs = navigator.languages || [navigator.language || ''];
+      for (const l of userLangs) {
+        const code = (l || '').substring(0, 2).toLowerCase();
+        if (code === 'es') return 'es';
+        if (code === 'pt') return 'pt';
+        if (code === 'en') return 'en';
+      }
+
+      return 'en';
+    }
+
     // Restore language, subsite view & theme preference on load
     window.addEventListener('DOMContentLoaded', () => {
-      const savedLang = localStorage.getItem('preferred-lang') || 'en';
-      setLanguage(savedLang);
+      const initialLang = detectInitialLanguage();
+      setLanguage(initialLang);
       
       const savedTheme = localStorage.getItem('theme-mode') || 'default';
       setThemeMode(savedTheme);
 
-      const path = window.location.pathname;
-      const hash = window.location.hash;
-      if (path === '/ae000x' || path === '/ae000x/' || hash === '#ae000x-subsite' || hash === '#ae000x') {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      const urlParams = new URLSearchParams(window.location.search);
+      const isSpanishRoute = path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || urlParams.get('lang') === 'es';
+
+      if (path.startsWith('/ae000x') || hash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
-        if (hash === '#ae000x-subsite' || hash === '#ae000x') {
-          history.replaceState({ view: 'ae000x' }, '', '/ae000x');
+        if (hash.includes('ae000x') || isSpanishRoute) {
+          const targetPath = isSpanishRoute ? '/ae000x/es' : '/ae000x';
+          history.replaceState({ view: 'ae000x' }, '', targetPath);
         }
-      } else if (path === '/writing' || path === '/writing/' || hash === '#writing-subsite' || hash === '#writing') {
+      } else if (path.startsWith('/ensayos') || path.startsWith('/writing') || hash.includes('writing')) {
         document.body.setAttribute('data-view', 'writing');
-        if (hash === '#writing-subsite' || hash === '#writing') {
-          history.replaceState({ view: 'writing' }, '', '/writing');
+        if (hash.includes('writing') || isSpanishRoute) {
+          const targetPath = isSpanishRoute ? '/ensayos' : '/writing';
+          history.replaceState({ view: 'writing' }, '', targetPath);
         }
       } else {
         document.body.setAttribute('data-view', 'main');
@@ -2232,12 +2269,14 @@
     });
 
     window.addEventListener('popstate', (e) => {
-      const path = window.location.pathname;
-      const hash = window.location.hash;
-      if ((e.state && e.state.view === 'ae000x') || path === '/ae000x' || path === '/ae000x/' || hash === '#ae000x-subsite' || hash === '#ae000x') {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if ((e.state && e.state.view === 'ae000x') || path.startsWith('/ae000x') || hash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
-      } else if ((e.state && e.state.view === 'writing') || path === '/writing' || path === '/writing/' || hash === '#writing-subsite' || hash === '#writing') {
+        if (path.startsWith('/ae000x/es')) setLanguage('es');
+      } else if ((e.state && e.state.view === 'writing') || path.startsWith('/ensayos') || path.startsWith('/writing') || hash.includes('writing')) {
         document.body.setAttribute('data-view', 'writing');
+        if (path.startsWith('/ensayos')) setLanguage('es');
       } else {
         document.body.setAttribute('data-view', 'main');
       }
