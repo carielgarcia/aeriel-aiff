@@ -2393,6 +2393,130 @@ html.disco-mode .writing-preview-quote { border-left-color: #FFC72C !important; 
 html.trance-mode .writing-preview-quote { border-left-color: #00F0FF !important; color: #E0F2FE !important; }
 html.house-mode .writing-preview-quote { border-left-color: #FF7B00 !important; color: #FFF8E7 !important; }
 
+/* Essay Social Media Share System */
+.essay-share-block {
+  margin-top: 32px;
+  margin-bottom: 28px;
+  padding: 16px;
+  border: var(--border-thin);
+  background: rgba(255, 255, 255, 0.02);
+  box-sizing: border-box;
+}
+
+.share-block-header {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.essay-share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border-color, var(--text-primary));
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 8px 14px;
+  min-height: 44px; /* Touch friendly requirement */
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 0 !important;
+  box-sizing: border-box;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.share-btn .share-icon {
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.share-btn:hover,
+.share-btn:focus-visible {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+
+.share-btn:hover .share-icon {
+  transform: scale(1.15);
+}
+
+.share-btn:active {
+  transform: scale(0.97);
+}
+
+.share-toast-msg {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: var(--bg-primary);
+  border: 1px dashed var(--border-color, var(--text-primary));
+  display: none;
+}
+
+.share-toast-msg.visible {
+  display: block;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Essay Share Theme Overrides */
+html.disco-mode .essay-share-block { border-color: #D94E1F !important; background: rgba(217, 78, 31, 0.05) !important; }
+html.disco-mode .share-btn { border-color: #D94E1F !important; color: #FFC72C !important; }
+html.disco-mode .share-btn:hover, html.disco-mode .share-btn:focus-visible { background: #D94E1F !important; color: #170421 !important; }
+html.disco-mode .share-toast-msg { border-color: #FFC72C !important; background: #260734 !important; color: #FFC72C !important; }
+
+html.trance-mode .essay-share-block { border-color: #00F0FF !important; background: rgba(0, 240, 255, 0.05) !important; }
+html.trance-mode .share-btn { border-color: #00F0FF !important; color: #E0F2FE !important; }
+html.trance-mode .share-btn:hover, html.trance-mode .share-btn:focus-visible { background: #00F0FF !important; color: #040814 !important; }
+html.trance-mode .share-toast-msg { border-color: #00F0FF !important; background: #0A1224 !important; color: #00F0FF !important; }
+
+html.house-mode .essay-share-block { border-color: #FF7B00 !important; background: rgba(255, 123, 0, 0.05) !important; }
+html.house-mode .share-btn { border-color: #FF7B00 !important; color: #FFF8E7 !important; }
+html.house-mode .share-btn:hover, html.house-mode .share-btn:focus-visible { background: #FF7B00 !important; color: #120A07 !important; }
+html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background: #1F130E !important; color: #FF7B00 !important; }
+
+@media (max-width: 600px) {
+  .essay-share-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .share-btn {
+    width: 100%;
+    font-size: 0.7rem;
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 380px) {
+  .essay-share-buttons {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ==========================================================================
    POSTER CAROUSEL & REACTIVE FRAME COMPONENTS (MINIATURE 5-ITEM HORIZONTAL STRIP)
    ========================================================================== */
