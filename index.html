@@ -2110,6 +2110,20 @@
     window.openPosterLightbox = openPosterLightbox;
     window.navigatePosterLightbox = navigatePosterLightbox;
     window.closePosterLightbox = closePosterLightbox;
+    const ESSAY_SLUGS = {
+      'essay-harm-reduction': '20260728-harm-reduction',
+      'essay-emancipation-desire': '20260728-emancipation-of-desire'
+    };
+
+    const SLUG_TO_ESSAY_ID = {
+      '20260728-harm-reduction': 'essay-harm-reduction',
+      '20260728-beyond-moral-panic': 'essay-harm-reduction',
+      'harm-reduction': 'essay-harm-reduction',
+      '20260728-emancipation-of-desire': 'essay-emancipation-desire',
+      '20260728-emancipation-desire': 'essay-emancipation-desire',
+      'emancipation-desire': 'essay-emancipation-desire'
+    };
+
     function updatePageTitle() {
       const currentView = document.body.getAttribute('data-view') || 'main';
       const canonicalEl = document.getElementById('canonical-link');
@@ -2119,6 +2133,25 @@
         document.title = "ÆRIEL | Æ000.X";
         if (canonicalEl) canonicalEl.setAttribute('href', origin + '/ae000x');
       } else if (currentView === 'writing') {
+        const readerContainer = document.getElementById('article-reader-container');
+        const isReaderOpen = readerContainer && readerContainer.style.display === 'block';
+        if (isReaderOpen) {
+          const visibleEssay = Array.from(readerContainer.querySelectorAll('.reader-content')).find(art => art.style.display !== 'none');
+          if (visibleEssay) {
+            const titleObj = visibleEssay.querySelector('.reader-title');
+            const lang = document.documentElement.getAttribute('lang') || 'en';
+            let titleText = '';
+            if (titleObj) {
+              const langSpan = titleObj.querySelector(`[lang="${lang}"]`);
+              titleText = langSpan ? langSpan.textContent.trim() : titleObj.textContent.trim();
+            }
+            document.title = `ÆRIEL | ${titleText || 'WRITING'}`;
+            const slug = ESSAY_SLUGS[visibleEssay.id] || visibleEssay.id.replace(/^essay-/, '');
+            const baseRoute = lang === 'es' ? '/ensayos' : '/writing';
+            if (canonicalEl) canonicalEl.setAttribute('href', `${origin}${baseRoute}/${slug}`);
+            return;
+          }
+        }
         document.title = "ÆRIEL | WRITING";
         const lang = document.documentElement.getAttribute('lang') || 'en';
         const writingPath = lang === 'es' ? '/ensayos' : '/writing';
@@ -2335,9 +2368,16 @@
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      if (!wasOpen && window.location.hash !== '#overlay') {
-        history.pushState({ modal: 'article' }, '', '#overlay');
+      const lang = document.documentElement.getAttribute('lang') || 'en';
+      const isSpanish = lang === 'es' || window.location.pathname.toLowerCase().includes('/ensayos');
+      const baseRoute = isSpanish ? '/ensayos' : '/writing';
+      const slug = ESSAY_SLUGS[articleId] || articleId.replace(/^essay-/, '');
+      const essayPath = `${baseRoute}/${slug}`;
+
+      if (window.location.pathname.toLowerCase() !== essayPath) {
+        history.pushState({ modal: 'article', essayId: articleId, view: 'writing' }, '', essayPath);
       }
+      updatePageTitle();
     }
 
     function closeArticleReader(fromPopState = false) {
@@ -2357,9 +2397,12 @@
         lastActiveElement.focus();
       }
 
-      if (wasOpen && !fromPopState && window.location.hash === '#overlay') {
-        history.back();
+      if (wasOpen && !fromPopState) {
+        const lang = document.documentElement.getAttribute('lang') || 'en';
+        const writingPath = (lang === 'es' || window.location.pathname.toLowerCase().includes('/ensayos')) ? '/ensayos' : '/writing';
+        history.pushState({ view: 'writing' }, '', writingPath);
       }
+      updatePageTitle();
     }
 
     function shareEssay(platform, essayId, event) {
@@ -2384,19 +2427,16 @@
         }
       }
 
-      const currentPath = window.location.pathname;
-      let subRoute = '/writing';
-      if (currentPath.includes('/ensayos')) {
-        subRoute = '/ensayos';
-      }
-      const cleanId = essayId.replace(/^essay-/, '');
-      const fullUrl = window.location.origin + subRoute + '#' + cleanId;
+      const currentPath = window.location.pathname.toLowerCase();
+      const currentLang = document.documentElement.getAttribute('lang') || 'en';
+      let subRoute = currentPath.includes('/ensayos') || currentLang === 'es' ? '/ensayos' : '/writing';
+      
+      const slug = ESSAY_SLUGS[essayId] || essayId.replace(/^essay-/, '');
+      const fullUrl = window.location.origin + subRoute + '/' + slug;
 
       const shareText = `${titleText} — ÆRIEL`;
       const encodedText = encodeURIComponent(shareText);
       const encodedUrl = encodeURIComponent(fullUrl);
-
-      const currentLang = document.documentElement.getAttribute('lang') || 'en';
 
       const copyToClipboard = (textToCopy) => {
         if (navigator.clipboard && window.isSecureContext) {
@@ -2530,15 +2570,34 @@
       const urlParams = new URLSearchParams(window.location.search);
       const isSpanishRoute = path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || urlParams.get('lang') === 'es';
 
+      // Parse essay slug if present in path, query, or hash
+      let targetEssayId = urlParams.get('essay');
+      if (!targetEssayId) {
+        const pathSegments = path.split('/').filter(Boolean);
+        if (pathSegments.length >= 2) {
+          const possibleSlug = pathSegments[pathSegments.length - 1];
+          targetEssayId = SLUG_TO_ESSAY_ID[possibleSlug];
+        } else if (hash) {
+          const hashClean = hash.replace(/^#/, '');
+          targetEssayId = SLUG_TO_ESSAY_ID[hashClean] || (hashClean.startsWith('essay-') ? hashClean : null);
+        }
+      }
+
       if (path.startsWith('/ae000x') || hash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
         if (hash.includes('ae000x') || isSpanishRoute) {
           const targetPath = isSpanishRoute ? '/ae000x/es' : '/ae000x';
           history.replaceState({ view: 'ae000x' }, '', targetPath);
         }
-      } else if (path.startsWith('/ensayos') || path.startsWith('/writing') || hash.includes('writing')) {
+      } else if (path.startsWith('/ensayos') || path.startsWith('/writing') || hash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
-        if (hash.includes('writing') || isSpanishRoute) {
+        if (targetEssayId && document.getElementById(targetEssayId)) {
+          openArticleReader(targetEssayId);
+          const lang = document.documentElement.getAttribute('lang') || 'en';
+          const baseRoute = (isSpanishRoute || lang === 'es') ? '/ensayos' : '/writing';
+          const slug = ESSAY_SLUGS[targetEssayId] || targetEssayId;
+          history.replaceState({ modal: 'article', essayId: targetEssayId, view: 'writing' }, '', `${baseRoute}/${slug}`);
+        } else {
           const targetPath = isSpanishRoute ? '/ensayos' : '/writing';
           history.replaceState({ view: 'writing' }, '', targetPath);
         }
@@ -2597,12 +2656,29 @@
     window.addEventListener('popstate', (e) => {
       const path = window.location.pathname.toLowerCase();
       const hash = window.location.hash.toLowerCase();
+
+      // Check if popping back/forward to an essay slug route
+      let targetEssayId = (e.state && e.state.essayId) || null;
+      if (!targetEssayId) {
+        const pathSegments = path.split('/').filter(Boolean);
+        if (pathSegments.length >= 2) {
+          const possibleSlug = pathSegments[pathSegments.length - 1];
+          targetEssayId = SLUG_TO_ESSAY_ID[possibleSlug];
+        }
+      }
+
       if ((e.state && e.state.view === 'ae000x') || path.startsWith('/ae000x') || hash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
         if (path.startsWith('/ae000x/es')) setLanguage('es');
-      } else if ((e.state && e.state.view === 'writing') || path.startsWith('/ensayos') || path.startsWith('/writing') || hash.includes('writing')) {
+      } else if ((e.state && e.state.view === 'writing') || path.startsWith('/ensayos') || path.startsWith('/writing') || hash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
         if (path.startsWith('/ensayos')) setLanguage('es');
+        
+        if (targetEssayId && document.getElementById(targetEssayId)) {
+          openArticleReader(targetEssayId);
+        } else {
+          closeArticleReader(true);
+        }
       } else {
         document.body.setAttribute('data-view', 'main');
       }
