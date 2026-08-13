@@ -27,10 +27,20 @@
   <meta name="twitter:image" content="https://aeriel.net/og-image.jpg">
   <link rel="image_src" href="https://aeriel.net/og-image.jpg">
 
+  <!-- Canonical URL Link -->
+  <link rel="canonical" id="canonical-link" href="https://aeriel.net/">
+
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
   <link rel="stylesheet" href="style.css?v=5.0">
 </head>
 <body>
+
+  <!-- Accessibility: Skip to Content Bypass Link -->
+  <a href="#main-content" class="skip-link">
+    <span lang="en">[ SKIP TO MAIN CONTENT ]</span>
+    <span lang="es">[ SALTAR AL CONTENIDO PRINCIPAL ]</span>
+    <span lang="pt">[ IR PARA O CONTEÚDO PRINCIPAL ]</span>
+  </a>
 
   <!-- ==========================================================================
        HEADER & STRUCTURAL NAVIGATION
@@ -94,7 +104,7 @@
           <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
         </div>
 
-        <button class="mobile-nav-toggle-btn" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu">
+        <button class="mobile-nav-toggle-btn" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="main-navigation">
           <span class="toggle-icon">NAV ▼</span>
         </button>
       </div>
@@ -175,7 +185,7 @@
               <span lang="es">PORTAL_01 // SERIE_DE_MIXES</span>
               <span lang="pt">PORTAL_01 // SÉRIE_DE_MIXES</span>
             </span>
-            <span class="grid-cell-title">SOUNDCLOUD</span>
+            <h3 class="grid-cell-title">SOUNDCLOUD</h3>
             <span class="grid-cell-action">
               <span lang="en">STREAM_MIXES →</span>
               <span lang="es">ESCUCHAR_MIXES →</span>
@@ -190,7 +200,7 @@
               <span lang="es">PORTAL_02 // ARCHIVO_SOCIAL</span>
               <span lang="pt">PORTAL_02 // ARQUIVO_SOCIAL</span>
             </span>
-            <span class="grid-cell-title">INSTAGRAM</span>
+            <h3 class="grid-cell-title">INSTAGRAM</h3>
             <span class="grid-cell-action">
               <span lang="en">FOLLOW_UPDATES →</span>
               <span lang="es">SEGUIR_NOVEDADES →</span>
@@ -205,7 +215,7 @@
               <span lang="es">PORTAL_03 // COLECCIÓN</span>
               <span lang="pt">PORTAL_03 // COLEÇÃO</span>
             </span>
-            <span class="grid-cell-title">BANDCAMP</span>
+            <h3 class="grid-cell-title">BANDCAMP</h3>
             <span class="grid-cell-action">
               <span lang="en">COLLECTION OF TRACKS →</span>
               <span lang="es">COLECCIÓN DE TRACKS →</span>
@@ -220,7 +230,7 @@
               <span lang="es">PORTAL_04 // GRABACIONES_EN_VIVO</span>
               <span lang="pt">PORTAL_04 // GRAVAÇÕES_AO_VIVO</span>
             </span>
-            <span class="grid-cell-title">YOUTUBE</span>
+            <h3 class="grid-cell-title">YOUTUBE</h3>
             <span class="grid-cell-action">
               <span lang="en">WATCH_PERFORMANCE →</span>
               <span lang="es">VER_PERFORMANCE →</span>
@@ -1745,6 +1755,7 @@
         const isOpen = nav.classList.contains('open');
         if (toggleBtn) {
           toggleBtn.querySelector('.toggle-icon').textContent = isOpen ? 'NAV ▲' : 'NAV ▼';
+          toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
       }
     }
@@ -1756,6 +1767,7 @@
         nav.classList.remove('open');
         if (toggleBtn) {
           toggleBtn.querySelector('.toggle-icon').textContent = 'NAV ▼';
+          toggleBtn.setAttribute('aria-expanded', 'false');
         }
       }
     }
@@ -2109,12 +2121,20 @@
     window.closePosterLightbox = closePosterLightbox;
     function updatePageTitle() {
       const currentView = document.body.getAttribute('data-view') || 'main';
+      const canonicalEl = document.getElementById('canonical-link');
+      const origin = window.location.origin;
+
       if (currentView === 'ae000x') {
         document.title = "ÆRIEL | Æ000.X";
+        if (canonicalEl) canonicalEl.setAttribute('href', origin + '/ae000x');
       } else if (currentView === 'writing') {
         document.title = "ÆRIEL | WRITING";
+        const lang = document.documentElement.getAttribute('lang') || 'en';
+        const writingPath = lang === 'es' ? '/ensayos' : '/writing';
+        if (canonicalEl) canonicalEl.setAttribute('href', origin + writingPath);
       } else {
         document.title = "ÆRIEL | TECHNO, TRANCE, HOUSE, ITALO DISCO";
+        if (canonicalEl) canonicalEl.setAttribute('href', origin + '/');
       }
     }
     window.updatePageTitle = updatePageTitle;

@@ -7,7 +7,7 @@
   --bg-primary: #0A0A0A;
   --bg-secondary: #121212;
   --text-primary: #FFFFFF;
-  --text-muted: #7F7F7F;
+  --text-muted: #9E9E9E; /* 7.6:1 WCAG AA/AAA High Contrast Ratio */
   
   /* Borders - Highly Visible Grid Layouts */
   --border-color: #FFFFFF;
@@ -24,6 +24,7 @@
   --spacing-md: 24px;
   --spacing-lg: 48px;
   --spacing-xl: 80px;
+  --section-gap: 80px;
   --container-width: 1200px;
 }
 
@@ -81,15 +82,37 @@ img, svg {
   display: block;
 }
 
-/* Raw accessibility focus state */
+/* Accessibility Skip-to-Content Link */
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 16px;
+  z-index: 99999;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 900;
+  padding: 12px 18px;
+  border: var(--border-thick);
+  text-decoration: none;
+}
+
+.skip-link:focus-visible,
+.skip-link:focus {
+  top: 16px;
+  outline: 3px solid var(--text-primary);
+}
+
+/* Raw accessibility theme-aware focus state */
 a:focus-visible, 
 button:focus-visible, 
 input:focus-visible, 
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid #FFFFFF;
-  background-color: #FFFFFF !important;
-  color: #0A0A0A !important;
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+  border-color: var(--text-primary);
 }
 
 /* Brutalist Scrollbar */
@@ -792,6 +815,7 @@ html[lang="pt"] [lang="es"] {
   :root {
     --spacing-lg: 20px;
     --spacing-xl: 28px;
+    --section-gap: 48px;
   }
 
   .container {
