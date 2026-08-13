@@ -992,43 +992,53 @@ html[lang="pt"] [lang="es"] {
     color: var(--bg-primary);
   }
 
-  /* Target #main-navigation directly by ID to override desktop flex display */
+  /* Target #main-navigation directly by ID for mobile drawer layout */
   #main-navigation {
     display: none !important;
     width: 100%;
     flex-basis: 100%;
+    order: 3;
     border-top: 1px solid var(--border-color);
     background: var(--bg-primary);
   }
 
   #main-navigation.open {
-    display: block !important;
-    max-height: 60vh;
+    display: flex !important;
+    flex-direction: column;
+    max-height: 70vh;
     overflow-y: auto;
     border-bottom: 2px solid var(--text-primary);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    -webkit-overflow-scrolling: touch;
   }
 
-  .nav-menu {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .nav-item {
-    width: 100%;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    text-align: center;
-  }
-
-  .nav-link {
-    width: 100%;
-    padding: 12px;
-    font-size: 0.85rem;
+  #main-navigation .nav-link {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    min-height: 48px; /* Touch friendly height */
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-left: none;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    text-decoration: none;
+    min-height: 50px;
     box-sizing: border-box;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+  }
+
+  #main-navigation .nav-link:last-child {
+    border-bottom: none;
+  }
+
+  #main-navigation .nav-link:active,
+  #main-navigation .nav-link:hover {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
   }
 
   /* Touch Feedback for Native Web-App Experience */

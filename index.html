@@ -54,32 +54,32 @@
 
       <!-- Navigation Links -->
       <nav id="main-navigation" class="nav-links" aria-label="Brutalist System Navigation">
-        <a href="#archives" class="nav-link" onclick="openMainPortfolio(event, '#archives'); closeMobileNav();">
+        <a href="#archives" class="nav-link" onclick="openMainPortfolio(event, '#archives');">
           <span lang="en">ARCHIVES</span>
           <span lang="es">ARCHIVOS</span>
           <span lang="pt">ARQUIVOS</span>
         </a>
-        <a href="#intent" class="nav-link" onclick="openMainPortfolio(event, '#intent'); closeMobileNav();">
+        <a href="#intent" class="nav-link" onclick="openMainPortfolio(event, '#intent');">
           <span lang="en">INTENT</span>
           <span lang="es">PROPÓSITO</span>
           <span lang="pt">PROPÓSITO</span>
         </a>
-        <a href="#brand" class="nav-link" onclick="openMainPortfolio(event, '#brand'); closeMobileNav();">
+        <a href="#brand" class="nav-link" onclick="openMainPortfolio(event, '#brand');">
           <span lang="en">BRAND</span>
           <span lang="es">MARCA</span>
           <span lang="pt">MARCA</span>
         </a>
-        <a href="#writing" class="nav-link" onclick="openMainPortfolio(event, '#writing'); closeMobileNav();">
+        <a href="#writing" class="nav-link" onclick="openWritingSubsite(event);">
           <span lang="en">WRITING</span>
           <span lang="es">ENSAYOS</span>
           <span lang="pt">ESCRITOS</span>
         </a>
-        <a href="#contact" class="nav-link" onclick="openMainPortfolio(event, '#contact'); closeMobileNav();">
+        <a href="#contact" class="nav-link" onclick="openMainPortfolio(event, '#contact');">
           <span lang="en">MESSAGE</span>
           <span lang="es">MENSAJE</span>
           <span lang="pt">MENSAGEM</span>
         </a>
-        <a href="#ae000x" class="nav-link nav-link-special" onclick="openAe000xSubsite(event); closeMobileNav();">
+        <a href="#ae000x" class="nav-link nav-link-special" onclick="openAe000xSubsite(event);">
           Æ000.X ↗
         </a>
       </nav>
@@ -2223,38 +2223,64 @@
     
     function openAe000xSubsite(event) {
       if (event) event.preventDefault();
+      closeMobileNav();
       document.body.setAttribute('data-view', 'ae000x');
       updatePageTitle();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.location.pathname !== '/ae000x') {
-        history.pushState({ view: 'ae000x' }, '', '/ae000x');
-      }
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.location.pathname !== '/ae000x') {
+          history.pushState({ view: 'ae000x' }, '', '/ae000x');
+        }
+      }, 40);
     }
 
     function openMainPortfolio(event, targetHash) {
       if (event) event.preventDefault();
+      closeMobileNav();
       document.body.setAttribute('data-view', 'main');
       updatePageTitle();
-      if (targetHash) {
-        const el = document.querySelector(targetHash);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-          history.pushState({ view: 'main' }, '', targetHash);
-          return;
+
+      setTimeout(() => {
+        if (targetHash && targetHash !== '#') {
+          const el = document.querySelector(targetHash);
+          if (el) {
+            const headerEl = document.getElementById('site-header');
+            const headerOffset = headerEl ? headerEl.offsetHeight : 0;
+            const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - headerOffset;
+
+            window.scrollTo({
+              top: Math.max(0, offsetPosition),
+              behavior: 'smooth'
+            });
+            
+            if (window.location.hash !== targetHash) {
+              history.pushState({ view: 'main' }, '', targetHash);
+            }
+            return;
+          }
         }
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      history.pushState({ view: 'main' }, '', '#');
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.location.hash) {
+          history.pushState({ view: 'main' }, '', window.location.pathname + window.location.search);
+        }
+      }, 40);
     }
 
     function openWritingSubsite(event) {
       if (event) event.preventDefault();
+      closeMobileNav();
       document.body.setAttribute('data-view', 'writing');
       updatePageTitle();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.location.hash !== '#writing-subsite') {
-        history.pushState({ view: 'writing' }, '', '#writing-subsite');
-      }
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const lang = document.documentElement.getAttribute('lang') || 'en';
+        const writingPath = lang === 'es' ? '/ensayos' : '/writing';
+        if (!window.location.pathname.includes('writing') && !window.location.pathname.includes('ensayos')) {
+          history.pushState({ view: 'writing' }, '', writingPath);
+        }
+      }, 40);
     }
 
     function openWritingSubsiteAndArticle(articleId) {
