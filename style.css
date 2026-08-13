@@ -314,25 +314,21 @@ html[lang="pt"] [lang="es"] {
   word-break: break-all;
 }
 
-/* Dynamic SoundCloud & Genre Controller Module */
-.soundcloud-drawer-wrapper {
-  border: var(--border-thin);
+/* Connected Genre & Sound Engine Controller Module */
+.genre-player-container {
+  width: 100%;
   margin-top: var(--spacing-sm);
   margin-bottom: 32px;
-  background: var(--bg-secondary);
-  box-sizing: border-box;
-  max-width: 100%;
-  overflow: hidden;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Connected Genre Button Header Strip */
 .genre-button-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
   width: 100%;
-  border-bottom: var(--border-thin);
+  border: var(--border-thin);
+  border-bottom: none;
+  background: var(--bg-secondary);
   box-sizing: border-box;
 }
 
@@ -341,17 +337,18 @@ html[lang="pt"] [lang="es"] {
   border-right: var(--border-thin);
   background: var(--bg-secondary);
   color: var(--text-primary);
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   font-size: clamp(1.05rem, 1.8vw, 1.35rem);
-  font-weight: 800;
+  font-weight: 800 !important;
   text-transform: uppercase;
   text-align: center;
   padding: 14px 8px;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px !important;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   min-height: 52px;
   cursor: pointer;
   box-sizing: border-box;
+  border-radius: 0 !important;
 }
 
 .genre-btn:last-child {
@@ -363,6 +360,16 @@ html[lang="pt"] [lang="es"] {
 .genre-btn.active {
   background: var(--text-primary);
   color: var(--bg-primary);
+}
+
+.soundcloud-drawer-wrapper {
+  border: var(--border-thin);
+  margin: 0;
+  background: var(--bg-secondary);
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .soundcloud-drawer-wrapper .drawer-header-bar {
@@ -480,11 +487,19 @@ html[lang="pt"] [lang="es"] {
     grid-template-columns: repeat(2, 1fr);
   }
   .genre-btn {
-    font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: clamp(0.95rem, 3.8vw, 1.15rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
     padding: 12px 6px;
     border-bottom: var(--border-thin);
   }
-  .genre-btn:nth-child(2n) {
+  .genre-btn:nth-child(1),
+  .genre-btn:nth-child(3) {
+    border-right: var(--border-thin);
+  }
+  .genre-btn:nth-child(2),
+  .genre-btn:nth-child(4) {
     border-right: none;
   }
   .genre-btn:nth-child(3),
