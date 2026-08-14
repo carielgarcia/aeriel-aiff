@@ -49,12 +49,12 @@
     <div class="container header-container">
       <!-- Logo Block -->
       <div class="logo-block">
-        <a href="#hero" class="logo-link" aria-label="ÆRIEL Home Page" onclick="openMainPortfolio(event, '#hero'); closeMobileNav();">ÆRIEL</a>
+        <a href="/" class="logo-link" aria-label="ÆRIEL Home Page" onclick="openMainPortfolio(event);">ÆRIEL</a>
       </div>
 
       <!-- Navigation Links -->
       <nav id="main-navigation" class="nav-links" aria-label="Brutalist System Navigation">
-        <a href="#hero" class="nav-link" id="nav-system" onclick="openMainPortfolio(event, '#hero');">
+        <a href="/" class="nav-link" id="nav-system" onclick="openMainPortfolio(event);">
           <span lang="en">SYSTEM</span>
           <span lang="es">SISTEMA</span>
           <span lang="pt">SISTEMA</span>
@@ -490,7 +490,7 @@
     <!-- Sub-Website Sticky Navigation Bar -->
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
-        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event, '#hero')">
+        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
           <span lang="en">← BACK TO MAIN PORTFOLIO</span>
           <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
           <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
@@ -872,7 +872,7 @@
     <!-- Sub-Website Sticky Navigation Bar -->
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
-        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event, '#hero')">
+        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
           <span lang="en">← BACK TO MAIN PORTFOLIO</span>
           <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
           <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
@@ -1670,7 +1670,7 @@
       
       <ul class="footer-nav" id="footer-navigation-links">
         <li>
-          <a href="#hero" class="footer-nav-link" onclick="openMainPortfolio(event, '#hero')">
+          <a href="/" class="footer-nav-link" onclick="openMainPortfolio(event)">
             <span lang="en">SYSTEM</span>
             <span lang="es">SISTEMA</span>
             <span lang="pt">SISTEMA</span>
@@ -2274,7 +2274,7 @@
       updatePageTitle();
 
       setTimeout(() => {
-        if (targetHash && targetHash !== '#') {
+        if (targetHash && targetHash !== '#' && targetHash !== '#hero') {
           const el = document.querySelector(targetHash);
           if (el) {
             const headerEl = document.getElementById('site-header');
@@ -2295,8 +2295,8 @@
         }
         
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (window.location.hash) {
-          history.pushState({ view: 'main' }, '', window.location.pathname + window.location.search);
+        if (window.location.pathname !== '/' || window.location.hash || window.location.search) {
+          history.pushState({ view: 'main' }, '', '/');
         }
       }, 40);
     }
