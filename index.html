@@ -31,7 +31,7 @@
   <link rel="canonical" id="canonical-link" href="https://aeriel.net/">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=6.0">
+  <link rel="stylesheet" href="style.css?v=7.0">
 </head>
 <body>
 
@@ -122,7 +122,7 @@
 
           <div class="soundcloud-drawer-wrapper" id="soundcloud-drawer">
             <div class="drawer-header-bar">
-              <div class="player-header" id="sc-stream-label">[ CURRENT_STREAM // PRÆCTICE001 ]</div>
+              <div class="player-header" id="sc-stream-label">[ CURRENT_STREAM // Æ000.4 ]</div>
               <button type="button" class="drawer-toggle-btn" id="sc-drawer-toggle" onclick="toggleSoundCloudDrawer()" aria-expanded="true" aria-controls="sc-drawer-content">
                 <span class="toggle-text-open">[ HIDE STREAM ▲ ]</span>
                 <span class="toggle-text-closed">[ SHOW STREAM ▼ ]</span>
@@ -131,9 +131,9 @@
             
             <div class="soundcloud-drawer-content" id="sc-drawer-content">
             <!-- TECHNO PANEL (DEFAULT) -->
-            <div class="sc-track-panel active" data-genre="default" data-title="PRÆCTICE001">
-              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2377687646&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
-              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/praectice001" title="PRÆCTICE001" target="_blank" rel="noopener noreferrer">PRÆCTICE001</a></div>
+            <div class="sc-track-panel active" data-genre="default" data-title="Æ000.4">
+              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2380313438&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/ae0004" title="Æ000.4" target="_blank" rel="noopener noreferrer">Æ000.4</a></div>
             </div>
 
             <!-- TRANCE PANEL -->
@@ -2200,7 +2200,7 @@
 
     function updateSoundCloudDrawerForMode(mode) {
       const panels = document.querySelectorAll('.sc-track-panel');
-      let activeTitle = 'PRÆCTICE001';
+      let activeTitle = 'Æ000.4';
       panels.forEach(panel => {
         if (panel.getAttribute('data-genre') === mode) {
           panel.classList.add('active');

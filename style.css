@@ -200,15 +200,19 @@ select:focus-visible {
   height: 100%;
 }
 
-/* Language Toggle Button Block */
-.lang-toggle-block {
+.header-actions {
   display: flex;
   align-items: center;
+  height: 100%;
   border-left: var(--border-thin);
   padding-left: var(--spacing-md);
-  padding-right: var(--spacing-md);
-  height: 100%;
+}
+
+.lang-selector {
+  display: flex;
+  align-items: center;
   gap: 6px;
+  height: 100%;
 }
 
 .lang-btn {
@@ -221,14 +225,15 @@ select:focus-visible {
   padding: 6px 12px;
   cursor: pointer;
   text-transform: uppercase !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  box-sizing: border-box;
   transition: none;
 }
 
-.lang-btn:hover {
-  background-color: var(--text-primary);
-  color: var(--bg-primary);
-}
-
+.lang-btn:hover,
 .lang-btn.active {
   background-color: var(--text-primary);
   color: var(--bg-primary);
@@ -252,36 +257,23 @@ html[lang="pt"] [lang="es"] {
   display: flex;
   align-items: stretch;
   height: 100%;
-}
-
-.nav-menu {
-  display: flex;
-  align-items: stretch;
-  list-style: none;
-  height: 100%;
-}
-
-.nav-item {
-  display: flex;
   border-left: var(--border-thin);
 }
 
-.nav-item:first-child {
-  border-left: none;
-}
-
-.nav-link {
+#main-navigation .nav-link {
   display: flex;
   align-items: center;
   padding: 0 var(--spacing-md);
   font-size: 0.9rem;
   font-weight: 600;
   height: 100%;
-  /* Instant hover state */
-  transition: none; 
+  border-right: var(--border-thin);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: none;
 }
 
-.nav-link:hover {
+#main-navigation .nav-link:hover {
   background-color: var(--text-primary);
   color: var(--bg-primary);
 }
@@ -941,26 +933,26 @@ html[lang="pt"] [lang="es"] {
     letter-spacing: 2px;
   }
 
-  .right-header-controls {
+  .header-actions {
     display: flex;
     align-items: center;
     gap: 8px;
     border-left: none;
+    padding-left: 0;
     height: auto;
   }
 
-  .lang-toggle-block {
-    border: none;
-    padding: 0;
-    height: auto;
-    width: auto;
-    margin: 0;
+  .lang-selector {
+    display: flex;
+    align-items: center;
     gap: 4px;
+    height: auto;
   }
 
   .lang-btn {
     padding: 4px 8px;
     font-size: 0.75rem;
+    height: 32px;
   }
 
   /* Mobile Collapsible Navigation Button with Arrow */
