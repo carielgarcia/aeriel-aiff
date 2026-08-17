@@ -1659,29 +1659,29 @@ html.trance-mode .footer-nav-link:hover {
 }
 
 /* ==========================================================================
-   EASTER EGG: HOUSE THEME (WAREHOUSE SOUL / CHICAGO SUNSET)
+   EASTER EGG: HOUSE THEME (CHICAGO WAREHOUSE / LUXURIOUS RED & IVORY)
    ========================================================================== */
 html.house-mode {
-  --bg-primary: #120A07;
-  --bg-secondary: #1F130E;
+  --bg-primary: #12080A;
+  --bg-secondary: #1F0E13;
   --text-primary: #FFF8E7;
-  --text-muted: #FFB703;
-  --border-color: #FF7B00;
-  --border-thick: 2px solid #FF7B00;
-  --border-thin: 1px solid #FF7B00;
-  background-color: #120A07 !important;
+  --text-muted: #E2A980;
+  --border-color: #B81D24;
+  --border-thick: 2px solid #B81D24;
+  --border-thin: 1px solid #B81D24;
+  background-color: #12080A !important;
   color: #FFF8E7 !important;
 }
 
 html.house-mode body {
-  background-color: #120A07 !important;
+  background-color: #12080A !important;
   color: #FFF8E7 !important;
 }
 
 /* Header & Navigation in House Mode */
 html.house-mode .header-wrapper {
-  background: #120A07 !important;
-  border-bottom: 2px solid #FF7B00 !important;
+  background: #12080A !important;
+  border-bottom: 2px solid #B81D24 !important;
 }
 
 html.house-mode .logo-link {
@@ -1689,11 +1689,11 @@ html.house-mode .logo-link {
 }
 
 html.house-mode .logo-block {
-  border-right-color: #FF7B00 !important;
+  border-right-color: #B81D24 !important;
 }
 
 html.house-mode .nav-item {
-  border-left-color: #FF7B00 !important;
+  border-left-color: #B81D24 !important;
 }
 
 html.house-mode .nav-link {
@@ -1701,42 +1701,42 @@ html.house-mode .nav-link {
 }
 
 html.house-mode .nav-link:hover {
-  background-color: #FF7B00 !important;
-  color: #120A07 !important;
+  background-color: #B81D24 !important;
+  color: #FFF8E7 !important;
 }
 
 /* Language Switcher Buttons in House Mode */
-html.house-mode .lang-toggle-block {
-  border-left-color: #FF7B00 !important;
+html.house-mode .header-actions {
+  border-left-color: #B81D24 !important;
 }
 
 html.house-mode .lang-btn {
-  border-color: #FF7B00 !important;
+  border-color: #B81D24 !important;
   color: #FFF8E7 !important;
   background-color: transparent !important;
 }
 
 html.house-mode .lang-btn:hover {
-  background-color: #D9480E !important;
-  color: #FFF8E7 !important;
+  background-color: #FF7B00 !important;
+  color: #12080A !important;
 }
 
 html.house-mode .lang-btn.active {
-  background-color: #FF7B00 !important;
-  color: #120A07 !important;
+  background-color: #B81D24 !important;
+  color: #FFF8E7 !important;
 }
 
-/* Hero Title - Chicago Sunset Layered Text Shadow */
+/* Hero Title - Luxurious Red & Sunset Orange Shadow */
 html.house-mode #main-title {
   color: #FFF8E7 !important;
   text-shadow: 
-    3px 3px 0px #FF7B00, 
-    6px 6px 0px #D9480E;
+    3px 3px 0px #B81D24, 
+    6px 6px 0px #FF7B00;
 }
 
 html.house-mode .hero-sub-block {
-  border-color: #FF7B00 !important;
-  background: #1F130E !important;
+  border-color: #B81D24 !important;
+  background: #1F0E13 !important;
 }
 
 html.house-mode .sonic-markers {
@@ -1745,7 +1745,7 @@ html.house-mode .sonic-markers {
 
 /* Structural Rows & Borders */
 html.house-mode .structural-row {
-  border-bottom-color: #FF7B00 !important;
+  border-bottom-color: #B81D24 !important;
 }
 
 html.house-mode .intent-header {
@@ -1758,23 +1758,23 @@ html.house-mode .intent-content p {
 
 /* Digital Archives Grid */
 html.house-mode .grid-cell {
-  background: #1F130E !important;
-  border-color: #FF7B00 !important;
+  background: #1F0E13 !important;
+  border-color: #B81D24 !important;
 }
 
 html.house-mode .grid-cell:hover {
-  background: #FF7B00 !important;
-  border-color: #D9480E !important;
+  background: #B81D24 !important;
+  border-color: #FF7B00 !important;
 }
 
 html.house-mode .grid-cell:hover .grid-cell-meta,
 html.house-mode .grid-cell:hover .grid-cell-title,
 html.house-mode .grid-cell:hover .grid-cell-action {
-  color: #120A07 !important;
+  color: #FFF8E7 !important;
 }
 
 html.house-mode .grid-cell-meta {
-  color: #D9480E !important;
+  color: #FF7B00 !important;
 }
 
 html.house-mode .grid-cell-title {
@@ -1788,8 +1788,8 @@ html.house-mode .grid-cell-action {
 
 /* Message Form Portal */
 html.house-mode .portal-form-container {
-  border-color: #FF7B00 !important;
-  background: #1F130E !important;
+  border-color: #B81D24 !important;
+  background: #1F0E13 !important;
 }
 
 html.house-mode .form-label {
@@ -1797,41 +1797,41 @@ html.house-mode .form-label {
 }
 
 html.house-mode .form-input {
-  background: #120A07 !important;
-  border-color: #FF7B00 !important;
+  background: #12080A !important;
+  border-color: #B81D24 !important;
   color: #FFF8E7 !important;
 }
 
 html.house-mode .form-input:focus {
-  background: #1F130E !important;
-  border-color: #D9480E !important;
+  background: #1F0E13 !important;
+  border-color: #FF7B00 !important;
   color: #FFF8E7 !important;
 }
 
 html.house-mode .form-input::placeholder {
-  color: #B26A00 !important;
+  color: #E2A980 !important;
 }
 
 html.house-mode .btn-brutal {
-  background: #D9480E !important;
+  background: #B81D24 !important;
   color: #FFF8E7 !important;
-  border-color: #FF7B00 !important;
+  border-color: #B81D24 !important;
 }
 
 html.house-mode .btn-brutal:hover {
   background: #FF7B00 !important;
   color: #120A07 !important;
-  border-color: #D9480E !important;
+  border-color: #FF7B00 !important;
 }
 
 /* Footer */
 html.house-mode .footer {
-  background: #120A07 !important;
-  border-top-color: #FF7B00 !important;
+  background: #12080A !important;
+  border-top-color: #B81D24 !important;
 }
 
 html.house-mode .footer-copy {
-  color: #FF7B00 !important;
+  color: #E2A980 !important;
 }
 
 html.house-mode .footer-nav-link {
@@ -1839,7 +1839,7 @@ html.house-mode .footer-nav-link {
 }
 
 html.house-mode .footer-nav-link:hover {
-  background: #D9480E !important;
+  background: #B81D24 !important;
   color: #FFF8E7 !important;
 }
 
@@ -2077,12 +2077,12 @@ html.trance-mode .notice-vetting { border-left-color: #FF007F !important; }
 html.trance-mode .portal-cta-tag, html.trance-mode .subsite-header-title, html.trance-mode .dj-card-role, html.trance-mode .disclaimer-tag { color: #00F0FF !important; }
 
 /* House Mode Subsite Theme Overrides */
-html.house-mode .subsite-header-bar { background: #120A07 !important; border-bottom-color: #FF7B00 !important; }
-html.house-mode .portal-cta-box, html.house-mode .dj-card, html.house-mode .disclaimer-box { background: #1F130E !important; border-color: #FF7B00 !important; }
-html.house-mode .dj-link { border-color: #FF7B00 !important; color: #FFF8E7 !important; }
-html.house-mode .dj-link:hover { background: #FF7B00 !important; color: #120A07 !important; }
-html.house-mode .notice-privacy { border-left-color: #FF7B00 !important; }
-html.house-mode .notice-vetting { border-left-color: #D9480E !important; }
+html.house-mode .subsite-header-bar { background: #12080A !important; border-bottom-color: #B81D24 !important; }
+html.house-mode .portal-cta-box, html.house-mode .dj-card, html.house-mode .disclaimer-box { background: #1F0E13 !important; border-color: #B81D24 !important; }
+html.house-mode .dj-link { border-color: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .dj-link:hover { background: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .notice-privacy { border-left-color: #B81D24 !important; }
+html.house-mode .notice-vetting { border-left-color: #FF7B00 !important; }
 html.house-mode .portal-cta-tag, html.house-mode .subsite-header-title, html.house-mode .dj-card-role, html.house-mode .disclaimer-tag { color: #FF7B00 !important; }
 
 /* ==========================================================================
@@ -2435,18 +2435,18 @@ html.trance-mode .reader-body blockquote { border-left-color: #00F0FF !important
 html.trance-mode .reader-body hr { border-top-color: #00F0FF !important; }
 
 /* House Mode */
-html.house-mode .filter-btn { border-color: #FF7B00 !important; color: #FFF8E7 !important; }
-html.house-mode .filter-btn:hover, html.house-mode .filter-btn.active { background: #FF7B00 !important; color: #120A07 !important; }
-html.house-mode .article-card, html.house-mode .reader-content { background: #1F130E !important; border-color: #FF7B00 !important; }
-html.house-mode .article-card:hover { background: #FF7B00 !important; color: #120A07 !important; }
-html.house-mode .article-card:hover .article-card-title, html.house-mode .article-card:hover .article-card-teaser, html.house-mode .article-card:hover .article-card-meta, html.house-mode .article-card:hover .article-card-meta *, html.house-mode .article-card:hover .article-author, html.house-mode .article-card:hover .article-author *, html.house-mode .article-card:hover .article-card-action { color: #120A07 !important; }
-html.house-mode .reader-body blockquote { border-left-color: #FF7B00 !important; }
-html.house-mode .reader-body hr { border-top-color: #FF7B00 !important; }
+html.house-mode .filter-btn { border-color: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .filter-btn:hover, html.house-mode .filter-btn.active { background: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .article-card, html.house-mode .reader-content { background: #1F0E13 !important; border-color: #B81D24 !important; }
+html.house-mode .article-card:hover { background: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .article-card:hover .article-card-title, html.house-mode .article-card:hover .article-card-teaser, html.house-mode .article-card:hover .article-card-meta, html.house-mode .article-card:hover .article-card-meta *, html.house-mode .article-card:hover .article-author, html.house-mode .article-card:hover .article-author *, html.house-mode .article-card:hover .article-card-action { color: #FFF8E7 !important; }
+html.house-mode .reader-body blockquote { border-left-color: #B81D24 !important; }
+html.house-mode .reader-body hr { border-top-color: #B81D24 !important; }
 
 /* Writing Quote Theme Overrides */
 html.disco-mode .writing-preview-quote { border-left-color: #FFC72C !important; color: #FFC72C !important; }
 html.trance-mode .writing-preview-quote { border-left-color: #00F0FF !important; color: #E0F2FE !important; }
-html.house-mode .writing-preview-quote { border-left-color: #FF7B00 !important; color: #FFF8E7 !important; }
+html.house-mode .writing-preview-quote { border-left-color: #B81D24 !important; color: #FFF8E7 !important; }
 
 /* Essay Social Media Share System */
 .essay-share-block {
@@ -2548,10 +2548,10 @@ html.trance-mode .share-btn { border-color: #00F0FF !important; color: #E0F2FE !
 html.trance-mode .share-btn:hover, html.trance-mode .share-btn:focus-visible { background: #00F0FF !important; color: #040814 !important; }
 html.trance-mode .share-toast-msg { border-color: #00F0FF !important; background: #0A1224 !important; color: #00F0FF !important; }
 
-html.house-mode .essay-share-block { border-color: #FF7B00 !important; background: rgba(255, 123, 0, 0.05) !important; }
-html.house-mode .share-btn { border-color: #FF7B00 !important; color: #FFF8E7 !important; }
-html.house-mode .share-btn:hover, html.house-mode .share-btn:focus-visible { background: #FF7B00 !important; color: #120A07 !important; }
-html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background: #1F130E !important; color: #FF7B00 !important; }
+html.house-mode .essay-share-block { border-color: #B81D24 !important; background: rgba(184, 29, 36, 0.06) !important; }
+html.house-mode .share-btn { border-color: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .share-btn:hover, html.house-mode .share-btn:focus-visible { background: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background: #1F0E13 !important; color: #FFF8E7 !important; }
 
 @media (max-width: 600px) {
   .essay-share-buttons {
@@ -2905,11 +2905,11 @@ html.trance-mode .poster-img-container { border-color: #00F0FF !important; }
 html.trance-mode .poster-carousel-wrapper { background: #0A1224 !important; border-color: #00F0FF !important; }
 
 /* House Mode */
-html.house-mode .poster-frame { background: #120A07 !important; border-color: #FF7B00 !important; }
-html.house-mode .poster-frame:hover { border-color: #FFF8E7 !important; box-shadow: 0 0 20px #FF7B00 !important; }
-html.house-mode .poster-badge { color: #FFF8E7 !important; border-bottom-color: #FF7B00 !important; }
-html.house-mode .poster-img-container { border-color: #FF7B00 !important; }
-html.house-mode .poster-carousel-wrapper { background: #1F130E !important; border-color: #FF7B00 !important; }
+html.house-mode .poster-frame { background: #12080A !important; border-color: #B81D24 !important; }
+html.house-mode .poster-frame:hover { border-color: #FF7B00 !important; box-shadow: 0 0 20px rgba(184, 29, 36, 0.6) !important; }
+html.house-mode .poster-badge { color: #FFF8E7 !important; border-bottom-color: #B81D24 !important; }
+html.house-mode .poster-img-container { border-color: #B81D24 !important; }
+html.house-mode .poster-carousel-wrapper { background: #1F0E13 !important; border-color: #B81D24 !important; }
 
 /* Brutalist Contact Form Feedback Banner */
 .contact-feedback-banner {
@@ -2952,7 +2952,7 @@ html.trance-mode .contact-feedback-banner.success {
 }
 
 html.house-mode .contact-feedback-banner.success {
-  background: #120A07;
+  background: #12080A;
   color: #FF7B00;
-  border-color: #FF7B00;
+  border-color: #B81D24;
 }
