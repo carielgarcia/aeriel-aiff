@@ -31,7 +31,7 @@
   <link rel="canonical" id="canonical-link" href="https://aeriel.net/">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=10.0">
+  <link rel="stylesheet" href="style.css?v=11.0">
 </head>
 <body>
 
@@ -662,151 +662,105 @@
       </div>
     </section>
 
-    <!-- Section C: Invitation Archives Carousel -->
+    <!-- Section C: Invitation Archives Gallery -->
     <section class="structural-row" id="ae000x-invitation-archives" aria-labelledby="invitation-archives-title">
       <div class="container">
-        <h2 class="intent-header" id="invitation-archives-title">
-          <span lang="en">INVITATION_ARCHIVES</span>
-          <span lang="es">ARCHIVO_DE_INVITACIONES</span>
-          <span lang="pt">ARQUIVO_DE_CONVITES</span>
-        </h2>
-
-        <div class="poster-carousel-wrapper" role="region" aria-roledescription="carousel" aria-label="Invitation Archives Gallery">
+        
+        <div class="gallery-header-row">
+          <h2 class="intent-header" id="invitation-archives-title">
+            <span lang="en">INVITATION_ARCHIVES</span>
+            <span lang="es">ARCHIVO_DE_INVITACIONES</span>
+            <span lang="pt">ARQUIVO_DE_CONVITES</span>
+          </h2>
           
-          <!-- Carousel Controls Header -->
-          <div class="carousel-controls">
-            <div class="carousel-meta-tag">
-              <span lang="en">[ ARCHIVE_INDEX // 01 — 05 ]</span>
-              <span lang="es">[ ÍNDICE_ARCHIVO // 01 — 05 ]</span>
-              <span lang="pt">[ ÍNDICE_ARQUIVO // 01 — 05 ]</span>
-            </div>
-
-            <div class="carousel-nav-group">
-              <button type="button" class="btn-brutal carousel-btn" onclick="prevPosterSlide()" aria-label="Previous Poster" aria-controls="poster-carousel-track">
-                <span lang="en">← PREV</span>
-                <span lang="es">← ANTERIOR</span>
-                <span lang="pt">← ANTERIOR</span>
-              </button>
-              <div class="carousel-counter" id="carousel-slide-counter" aria-live="polite">01 / 05</div>
-              <button type="button" class="btn-brutal carousel-btn" onclick="nextPosterSlide()" aria-label="Next Poster" aria-controls="poster-carousel-track">
-                <span lang="en">NEXT →</span>
-                <span lang="es">SIGUIENTE →</span>
-                <span lang="pt">SEGUINTE →</span>
-              </button>
+          <div class="gallery-meta-controls">
+            <span class="gallery-counter" id="carousel-slide-counter" aria-live="polite">01 / 05</span>
+            <div class="gallery-nav-buttons">
+              <button type="button" class="btn-brutal gallery-nav-btn" onclick="prevPosterSlide()" aria-label="Previous Poster" aria-controls="poster-carousel-track">←</button>
+              <button type="button" class="btn-brutal gallery-nav-btn" onclick="nextPosterSlide()" aria-label="Next Poster" aria-controls="poster-carousel-track">→</button>
             </div>
           </div>
+        </div>
 
-          <!-- Direct Jump Pagination Indicator Bar -->
-          <div class="carousel-pagination" role="tablist" aria-label="Poster Slide Selectors">
-            <button type="button" class="carousel-dot active" onclick="goToPosterSlide(0)" aria-label="Go to Poster 1: Æ000.1" aria-current="true">01</button>
-            <button type="button" class="carousel-dot" onclick="goToPosterSlide(1)" aria-label="Go to Poster 2: Æ000.2">02</button>
-            <button type="button" class="carousel-dot" onclick="goToPosterSlide(2)" aria-label="Go to Poster 3: Æ000.3">03</button>
-            <button type="button" class="carousel-dot" onclick="goToPosterSlide(3)" aria-label="Go to Poster 4: Æ000.4">04</button>
-            <button type="button" class="carousel-dot" onclick="goToPosterSlide(4)" aria-label="Go to Poster 5: Æ000.5 (TBA)">05</button>
-          </div>
+        <!-- Hairline Animated Progress Bar -->
+        <div class="gallery-progress-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" aria-label="Gallery Scroll Progress">
+          <div class="gallery-progress-bar" id="gallery-progress-bar" style="width: 20%;"></div>
+        </div>
 
-          <!-- Poster Slides Track -->
-          <div class="carousel-track-container" tabindex="0" aria-label="Swipeable posters gallery">
+        <!-- Swipeable Poster Gallery Track -->
+        <div class="gallery-scroll-wrap" role="region" aria-roledescription="carousel" aria-label="Invitation Archives Gallery">
+          <div class="carousel-track-container" id="poster-track-container" tabindex="0" aria-label="Swipeable posters gallery">
             <div class="carousel-track" id="poster-carousel-track">
               
               <!-- Slide 1: Æ000.1 -->
               <div class="carousel-slide active" data-index="0" role="group" aria-roledescription="slide" aria-label="Poster 1 of 5: Æ000.1">
-                <button type="button" class="poster-frame" onclick="openPosterLightbox('./public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)" aria-label="View poster Æ000.1 fullscreen">
-                  <div class="poster-badge">
-                    <span class="poster-badge-title">Æ000.1</span>
-                    <span class="poster-badge-date">2026.04</span>
+                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)" aria-label="Æ000.1 (2026.04) - Open Fullscreen">
+                  <div class="poster-card-top">
+                    <span class="poster-card-title">Æ000.1</span>
+                    <span class="poster-card-date">2026.04</span>
                   </div>
-                  <div class="poster-img-container">
+                  <div class="poster-card-media">
                     <img src="./public/images/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                  <div class="poster-action-bar">
-                    <span lang="en">[ FULL SCREEN ↗ ]</span>
-                    <span lang="es">[ AMPLIAR ↗ ]</span>
-                    <span lang="pt">[ AMPLIAR ↗ ]</span>
                   </div>
                 </button>
               </div>
 
               <!-- Slide 2: Æ000.2 -->
               <div class="carousel-slide" data-index="1" role="group" aria-roledescription="slide" aria-label="Poster 2 of 5: Æ000.2">
-                <button type="button" class="poster-frame" onclick="openPosterLightbox('./public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)" aria-label="View poster Æ000.2 fullscreen">
-                  <div class="poster-badge">
-                    <span class="poster-badge-title">Æ000.2</span>
-                    <span class="poster-badge-date">2026.06</span>
+                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)" aria-label="Æ000.2 (2026.06) - Open Fullscreen">
+                  <div class="poster-card-top">
+                    <span class="poster-card-title">Æ000.2</span>
+                    <span class="poster-card-date">2026.06</span>
                   </div>
-                  <div class="poster-img-container">
+                  <div class="poster-card-media">
                     <img src="./public/images/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                  <div class="poster-action-bar">
-                    <span lang="en">[ FULL SCREEN ↗ ]</span>
-                    <span lang="es">[ AMPLIAR ↗ ]</span>
-                    <span lang="pt">[ AMPLIAR ↗ ]</span>
                   </div>
                 </button>
               </div>
 
               <!-- Slide 3: Æ000.3 -->
               <div class="carousel-slide" data-index="2" role="group" aria-roledescription="slide" aria-label="Poster 3 of 5: Æ000.3">
-                <button type="button" class="poster-frame" onclick="openPosterLightbox('./public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)" aria-label="View poster Æ000.3 fullscreen">
-                  <div class="poster-badge">
-                    <span class="poster-badge-title">Æ000.3</span>
-                    <span class="poster-badge-date">2026.07</span>
+                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)" aria-label="Æ000.3 (2026.07) - Open Fullscreen">
+                  <div class="poster-card-top">
+                    <span class="poster-card-title">Æ000.3</span>
+                    <span class="poster-card-date">2026.07</span>
                   </div>
-                  <div class="poster-img-container">
+                  <div class="poster-card-media">
                     <img src="./public/images/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                  <div class="poster-action-bar">
-                    <span lang="en">[ FULL SCREEN ↗ ]</span>
-                    <span lang="es">[ AMPLIAR ↗ ]</span>
-                    <span lang="pt">[ AMPLIAR ↗ ]</span>
                   </div>
                 </button>
               </div>
 
               <!-- Slide 4: Æ000.4 -->
               <div class="carousel-slide" data-index="3" role="group" aria-roledescription="slide" aria-label="Poster 4 of 5: Æ000.4">
-                <button type="button" class="poster-frame" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4.jpg', 'Æ000.4', 3)" aria-label="View poster Æ000.4 fullscreen">
-                  <div class="poster-badge">
-                    <span class="poster-badge-title">Æ000.4</span>
-                    <span class="poster-badge-date">2026.08</span>
+                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4.jpg', 'Æ000.4', 3)" aria-label="Æ000.4 (2026.08) - Open Fullscreen">
+                  <div class="poster-card-top">
+                    <span class="poster-card-title">Æ000.4</span>
+                    <span class="poster-card-date">2026.08</span>
                   </div>
-                  <div class="poster-img-container">
+                  <div class="poster-card-media">
                     <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                  <div class="poster-action-bar">
-                    <span lang="en">[ FULL SCREEN ↗ ]</span>
-                    <span lang="es">[ AMPLIAR ↗ ]</span>
-                    <span lang="pt">[ AMPLIAR ↗ ]</span>
                   </div>
                 </button>
               </div>
 
-              <!-- Slide 5: Æ000.5 (Empty Frame) -->
+              <!-- Slide 5: Æ000.5 (Upcoming Slot) -->
               <div class="carousel-slide" data-index="4" role="group" aria-roledescription="slide" aria-label="Poster 5 of 5: Æ000.5 (Upcoming)">
-                <div class="poster-frame poster-frame-empty" tabindex="-1">
-                  <div class="poster-badge">
-                    <span class="poster-badge-title">Æ000.5</span>
-                    <span class="poster-badge-date">TBA</span>
+                <div class="poster-card poster-card-empty" tabindex="-1">
+                  <div class="poster-card-top">
+                    <span class="poster-card-title">Æ000.5</span>
+                    <span class="poster-card-date">TBA</span>
                   </div>
-                  <div class="poster-img-container poster-empty-container">
-                    <div class="empty-frame-text">
-                      <span lang="en">[ UPCOMING EDITION ]</span>
-                      <span lang="es">[ PRÓXIMA EDICIÓN ]</span>
-                      <span lang="pt">[ PRÓXIMA EDIÇÃO ]</span>
-                    </div>
-                  </div>
-                  <div class="poster-action-bar">
-                    <span lang="en">[ RESERVED SLOT ]</span>
-                    <span lang="es">[ ESPACIO RESERVADO ]</span>
-                    <span lang="pt">[ ESPAÇO RESERVADO ]</span>
+                  <div class="poster-card-media poster-empty-media">
+                    <span class="empty-media-text">[ 05 // UPCOMING ]</span>
                   </div>
                 </div>
               </div>
 
             </div>
           </div>
-
         </div>
+
       </div>
     </section>
 
@@ -2200,22 +2154,17 @@
 
     function updatePosterCarousel() {
       const counter = document.getElementById('carousel-slide-counter');
-      const dots = document.querySelectorAll('.carousel-dot');
+      const progressBar = document.getElementById('gallery-progress-bar');
       const slides = document.querySelectorAll('#poster-carousel-track .carousel-slide');
 
       if (counter) {
         counter.textContent = `0${currentPosterIndex + 1} / 0${totalPosterSlides}`;
       }
 
-      dots.forEach((dot, idx) => {
-        if (idx === currentPosterIndex) {
-          dot.classList.add('active');
-          dot.setAttribute('aria-current', 'true');
-        } else {
-          dot.classList.remove('active');
-          dot.removeAttribute('aria-current');
-        }
-      });
+      if (progressBar) {
+        const pct = ((currentPosterIndex + 1) / totalPosterSlides) * 100;
+        progressBar.style.width = `${pct}%`;
+      }
 
       slides.forEach((slide, idx) => {
         if (idx === currentPosterIndex) {
@@ -2266,35 +2215,45 @@
     let lightboxTouchEndX = 0;
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Synchronize carousel active state on native touch swipe / track scroll
+      // Synchronize carousel active state & hairline progress on native touch swipe / track scroll
       const trackContainer = document.querySelector('.carousel-track-container');
       if (trackContainer) {
-        let scrollSyncTimer;
-        trackContainer.addEventListener('scroll', () => {
-          clearTimeout(scrollSyncTimer);
-          scrollSyncTimer = setTimeout(() => {
-            const slides = document.querySelectorAll('#poster-carousel-track .carousel-slide');
-            const containerRect = trackContainer.getBoundingClientRect();
-            const containerCenter = containerRect.left + containerRect.width / 2;
+        let isScrolling = false;
 
-            let closestIdx = 0;
-            let minDistance = Infinity;
+        const updateScrollPosition = () => {
+          const slides = document.querySelectorAll('#poster-carousel-track .carousel-slide');
+          if (!slides.length) return;
 
-            slides.forEach((slide, idx) => {
-              const slideRect = slide.getBoundingClientRect();
-              const slideCenter = slideRect.left + slideRect.width / 2;
-              const dist = Math.abs(containerCenter - slideCenter);
-              if (dist < minDistance) {
-                minDistance = dist;
-                closestIdx = idx;
-              }
-            });
+          const containerRect = trackContainer.getBoundingClientRect();
+          const containerCenter = containerRect.left + containerRect.width / 2;
 
-            if (closestIdx !== currentPosterIndex) {
-              currentPosterIndex = closestIdx;
-              updatePosterCarousel();
+          let closestIdx = 0;
+          let minDistance = Infinity;
+
+          slides.forEach((slide, idx) => {
+            const slideRect = slide.getBoundingClientRect();
+            const slideCenter = slideRect.left + slideRect.width / 2;
+            const dist = Math.abs(containerCenter - slideCenter);
+            if (dist < minDistance) {
+              minDistance = dist;
+              closestIdx = idx;
             }
-          }, 60);
+          });
+
+          if (closestIdx !== currentPosterIndex) {
+            currentPosterIndex = closestIdx;
+            updatePosterCarousel();
+          }
+        };
+
+        trackContainer.addEventListener('scroll', () => {
+          if (!isScrolling) {
+            requestAnimationFrame(() => {
+              updateScrollPosition();
+              isScrolling = false;
+            });
+            isScrolling = true;
+          }
         }, { passive: true });
       }
 
