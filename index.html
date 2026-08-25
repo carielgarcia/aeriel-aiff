@@ -680,7 +680,7 @@
               <span lang="es">← ANTERIOR</span>
               <span lang="pt">← ANTERIOR</span>
             </button>
-            <div class="carousel-counter" id="carousel-slide-counter">01 / 03</div>
+            <div class="carousel-counter" id="carousel-slide-counter">01 / 05</div>
             <button class="btn-brutal carousel-btn" onclick="nextPosterSlide()" aria-label="Next Poster">
               <span lang="en">NEXT →</span>
               <span lang="es">SIGUIENTE →</span>
@@ -746,18 +746,19 @@
                 </div>
               </div>
 
-              <!-- Slide 4: Æ000.4 (Empty Frame) -->
-              <div class="carousel-slide" data-index="3">
-                <div class="poster-frame poster-frame-empty">
+              <!-- Slide 4: Æ000.4 -->
+              <div class="carousel-slide" data-index="3" onpointerdown="handlePosterPointerDown(event)" onclick="handlePosterTap(event, './public/images/posters/poster_ae000_4.jpg', 'Æ000.4', 3)">
+                <div class="poster-frame">
                   <div class="poster-badge">
                     <span>Æ000.4</span>
-                    <span>TBA</span>
+                    <span>2026.08</span>
                   </div>
-                  <div class="poster-img-container poster-empty-container">
-                    <div class="empty-frame-text">
-                      <span lang="en">[EMPTY FRAME]</span>
-                      <span lang="es">[MARCO VACÍO]</span>
-                      <span lang="pt">[QUADRO VAZIO]</span>
+                  <div class="poster-img-container">
+                    <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster" class="poster-img" loading="lazy">
+                    <div class="poster-overlay-hint">
+                      <span lang="en">FULL SCREEN ↗</span>
+                      <span lang="es">VER ↗</span>
+                      <span lang="pt">VER ↗</span>
                     </div>
                   </div>
                 </div>
@@ -2103,7 +2104,7 @@
     <div class="lightbox-header">
       <span id="lightbox-title" class="lightbox-title">Æ000.1</span>
       <div class="lightbox-header-actions">
-        <span id="lightbox-counter" class="lightbox-counter">01 / 03</span>
+        <span id="lightbox-counter" class="lightbox-counter">01 / 04</span>
         <button class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(); if (event) event.stopPropagation();" aria-label="Close Poster Lightbox">[× CLOSE]</button>
       </div>
     </div>
@@ -2170,7 +2171,8 @@
     const posterGallery = [
       { src: './public/images/posters/poster_ae000_1.jpg', title: 'Æ000.1' },
       { src: './public/images/posters/poster_ae000_2.jpg', title: 'Æ000.2' },
-      { src: './public/images/posters/poster_ae000_3.jpg', title: 'Æ000.3' }
+      { src: './public/images/posters/poster_ae000_3.jpg', title: 'Æ000.3' },
+      { src: './public/images/posters/poster_ae000_4.jpg', title: 'Æ000.4' }
     ];
     let currentLightboxIndex = 0;
 
