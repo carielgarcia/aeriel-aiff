@@ -2574,7 +2574,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
 }
 
 /* ==========================================================================
-   POSTER CAROUSEL & REACTIVE FRAME COMPONENTS (MINIATURE 5-ITEM HORIZONTAL STRIP)
+   POSTER CAROUSEL & REACTIVE FRAME COMPONENTS (ARCHIVE EXHIBITION GALLERY)
    ========================================================================== */
 
 .poster-carousel-wrapper {
@@ -2585,6 +2585,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  box-sizing: border-box;
 }
 
 .carousel-controls {
@@ -2593,90 +2594,167 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   align-items: center;
   border-bottom: var(--border-thin);
   padding-bottom: var(--spacing-xs);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.carousel-meta-tag {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.carousel-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .carousel-counter {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 900;
   letter-spacing: 2px;
   color: var(--text-primary);
+  min-width: 80px;
+  text-align: center;
 }
 
+/* Pagination Segmented Indicator Bar */
+.carousel-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--border-color);
+  margin-bottom: 4px;
+}
+
+.carousel-dot {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 0 !important;
+  transition: all 0.15s ease;
+  min-height: 34px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-dot:hover,
+.carousel-dot.active {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+
+/* Scrollable Gallery Track with CSS Scroll-Snap */
 .carousel-track-container {
   overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
   width: 100%;
-  padding: 8px 0;
+  padding: 8px 4px 16px 4px;
   scrollbar-width: thin;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
 .carousel-track {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   justify-content: flex-start;
   align-items: stretch;
   width: max-content;
   min-width: 100%;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .carousel-slide {
-  flex: 0 0 150px !important; /* Hard-capped miniature width so 5 fit horizontally */
-  width: 150px !important;
-  max-width: 150px !important;
+  flex: 0 0 260px;
+  width: 260px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-/* Miniature Reactive Brutalist Frame around Poster */
+/* Accessible Interactive Poster Frame */
 .poster-frame {
   position: relative;
-  border: 2px solid var(--text-primary);
+  border: 2px solid var(--border-color);
   background: var(--bg-primary);
-  padding: 8px;
+  padding: 10px;
   cursor: pointer;
-  width: 150px !important;
-  max-width: 150px !important;
+  width: 100%;
   box-sizing: border-box;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   height: 100%;
+  text-align: left;
+  color: var(--text-primary);
+  border-radius: 0 !important;
 }
 
-/* Hover Accent Reaction */
-.poster-frame:not(.poster-frame-empty):hover {
+.poster-frame:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+}
+
+.poster-frame:hover {
   transform: translateY(-4px);
-  border-color: var(--text-primary) !important;
-  box-shadow: 0 6px 20px var(--text-primary);
+  border-color: var(--text-primary);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
 }
 
 .poster-badge {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 900;
+  font-size: 0.8rem;
+  font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 4px;
+  padding-bottom: 6px;
+}
+
+.poster-badge-title {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+}
+
+.poster-badge-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .poster-img-container {
-  border: 1px solid var(--text-primary);
+  border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
   background: #000000;
   width: 100%;
-  height: 205px !important; /* Fixed miniature frame height */
-  max-height: 205px !important;
+  aspect-ratio: 3 / 4.2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2684,45 +2762,39 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
 }
 
 .poster-img {
-  max-width: 100% !important;
-  max-height: 100% !important;
-  width: auto !important;
-  height: auto !important;
+  width: 100%;
+  height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 0.3s ease;
 }
 
 .poster-frame:hover .poster-img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
-.poster-overlay-hint {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.90);
-  color: #FFFFFF;
+.poster-action-bar {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  padding: 6px 4px;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  pointer-events: none;
-  border-top: 1px solid var(--text-primary);
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
 }
 
-.poster-frame:hover .poster-overlay-hint {
-  opacity: 1;
+.poster-frame:hover .poster-action-bar {
+  color: var(--text-primary);
 }
 
 /* Empty Frame Styling for Reserved Poster Slots */
 .poster-frame-empty {
   border: 2px dashed var(--border-color) !important;
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: default !important;
 }
 
@@ -2732,18 +2804,20 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
 }
 
 .poster-empty-container {
-  background: rgba(255, 255, 255, 0.03) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
   border: 1px dashed var(--border-color) !important;
   flex-direction: column;
+  gap: 8px;
+  padding: 16px;
 }
 
 .empty-frame-text {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 800;
   color: var(--text-muted);
   text-align: center;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
 /* Lightbox Fullscreen Render Overlay */
@@ -2753,13 +2827,13 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.96);
   z-index: 10000;
   display: none;
   flex-direction: column;
   box-sizing: border-box;
   padding: var(--spacing-md);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
 }
 
 .lightbox-header {
@@ -2806,6 +2880,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   position: relative;
   z-index: 10015;
   transition: all 0.2s ease;
+  min-height: 44px;
 }
 
 .lightbox-close-btn:hover {
@@ -2833,15 +2908,15 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
 }
 
 .lightbox-content img {
-  max-width: 80vw;
+  max-width: 82vw;
   max-height: 82vh;
   object-fit: contain;
-  border: 3px solid #FFFFFF;
+  border: 2px solid #FFFFFF;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
 }
 
 .lightbox-nav-btn {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   color: #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.4);
   font-family: var(--font-mono);
@@ -2878,6 +2953,82 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   transform: translateY(-2px);
 }
 
+/* Mobile Responsive Gallery Media Queries */
+@media (max-width: 768px) {
+  .poster-carousel-wrapper {
+    padding: 14px 12px;
+    gap: 12px;
+  }
+
+  .carousel-meta-tag {
+    display: none;
+  }
+
+  .carousel-controls {
+    justify-content: space-between;
+    padding-bottom: 8px;
+  }
+
+  .carousel-slide {
+    flex: 0 0 calc(84vw - 24px);
+    width: calc(84vw - 24px);
+    max-width: 320px;
+    scroll-snap-align: center;
+  }
+
+  .carousel-track-container {
+    padding: 6px 12px 14px 12px;
+    scroll-padding: 0 12px;
+  }
+
+  .poster-img-container {
+    aspect-ratio: 3 / 4.2;
+    max-height: 380px;
+  }
+
+  .poster-frame {
+    padding: 10px;
+  }
+
+  .poster-lightbox {
+    padding: 12px;
+  }
+
+  .lightbox-header {
+    margin-bottom: 12px;
+  }
+
+  .lightbox-title {
+    font-size: 1.2rem;
+  }
+
+  .lightbox-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10010;
+    width: 44px;
+    height: 56px;
+    margin: 0;
+    font-size: 1.8rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .lightbox-prev-btn {
+    left: 8px;
+  }
+
+  .lightbox-next-btn {
+    right: 8px;
+  }
+
+  .lightbox-content img {
+    max-width: 94vw;
+    max-height: 78vh;
+  }
+}
+
 /* Theme Frame Overrides for Poster Carousel */
 /* Default (Black & White) */
 html:not(.trance-mode):not(.house-mode):not(.disco-mode) .poster-frame {
@@ -2897,6 +3048,9 @@ html.disco-mode .poster-frame:hover { border-color: #FFC72C !important; box-shad
 html.disco-mode .poster-badge { color: #FFC72C !important; border-bottom-color: #D94E1F !important; }
 html.disco-mode .poster-img-container { border-color: #D94E1F !important; }
 html.disco-mode .poster-carousel-wrapper { background: #260734 !important; border-color: #D94E1F !important; }
+html.disco-mode .carousel-dot { border-color: #D94E1F !important; color: #FF9F1C !important; }
+html.disco-mode .carousel-dot:hover, html.disco-mode .carousel-dot.active { background: #FFC72C !important; color: #170421 !important; border-color: #FFC72C !important; }
+html.disco-mode .poster-action-bar { border-top-color: #D94E1F !important; color: #FF9F1C !important; }
 
 /* Trance Mode */
 html.trance-mode .poster-frame { background: #040814 !important; border-color: #00F0FF !important; }
@@ -2904,6 +3058,9 @@ html.trance-mode .poster-frame:hover { border-color: #FF007F !important; box-sha
 html.trance-mode .poster-badge { color: #00F0FF !important; border-bottom-color: #00F0FF !important; }
 html.trance-mode .poster-img-container { border-color: #00F0FF !important; }
 html.trance-mode .poster-carousel-wrapper { background: #0A1224 !important; border-color: #00F0FF !important; }
+html.trance-mode .carousel-dot { border-color: #00F0FF !important; color: #E0F2FE !important; }
+html.trance-mode .carousel-dot:hover, html.trance-mode .carousel-dot.active { background: #00F0FF !important; color: #040814 !important; border-color: #00F0FF !important; }
+html.trance-mode .poster-action-bar { border-top-color: #00F0FF !important; color: #00F0FF !important; }
 
 /* House Mode */
 html.house-mode .poster-frame { background: #12080A !important; border-color: #B81D24 !important; }
@@ -2911,6 +3068,9 @@ html.house-mode .poster-frame:hover { border-color: #FF7B00 !important; box-shad
 html.house-mode .poster-badge { color: #FFF8E7 !important; border-bottom-color: #B81D24 !important; }
 html.house-mode .poster-img-container { border-color: #B81D24 !important; }
 html.house-mode .poster-carousel-wrapper { background: #1F0E13 !important; border-color: #B81D24 !important; }
+html.house-mode .carousel-dot { border-color: #B81D24 !important; color: #E2A980 !important; }
+html.house-mode .carousel-dot:hover, html.house-mode .carousel-dot.active { background: #B81D24 !important; color: #FFF8E7 !important; border-color: #B81D24 !important; }
+html.house-mode .poster-action-bar { border-top-color: #B81D24 !important; color: #E2A980 !important; }
 
 /* Brutalist Contact Form Feedback Banner */
 .contact-feedback-banner {
