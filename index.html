@@ -31,7 +31,7 @@
   <link rel="canonical" id="canonical-link" href="https://aeriel.net/">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=11.0">
+  <link rel="stylesheet" href="style.css?v=12.0">
 </head>
 <body>
 
@@ -2080,20 +2080,16 @@
     <div class="lightbox-header">
       <span id="lightbox-title" class="lightbox-title">Æ000.1</span>
       <div class="lightbox-header-actions">
+        <button type="button" class="btn-brutal lightbox-header-nav-btn" onclick="navigatePosterLightbox(-1, event)" aria-label="Previous Poster">←</button>
         <span id="lightbox-counter" class="lightbox-counter">01 / 04</span>
-        <button class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(); if (event) event.stopPropagation();" aria-label="Close Poster Lightbox">[× CLOSE]</button>
+        <button type="button" class="btn-brutal lightbox-header-nav-btn" onclick="navigatePosterLightbox(1, event)" aria-label="Next Poster">→</button>
+        <button type="button" class="btn-brutal lightbox-close-btn" onclick="closePosterLightbox(); if (event) event.stopPropagation();" aria-label="Close Poster Lightbox">[× CLOSE]</button>
       </div>
     </div>
     <div class="lightbox-body">
-      <button class="lightbox-nav-btn lightbox-prev-btn" id="lightbox-prev-btn" onclick="navigatePosterLightbox(-1, event)" aria-label="Previous Image">
-        <span class="lightbox-arrow">‹</span>
-      </button>
       <div class="lightbox-content">
         <img id="lightbox-img" src="" alt="Full Screen Poster">
       </div>
-      <button class="lightbox-nav-btn lightbox-next-btn" id="lightbox-next-btn" onclick="navigatePosterLightbox(1, event)" aria-label="Next Image">
-        <span class="lightbox-arrow">›</span>
-      </button>
     </div>
   </div>
 
@@ -2463,7 +2459,7 @@
 
     function closePosterLightbox(event, fromPopState = false) {
       if (event && event.target) {
-        if (event.target.closest('.lightbox-content img') || event.target.closest('.lightbox-nav-btn')) {
+        if (event.target.closest('.lightbox-content img') || event.target.closest('.lightbox-header')) {
           return;
         }
       }
