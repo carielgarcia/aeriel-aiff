@@ -468,11 +468,32 @@
   <script>
     function copyAddress() {
       const address = "Diagonal Paraguay 390 depto 145";
-      navigator.clipboard.writeText(address).then(() => {
-        showToast("📍 DIRECCIÓN COPIADA AL PORTAPAPELAS");
-      }).catch(() => {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(address).then(() => {
+          showToast("📍 DIRECCIÓN COPIADA AL PORTAPAPELES");
+        }).catch(() => {
+          fallbackCopyAddress(address);
+        });
+      } else {
+        fallbackCopyAddress(address);
+      }
+    }
+
+    function fallbackCopyAddress(text) {
+      try {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        showToast("📍 DIRECCIÓN COPIADA AL PORTAPAPELES");
+      } catch (e) {
         showToast("📍 DIAGONAL PARAGUAY 390 DEPTO 145");
-      });
+      }
     }
 
     function showToast(text) {

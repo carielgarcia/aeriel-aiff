@@ -1241,8 +1241,9 @@ html.disco-mode .logo-block {
   border-right-color: #D94E1F !important;
 }
 
-html.disco-mode .nav-item {
-  border-left-color: #D94E1F !important;
+html.disco-mode #main-navigation,
+html.disco-mode #main-navigation .nav-link {
+  border-color: #D94E1F !important;
 }
 
 html.disco-mode .nav-link {
@@ -1427,8 +1428,9 @@ html.trance-mode .logo-block {
   border-right-color: #00F0FF !important;
 }
 
-html.trance-mode .nav-item {
-  border-left-color: #00F0FF !important;
+html.trance-mode #main-navigation,
+html.trance-mode #main-navigation .nav-link {
+  border-color: #00F0FF !important;
 }
 
 html.trance-mode .nav-link {
@@ -1612,8 +1614,9 @@ html.house-mode .logo-block {
   border-right-color: #B81D24 !important;
 }
 
-html.house-mode .nav-item {
-  border-left-color: #B81D24 !important;
+html.house-mode #main-navigation,
+html.house-mode #main-navigation .nav-link {
+  border-color: #B81D24 !important;
 }
 
 html.house-mode .nav-link {
@@ -2100,6 +2103,7 @@ body[data-view="writing"] #writing-subsite {
   color: var(--text-muted);
   font-weight: 700;
   flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 .article-card-title {
@@ -2129,6 +2133,12 @@ body[data-view="writing"] #writing-subsite {
   cursor: pointer;
 }
 
+.dj-card-clickable:focus-visible,
+.article-card:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 4px;
+}
+
 .dj-card-title-lg {
   font-size: 1.4rem;
   font-weight: 900;
@@ -2140,10 +2150,6 @@ body[data-view="writing"] #writing-subsite {
   font-style: italic;
   font-size: 0.95rem;
   margin: 10px 0;
-}
-
-.article-card-meta {
-  margin-top: 10px;
 }
 
 .dj-links-auto {
