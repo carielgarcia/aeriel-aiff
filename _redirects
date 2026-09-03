@@ -1,22 +1,8 @@
-/writing/20260728-harm-reduction          /#writing-subsite?essay=essay-harm-reduction            302
-/writing/20260728-harm-reduction/         /#writing-subsite?essay=essay-harm-reduction            302
-/writing/20260728-emancipation-of-desire  /#writing-subsite?essay=essay-emancipation-desire        302
-/writing/20260728-emancipation-of-desire/ /#writing-subsite?essay=essay-emancipation-desire        302
-/writing/20260824-inevitable-nightlife-economy  /#writing-subsite?essay=essay-nightlife-economy      302
-/writing/20260824-inevitable-nightlife-economy/ /#writing-subsite?essay=essay-nightlife-economy      302
-/ensayos/20260728-harm-reduction          /#writing-subsite?lang=es&essay=essay-harm-reduction    302
-/ensayos/20260728-harm-reduction/         /#writing-subsite?lang=es&essay=essay-harm-reduction    302
-/ensayos/20260728-emancipation-of-desire  /#writing-subsite?lang=es&essay=essay-emancipation-desire 302
-/ensayos/20260728-emancipation-of-desire/ /#writing-subsite?lang=es&essay=essay-emancipation-desire 302
-/ensayos/20260824-inevitable-nightlife-economy  /#writing-subsite?lang=es&essay=essay-nightlife-economy 302
-/ensayos/20260824-inevitable-nightlife-economy/ /#writing-subsite?lang=es&essay=essay-nightlife-economy 302
-/writing                                  /#writing-subsite                                       302
-/writing/                                 /#writing-subsite                                       302
-/WRITING                                  /#writing-subsite                                       302
-/WRITING/                                 /#writing-subsite                                       302
-/ae000x/es                                /#ae000x-subsite?lang=es                                302
-/ae000x/es/                               /#ae000x-subsite?lang=es                                302
-/ensayos                                  /#writing-subsite?lang=es                                302
-/ensayos/                                 /#writing-subsite?lang=es                                302
-/ae000x                                   /#ae000x-subsite                                        302
-/ae000x/                                  /#ae000x-subsite                                        302
+# Case normalization redirects
+/WRITING          /writing          301
+/WRITING/         /writing/         301
+/ENSAYOS          /ensayos          301
+/ENSAYOS/         /ensayos/         301
+/AE000X           /ae000x           301
+/AE000X/          /ae000x/          301
+
