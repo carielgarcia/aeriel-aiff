@@ -1,0 +1,104 @@
+# ÆRIEL Project Website — Operational Rules & Essay Publishing Guidelines
+
+Whenever the user submits a new essay, updates an existing article, or modifies the writing platform, adhere to the following strict operational protocol:
+
+---
+
+## 1. Editorial & Formatting Protocol
+- Act like a dedicated editorial engine for ÆRIEL.
+- Confirm article structure and typography before publishing.
+- **Shortform Teasers / Intros**:
+  - Write concise, assertive, and politically grounded intros for the preview boxes.
+  - Avoid tired formulaic starters (e.g., *"An inquiry into..."*, *"An examination of..."*).
+  - Avoid *"not X but Y"* constructions. Make assertive statements (e.g., *"The material conditions of nightlife are inescapable. Free admission is a community cross-subsidy that demands collective economic responsibility."*).
+- **Tags**: Propose 3 curated tags per essay and confirm with the user.
+- **Languages**: Every essay must be maintained in **all three languages** (English, Spanish, Portuguese).
+- **Chronology**: All essays in the homepage WRITING grid and the subsite `#articles-index` must always be ordered chronologically from **latest to oldest**.
+
+---
+
+## 2. Mandatory Open Graph & Link Preview Metadata
+Every essay must produce a rich, informative preview when its link is pasted into WhatsApp, Instagram, Telegram, iMessage, Twitter/X, Facebook, etc.
+
+The preview must:
+1. **Identify the link as an essay by ÆRIEL** in the title (`[ESSAY TITLE] — Essay by ÆRIEL` / `[TÍTULO] — Ensayo por ÆRIEL`).
+2. **Contain the exact short intro from the main site box** in the description (`og:description` and `twitter:description`).
+3. **Include the brand social image**: `https://aeriel.net/og-image.jpg` (1024x1024 JPEG).
+
+### Static Permalink Structure
+For every essay, create or update standalone static files in both language routes:
+- `writing/[YYYYMMDD]-[slug]/index.html` (English / Global)
+- `ensayos/[YYYYMMDD]-[slug]/index.html` (Spanish)
+
+### Required `<head>` Structure for Essay Permalinks:
+```html
+<!DOCTYPE html>
+<html lang="en"> <!-- or "es" -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[ESSAY TITLE] — Essay by ÆRIEL</title>
+  <meta name="description" content="[EXACT SHORT INTRO FROM MAIN SITE BOX]">
+  <meta name="author" content="ÆRIEL">
+
+  <!-- Open Graph / WhatsApp / Facebook / Instagram -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ÆRIEL">
+  <meta property="og:title" content="[ESSAY TITLE] — Essay by ÆRIEL">
+  <meta property="og:description" content="[EXACT SHORT INTRO FROM MAIN SITE BOX]">
+  <meta property="og:url" content="https://aeriel.net/writing/[YYYYMMDD]-[slug]">
+  <meta property="og:image" content="https://aeriel.net/og-image.jpg">
+  <meta property="og:image:secure_url" content="https://aeriel.net/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta property="og:locale" content="en_US"> <!-- or "es_LA" -->
+  <meta property="article:author" content="ÆRIEL">
+  <meta property="article:section" content="Nightlife Politics & Cultural Theory">
+
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="[ESSAY TITLE] — Essay by ÆRIEL">
+  <meta name="twitter:description" content="[EXACT SHORT INTRO FROM MAIN SITE BOX]">
+  <meta name="twitter:image" content="https://aeriel.net/og-image.jpg">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://aeriel.net/writing/[YYYYMMDD]-[slug]">
+  <link rel="image_src" href="https://aeriel.net/og-image.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
+
+  <!-- Instant Client-Side SPA Reader Navigation -->
+  <script>
+    window.location.replace('/#writing-subsite?essay=[essay-id]');
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=/#writing-subsite?essay=[essay-id]">
+  </noscript>
+</head>
+<body style="margin:0;padding:2rem;background:#0A0A0A;color:#FFFFFF;font-family:monospace;">
+  <main style="max-width:640px;margin:2rem auto;border:2px solid #FFFFFF;padding:1.5rem;">
+    <p style="font-size:0.8rem;letter-spacing:1px;margin-bottom:0.5rem;color:#888;">[ ESSAY // CRITICAL THEORY ]</p>
+    <h1 style="font-size:1.4rem;line-height:1.2;margin:0 0 1rem 0;">[ESSAY TITLE]</h1>
+    <p style="font-size:0.9rem;color:#AAA;margin-bottom:1rem;">BY ÆRIEL</p>
+    <p style="font-size:1rem;line-height:1.6;margin-bottom:1.5rem;">[EXACT SHORT INTRO FROM MAIN SITE BOX]</p>
+    <p><a href="/#writing-subsite?essay=[essay-id]" style="color:#FFF;font-weight:bold;text-decoration:underline;">[ OPEN FULL ESSAY IN READER ]</a></p>
+  </main>
+</body>
+</html>
+```
+
+---
+
+## 3. Codebase Synchronization Checklist for Every Addition
+1. **`index.html` (SPA Router & Storage)**:
+   - Add slug to `ESSAY_SLUGS` and `SLUG_TO_ESSAY_ID`.
+   - Add short intro in EN, ES, PT to `ESSAY_TEASERS`.
+   - Update `updatePageTitle()` so browser in-app navigation updates `<title>` and `og:*` tags.
+   - Update `shareEssay()` to share `${titleText} — ${essayLabel}`.
+   - Insert new teaser card into `#writing .dj-grid` (latest-to-oldest).
+   - Insert new card into `#articles-index` (latest-to-oldest).
+   - Insert full article content into `#article-reader-container` across `<div lang="en">`, `<div lang="es">`, `<div lang="pt">`.
+2. **`_redirects`**:
+   - **Never** add HTTP 302 redirects to `#` hash routes for essay permalinks. Web scrapers strip fragments and drop back to the homepage. Allow Netlify/hosting to serve the static `index.html` files with status 200 OK.
+3. **Version Control**:
+   - Verify with `git diff`, commit with conventional commit format, and push to `origin/main`.
