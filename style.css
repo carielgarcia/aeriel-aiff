@@ -2332,12 +2332,64 @@ body[data-view="writing"] #writing-subsite {
   letter-spacing: -0.03em;
 }
 
+/* Highlight Box / Practical Guidelines Box */
+.reader-highlight-box {
+  border: var(--border-thick);
+  background: var(--bg-secondary);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+}
+
+.reader-highlight-box .highlight-box-title {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: var(--border-thin);
+}
+
+.reader-highlight-box p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+}
+
+.reader-highlight-box ul {
+  list-style: none;
+  padding-left: 0;
+  margin: var(--spacing-sm) 0 0 0;
+}
+
+.reader-highlight-box li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+  font-size: 0.98rem;
+}
+
+.reader-highlight-box li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  font-family: var(--font-mono);
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
 @media (max-width: 768px) {
   .reader-content {
     padding: var(--spacing-md);
   }
   .reader-title {
     font-size: 1.8rem;
+  }
+  .reader-highlight-box {
+    padding: var(--spacing-md);
   }
 }
 
@@ -2350,6 +2402,8 @@ html.disco-mode .article-card:hover { background: #D94E1F !important; color: #17
 html.disco-mode .article-card:hover .article-card-title, html.disco-mode .article-card:hover .article-card-teaser, html.disco-mode .article-card:hover .article-card-meta, html.disco-mode .article-card:hover .article-card-meta *, html.disco-mode .article-card:hover .article-author, html.disco-mode .article-card:hover .article-author *, html.disco-mode .article-card:hover .article-card-action { color: #170421 !important; }
 html.disco-mode .reader-body blockquote { border-left-color: #FFC72C !important; }
 html.disco-mode .reader-body hr { border-top-color: #D94E1F !important; }
+html.disco-mode .reader-highlight-box { background: #1f052b !important; border-color: #D94E1F !important; }
+html.disco-mode .reader-highlight-box .highlight-box-title { border-bottom-color: #D94E1F !important; color: #FFC72C !important; }
 
 /* Trance Mode */
 html.trance-mode .filter-btn { border-color: #00F0FF !important; color: #E0F2FE !important; }
@@ -2359,6 +2413,8 @@ html.trance-mode .article-card:hover { background: #00F0FF !important; color: #0
 html.trance-mode .article-card:hover .article-card-title, html.trance-mode .article-card:hover .article-card-teaser, html.trance-mode .article-card:hover .article-card-meta, html.trance-mode .article-card:hover .article-card-meta *, html.trance-mode .article-card:hover .article-author, html.trance-mode .article-card:hover .article-author *, html.trance-mode .article-card:hover .article-card-action { color: #040814 !important; }
 html.trance-mode .reader-body blockquote { border-left-color: #00F0FF !important; }
 html.trance-mode .reader-body hr { border-top-color: #00F0FF !important; }
+html.trance-mode .reader-highlight-box { background: #070e1b !important; border-color: #00F0FF !important; }
+html.trance-mode .reader-highlight-box .highlight-box-title { border-bottom-color: #00F0FF !important; color: #00F0FF !important; }
 
 /* House Mode */
 html.house-mode .filter-btn { border-color: #B81D24 !important; color: #FFF8E7 !important; }
@@ -2368,6 +2424,8 @@ html.house-mode .article-card:hover { background: #B81D24 !important; color: #FF
 html.house-mode .article-card:hover .article-card-title, html.house-mode .article-card:hover .article-card-teaser, html.house-mode .article-card:hover .article-card-meta, html.house-mode .article-card:hover .article-card-meta *, html.house-mode .article-card:hover .article-author, html.house-mode .article-card:hover .article-author *, html.house-mode .article-card:hover .article-card-action { color: #FFF8E7 !important; }
 html.house-mode .reader-body blockquote { border-left-color: #B81D24 !important; }
 html.house-mode .reader-body hr { border-top-color: #B81D24 !important; }
+html.house-mode .reader-highlight-box { background: #170a0e !important; border-color: #B81D24 !important; }
+html.house-mode .reader-highlight-box .highlight-box-title { border-bottom-color: #B81D24 !important; color: #FFF8E7 !important; }
 
 /* Writing Quote Theme Overrides */
 html.disco-mode .writing-preview-quote { border-left-color: #FFC72C !important; color: #FFC72C !important; }
