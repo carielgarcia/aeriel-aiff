@@ -102,3 +102,47 @@ For every essay, create or update standalone static files in both language route
    - **Never** add HTTP 302 redirects to `#` hash routes for essay permalinks. Web scrapers strip fragments and drop back to the homepage. Allow Netlify/hosting to serve the static `index.html` files with status 200 OK.
 3. **Version Control**:
    - Verify with `git diff`, commit with conventional commit format, and push to `origin/main`.
+
+---
+
+## 4. Website Architectural Invariants & Brutalist Design Rules
+Any modifications to HTML, CSS, or JavaScript must strictly adhere to the following aesthetic and technical constraints:
+
+- **Monochromatic Color Palette**:
+  - Structural Black: `#0A0A0A` (primary canvas)
+  - Sub-Panel Dark: `#121212` (containers, cards, inactive blocks)
+  - Sharp White: `#FFFFFF` (borders, primary text, active states)
+  - Industrial Gray: `#7F7F7F` (metadata, secondary labels, timestamps)
+  - *Never introduce unapproved accent colors, gradients, or soft drop shadows.*
+- **Zero Border-Radius Invariant**:
+  - Every UI element (buttons, inputs, cards, dialogs, modals, containers) must have sharp 90-degree corners: `border-radius: 0 !important;`.
+- **Exposed Structural Grids**:
+  - Layout structures must be visibly delineated with crisp `1px solid #FFFFFF` or `2px solid #FFFFFF` borders.
+- **Monospace Typography & Case**:
+  - Font Stack: `Consolas, Menlo, Monaco, "Courier New", Courier, monospace`.
+  - UI labels, navigation anchors, section headers, and metadata badges are transformed to uppercase (`text-transform: uppercase; letter-spacing: 1px`).
+- **Binary Hover Transitions**:
+  - Interactive elements (buttons, nav links, grid cards, form controls) invert colors instantly on hover/focus (`background: #FFFFFF; color: #0A0A0A;`) with **zero transition easing** (`transition: none;` or `0s`).
+- **Framework-Free Native Web Standards**:
+  - No React, Vue, Tailwind, or Bootstrap. Keep the platform ultra-fast, lightweight, accessible, and self-contained with pure semantic HTML5, CSS Grid/Flexbox, and vanilla ES6+ JavaScript.
+
+---
+
+## 5. Instruction Execution & Site Management Protocol
+Whenever receiving instructions or user requests for any part of the website:
+
+1. **Pre-Flight Architecture & Regression Check**:
+   - Inspect existing routing logic in `index.html` (hash router `#writing-subsite`, `#party`, `#article-reader`, `#archive`).
+   - Ensure changes do not break SPA state, scroll restoration, or audio player embeds.
+2. **Trilingual Parity (EN, ES, PT)**:
+   - Any added or modified UI text, error messages, buttons, or content must be implemented synchronously across English (`lang="en"`), Spanish (`lang="es"`), and Portuguese (`lang="pt"`).
+3. **Form Handling & Backend Security**:
+   - Form transmissions (RSVP, transmissions, message portal) must maintain spam defenses (honeypot fields), client-side input sanitization, and graceful state feedback matching the brutalist styling.
+   - Changes impacting Google Apps Script endpoints (`Code.gs`) must preserve CORS compatibility and payload schemas.
+4. **Static Permalinks & Redirect Hygiene**:
+   - Keep standalone static crawler files in `writing/` and `ensayos/` synchronized with any article changes.
+   - Never add HTTP 302 redirects to hash anchors in `_redirects`.
+5. **Atomic Verification & Git Hygiene**:
+   - Always run `git status` and `git diff` before finalizing changes.
+   - Commit using Conventional Commits (`feat:`, `fix:`, `style:`, `refactor:`, `docs:`).
+
