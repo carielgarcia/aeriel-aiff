@@ -1175,19 +1175,6 @@ html[lang="pt"] [lang="es"] {
     flex-wrap: wrap;
     gap: var(--spacing-sm);
   }
-
-  /* Article Reader Mobile View */
-  .article-reader-container {
-    padding: 12px;
-  }
-
-  .reader-content {
-    padding: 16px;
-  }
-
-  .reader-title {
-    font-size: 1.5rem;
-  }
 }
 
 /* ==========================================================================
@@ -2381,18 +2368,6 @@ body[data-view="writing"] #writing-subsite {
   color: var(--text-primary);
 }
 
-@media (max-width: 768px) {
-  .reader-content {
-    padding: var(--spacing-md);
-  }
-  .reader-title {
-    font-size: 1.8rem;
-  }
-  .reader-highlight-box {
-    padding: var(--spacing-md);
-  }
-}
-
 /* Theme Overrides for Writing Subsite & Reader */
 /* Disco Mode */
 html.disco-mode .filter-btn { border-color: #D94E1F !important; color: #FFC72C !important; }
@@ -2431,6 +2406,156 @@ html.house-mode .reader-highlight-box .highlight-box-title { border-bottom-color
 html.disco-mode .writing-preview-quote { border-left-color: #FFC72C !important; color: #FFC72C !important; }
 html.trance-mode .writing-preview-quote { border-left-color: #00F0FF !important; color: #E0F2FE !important; }
 html.house-mode .writing-preview-quote { border-left-color: #B81D24 !important; color: #FFF8E7 !important; }
+
+/* ==========================================================================
+   MOBILE RESPONSIVE ARTICLE READER (EDGE-TO-EDGE EDITORIAL REDESIGN)
+   ========================================================================== */
+@media (max-width: 768px) {
+  #writing-index-section {
+    padding-top: var(--spacing-sm);
+  }
+
+  .article-reader-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .reader-header-bar {
+    margin-bottom: var(--spacing-md) !important;
+    padding-bottom: 0 !important;
+    width: 100% !important;
+  }
+
+  .reader-header-bar .back-btn {
+    width: 100% !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  .reader-content {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure themes do not reinstate borders/backgrounds on mobile reader-content */
+  html.disco-mode .reader-content,
+  html.trance-mode .reader-content,
+  html.house-mode .reader-content {
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .reader-meta-header {
+    padding-bottom: var(--spacing-sm) !important;
+    margin-bottom: var(--spacing-md) !important;
+  }
+
+  .reader-title {
+    font-size: 1.45rem !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.02em !important;
+    margin-top: 10px !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .reader-subtitle {
+    font-size: 1.08rem !important;
+    line-height: 1.45 !important;
+    margin-top: var(--spacing-sm) !important;
+    margin-bottom: var(--spacing-md) !important;
+    padding-bottom: var(--spacing-sm) !important;
+  }
+
+  .reader-body {
+    font-size: 1.05rem !important;
+    line-height: 1.68 !important;
+  }
+
+  .reader-body p {
+    margin-bottom: var(--spacing-md) !important;
+  }
+
+  .reader-body h3 {
+    font-size: 1.22rem !important;
+    margin-top: var(--spacing-lg) !important;
+    margin-bottom: 8px !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .reader-body blockquote {
+    border-left: 2px solid var(--text-primary) !important;
+    padding-left: 14px !important;
+    margin: var(--spacing-md) 0 !important;
+    font-size: 1.02rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .reader-body ul {
+    padding-left: 20px !important;
+    margin-bottom: var(--spacing-md) !important;
+  }
+
+  .reader-body li {
+    margin-bottom: 6px !important;
+  }
+
+  .reader-highlight-box {
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    border-left: 2px solid var(--border-color, #FFFFFF) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    padding: 12px 14px !important;
+    margin: var(--spacing-md) 0 !important;
+  }
+
+  .reader-highlight-box .highlight-box-title {
+    font-size: 0.95rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  html.disco-mode .reader-highlight-box {
+    border-left-color: #D94E1F !important;
+    background: rgba(217, 78, 31, 0.08) !important;
+  }
+  html.trance-mode .reader-highlight-box {
+    border-left-color: #00F0FF !important;
+    background: rgba(0, 240, 255, 0.08) !important;
+  }
+  html.house-mode .reader-highlight-box {
+    border-left-color: #B81D24 !important;
+    background: rgba(184, 29, 36, 0.08) !important;
+  }
+
+  .reader-table-wrapper {
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    width: calc(100% + 32px) !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: var(--border-thin) !important;
+    border-bottom: var(--border-thin) !important;
+    margin-top: var(--spacing-sm) !important;
+    margin-bottom: var(--spacing-md) !important;
+  }
+
+  .reader-table th,
+  .reader-table td {
+    padding: 8px 10px !important;
+    font-size: 0.82rem !important;
+  }
+}
 
 /* Essay Social Media Share System */
 .essay-share-block {
