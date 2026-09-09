@@ -2685,34 +2685,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
    MINIMALIST BRUTALIST POSTER EXHIBITION GALLERY
    ========================================================================== */
 
-.gallery-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  border-bottom: var(--border-thin);
-  padding-bottom: var(--spacing-xs);
-  margin-bottom: 0;
-  gap: 12px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.gallery-header-row .intent-header {
-  margin-bottom: 0 !important;
-  border-bottom: none !important;
-  padding-bottom: 0 !important;
-  font-size: 1.5rem;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-
-.gallery-meta-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
+/* Gallery drawer header and layout defined in brutalist drawer components below */
 
 .gallery-counter {
   font-family: var(--font-mono);
@@ -3060,17 +3033,6 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
 
 /* Mobile Responsive Gallery & Lightbox Media Queries */
 @media (max-width: 768px) {
-  .gallery-header-row {
-    padding-bottom: 6px;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .gallery-header-row .intent-header {
-    font-size: 1.15rem !important;
-    line-height: 1.2 !important;
-  }
-
   .gallery-nav-buttons {
     display: none; /* Hide buttons on mobile in favor of pure touch swipe */
   }
@@ -3553,5 +3515,156 @@ html.house-mode .faq-drawer-toggle-btn:hover, html.house-mode .faq-drawer-toggle
     padding: 12px 14px;
     font-size: 0.9rem;
     line-height: 1.6;
+  }
+}
+
+/* ==========================================================================
+   BRUTALIST PAST FLYERS GALLERY DRAWER COMPONENT (Æ000.X SUBSITE)
+   ========================================================================== */
+.gallery-drawer-wrapper {
+  border: var(--border-thick);
+  background: var(--bg-secondary);
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.gallery-drawer-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: var(--border-thick);
+  user-select: none;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.gallery-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gallery-main-title {
+  margin-bottom: 0 !important;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.gallery-header-meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.gallery-drawer-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.gallery-drawer-toggle-btn {
+  background: transparent;
+  border: var(--border-thin);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 8px 14px;
+  min-height: 40px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 0 !important;
+  transition: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.gallery-drawer-toggle-btn:hover,
+.gallery-drawer-toggle-btn:focus-visible {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.gallery-drawer-wrapper.is-collapsed .gallery-drawer-header-bar {
+  border-bottom: none;
+}
+
+.gallery-drawer-wrapper.is-collapsed .gallery-drawer-content {
+  display: none;
+}
+
+.gallery-drawer-wrapper.is-collapsed .toggle-text-open {
+  display: none;
+}
+
+.gallery-drawer-wrapper:not(.is-collapsed) .toggle-text-closed {
+  display: none;
+}
+
+.gallery-drawer-content {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+}
+
+/* Theme Overrides for Gallery Drawer */
+/* Disco Mode */
+html.disco-mode .gallery-drawer-wrapper { border-color: #D94E1F !important; background: #260734 !important; }
+html.disco-mode .gallery-drawer-header-bar { border-bottom-color: #D94E1F !important; background: rgba(217, 78, 31, 0.08) !important; }
+html.disco-mode .gallery-drawer-toggle-btn { border-color: #D94E1F !important; color: #FFC72C !important; }
+html.disco-mode .gallery-drawer-toggle-btn:hover, html.disco-mode .gallery-drawer-toggle-btn:focus-visible { background: #FFC72C !important; color: #170421 !important; }
+
+/* Trance Mode */
+html.trance-mode .gallery-drawer-wrapper { border-color: #00F0FF !important; background: #0A1224 !important; }
+html.trance-mode .gallery-drawer-header-bar { border-bottom-color: #00F0FF !important; background: rgba(0, 240, 255, 0.08) !important; }
+html.trance-mode .gallery-drawer-toggle-btn { border-color: #00F0FF !important; color: #00F0FF !important; }
+html.trance-mode .gallery-drawer-toggle-btn:hover, html.trance-mode .gallery-drawer-toggle-btn:focus-visible { background: #00F0FF !important; color: #040814 !important; }
+
+/* House Mode */
+html.house-mode .gallery-drawer-wrapper { border-color: #B81D24 !important; background: #1F0E13 !important; }
+html.house-mode .gallery-drawer-header-bar { border-bottom-color: #B81D24 !important; background: rgba(184, 29, 36, 0.08) !important; }
+html.house-mode .gallery-drawer-toggle-btn { border-color: #B81D24 !important; color: #FFF8E7 !important; }
+html.house-mode .gallery-drawer-toggle-btn:hover, html.house-mode .gallery-drawer-toggle-btn:focus-visible { background: #B81D24 !important; color: #12080A !important; }
+
+/* Mobile Media Queries for Gallery Drawer */
+@media (max-width: 768px) {
+  .gallery-drawer-header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .gallery-main-title {
+    font-size: 1.15rem;
+  }
+
+  .gallery-drawer-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .gallery-drawer-toggle-btn {
+    flex: 1;
+    min-height: 44px;
+    font-size: 0.82rem;
+  }
+
+  .gallery-drawer-content {
+    padding: 12px 10px;
   }
 }

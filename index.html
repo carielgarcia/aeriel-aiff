@@ -34,7 +34,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=17.0">
+  <link rel="stylesheet" href="style.css?v=18.0">
 </head>
 <body>
 
@@ -665,109 +665,7 @@
       </div>
     </section>
 
-    <!-- Section C: Past Flyers Gallery -->
-    <section class="structural-row" id="ae000x-invitation-archives" aria-labelledby="invitation-archives-title">
-      <div class="container">
-        
-        <div class="gallery-header-row">
-          <h2 class="intent-header" id="invitation-archives-title">
-            <span lang="en">PAST FLYERS</span>
-            <span lang="es">FLYERS ANTIGUOS</span>
-            <span lang="pt">FLYERS ANTIGOS</span>
-          </h2>
-          
-          <div class="gallery-meta-controls">
-            <span class="gallery-counter" id="carousel-slide-counter" aria-live="polite">01 / 05</span>
-            <div class="gallery-nav-buttons">
-              <button type="button" class="btn-brutal gallery-nav-btn" onclick="prevPosterSlide()" aria-label="Previous Poster" aria-controls="poster-carousel-track">←</button>
-              <button type="button" class="btn-brutal gallery-nav-btn" onclick="nextPosterSlide()" aria-label="Next Poster" aria-controls="poster-carousel-track">→</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hairline Animated Progress Bar -->
-        <div class="gallery-progress-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" aria-label="Gallery Scroll Progress">
-          <div class="gallery-progress-bar" id="gallery-progress-bar" style="width: 20%;"></div>
-        </div>
-
-        <!-- Swipeable Poster Gallery Track -->
-        <div class="gallery-scroll-wrap" role="region" aria-roledescription="carousel" aria-label="Invitation Archives Gallery">
-          <div class="carousel-track-container" id="poster-track-container" tabindex="0" aria-label="Swipeable posters gallery">
-            <div class="carousel-track" id="poster-carousel-track">
-              
-              <!-- Slide 1: Æ000.1 -->
-              <div class="carousel-slide active" data-index="0" role="group" aria-roledescription="slide" aria-label="Poster 1 of 5: Æ000.1">
-                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)" aria-label="Æ000.1 (2026.04) - Open Fullscreen">
-                  <div class="poster-card-top">
-                    <span class="poster-card-title">Æ000.1</span>
-                    <span class="poster-card-date">2026.04</span>
-                  </div>
-                  <div class="poster-card-media">
-                    <img src="./public/images/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                </button>
-              </div>
-
-              <!-- Slide 2: Æ000.2 -->
-              <div class="carousel-slide" data-index="1" role="group" aria-roledescription="slide" aria-label="Poster 2 of 5: Æ000.2">
-                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)" aria-label="Æ000.2 (2026.06) - Open Fullscreen">
-                  <div class="poster-card-top">
-                    <span class="poster-card-title">Æ000.2</span>
-                    <span class="poster-card-date">2026.06</span>
-                  </div>
-                  <div class="poster-card-media">
-                    <img src="./public/images/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                </button>
-              </div>
-
-              <!-- Slide 3: Æ000.3 -->
-              <div class="carousel-slide" data-index="2" role="group" aria-roledescription="slide" aria-label="Poster 3 of 5: Æ000.3">
-                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)" aria-label="Æ000.3 (2026.07) - Open Fullscreen">
-                  <div class="poster-card-top">
-                    <span class="poster-card-title">Æ000.3</span>
-                    <span class="poster-card-date">2026.07</span>
-                  </div>
-                  <div class="poster-card-media">
-                    <img src="./public/images/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                </button>
-              </div>
-
-              <!-- Slide 4: Æ000.4 -->
-              <div class="carousel-slide" data-index="3" role="group" aria-roledescription="slide" aria-label="Poster 4 of 5: Æ000.4">
-                <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4.jpg', 'Æ000.4', 3)" aria-label="Æ000.4 (2026.08) - Open Fullscreen">
-                  <div class="poster-card-top">
-                    <span class="poster-card-title">Æ000.4</span>
-                    <span class="poster-card-date">2026.08</span>
-                  </div>
-                  <div class="poster-card-media">
-                    <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster Artwork" class="poster-img" loading="lazy">
-                  </div>
-                </button>
-              </div>
-
-              <!-- Slide 5: Æ000.5 (Upcoming Slot) -->
-              <div class="carousel-slide" data-index="4" role="group" aria-roledescription="slide" aria-label="Poster 5 of 5: Æ000.5 (Upcoming)">
-                <div class="poster-card poster-card-empty" tabindex="-1">
-                  <div class="poster-card-top">
-                    <span class="poster-card-title">Æ000.5</span>
-                    <span class="poster-card-date">TBA</span>
-                  </div>
-                  <div class="poster-card-media poster-empty-media">
-                    <span class="empty-media-text">[ 05 // UPCOMING ]</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Section D: Frequently Asked Questions (FAQ) Drawer -->
+    <!-- Section C: Frequently Asked Questions (FAQ) Drawer -->
     <section class="structural-row" id="ae000x-faq-section" aria-labelledby="ae000x-faq-title">
       <div class="container">
         
@@ -1099,6 +997,127 @@
             <div id="invite-form-feedback" class="contact-feedback-banner" aria-live="polite"></div>
           </form>
         </div>
+      </div>
+    </section>
+
+    <!-- Section E: Past Flyers Gallery Drawer -->
+    <section class="structural-row" id="ae000x-invitation-archives" aria-labelledby="ae000x-gallery-title">
+      <div class="container">
+        
+        <div class="gallery-drawer-wrapper is-collapsed" id="ae000x-gallery-drawer">
+          <div class="gallery-drawer-header-bar">
+            <div class="gallery-header-info">
+              <h2 class="intent-header gallery-main-title" id="ae000x-gallery-title">
+                <span lang="en">PAST FLYERS</span>
+                <span lang="es">FLYERS ANTIGUOS</span>
+                <span lang="pt">FLYERS ANTIGOS</span>
+              </h2>
+              <div class="gallery-header-meta">
+                <span lang="en">[ VISUAL ARCHIVE // 2026 EDITIONS ]</span>
+                <span lang="es">[ ARCHIVO VISUAL // EDICIONES 2026 ]</span>
+                <span lang="pt">[ ARQUIVO VISUAL // EDIÇÕES 2026 ]</span>
+              </div>
+            </div>
+
+            <div class="gallery-drawer-actions">
+              <span class="gallery-counter" id="carousel-slide-counter" aria-live="polite">01 / 05</span>
+              <div class="gallery-nav-buttons">
+                <button type="button" class="btn-brutal gallery-nav-btn" onclick="prevPosterSlide()" aria-label="Previous Poster" aria-controls="poster-carousel-track">←</button>
+                <button type="button" class="btn-brutal gallery-nav-btn" onclick="nextPosterSlide()" aria-label="Next Poster" aria-controls="poster-carousel-track">→</button>
+              </div>
+              <button type="button" class="btn-brutal gallery-drawer-toggle-btn" id="ae000x-gallery-toggle" onclick="toggleGalleryDrawer()" aria-expanded="false" aria-controls="ae000x-gallery-content">
+                <span lang="en" class="toggle-text-closed">[ SHOW FLYERS ▼ ]</span>
+                <span lang="en" class="toggle-text-open">[ HIDE FLYERS ▲ ]</span>
+                <span lang="es" class="toggle-text-closed">[ MOSTRAR FLYERS ▼ ]</span>
+                <span lang="es" class="toggle-text-open">[ OCULTAR FLYERS ▲ ]</span>
+                <span lang="pt" class="toggle-text-closed">[ MOSTRAR FLYERS ▼ ]</span>
+                <span lang="pt" class="toggle-text-open">[ OCULTAR FLYERS ▲ ]</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="gallery-drawer-content" id="ae000x-gallery-content">
+            <!-- Hairline Animated Progress Bar -->
+            <div class="gallery-progress-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" aria-label="Gallery Scroll Progress">
+              <div class="gallery-progress-bar" id="gallery-progress-bar" style="width: 20%;"></div>
+            </div>
+
+            <!-- Swipeable Poster Gallery Track -->
+            <div class="gallery-scroll-wrap" role="region" aria-roledescription="carousel" aria-label="Invitation Archives Gallery">
+              <div class="carousel-track-container" id="poster-track-container" tabindex="0" aria-label="Swipeable posters gallery">
+                <div class="carousel-track" id="poster-carousel-track">
+                  
+                  <!-- Slide 1: Æ000.1 -->
+                  <div class="carousel-slide active" data-index="0" role="group" aria-roledescription="slide" aria-label="Poster 1 of 5: Æ000.1">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)" aria-label="Æ000.1 (2026.04) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.1</span>
+                        <span class="poster-card-date">2026.04</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 2: Æ000.2 -->
+                  <div class="carousel-slide" data-index="1" role="group" aria-roledescription="slide" aria-label="Poster 2 of 5: Æ000.2">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)" aria-label="Æ000.2 (2026.06) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.2</span>
+                        <span class="poster-card-date">2026.06</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 3: Æ000.3 -->
+                  <div class="carousel-slide" data-index="2" role="group" aria-roledescription="slide" aria-label="Poster 3 of 5: Æ000.3">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)" aria-label="Æ000.3 (2026.07) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.3</span>
+                        <span class="poster-card-date">2026.07</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 4: Æ000.4 -->
+                  <div class="carousel-slide" data-index="3" role="group" aria-roledescription="slide" aria-label="Poster 4 of 5: Æ000.4">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4.jpg', 'Æ000.4', 3)" aria-label="Æ000.4 (2026.08) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.4</span>
+                        <span class="poster-card-date">2026.08</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 5: Æ000.5 (Upcoming Slot) -->
+                  <div class="carousel-slide" data-index="4" role="group" aria-roledescription="slide" aria-label="Poster 5 of 5: Æ000.5 (Upcoming)">
+                    <div class="poster-card poster-card-empty" tabindex="-1">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.5</span>
+                        <span class="poster-card-date">TBA</span>
+                      </div>
+                      <div class="poster-card-media poster-empty-media">
+                        <span class="empty-media-text">[ 05 // UPCOMING ]</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -2958,7 +2977,27 @@
         toggleBtn.setAttribute('aria-expanded', 'false');
       }
     }
+
+    function toggleGalleryDrawer() {
+      const drawer = document.getElementById('ae000x-gallery-drawer');
+      const toggleBtn = document.getElementById('ae000x-gallery-toggle');
+      if (!drawer || !toggleBtn) return;
+
+      const isCollapsed = drawer.classList.contains('is-collapsed');
+      if (isCollapsed) {
+        drawer.classList.remove('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        // Recalculate and update poster carousel display when opened
+        requestAnimationFrame(() => {
+          updatePosterCarousel();
+        });
+      } else {
+        drawer.classList.add('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
     window.toggleFaqDrawer = toggleFaqDrawer;
+    window.toggleGalleryDrawer = toggleGalleryDrawer;
     window.toggleSoundCloudDrawer = toggleSoundCloudDrawer;
     window.updateSoundCloudDrawerForMode = updateSoundCloudDrawerForMode;
 
