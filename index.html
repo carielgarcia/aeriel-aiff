@@ -34,7 +34,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=15.0">
+  <link rel="stylesheet" href="style.css?v=16.0">
 </head>
 <body>
 
@@ -767,7 +767,219 @@
       </div>
     </section>
 
-    <!-- Section D: Invitation Registration Form -->
+    <!-- Section D: Frequently Asked Questions (FAQ) Drawer -->
+    <section class="structural-row" id="ae000x-faq-section" aria-labelledby="ae000x-faq-title">
+      <div class="container">
+        
+        <div class="faq-drawer-wrapper is-collapsed" id="ae000x-faq-drawer">
+          <div class="faq-drawer-header-bar">
+            <div class="faq-header-info">
+              <h2 class="intent-header faq-main-title" id="ae000x-faq-title">
+                <span lang="en">FAQ // FREQUENTLY ASKED QUESTIONS</span>
+                <span lang="es">FAQ // PREGUNTAS FRECUENTES</span>
+                <span lang="pt">FAQ // PERGUNTAS FREQUENTES</span>
+              </h2>
+              <div class="faq-header-meta">
+                <span lang="en">[ TICKETS, PROTOCOLS &amp; CARE INFRASTRUCTURE ]</span>
+                <span lang="es">[ ENTRADAS, PROTOCOLOS &amp; INFRAESTRUCTURA DE CUIDADO ]</span>
+                <span lang="pt">[ INGRESSOS, PROTOCOLOS &amp; INFRAESTRUTURA DE CUIDADO ]</span>
+              </div>
+            </div>
+            
+            <button type="button" class="btn-brutal faq-drawer-toggle-btn" id="ae000x-faq-toggle" onclick="toggleFaqDrawer()" aria-expanded="false" aria-controls="ae000x-faq-content">
+              <span lang="en" class="toggle-text-closed">[ SHOW FAQ ▼ ]</span>
+              <span lang="en" class="toggle-text-open">[ HIDE FAQ ▲ ]</span>
+              <span lang="es" class="toggle-text-closed">[ MOSTRAR FAQ ▼ ]</span>
+              <span lang="es" class="toggle-text-open">[ OCULTAR FAQ ▲ ]</span>
+              <span lang="pt" class="toggle-text-closed">[ MOSTRAR FAQ ▼ ]</span>
+              <span lang="pt" class="toggle-text-open">[ OCULTAR FAQ ▲ ]</span>
+            </button>
+          </div>
+
+          <div class="faq-drawer-content" id="ae000x-faq-content">
+            
+            <!-- Category 1: Tickets & Pricing -->
+            <div class="faq-category-block">
+              <div class="faq-category-header">
+                <span class="faq-category-num">01</span>
+                <h3 class="faq-category-name">
+                  <span lang="en">TICKETS &amp; PRICING</span>
+                  <span lang="es">ENTRADAS &amp; PRECIOS</span>
+                  <span lang="pt">INGRESSOS &amp; PREÇOS</span>
+                </h3>
+              </div>
+              <div class="faq-questions-list">
+                <!-- Q1 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">Why do you charge for tickets instead of offering an open guestlist?</span>
+                      <span lang="es">¿Por qué cobran entrada en lugar de ofrecer una lista abierta?</span>
+                      <span lang="pt">Por que vocês cobram ingresso em vez de oferecer lista aberta?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">Putting together an independent party, even one as small as Æ000.X takes real work and material resources: paying the DJs, the music, sound gear, venue costs (including cleaning!), staff, and harm reduction services; all deserve fair pay for their work. Paying for your ticket keeps our space autonomous, and rewards the hard work of the team behind the party. It also means that we never have to compromise our values for corporate brands or sponsor demands that might push us to become yet another commercial event.</p>
+                    <p lang="es">Organizar una fiesta independiente, incluso una tan pequeña como Æ000.X, exige trabajo real y recursos materiales: pagar a los DJs, la música, el equipo de sonido, los costos del espacio (¡incluyendo la limpieza!), el personal y los servicios de reducción de daños; todas las personas merecen una remuneración justa por su trabajo. Pagar tu entrada mantiene nuestro espacio autónomo y recompensa el esfuerzo del equipo detrás del evento. También garantiza que nunca tengamos que comprometer nuestros valores ante marcas corporativas o patrocinadores que intenten convertirnos en otro evento comercial más.</p>
+                    <p lang="pt">Organizar uma festa independente, mesmo uma tão pequena quanto a Æ000.X, exige trabalho real e recursos materiais: pagar aos DJs, à música, aos equipamentos de som, aos custos do local (incluindo a limpeza!), à equipe e aos serviços de redução de danos; todos merecem remuneração justa pelo seu trabalho. Pagar pelo seu ingresso mantém nosso espaço autônomo e valoriza o esforço da equipe por trás da festa. Também significa que nunca precisamos comprometer nossos valores por marcas corporativas ou exigências de patrocinadores que tentem nos transformar em mais um evento comercial.</p>
+                  </div>
+                </details>
+
+                <!-- Q2 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">How does the free guestlist work?</span>
+                      <span lang="es">¿Cómo funciona la lista gratuita?</span>
+                      <span lang="pt">Como funciona a lista gratuita?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">Free entry exists as community solidarity, not as a VIP or friend-of-the-DJ perk. Spots are limited and prioritized for people facing structural and economic barriers—especially FLINTA folks and racialized bodies. When you pay for your ticket and buy drinks, you are directly helping subsidize access for someone who couldn’t otherwise afford to be there.</p>
+                    <p lang="es">La entrada gratuita existe como solidaridad comunitaria, no como un beneficio VIP o un favor para amistades del DJ. Los cupos son limitados y se priorizan para personas que enfrentan barreras estructurales y económicas, especialmente personas FLINTA y cuerpos racializados. Cuando pagas tu entrada y consumes en barra, estás ayudando directamente a subsidiar el acceso de alguien que de otro modo no podría costearlo.</p>
+                    <p lang="pt">A entrada gratuita existe como solidariedade comunitária, e não como privilégio VIP ou favor para amigos do DJ. As vagas são limitadas e priorizadas para pessoas que enfrentam barreiras estruturais e econômicas — especialmente pessoas FLINTA e corpos racializados. Quando você paga seu ingresso e consome no bar, está ajudando diretamente a subsidiar o acesso de alguém que, de outra forma, não teria condições de estar presente.</p>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- Category 2: Sex-Positivity & Consent -->
+            <div class="faq-category-block">
+              <div class="faq-category-header">
+                <span class="faq-category-num">02</span>
+                <h3 class="faq-category-name">
+                  <span lang="en">SEX-POSITIVITY &amp; CONSENT</span>
+                  <span lang="es">SEX-POSITIVIDAD &amp; CONSENTIMIENTO</span>
+                  <span lang="pt">SEXO-POSITIVIDADE &amp; CONSENTIMENTO</span>
+                </h3>
+              </div>
+              <div class="faq-questions-list">
+                <!-- Q3 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">What makes this a sex-positive party?</span>
+                      <span lang="es">¿Qué hace que esta sea una fiesta sex-positiva?</span>
+                      <span lang="pt">O que faz desta uma festa sexo-positiva?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">We treat consensual desire and bodily freedom as natural parts of club culture rather than something taboo. You are invited to express yourself, your sexuality, and your identity without shame, moral policing, or judgment.</p>
+                    <p lang="es">Tratamos el deseo consensuado y la libertad corporal como partes naturales de la cultura de club y no como un tabú. Te invitamos a expresarte, vivir tu sexualidad y manifestar tu identidad sin vergüenza, vigilancia moral ni juicios.</p>
+                    <p lang="pt">Tratamos o desejo consensual e a liberdade corporal como partes naturais da cultura clubber, e não como um tabu. Você é convidado a se expressar, vivenciar sua sexualidade e manifestar sua identidade sem vergonha, patrulhamento moral ou julgamentos.</p>
+                  </div>
+                </details>
+
+                <!-- Q4 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">How do cruising areas and darkrooms work?</span>
+                      <span lang="es">¿Cómo funcionan las zonas de cruising y los darkrooms?</span>
+                      <span lang="pt">Como funcionam as áreas de cruising e darkrooms?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">Clear boundaries protect everyone. We designate specific spaces for cruising and intimacy so people who want to explore desire can do so freely, while those who simply want to dance and hang out are not caught off guard. Sometimes people will walk around naked or engage in sexual activity in other spaces. We do not encourage this, but we will also not intervene unless we notice these practices interfering with other people’s trips and experiences.</p>
+                    <p lang="es">Los límites claros nos protegen a todos. Designamos espacios específicos para el cruising y la intimidad para que quienes deseen explorar el deseo puedan hacerlo libremente, mientras que quienes solo buscan bailar y socializar no sean tomados por sorpresa. En ocasiones, algunas personas caminan desnudas o realizan actividades sexuales en otros espacios. No incentivamos esto, pero tampoco intervendremos a menos que detectemos que estas prácticas interfieren con la experiencia y el viaje de otras personas.</p>
+                    <p lang="pt">Limites claros protegem a todos. Determinamos espaços específicos para cruising e intimidade para que as pessoas que desejam explorar seus desejos possam fazê-lo livremente, enquanto quem quer apenas dançar e confraternizar não seja pego de surpresa. Às vezes, pessoas circulam nuas ou praticam atividades sexuais em outros espaços. Não incentivamos isso, mas também não intervirão a menos que percebamos que essas práticas estão interferindo nas vivências e viagens de outras pessoas.</p>
+                  </div>
+                </details>
+
+                <!-- Q5 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">What are the expectations around consent?</span>
+                      <span lang="es">¿Cuáles son las expectativas en torno al consentimiento?</span>
+                      <span lang="pt">Quais são as expectativas em relação ao consentimento?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">Only an explicit, enthusiastic, and ongoing "yes" means yes. A revealing outfit or presence in a darkroom is never an automatic invitation. We actively encourage and protect women, trans, non-binary, and agender (FLINTA) guests to ensure that sexual freedom and cruising spaces are accessible to everyone, not just cisgender gay men.</p>
+                    <p lang="es">Solo un "sí" explícito, entusiasta y continuo significa sí. Un atuendo revelador o la presencia en un darkroom nunca constituyen una invitación automática. Alentamos y protegemos activamente a mujeres, personas trans, no binarias y agénero (FLINTA) para garantizar que la libertad sexual y los espacios de cruising sean accesibles para todas las personas, no solo para hombres gay cisgénero.</p>
+                    <p lang="pt">Apenas um "sim" explícito, entusiasta e contínuo significa sim. Uma roupa reveladora ou a presença em um darkroom nunca é um convite automático. Incentivamos e protegemos ativamente mulheres, pessoas trans, não binárias e agênero (FLINTA) para garantir que a liberdade sexual e os espaços de cruising sejam acessíveis a todas as pessoas, não apenas a homens gays cisgênero.</p>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- Category 3: Care & Harm Reduction -->
+            <div class="faq-category-block">
+              <div class="faq-category-header">
+                <span class="faq-category-num">03</span>
+                <h3 class="faq-category-name">
+                  <span lang="en">CARE &amp; HARM REDUCTION</span>
+                  <span lang="es">CUIDADO &amp; REDUCCIÓN DE DAÑOS</span>
+                  <span lang="pt">CUIDADO &amp; REDUÇÃO DE DANOS</span>
+                </h3>
+              </div>
+              <div class="faq-questions-list">
+                <!-- Q6 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">What is your stance on substances?</span>
+                      <span lang="es">¿Cuál es su postura frente a las sustancias?</span>
+                      <span lang="pt">Qual é o posicionamento de vocês sobre substâncias?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">We believe in care over punishment. Scolding people or throwing them out doesn't stop use; it just makes it dangerous and isolates people when they need help. We do not treat alcohol and other legal drugs differently than illegal drugs. We provide an honest, non-judgmental environment focused on keeping everyone healthy, informed, and safe.</p>
+                    <p lang="es">Creemos en el cuidado por encima del castigo. Reprender a las personas o expulsarlas no detiene el consumo; solo lo vuelve peligroso y aísla a quienes necesitan ayuda. No tratamos al alcohol ni a otras drogas legales de manera diferente a las sustancias ilícitas. Brindamos un entorno honesto, libre de juicios, enfocado en mantener a todas las personas sanas, informadas y seguras.</p>
+                    <p lang="pt">Acreditamos no cuidado em vez da punição. Repreender as pessoas ou expulsá-las não impede o uso; apenas torna tudo mais perigoso e isola quem precisa de ajuda. Não tratamos o álcool ou outras drogas legais de forma diferente das drogas ilícitas. Oferecemos um ambiente honesto e sem julgamentos, focado em manter todos saudáveis, informados e seguros.</p>
+                  </div>
+                </details>
+
+                <!-- Q7 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">What care infrastructure is available during the party?</span>
+                      <span lang="es">¿Qué infraestructura de cuidado está disponible durante la fiesta?</span>
+                      <span lang="pt">Qual infraestrutura de cuidado está disponível durante a festa?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">You will always have access to free hydration, designated spaces to decompress, objective information on dosing and mixing risks, and substance testing whenever possible.</p>
+                    <p lang="es">Siempre tendrás acceso a hidratación gratuita, espacios designados para descomprimir, información objetiva sobre dosificación y riesgos de mezclas, y testeo de sustancias siempre que sea posible.</p>
+                    <p lang="pt">Você sempre terá acesso a hidratação gratuita, espaços reservados para descompressão, informações objetivas sobre dosagens e riscos de misturas, e testagem de substâncias sempre que possível.</p>
+                  </div>
+                </details>
+
+                <!-- Q8 -->
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question-text">
+                      <span lang="en">What should I do if a friend or I feel unwell?</span>
+                      <span lang="es">¿Qué debo hacer si una amistad o yo nos sentimos mal?</span>
+                      <span lang="pt">O que devo fazer se um amigo ou eu não nos sentirmos bem?</span>
+                    </span>
+                    <span class="faq-item-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-answer-body">
+                    <p lang="en">Approach any member of our staff immediately. You will never be penalized, judged, or kicked out for asking for medical attention, emotional support, or a safe place to rest.</p>
+                    <p lang="es">Acércate de inmediato a cualquier integrante de nuestro equipo. Nunca serás penalizado, juzgado ni expulsado por solicitar atención médica, contención emocional o un lugar seguro para descansar.</p>
+                    <p lang="pt">Procure imediatamente qualquer integrante da nossa equipe. Você nunca será penalizado, julgado ou expulso por pedir atendimento médico, apoio emocional ou um local seguro para descansar.</p>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section E: Invitation Registration Form -->
     <section class="structural-row" id="ae000x-invite-section">
       <div class="container">
         <h2 class="intent-header">
@@ -2730,6 +2942,21 @@
         toggleBtn.setAttribute('aria-expanded', 'false');
       }
     }
+    function toggleFaqDrawer() {
+      const drawer = document.getElementById('ae000x-faq-drawer');
+      const toggleBtn = document.getElementById('ae000x-faq-toggle');
+      if (!drawer || !toggleBtn) return;
+
+      const isCollapsed = drawer.classList.contains('is-collapsed');
+      if (isCollapsed) {
+        drawer.classList.remove('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        drawer.classList.add('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+    window.toggleFaqDrawer = toggleFaqDrawer;
     window.toggleSoundCloudDrawer = toggleSoundCloudDrawer;
     window.updateSoundCloudDrawerForMode = updateSoundCloudDrawerForMode;
 
