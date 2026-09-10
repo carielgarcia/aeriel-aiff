@@ -146,3 +146,41 @@ Whenever receiving instructions or user requests for any part of the website:
    - Always run `git status` and `git diff` before finalizing changes.
    - Commit using Conventional Commits (`feat:`, `fix:`, `style:`, `refactor:`, `docs:`).
 
+---
+
+## 6. Media Ingestion, Optimization & Assets Protocol
+Whenever the user uploads, references, or updates media assets (posters, press photography, artwork, audio clips, video loops), execute the following protocol:
+
+### Repository Directory Routing
+- **Event Posters & Flyers**: `public/images/posters/` (e.g. `poster_ae000_5.jpg`)
+- **Press & Artist Photography**: `public/images/press/`
+- **Release & Mix Artwork**: `public/images/releases/`
+- **Audio Clips & Soundscapes**: `public/audio/`
+- **Video Backgrounds & Loops**: `public/video/`
+- **Social / Open Graph Cards**: Root `og-image.jpg` or `public/og-*.jpg`
+
+### Accessibility (a11y) Invariants
+- **Trilingual Alt Text**: Every image element must provide explicit, descriptive `alt` text translated across English, Spanish, and Portuguese.
+- **Semantic Trigger Elements**: Media lightboxes and modal openers must use semantic `<button type="button">` with clear `aria-label` descriptors and visible focus states.
+- **Screen Reader Announcements**: Carousels and slide containers must include `aria-roledescription="slide"`, current slide indexes, and progress indicators.
+
+### Mobile Experience & Usability
+- **Cumulative Layout Shift (CLS) Prevention**: Hardcode explicit aspect ratios or structural wrapper dimensions so images do not cause layout jumps while loading.
+- **Performance Loading**: Default to `loading="lazy"` and `decoding="async"` on non-hero imagery.
+- **Touch Targets**: All interactive media triggers (poster cards, audio buttons) must satisfy minimum 44×44px touch targets.
+- **Brutalist Structural Containment**: Zero border-radius (`border-radius: 0 !important;`), exposed monochromatic borders (`1px solid #FFFFFF`), and instant color inversions on hover/tap.
+
+### Problem Detection & Proactive Remediation
+- **Oversized Assets (> 400KB image, uncompressed video/audio)**:
+  - Immediately warn the user of potential mobile LCP degradation and bandwidth overhead.
+  - Propose/execute local optimization using native macOS `/usr/bin/sips` (resizing, JPEG quality adjustment) or `/opt/homebrew/bin/ffmpeg` (WebP conversion, fast-start MP4 with H.264/AAC, WebM).
+- **Aspect Ratio Mismatch**:
+  - Flag images that diverge from the established carousel/grid aspect ratios.
+  - Propose non-destructive structural containment (`object-fit: cover` within standard borders) or proportional crops.
+- **Codec & Autoplay Restrictions**:
+  - Ensure video loops are muted, inline (`playsinline`), and loopable to pass mobile browser autoplay policies.
+
+### Codebase Integration & Git Hygiene
+- Update all associated structures in `index.html` (carousel slides, lightbox arrays, counter bars, schema metadata).
+- Verify with `git status` and `git diff` prior to committing.
+- Commit atomically using conventional commit syntax (e.g., `feat(media): add poster ae000.5 and update gallery`).
