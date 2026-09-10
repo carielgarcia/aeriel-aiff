@@ -605,14 +605,8 @@ html[lang="pt"] [lang="es"] {
 }
 
 /* ==========================================================================
-   ARTIST INTENT
+   ARTIST INTENT & PORTRAIT GRID
    ========================================================================== */
-.intent-layout {
-  max-width: 800px;
-  margin-left: 0;
-  text-align: left;
-}
-
 .intent-header {
   font-size: 2rem;
   font-weight: 900;
@@ -620,6 +614,85 @@ html[lang="pt"] [lang="es"] {
   border-bottom: var(--border-thin);
   padding-bottom: var(--spacing-xs);
   display: inline-block;
+}
+
+.intent-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-lg);
+  align-items: center;
+  max-width: 1050px;
+}
+
+.intent-portrait-col {
+  width: 100%;
+  max-width: 280px;
+}
+
+.intent-portrait-frame {
+  border: var(--border-thick);
+  background: var(--bg-secondary);
+  padding: 8px;
+  box-sizing: border-box;
+  margin: 0;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.intent-portrait-frame:hover {
+  transform: translateY(-2px);
+  border-color: var(--text-primary);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+}
+
+.intent-portrait-media {
+  border: var(--border-thin);
+  background: #000000;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intent-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%) contrast(1.05);
+}
+
+.intent-portrait-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.caption-name {
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.caption-meta {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.intent-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .section-intro-subtitle {
@@ -633,14 +706,41 @@ html[lang="pt"] [lang="es"] {
 }
 
 .intent-content {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--text-primary);
-  line-height: 1.8;
+  line-height: 1.85;
   text-transform: none; /* Intimate read readability */
 }
 
 .intent-content p {
   margin-bottom: var(--spacing-md);
+}
+
+.intent-content p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 860px) {
+  .intent-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    align-items: start;
+  }
+
+  .intent-portrait-col {
+    max-width: 260px;
+  }
+
+  .intent-content {
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+}
+
+@media (max-width: 480px) {
+  .intent-portrait-col {
+    max-width: 240px;
+  }
 }
 
 /* ==========================================================================
@@ -1970,7 +2070,8 @@ body[data-view="ae000x"] #ae000x-subsite {
 
 /* Disco Mode Subsite Theme Overrides */
 html.disco-mode .subsite-header-bar { background: #170421 !important; border-bottom-color: #D94E1F !important; }
-html.disco-mode .portal-cta-box, html.disco-mode .dj-card, html.disco-mode .disclaimer-box { background: #260734 !important; border-color: #D94E1F !important; }
+html.disco-mode .portal-cta-box, html.disco-mode .dj-card, html.disco-mode .disclaimer-box, html.disco-mode .intent-portrait-frame { background: #260734 !important; border-color: #D94E1F !important; }
+html.disco-mode .intent-portrait-media { border-color: #D94E1F !important; }
 html.disco-mode .dj-link { border-color: #D94E1F !important; color: #FFC72C !important; }
 html.disco-mode .dj-link:hover { background: #D94E1F !important; color: #170421 !important; }
 html.disco-mode .notice-privacy { border-left-color: #FFC72C !important; }
@@ -1979,7 +2080,8 @@ html.disco-mode .portal-cta-tag, html.disco-mode .subsite-header-title, html.dis
 
 /* Trance Mode Subsite Theme Overrides */
 html.trance-mode .subsite-header-bar { background: #040814 !important; border-bottom-color: #00F0FF !important; }
-html.trance-mode .portal-cta-box, html.trance-mode .dj-card, html.trance-mode .disclaimer-box { background: #0A1224 !important; border-color: #00F0FF !important; }
+html.trance-mode .portal-cta-box, html.trance-mode .dj-card, html.trance-mode .disclaimer-box, html.trance-mode .intent-portrait-frame { background: #0A1224 !important; border-color: #00F0FF !important; }
+html.trance-mode .intent-portrait-media { border-color: #00F0FF !important; }
 html.trance-mode .dj-link { border-color: #00F0FF !important; color: #E0F2FE !important; }
 html.trance-mode .dj-link:hover { background: #00F0FF !important; color: #040814 !important; }
 html.trance-mode .notice-privacy { border-left-color: #00F0FF !important; }
@@ -1988,7 +2090,8 @@ html.trance-mode .portal-cta-tag, html.trance-mode .subsite-header-title, html.t
 
 /* House Mode Subsite Theme Overrides */
 html.house-mode .subsite-header-bar { background: #12080A !important; border-bottom-color: #B81D24 !important; }
-html.house-mode .portal-cta-box, html.house-mode .dj-card, html.house-mode .disclaimer-box { background: #1F0E13 !important; border-color: #B81D24 !important; }
+html.house-mode .portal-cta-box, html.house-mode .dj-card, html.house-mode .disclaimer-box, html.house-mode .intent-portrait-frame { background: #1F0E13 !important; border-color: #B81D24 !important; }
+html.house-mode .intent-portrait-media { border-color: #B81D24 !important; }
 html.house-mode .dj-link { border-color: #B81D24 !important; color: #FFF8E7 !important; }
 html.house-mode .dj-link:hover { background: #B81D24 !important; color: #FFF8E7 !important; }
 html.house-mode .notice-privacy { border-left-color: #B81D24 !important; }
