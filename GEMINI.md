@@ -184,3 +184,25 @@ Whenever the user uploads, references, or updates media assets (posters, press p
 - Update all associated structures in `index.html` (carousel slides, lightbox arrays, counter bars, schema metadata).
 - Verify with `git status` and `git diff` prior to committing.
 - Commit atomically using conventional commit syntax (e.g., `feat(media): add poster ae000.5 and update gallery`).
+
+---
+
+## 7. SoundCloud Drawer Track Update Protocol
+Whenever the user provides a SoundCloud set embed (iframe/link) and specifies a genre (Techno, Trance, House, Italo Disco):
+
+1. **Genre Mapping**:
+   - `Techno` -> `data-genre="default"`
+   - `Trance` -> `data-genre="trance"`
+   - `House` -> `data-genre="house"`
+   - `Italo Disco` / `Disco` -> `data-genre="disco"`
+
+2. **Panel Update (`.sc-track-panel`)**:
+   - Update `data-title` with the set title (e.g. `PRÆCTICE 003`).
+   - Update `iframe`: set `title="SoundCloud Player - [TITLE] [GENRE]"`, preserve `loading="lazy"`, `width="100%"`, `height="166"`, `scrolling="no"`, `frameborder="no"`, `allow="autoplay; encrypted-media"`.
+   - Update `.sc-credit-bar`: update links and titles using standard markup (`rel="noopener noreferrer"` and `target="_blank"`).
+
+3. **Git Hygiene**:
+   - Verify with `git diff`.
+   - Commit (`feat(soundcloud): update [genre] genre panel in drawer to [TITLE]`).
+   - Push to `origin/main`.
+
