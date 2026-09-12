@@ -3512,6 +3512,13 @@ html.house-mode .contact-feedback-banner.success {
   font-size: 0.95rem;
   line-height: 1.7;
   color: var(--text-primary);
+  text-transform: none !important;
+}
+
+.variant-item-body,
+.variant-item-body *,
+.variant-item-body p {
+  text-transform: none !important;
 }
 
 .variant-item-body p {
