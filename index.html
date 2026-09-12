@@ -33,8 +33,13 @@
   <!-- Brutalist Monochromatic Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
 
+  <!-- Google Fonts: JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=18.0">
+  <link rel="stylesheet" href="style.css?v=19.0">
 </head>
 <body>
 
@@ -630,70 +635,143 @@
       </div>
     </section>
 
-    <!-- Section B: Resident DJs Grid -->
-    <section class="structural-row" id="ae000x-residents">
+    <!-- ==========================================================================
+         MERGED DRAWERS SECTION: RESIDENTS, VARIANTS, FAQ, PAST FLYERS
+         ========================================================================== -->
+    <section class="structural-row" id="ae000x-drawers-section">
       <div class="container">
-        <h2 class="intent-header">
-          <span lang="en">RESIDENTS</span>
-          <span lang="es">RESIDENTES</span>
-          <span lang="pt">RESIDENTES</span>
-        </h2>
-        <div class="dj-grid">
+        <div class="ae-drawers-stack">
           
-          <!-- DJ 1: ÆRIEL -->
-          <div class="dj-card">
-            <span class="dj-card-role">RESIDENT_01 // CO-FOUNDER</span>
-            <h3 class="dj-card-name">ÆRIEL</h3>
-            <p class="dj-card-bio">
-              <span lang="en">is the founder and conceptual lead of Æ000.X. Their sets tell stories, often alternating between genres, speeds, and sonic spaces throughout the session. For ÆRIEL, dance music can also communicate complex ideas.</span>
-              <span lang="es">es fundadorx y líder conceptual de Æ000.X. Sus sets cuentan historias, alternando a menudo entre géneros, velocidades y espacios sonoros a lo largo de la sesión. Para ÆRIEL, la música de baile también puede comunicar ideas complejas.</span>
-              <span lang="pt">é fundadorx e líder conceitual do Æ000.X. Seus sets contam histórias, alternando frequentemente entre gêneros, velocidades e espaços sonoros ao longo da sessão. Para ÆRIEL, a música de dança também pode comunicar ideias complexas.</span>
-            </p>
-            <div class="dj-links">
-              <a href="https://www.instagram.com/aeriel.aiff/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
-              <a href="https://soundcloud.com/aeriel-aiff" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+          <!-- Drawer 1: Resident DJs Drawer -->
+          <div class="residents-drawer-wrapper ae-drawer-wrapper is-collapsed" id="ae000x-residents-drawer">
+            <div class="ae-drawer-header-bar residents-drawer-header-bar">
+              <div class="ae-drawer-header-info">
+                <h2 class="intent-header ae-drawer-main-title" id="ae000x-residents-title">
+                  <span lang="en">RESIDENTS</span>
+                  <span lang="es">RESIDENTES</span>
+                  <span lang="pt">RESIDENTES</span>
+                </h2>
+                <div class="ae-drawer-header-meta">
+                  <span lang="en">[ CURATORS &amp; RESIDENT DJS ]</span>
+                  <span lang="es">[ CURADORES &amp; DJS RESIDENTES ]</span>
+                  <span lang="pt">[ CURADORES &amp; DJS RESIDENTES ]</span>
+                </div>
+              </div>
+              
+              <button type="button" class="btn-brutal ae-drawer-toggle-btn" id="ae000x-residents-toggle" onclick="toggleResidentsDrawer()" aria-expanded="false" aria-controls="ae000x-residents-content">
+                <span lang="en" class="toggle-text-closed">[ SHOW RESIDENTS ▼ ]</span>
+                <span lang="en" class="toggle-text-open">[ HIDE RESIDENTS ▲ ]</span>
+                <span lang="es" class="toggle-text-closed">[ MOSTRAR RESIDENTES ▼ ]</span>
+                <span lang="es" class="toggle-text-open">[ OCULTAR RESIDENTES ▲ ]</span>
+                <span lang="pt" class="toggle-text-closed">[ MOSTRAR RESIDENTES ▼ ]</span>
+                <span lang="pt" class="toggle-text-open">[ OCULTAR RESIDENTES ▲ ]</span>
+              </button>
+            </div>
+
+            <div class="ae-drawer-content residents-drawer-content" id="ae000x-residents-content">
+              <div class="dj-grid">
+                
+                <!-- DJ 1: ÆRIEL -->
+                <div class="dj-card">
+                  <span class="dj-card-role">RESIDENT_01 // CO-FOUNDER</span>
+                  <h3 class="dj-card-name">ÆRIEL</h3>
+                  <p class="dj-card-bio">
+                    <span lang="en">is the founder and conceptual lead of Æ000.X. Their sets tell stories, often alternating between genres, speeds, and sonic spaces throughout the session. For ÆRIEL, dance music can also communicate complex ideas.</span>
+                    <span lang="es">es fundadorx y líder conceptual de Æ000.X. Sus sets cuentan historias, alternando a menudo entre géneros, velocidades y espacios sonoros a lo largo de la sesión. Para ÆRIEL, la música de baile también puede comunicar ideas complejas.</span>
+                    <span lang="pt">é fundadorx e líder conceitual do Æ000.X. Seus sets contam histórias, alternando frequentemente entre gêneros, velocidades e espaços sonoros ao longo da sessão. Para ÆRIEL, a música de dança também pode comunicar ideias complexas.</span>
+                  </p>
+                  <div class="dj-links">
+                    <a href="https://www.instagram.com/aeriel.aiff/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
+                    <a href="https://soundcloud.com/aeriel-aiff" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+                  </div>
+                </div>
+
+                <!-- DJ 2: FRAMES SHELL -->
+                <div class="dj-card">
+                  <span class="dj-card-role">RESIDENT_02 // CURATOR</span>
+                  <h3 class="dj-card-name">FRAMES SHELL</h3>
+                  <p class="dj-card-bio">
+                    <span lang="en">southern girl living in Santiago. Her sets have long groovy energy and clean transitions. Prefers early sets so she can go to bed at a decent time.</span>
+                    <span lang="es">chica del sur viviendo en Santiago. Sus sets tienen un groove largo, energético y transiciones limpias. Prefiere los sets tempranos para poder irse a dormir a una hora decente.</span>
+                    <span lang="pt">garota do sul morando em Santiago. Seus sets têm uma longa energia com groove e transições limpas. Prefere sets mais cedo para poder ir dormir a uma hora decente.</span>
+                  </p>
+                  <div class="dj-links">
+                    <a href="https://www.instagram.com/frames.shell/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
+                    <a href="https://soundcloud.com/frames-shell" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+                  </div>
+                </div>
+
+                <!-- DJ 3: APÜD -->
+                <div class="dj-card">
+                  <span class="dj-card-role">RESIDENT_03 // CURATOR</span>
+                  <h3 class="dj-card-name">APÜD</h3>
+                  <p class="dj-card-bio">
+                    <span lang="en">APÜD creates fresh and energetic sets where groove, versatility and narrative tension maintain the dancefloor in motion</span>
+                    <span lang="es">APÜD construye sets frescos y energéticos donde el groove, la versatilidad y una narrativa en constante tensión mantienen a la pista en movimiento</span>
+                    <span lang="pt">APÜD constrói sets frescos e energéticos onde o groove, a versatilidade e uma narrativa em constante tensão mantêm a pista em movimento</span>
+                  </p>
+                  <div class="dj-links">
+                    <a href="https://www.instagram.com/diego.apud_/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
+                    <a href="https://soundcloud.com/diego-apud" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
 
-          <!-- DJ 2: FRAMES SHELL -->
-          <div class="dj-card">
-            <span class="dj-card-role">RESIDENT_02 // CURATOR</span>
-            <h3 class="dj-card-name">FRAMES SHELL</h3>
-            <p class="dj-card-bio">
-              <span lang="en">southern girl living in Santiago. Her sets have long groovy energy and clean transitions. Prefers early sets so she can go to bed at a decent time.</span>
-              <span lang="es">chica del sur viviendo en Santiago. Sus sets tienen un groove largo, energético y transiciones limpias. Prefiere los sets tempranos para poder irse a dormir a una hora decente.</span>
-              <span lang="pt">garota do sul morando em Santiago. Seus sets têm uma longa energia com groove e transições limpas. Prefere sets mais cedo para poder ir dormir a uma hora decente.</span>
-            </p>
-            <div class="dj-links">
-              <a href="https://www.instagram.com/frames.shell/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
-              <a href="https://soundcloud.com/frames-shell" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
+          <!-- Drawer 2: Variants Drawer -->
+          <div class="variants-drawer-wrapper ae-drawer-wrapper is-collapsed" id="ae000x-variants-drawer">
+            <div class="ae-drawer-header-bar variants-drawer-header-bar">
+              <div class="ae-drawer-header-info">
+                <h2 class="intent-header ae-drawer-main-title" id="ae000x-variants-title">
+                  <span lang="en">VARIANTS</span>
+                  <span lang="es">VARIANTES</span>
+                  <span lang="pt">VARIEDADES</span>
+                </h2>
+                <div class="ae-drawer-header-meta">
+                  <span lang="en">[ SUB-FORMATS &amp; EXTENSIONS ]</span>
+                  <span lang="es">[ SUB-FORMATOS &amp; EXTENSIONES ]</span>
+                  <span lang="pt">[ SUB-FORMATOS &amp; EXTENSÕES ]</span>
+                </div>
+              </div>
+              
+              <button type="button" class="btn-brutal ae-drawer-toggle-btn" id="ae000x-variants-toggle" onclick="toggleVariantsDrawer()" aria-expanded="false" aria-controls="ae000x-variants-content">
+                <span lang="en" class="toggle-text-closed">[ SHOW VARIANTS ▼ ]</span>
+                <span lang="en" class="toggle-text-open">[ HIDE VARIANTS ▲ ]</span>
+                <span lang="es" class="toggle-text-closed">[ MOSTRAR VARIANTES ▼ ]</span>
+                <span lang="es" class="toggle-text-open">[ OCULTAR VARIANTES ▲ ]</span>
+                <span lang="pt" class="toggle-text-closed">[ MOSTRAR VARIEDADES ▼ ]</span>
+                <span lang="pt" class="toggle-text-open">[ OCULTAR VARIEDADES ▲ ]</span>
+              </button>
+            </div>
+
+            <div class="ae-drawer-content variants-drawer-content" id="ae000x-variants-content">
+              <div class="variant-item-block">
+                <div class="variant-item-header">
+                  <span class="variant-item-tag">[ EXTENSION // AFTER-HOURS ]</span>
+                  <h3 class="variant-item-title font-helvetica">_after</h3>
+                </div>
+                <div class="variant-item-body font-jetbrains">
+                  <div lang="en">
+                    <p>_after is a place of affection, passion, and harmony. It is a space to stay together, get to know each other, embrace, and let ourselves be nestled by the fading night. Editions of _after begin after major parties in the city and seek to serve as a companion to those experiences.</p>
+                    <p>This is a more intimate edition with more limited capacity, designed for our friends who pursue the night until the very end. As always, the rules are respect, solidarity, and mutual care.</p>
+                  </div>
+                  <div lang="es">
+                    <p>_after es un lugar de afecto, pasión y armonía. Es un espacio para seguir juntos, para conocernos, abrazarnos, dejarnos acurrucar por la noche que se va. Las ediciones de _after comienzan después de grandes fiestas en la ciudad y buscan ser un complemento a esas experiencias.</p>
+                    <p>Esta es una edición más íntima, con acceso más limitado, pensada para nuestros amigues que persiguen la noche hasta el final. Como siempre, las reglas son respeto, solidaridad y cuidado.</p>
+                  </div>
+                  <div lang="pt">
+                    <p>_after é um lugar de afeto, paixão e harmonia. É um espaço para continuarmos juntos, nos conhecermos, nos abraçarmos e nos deixarmos acolher pela noite que se vai. As edições de _after começam após grandes festas na cidade e buscam ser um complemento a essas experiências.</p>
+                    <p>Esta é uma edição mais íntima, com capacidade mais restrita, pensada para nossos amigos que perseguem a noite até o fim. Como sempre, as regras são respeito, solidariedade e cuidado mútuo.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- DJ 3: APÜD -->
-          <div class="dj-card">
-            <span class="dj-card-role">RESIDENT_03 // CURATOR</span>
-            <h3 class="dj-card-name">APÜD</h3>
-            <p class="dj-card-bio">
-              <span lang="en">APÜD creates fresh and energetic sets where groove, versatility and narrative tension maintain the dancefloor in motion</span>
-              <span lang="es">APÜD construye sets frescos y energéticos donde el groove, la versatilidad y una narrativa en constante tensión mantienen a la pista en movimiento</span>
-              <span lang="pt">APÜD constrói sets frescos e energéticos onde o groove, a versatilidade e uma narrativa em constante tensão mantêm a pista em movimento</span>
-            </p>
-            <div class="dj-links">
-              <a href="https://www.instagram.com/diego.apud_/" target="_blank" rel="noopener noreferrer" class="dj-link">INSTAGRAM ↗</a>
-              <a href="https://soundcloud.com/diego-apud" target="_blank" rel="noopener noreferrer" class="dj-link">SOUNDCLOUD ↗</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- Section C: Frequently Asked Questions (FAQ) Drawer -->
-    <section class="structural-row" id="ae000x-faq-section" aria-labelledby="ae000x-faq-title">
-      <div class="container">
-        
-        <div class="faq-drawer-wrapper is-collapsed" id="ae000x-faq-drawer">
+          <!-- Drawer 3: Frequently Asked Questions (FAQ) Drawer -->
+          <div class="faq-drawer-wrapper ae-drawer-wrapper is-collapsed" id="ae000x-faq-drawer">
           <div class="faq-drawer-header-bar">
             <div class="faq-header-info">
               <h2 class="intent-header faq-main-title" id="ae000x-faq-title">
@@ -898,8 +976,150 @@
           </div>
         </div>
 
+        <!-- Drawer 4: Past Flyers Gallery Drawer -->
+        <div class="gallery-drawer-wrapper ae-drawer-wrapper is-collapsed" id="ae000x-gallery-drawer">
+          <div class="gallery-drawer-header-bar ae-drawer-header-bar">
+            <div class="gallery-header-info ae-drawer-header-info">
+              <h2 class="intent-header gallery-main-title ae-drawer-main-title" id="ae000x-gallery-title">
+                <span lang="en">PAST FLYERS</span>
+                <span lang="es">FLYERS ANTIGUOS</span>
+                <span lang="pt">FLYERS ANTIGOS</span>
+              </h2>
+              <div class="gallery-header-meta ae-drawer-header-meta">
+                <span lang="en">[ VISUAL ARCHIVE // 2026 EDITIONS ]</span>
+                <span lang="es">[ ARCHIVO VISUAL // EDICIONES 2026 ]</span>
+                <span lang="pt">[ ARQUIVO VISUAL // EDIÇÕES 2026 ]</span>
+              </div>
+            </div>
+
+            <div class="gallery-drawer-actions">
+              <span class="gallery-counter" id="carousel-slide-counter" aria-live="polite">01 / 07</span>
+              <div class="gallery-nav-buttons">
+                <button type="button" class="btn-brutal gallery-nav-btn" onclick="prevPosterSlide()" aria-label="Previous Poster" aria-controls="poster-carousel-track">←</button>
+                <button type="button" class="btn-brutal gallery-nav-btn" onclick="nextPosterSlide()" aria-label="Next Poster" aria-controls="poster-carousel-track">→</button>
+              </div>
+              <button type="button" class="btn-brutal ae-drawer-toggle-btn gallery-drawer-toggle-btn" id="ae000x-gallery-toggle" onclick="toggleGalleryDrawer()" aria-expanded="false" aria-controls="ae000x-gallery-content">
+                <span lang="en" class="toggle-text-closed">[ SHOW FLYERS ▼ ]</span>
+                <span lang="en" class="toggle-text-open">[ HIDE FLYERS ▲ ]</span>
+                <span lang="es" class="toggle-text-closed">[ MOSTRAR FLYERS ▼ ]</span>
+                <span lang="es" class="toggle-text-open">[ OCULTAR FLYERS ▲ ]</span>
+                <span lang="pt" class="toggle-text-closed">[ MOSTRAR FLYERS ▼ ]</span>
+                <span lang="pt" class="toggle-text-open">[ OCULTAR FLYERS ▲ ]</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="gallery-drawer-content ae-drawer-content" id="ae000x-gallery-content">
+            <!-- Hairline Animated Progress Bar -->
+            <div class="gallery-progress-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="7" aria-label="Gallery Scroll Progress">
+              <div class="gallery-progress-bar" id="gallery-progress-bar" style="width: 14.28%;"></div>
+            </div>
+
+            <!-- Swipeable Poster Gallery Track -->
+            <div class="gallery-scroll-wrap" role="region" aria-roledescription="carousel" aria-label="Invitation Archives Gallery">
+              <div class="carousel-track-container" id="poster-track-container" tabindex="0" aria-label="Swipeable posters gallery">
+                <div class="carousel-track" id="poster-carousel-track">
+                  
+                  <!-- Slide 1: Æ000.1 -->
+                  <div class="carousel-slide active" data-index="0" role="group" aria-roledescription="slide" aria-label="Poster 1 of 7: Æ000.1">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)" aria-label="Æ000.1 (2026.04) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.1</span>
+                        <span class="poster-card-date">2026.04</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 2: Æ000.2 -->
+                  <div class="carousel-slide" data-index="1" role="group" aria-roledescription="slide" aria-label="Poster 2 of 7: Æ000.2">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)" aria-label="Æ000.2 (2026.06) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.2</span>
+                        <span class="poster-card-date">2026.06</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 3: Æ000.3 -->
+                  <div class="carousel-slide" data-index="2" role="group" aria-roledescription="slide" aria-label="Poster 3 of 7: Æ000.3">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)" aria-label="Æ000.3 (2026.07) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.3</span>
+                        <span class="poster-card-date">2026.07</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 4: Æ000.4 -->
+                  <div class="carousel-slide" data-index="3" role="group" aria-roledescription="slide" aria-label="Poster 4 of 7: Æ000.4">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4.jpg', 'Æ000.4', 3)" aria-label="Æ000.4 (2026.08) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.4</span>
+                        <span class="poster-card-date">2026.08</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 5: Æ000.4.5 -->
+                  <div class="carousel-slide" data-index="4" role="group" aria-roledescription="slide" aria-label="Poster 5 of 7: Æ000.4.5">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4_5.jpg', 'Æ000.4.5', 4)" aria-label="Æ000.4.5 (2026.08.29) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.4.5</span>
+                        <span class="poster-card-date">2026.08</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_4_5.jpg" alt="Æ000.4.5 Flyer Artwork — El Sol Marca Una Coordenada" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 6: Æ000.4_after -->
+                  <div class="carousel-slide" data-index="5" role="group" aria-roledescription="slide" aria-label="Poster 6 of 7: Æ000.4_after">
+                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4_after.jpg', 'Æ000.4_AFTER', 5)" aria-label="Æ000.4_after (2026.09.13) - Open Fullscreen">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.4_AFTER</span>
+                        <span class="poster-card-date">2026.09</span>
+                      </div>
+                      <div class="poster-card-media">
+                        <img src="./public/images/posters/poster_ae000_4_after.jpg" alt="Æ000.4_after Flyer Artwork" class="poster-img" loading="lazy">
+                      </div>
+                    </button>
+                  </div>
+
+                  <!-- Slide 7: Æ000.5 (Upcoming Slot) -->
+                  <div class="carousel-slide" data-index="6" role="group" aria-roledescription="slide" aria-label="Poster 7 of 7: Æ000.5 (Upcoming)">
+                    <div class="poster-card poster-card-empty" tabindex="-1">
+                      <div class="poster-card-top">
+                        <span class="poster-card-title">Æ000.5</span>
+                        <span class="poster-card-date">TBA</span>
+                      </div>
+                      <div class="poster-card-media poster-empty-media">
+                        <span class="empty-media-text">[ 07 // UPCOMING ]</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </section>
+    </div>
+  </section>
 
     <!-- Section E: Invitation Registration Form -->
     <section class="structural-row" id="ae000x-invite-section">
@@ -1021,153 +1241,6 @@
             <div id="invite-form-feedback" class="contact-feedback-banner" aria-live="polite"></div>
           </form>
         </div>
-      </div>
-    </section>
-
-    <!-- Section E: Past Flyers Gallery Drawer -->
-    <section class="structural-row" id="ae000x-invitation-archives" aria-labelledby="ae000x-gallery-title">
-      <div class="container">
-        
-        <div class="gallery-drawer-wrapper is-collapsed" id="ae000x-gallery-drawer">
-          <div class="gallery-drawer-header-bar">
-            <div class="gallery-header-info">
-              <h2 class="intent-header gallery-main-title" id="ae000x-gallery-title">
-                <span lang="en">PAST FLYERS</span>
-                <span lang="es">FLYERS ANTIGUOS</span>
-                <span lang="pt">FLYERS ANTIGOS</span>
-              </h2>
-              <div class="gallery-header-meta">
-                <span lang="en">[ VISUAL ARCHIVE // 2026 EDITIONS ]</span>
-                <span lang="es">[ ARCHIVO VISUAL // EDICIONES 2026 ]</span>
-                <span lang="pt">[ ARQUIVO VISUAL // EDIÇÕES 2026 ]</span>
-              </div>
-            </div>
-
-            <div class="gallery-drawer-actions">
-              <span class="gallery-counter" id="carousel-slide-counter" aria-live="polite">01 / 07</span>
-              <div class="gallery-nav-buttons">
-                <button type="button" class="btn-brutal gallery-nav-btn" onclick="prevPosterSlide()" aria-label="Previous Poster" aria-controls="poster-carousel-track">←</button>
-                <button type="button" class="btn-brutal gallery-nav-btn" onclick="nextPosterSlide()" aria-label="Next Poster" aria-controls="poster-carousel-track">→</button>
-              </div>
-              <button type="button" class="btn-brutal gallery-drawer-toggle-btn" id="ae000x-gallery-toggle" onclick="toggleGalleryDrawer()" aria-expanded="false" aria-controls="ae000x-gallery-content">
-                <span lang="en" class="toggle-text-closed">[ SHOW FLYERS ▼ ]</span>
-                <span lang="en" class="toggle-text-open">[ HIDE FLYERS ▲ ]</span>
-                <span lang="es" class="toggle-text-closed">[ MOSTRAR FLYERS ▼ ]</span>
-                <span lang="es" class="toggle-text-open">[ OCULTAR FLYERS ▲ ]</span>
-                <span lang="pt" class="toggle-text-closed">[ MOSTRAR FLYERS ▼ ]</span>
-                <span lang="pt" class="toggle-text-open">[ OCULTAR FLYERS ▲ ]</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="gallery-drawer-content" id="ae000x-gallery-content">
-            <!-- Hairline Animated Progress Bar -->
-            <div class="gallery-progress-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="7" aria-label="Gallery Scroll Progress">
-              <div class="gallery-progress-bar" id="gallery-progress-bar" style="width: 14.28%;"></div>
-            </div>
-
-            <!-- Swipeable Poster Gallery Track -->
-            <div class="gallery-scroll-wrap" role="region" aria-roledescription="carousel" aria-label="Invitation Archives Gallery">
-              <div class="carousel-track-container" id="poster-track-container" tabindex="0" aria-label="Swipeable posters gallery">
-                <div class="carousel-track" id="poster-carousel-track">
-                  
-                  <!-- Slide 1: Æ000.1 -->
-                  <div class="carousel-slide active" data-index="0" role="group" aria-roledescription="slide" aria-label="Poster 1 of 7: Æ000.1">
-                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_1.jpg', 'Æ000.1', 0)" aria-label="Æ000.1 (2026.04) - Open Fullscreen">
-                      <div class="poster-card-top">
-                        <span class="poster-card-title">Æ000.1</span>
-                        <span class="poster-card-date">2026.04</span>
-                      </div>
-                      <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster Artwork" class="poster-img" loading="lazy">
-                      </div>
-                    </button>
-                  </div>
-
-                  <!-- Slide 2: Æ000.2 -->
-                  <div class="carousel-slide" data-index="1" role="group" aria-roledescription="slide" aria-label="Poster 2 of 7: Æ000.2">
-                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_2.jpg', 'Æ000.2', 1)" aria-label="Æ000.2 (2026.06) - Open Fullscreen">
-                      <div class="poster-card-top">
-                        <span class="poster-card-title">Æ000.2</span>
-                        <span class="poster-card-date">2026.06</span>
-                      </div>
-                      <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster Artwork" class="poster-img" loading="lazy">
-                      </div>
-                    </button>
-                  </div>
-
-                  <!-- Slide 3: Æ000.3 -->
-                  <div class="carousel-slide" data-index="2" role="group" aria-roledescription="slide" aria-label="Poster 3 of 7: Æ000.3">
-                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_3.jpg', 'Æ000.3', 2)" aria-label="Æ000.3 (2026.07) - Open Fullscreen">
-                      <div class="poster-card-top">
-                        <span class="poster-card-title">Æ000.3</span>
-                        <span class="poster-card-date">2026.07</span>
-                      </div>
-                      <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster Artwork" class="poster-img" loading="lazy">
-                      </div>
-                    </button>
-                  </div>
-
-                  <!-- Slide 4: Æ000.4 -->
-                  <div class="carousel-slide" data-index="3" role="group" aria-roledescription="slide" aria-label="Poster 4 of 7: Æ000.4">
-                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4.jpg', 'Æ000.4', 3)" aria-label="Æ000.4 (2026.08) - Open Fullscreen">
-                      <div class="poster-card-top">
-                        <span class="poster-card-title">Æ000.4</span>
-                        <span class="poster-card-date">2026.08</span>
-                      </div>
-                      <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster Artwork" class="poster-img" loading="lazy">
-                      </div>
-                    </button>
-                  </div>
-
-                  <!-- Slide 5: Æ000.4.5 -->
-                  <div class="carousel-slide" data-index="4" role="group" aria-roledescription="slide" aria-label="Poster 5 of 7: Æ000.4.5">
-                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4_5.jpg', 'Æ000.4.5', 4)" aria-label="Æ000.4.5 (2026.08.29) - Open Fullscreen">
-                      <div class="poster-card-top">
-                        <span class="poster-card-title">Æ000.4.5</span>
-                        <span class="poster-card-date">2026.08</span>
-                      </div>
-                      <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_4_5.jpg" alt="Æ000.4.5 Flyer Artwork — El Sol Marca Una Coordenada" class="poster-img" loading="lazy">
-                      </div>
-                    </button>
-                  </div>
-
-                  <!-- Slide 6: Æ000.4_after -->
-                  <div class="carousel-slide" data-index="5" role="group" aria-roledescription="slide" aria-label="Poster 6 of 7: Æ000.4_after">
-                    <button type="button" class="poster-card" onclick="openPosterLightbox('./public/images/posters/poster_ae000_4_after.jpg', 'Æ000.4_AFTER', 5)" aria-label="Æ000.4_after (2026.09.13) - Open Fullscreen">
-                      <div class="poster-card-top">
-                        <span class="poster-card-title">Æ000.4_AFTER</span>
-                        <span class="poster-card-date">2026.09</span>
-                      </div>
-                      <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_4_after.jpg" alt="Æ000.4_after Flyer Artwork" class="poster-img" loading="lazy">
-                      </div>
-                    </button>
-                  </div>
-
-                  <!-- Slide 7: Æ000.5 (Upcoming Slot) -->
-                  <div class="carousel-slide" data-index="6" role="group" aria-roledescription="slide" aria-label="Poster 7 of 7: Æ000.5 (Upcoming)">
-                    <div class="poster-card poster-card-empty" tabindex="-1">
-                      <div class="poster-card-top">
-                        <span class="poster-card-title">Æ000.5</span>
-                        <span class="poster-card-date">TBA</span>
-                      </div>
-                      <div class="poster-card-media poster-empty-media">
-                        <span class="empty-media-text">[ 07 // UPCOMING ]</span>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
 
@@ -3015,6 +3088,36 @@
         toggleBtn.setAttribute('aria-expanded', 'false');
       }
     }
+    function toggleResidentsDrawer() {
+      const drawer = document.getElementById('ae000x-residents-drawer');
+      const toggleBtn = document.getElementById('ae000x-residents-toggle');
+      if (!drawer || !toggleBtn) return;
+
+      const isCollapsed = drawer.classList.contains('is-collapsed');
+      if (isCollapsed) {
+        drawer.classList.remove('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        drawer.classList.add('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function toggleVariantsDrawer() {
+      const drawer = document.getElementById('ae000x-variants-drawer');
+      const toggleBtn = document.getElementById('ae000x-variants-toggle');
+      if (!drawer || !toggleBtn) return;
+
+      const isCollapsed = drawer.classList.contains('is-collapsed');
+      if (isCollapsed) {
+        drawer.classList.remove('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        drawer.classList.add('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
     function toggleFaqDrawer() {
       const drawer = document.getElementById('ae000x-faq-drawer');
       const toggleBtn = document.getElementById('ae000x-faq-toggle');
@@ -3048,6 +3151,8 @@
         toggleBtn.setAttribute('aria-expanded', 'false');
       }
     }
+    window.toggleResidentsDrawer = toggleResidentsDrawer;
+    window.toggleVariantsDrawer = toggleVariantsDrawer;
     window.toggleFaqDrawer = toggleFaqDrawer;
     window.toggleGalleryDrawer = toggleGalleryDrawer;
     window.toggleSoundCloudDrawer = toggleSoundCloudDrawer;
