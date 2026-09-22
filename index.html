@@ -3498,7 +3498,7 @@
       const hashQuery = rawHash.includes('?') ? rawHash.split('?')[1] : '';
       const hashParams = new URLSearchParams(hashQuery);
 
-      const isSpanishRoute = path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || searchParams.get('lang') === 'es' || hashParams.get('lang') === 'es';
+      const isSpanishRoute = (path.startsWith('/ae000x/es') && !path.startsWith('/ae000x/faq')) || path.startsWith('/ensayos') || searchParams.get('lang') === 'es' || hashParams.get('lang') === 'es';
 
       // Parse essay slug if present in path, query (search or hash), or hash anchor
       let targetEssayId = searchParams.get('essay') || hashParams.get('essay');
@@ -3513,7 +3513,7 @@
         }
       }
 
-      if (path.startsWith('/ae000x') || baseHash.includes('ae000x')) {
+      if ((path.startsWith('/ae000x') && !path.startsWith('/ae000x/faq')) || (baseHash.includes('ae000x') && !baseHash.includes('faq'))) {
         document.body.setAttribute('data-view', 'ae000x');
         if (baseHash.includes('ae000x') || isSpanishRoute) {
           const targetPath = isSpanishRoute ? '/ae000x/es' : '/ae000x';
