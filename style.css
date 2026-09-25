@@ -3539,7 +3539,7 @@ html.house-mode .contact-feedback-banner.success {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 18px;
+  padding: 18px 28px;
   border-bottom: var(--border-thin);
   background: rgba(255, 255, 255, 0.03);
 }
@@ -3578,11 +3578,11 @@ html.house-mode .contact-feedback-banner.success {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 18px;
+  padding: 22px 28px;
   cursor: pointer;
   user-select: none;
   font-family: var(--font-mono);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 800;
   list-style: none;
   gap: 16px;
@@ -3610,7 +3610,7 @@ html.house-mode .contact-feedback-banner.success {
 
 .faq-question-text {
   flex: 1;
-  line-height: 1.4;
+  line-height: 1.45;
   text-align: left;
 }
 
@@ -3631,12 +3631,12 @@ details.faq-item[open] .faq-item-icon::before {
 }
 
 .faq-answer-body {
-  padding: 0 18px 18px 18px;
+  padding: 6px 28px 28px 28px;
   background: transparent;
   border-left: none;
   margin: 0;
   font-size: 0.95rem;
-  line-height: 1.68;
+  line-height: 1.75;
   text-transform: none;
 }
 
@@ -3706,7 +3706,7 @@ html.house-mode .faq-drawer-toggle-btn:hover, html.house-mode .faq-drawer-toggle
   }
 
   .faq-category-header {
-    padding: 10px 14px;
+    padding: 14px 18px;
   }
 
   .faq-category-name {
@@ -3714,15 +3714,15 @@ html.house-mode .faq-drawer-toggle-btn:hover, html.house-mode .faq-drawer-toggle
   }
 
   .faq-summary {
-    padding: 12px 14px;
-    font-size: 0.88rem;
+    padding: 16px 18px;
+    font-size: 0.9rem;
   }
 
   .faq-answer-body {
     margin: 0;
-    padding: 0 14px 14px 14px;
-    font-size: 0.9rem;
-    line-height: 1.6;
+    padding: 4px 18px 22px 18px;
+    font-size: 0.92rem;
+    line-height: 1.68;
   }
 }
 
