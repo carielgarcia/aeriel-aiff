@@ -2471,7 +2471,7 @@
             src="/games/techno-variants/index.html" 
             title="TECHNO VARIANTS ENGINE — Techno Subgenre Sound Lab & 16-Beat Drum Machine"
             class="games-app-iframe"
-            loading="lazy"
+            loading="eager"
             allow="autoplay; encrypted-media">
           </iframe>
         </div>
@@ -3844,7 +3844,7 @@
         if (e && e.data && e.data.type === 'resize-games-iframe' && typeof e.data.height === 'number') {
           const iframe = document.querySelector('.games-app-iframe');
           if (iframe && e.data.height > 600) {
-            iframe.style.height = `${e.data.height + 20}px`;
+            iframe.style.height = `${e.data.height}px`;
           }
         }
       });

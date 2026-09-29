@@ -158,7 +158,7 @@
   </style>
 </head>
 
-<body class="bg-club-950 text-slate-200 font-mono min-h-screen flex flex-col selection:bg-emerald-500 selection:text-black">
+<body class="bg-club-950 text-slate-200 font-mono flex flex-col selection:bg-emerald-500 selection:text-black">
 
   <!-- Top Navigation & Master Transport Bar -->
   <header class="border-b border-club-800 bg-club-900/95 backdrop-blur sticky top-0 z-50 px-4 py-3">
@@ -228,54 +228,67 @@
     <span id="toast-text">Engine Ready</span>
   </div>
 
-  <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-1 flex flex-col gap-6">
+  <main class="max-w-7xl mx-auto w-full px-4 py-3 flex-1 flex flex-col gap-3">
 
     <!-- Subgenre Selector Banner -->
-    <section class="bg-club-900 border border-club-800 rounded-xl p-4 shadow-xl">
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between pb-3 border-b border-club-800 gap-3">
+    <section class="bg-club-900 border border-club-800 rounded-xl p-3.5 shadow-xl">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between pb-2.5 border-b border-club-800 gap-2.5">
         <div>
-          <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-bold">Sound Architecture Explorer</span>
-          <h2 class="text-lg font-bold text-white font-display">Select Subgenre Preset (Real-World Benchmarks)</h2>
+          <span class="text-[10px] uppercase tracking-wider text-emerald-400 font-bold">Sound Architecture Explorer</span>
+          <h2 class="text-base font-bold text-white font-display">Select Subgenre Preset (Real-World Benchmarks)</h2>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button data-preset="hardgroove" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-emerald-500 bg-emerald-500/20 text-emerald-300 shadow-sm shadow-emerald-500/20 cursor-pointer">
-            🥁 Hardgroove (142 BPM · 138-145)
+        <div class="flex flex-wrap gap-1.5">
+          <button data-preset="hardgroove" class="preset-btn px-3 py-1 rounded-lg text-xs font-bold transition border border-emerald-500 bg-emerald-500/20 text-emerald-300 shadow-sm shadow-emerald-500/20 cursor-pointer">
+            🥁 Hardgroove (142 BPM)
           </button>
-          <button data-preset="peaktime" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
-            ⚡ Peak-Time / Driving (132 BPM · 128-136)
+          <button data-preset="peaktime" class="preset-btn px-3 py-1 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
+            ⚡ Peak-Time (132 BPM)
           </button>
-          <button data-preset="industrial" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
-            🔩 Industrial (142 BPM · 135-150)
+          <button data-preset="industrial" class="preset-btn px-3 py-1 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
+            🔩 Industrial (142 BPM)
           </button>
-          <button data-preset="hardtechno" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
-            🔨 Hard / Schranz (155 BPM · 150-165+)
+          <button data-preset="hardtechno" class="preset-btn px-3 py-1 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
+            🔨 Schranz (155 BPM)
           </button>
-          <button data-preset="hypnotic" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
-            🌀 Hypnotic / Raw (135 BPM · 132-140)
+          <button data-preset="hypnotic" class="preset-btn px-3 py-1 rounded-lg text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:border-slate-500 cursor-pointer">
+            🌀 Hypnotic (135 BPM)
           </button>
         </div>
       </div>
 
-      <!-- Active Subgenre Sonic Breakdown Card -->
-      <div id="subgenre-info-panel" class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 bg-club-950/70 p-4 rounded-lg border border-club-800 text-xs">
+      <!-- Compact Sonic Breakdown Bar with Expandable Detail -->
+      <div class="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-slate-400 font-bold uppercase text-[10px]">Reference:</span>
+          <span id="info-reference-track" class="text-amber-300 font-bold">Renato Cohen – "Pontapé" &amp; Chlär – "Maximum Velocity"</span>
+          <span class="text-slate-600 hidden sm:inline">&bull;</span>
+          <span class="text-slate-400 font-bold uppercase text-[10px]">Driver:</span>
+          <span id="info-driver" class="text-emerald-300 font-medium">Syncopated Latin tumbao congas, woody bongos &amp; 16th shakers</span>
+        </div>
+        <button id="btn-toggle-subgenre-details" class="text-[11px] text-slate-400 hover:text-emerald-400 flex items-center gap-1 cursor-pointer font-bold">
+          <span id="label-subgenre-details-toggle">[ + Sonic Profile Details ]</span>
+        </button>
+      </div>
+
+      <div id="subgenre-info-panel" class="hidden mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 bg-club-950/90 p-3 rounded-lg border border-club-800 text-xs">
         <div>
-          <span class="text-slate-400 block font-semibold mb-1">Real-World Reference Track</span>
-          <p id="info-reference-track" class="text-amber-300 leading-snug font-bold">Renato Cohen – "Pontapé" &amp; Chlär – "Maximum Velocity"</p>
+          <span class="text-slate-400 block font-semibold mb-0.5">Real-World Benchmark</span>
+          <p id="info-reference-track-detail" class="text-amber-300 leading-snug font-bold">Renato Cohen – "Pontapé" &amp; Chlär – "Maximum Velocity"</p>
         </div>
         <div>
-          <span class="text-slate-400 block font-semibold mb-1">BPM Range &amp; Preset</span>
+          <span class="text-slate-400 block font-semibold mb-0.5">BPM Range &amp; Preset</span>
           <p id="info-bpm-range" class="text-emerald-400 leading-snug font-bold">142 BPM (Typical: 138 – 145)</p>
         </div>
         <div>
-          <span class="text-slate-400 block font-semibold mb-1">Rhythmic Driver</span>
-          <p id="info-driver" class="text-emerald-300 leading-snug font-medium">Syncopated Latin tumbao congas, woody bongos, and 16th shakers with 38% swing</p>
+          <span class="text-slate-400 block font-semibold mb-0.5">Rhythmic Driver</span>
+          <p id="info-driver-detail" class="text-emerald-300 leading-snug font-medium">Syncopated Latin tumbao congas, woody bongos, and 16th shakers with 38% swing</p>
         </div>
         <div>
-          <span class="text-slate-400 block font-semibold mb-1">Low-End &amp; Bass Behavior</span>
+          <span class="text-slate-400 block font-semibold mb-0.5">Low-End Behavior</span>
           <p id="info-lowend" class="text-slate-200 leading-snug">Punchy 909 kick + bouncing G-minor 16th rolling bass pocket</p>
         </div>
         <div>
-          <span class="text-slate-400 block font-semibold mb-1">Benchmark Artists &amp; Labels</span>
+          <span class="text-slate-400 block font-semibold mb-0.5">Benchmark Artists</span>
           <p id="info-artists" class="text-slate-300 leading-snug font-medium">Ben Sims, Chlär, Alarico, Mark Broom, Mutual Rytm</p>
         </div>
       </div>
@@ -479,104 +492,102 @@
       </div>
     </div>
 
-    <!-- Comparative Knowledge Base Table -->
-    <section class="bg-club-900 border border-club-800 rounded-xl p-5 shadow-xl">
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <span class="text-[11px] uppercase tracking-wider text-emerald-400 font-bold">Comparative Knowledge Base</span>
-          <h3 class="text-base font-bold text-white font-display">Subgenre Architecture Matrix</h3>
+    <!-- Collapsible Comparative Knowledge Base Matrix -->
+    <details id="details-subgenre-matrix" class="group bg-club-900 border border-club-800 rounded-xl shadow-xl overflow-hidden transition-all">
+      <summary class="p-3.5 flex items-center justify-between cursor-pointer hover:bg-club-850/80 transition select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-wide">Comparative Knowledge Base Matrix</span>
+          <span class="text-[11px] text-slate-400 hidden sm:inline">&bull; 5-Subgenre Production Benchmark Guide &amp; Real-World Reference Tracks</span>
         </div>
-        <span class="text-xs text-slate-400 hidden sm:inline">Click any row to audition its drum machine profile immediately</span>
-      </div>
+        <div class="flex items-center gap-1.5 text-xs text-slate-400 group-hover:text-white font-bold">
+          <span class="group-open:hidden">[ Expand Matrix ▾ ]</span>
+          <span class="hidden group-open:inline text-emerald-400">[ Collapse Matrix ▴ ]</span>
+        </div>
+      </summary>
 
-      <div class="overflow-x-auto">
+      <div class="p-3.5 border-t border-club-800 overflow-x-auto">
         <table class="w-full text-left text-xs border-collapse">
           <thead>
             <tr class="border-b border-club-800 text-slate-400 bg-club-950/50">
-              <th class="p-3 font-semibold">Subgenre</th>
-              <th class="p-3 font-semibold">Real-World Track Benchmark</th>
-              <th class="p-3 font-semibold">Primary Rhythmic Driver</th>
-              <th class="p-3 font-semibold">Low-End / Bass Behavior</th>
-              <th class="p-3 font-semibold">Typical BPM Range</th>
-              <th class="p-3 font-semibold">Audition</th>
+              <th class="p-2.5 font-semibold">Subgenre</th>
+              <th class="p-2.5 font-semibold">Real-World Benchmark</th>
+              <th class="p-2.5 font-semibold">Primary Rhythmic Driver</th>
+              <th class="p-2.5 font-semibold">Low-End / Bass Behavior</th>
+              <th class="p-2.5 font-semibold">Typical BPM</th>
+              <th class="p-2.5 font-semibold">Audition</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-club-800 font-normal">
             <tr class="table-row-preset hover:bg-club-850/60 transition group cursor-pointer" data-preset="hardgroove">
-              <td class="p-3 font-bold text-emerald-400 flex items-center gap-1.5">
+              <td class="p-2.5 font-bold text-emerald-400 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                 Hardgroove
               </td>
-              <td class="p-3 text-amber-300 font-medium">Renato Cohen – "Pontapé"<br><span class="text-[10px] text-slate-400">Chlär – "Maximum Velocity"</span></td>
-              <td class="p-3 text-slate-300">Polyrhythmic percussion loops (congas, bongos, open hats, shakers)</td>
-              <td class="p-3 text-slate-400">Bouncy, off-beat basslines; funk-influenced swing (MPC shuffle)</td>
-              <td class="p-3 font-bold text-emerald-300">138 – 145 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 142)</span></td>
-              <td class="p-3">
+              <td class="p-2.5 text-amber-300 font-medium">Renato Cohen – "Pontapé"<br><span class="text-[10px] text-slate-400">Chlär – "Maximum Velocity"</span></td>
+              <td class="p-2.5 text-slate-300">Polyrhythmic percussion loops (congas, bongos, open hats, shakers)</td>
+              <td class="p-2.5 text-slate-400">Bouncy, off-beat basslines; funk-influenced swing (MPC shuffle)</td>
+              <td class="p-2.5 font-bold text-emerald-300">138 – 145 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 142)</span></td>
+              <td class="p-2.5">
                 <button class="px-2.5 py-1 bg-emerald-500/20 group-hover:bg-emerald-500 text-emerald-300 group-hover:text-black rounded text-[11px] font-bold transition">Listen</button>
               </td>
             </tr>
             <tr class="table-row-preset hover:bg-club-850/60 transition group cursor-pointer" data-preset="peaktime">
-              <td class="p-3 font-bold text-cyan-400 flex items-center gap-1.5">
+              <td class="p-2.5 font-bold text-cyan-400 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
                 Peak-Time / Driving
               </td>
-              <td class="p-3 text-amber-300 font-medium">Adam Beyer &amp; Bart Skils – "Your Mind"<br><span class="text-[10px] text-slate-400">Enrico Sangiuliano – "Moon Rocks"</span></td>
-              <td class="p-3 text-slate-300">Stomping 4/4 kick, giant layered 909 claps, big buildup/drop dynamics</td>
-              <td class="p-3 text-slate-400">Dominant sub-rumble, heavy sidechain compression</td>
-              <td class="p-3 font-bold text-cyan-300">128 – 136 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 132)</span></td>
-              <td class="p-3">
+              <td class="p-2.5 text-amber-300 font-medium">Adam Beyer &amp; Bart Skils – "Your Mind"<br><span class="text-[10px] text-slate-400">Enrico Sangiuliano – "Moon Rocks"</span></td>
+              <td class="p-2.5 text-slate-300">Stomping 4/4 kick, giant layered 909 claps, big buildup/drop dynamics</td>
+              <td class="p-2.5 text-slate-400">Dominant sub-rumble, heavy sidechain compression</td>
+              <td class="p-2.5 font-bold text-cyan-300">128 – 136 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 132)</span></td>
+              <td class="p-2.5">
                 <button class="px-2.5 py-1 bg-cyan-500/20 group-hover:bg-cyan-500 text-cyan-300 group-hover:text-black rounded text-[11px] font-bold transition">Listen</button>
               </td>
             </tr>
             <tr class="table-row-preset hover:bg-club-850/60 transition group cursor-pointer" data-preset="industrial">
-              <td class="p-3 font-bold text-red-400 flex items-center gap-1.5">
+              <td class="p-2.5 font-bold text-red-400 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-red-400"></span>
                 Industrial Techno
               </td>
-              <td class="p-3 text-amber-300 font-medium">Perc – "Look At What Your Love Has Done To Me"<br><span class="text-[10px] text-slate-400">Paula Temple – "Gegen"</span></td>
-              <td class="p-3 text-slate-300">Distorted kicks, metallic anvil hits, syncopated noise bursts</td>
-              <td class="p-3 text-slate-400">Saturated, aggressive low-end; overdriven bass rumbles</td>
-              <td class="p-3 font-bold text-red-300">135 – 150 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 142)</span></td>
-              <td class="p-3">
+              <td class="p-2.5 text-amber-300 font-medium">Perc – "Look At What Your Love Has Done To Me"<br><span class="text-[10px] text-slate-400">Paula Temple – "Gegen"</span></td>
+              <td class="p-2.5 text-slate-300">Distorted kicks, metallic anvil hits, syncopated noise bursts</td>
+              <td class="p-2.5 text-slate-400">Saturated, aggressive low-end; overdriven bass rumbles</td>
+              <td class="p-2.5 font-bold text-red-300">135 – 150 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 142)</span></td>
+              <td class="p-2.5">
                 <button class="px-2.5 py-1 bg-red-500/20 group-hover:bg-red-500 text-red-300 group-hover:text-black rounded text-[11px] font-bold transition">Listen</button>
               </td>
             </tr>
             <tr class="table-row-preset hover:bg-club-850/60 transition group cursor-pointer" data-preset="hardtechno">
-              <td class="p-3 font-bold text-orange-400 flex items-center gap-1.5">
+              <td class="p-2.5 font-bold text-orange-400 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-orange-400"></span>
                 Hard Techno / Schranz
               </td>
-              <td class="p-3 text-amber-300 font-medium">Chris Liebing – "American Madness"<br><span class="text-[10px] text-slate-400">Klangkuenstler – "Weltschmerz"</span></td>
-              <td class="p-3 text-slate-300">Relentless 155+ BPM velocity, rapid-fire closed hats, continuous galloping machine rhythm</td>
-              <td class="p-3 text-slate-400">Clipped punch kick + galloping 16th reverse bass pulse</td>
-              <td class="p-3 font-bold text-orange-300">150 – 165+ <span class="text-[10px] block text-slate-400 font-normal">(Preset: 155)</span></td>
-              <td class="p-3">
+              <td class="p-2.5 text-amber-300 font-medium">Chris Liebing – "American Madness"<br><span class="text-[10px] text-slate-400">Klangkuenstler – "Weltschmerz"</span></td>
+              <td class="p-2.5 text-slate-300">Relentless 155+ BPM velocity, rapid-fire closed hats, continuous galloping machine rhythm</td>
+              <td class="p-2.5 text-slate-400">Clipped punch kick + galloping 16th reverse bass pulse</td>
+              <td class="p-2.5 font-bold text-orange-300">150 – 165+ <span class="text-[10px] block text-slate-400 font-normal">(Preset: 155)</span></td>
+              <td class="p-2.5">
                 <button class="px-2.5 py-1 bg-orange-500/20 group-hover:bg-orange-500 text-orange-300 group-hover:text-black rounded text-[11px] font-bold transition">Listen</button>
               </td>
             </tr>
             <tr class="table-row-preset hover:bg-club-850/60 transition group cursor-pointer" data-preset="hypnotic">
-              <td class="p-3 font-bold text-purple-400 flex items-center gap-1.5">
+              <td class="p-2.5 font-bold text-purple-400 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-purple-400"></span>
                 Hypnotic / Raw
               </td>
-              <td class="p-3 text-amber-300 font-medium">DVS1 – "Black Russian"<br><span class="text-[10px] text-slate-400">Oscar Mulero – "Texture"</span></td>
-              <td class="p-3 text-slate-300">Cyclical 3-step modular bleep sequence, subtle wooden micro-clicks, spatial ping-pong delays</td>
-              <td class="p-3 text-slate-400">Deep, warm, subterranean rolling sub frequencies; understated 808/909 kick</td>
-              <td class="p-3 font-bold text-purple-300">132 – 140 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 135)</span></td>
-              <td class="p-3">
+              <td class="p-2.5 text-amber-300 font-medium">DVS1 – "Black Russian"<br><span class="text-[10px] text-slate-400">Oscar Mulero – "Texture"</span></td>
+              <td class="p-2.5 text-slate-300">Cyclical 3-step modular bleep sequence, subtle wooden micro-clicks, spatial ping-pong delays</td>
+              <td class="p-2.5 text-slate-400">Deep, warm, subterranean rolling sub frequencies; understated 808/909 kick</td>
+              <td class="p-2.5 font-bold text-purple-300">132 – 140 <span class="text-[10px] block text-slate-400 font-normal">(Preset: 135)</span></td>
+              <td class="p-2.5">
                 <button class="px-2.5 py-1 bg-purple-500/20 group-hover:bg-purple-500 text-purple-300 group-hover:text-black rounded text-[11px] font-bold transition">Listen</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </section>
-
+    </details>
   </main>
-
-  <footer class="border-t border-club-800 bg-club-900/60 py-4 px-4 text-center text-xs text-slate-500">
-    <p>Hardgroove Architectural Comparison &amp; Live Synthesis Laboratory &bull; 16-Beat Drum Machine with Expandable Sound Drawers</p>
-  </footer>
 
   <script>
     // =========================================================================
@@ -626,6 +637,8 @@
     // =========================================================================
     let isPlaying = false;
     let sequenceLoop = null;
+    let transportScheduleId = null;
+    let currentStepIndex = 0;
     let audioInitialized = false;
     let currentSubgenre = 'hardgroove';
     let openDrawerVoiceId = null; // Tracks which voice drawer is expanded (null when all closed)
@@ -843,10 +856,24 @@
     }
     initializeBanksWithPreset('hardgroove');
 
-    // =========================================================================
-    // AUDIO ENGINE INITIALIZATION & AUDIO CONTEXT UNLOCK
-    // =========================================================================
+    // Global Audio Context Unlocker
+    function resumeAudioContextSync() {
+      try {
+        if (window.Tone) {
+          if (Tone.context && Tone.context.rawContext && Tone.context.rawContext.state !== 'running') {
+            Tone.context.rawContext.resume();
+          }
+          if (Tone.context && Tone.context.state !== 'running' && typeof Tone.start === 'function') {
+            Tone.start();
+          }
+        }
+      } catch (e) {
+        console.warn('Sync audio resume warning:', e);
+      }
+    }
+
     async function unlockAudioContext() {
+      resumeAudioContextSync();
       try {
         if (window.Tone) {
           if (typeof Tone.start === 'function') {
@@ -861,16 +888,16 @@
       }
     }
 
-    // Attach unlocker to first user interaction
+    // Attach unlocker to user interactions
     ['pointerdown', 'touchstart', 'click', 'keydown'].forEach(evt => {
-      window.addEventListener(evt, unlockAudioContext, { once: true, passive: true });
+      window.addEventListener(evt, resumeAudioContextSync, { passive: true });
     });
 
-    async function initAudioEngine() {
+    function initAudioEngine() {
       if (audioInitialized) return;
 
       try {
-        await unlockAudioContext();
+        resumeAudioContextSync();
 
         // Master Bus Chain
         analyserNode = new Tone.Analyser('waveform', 256);
@@ -1009,16 +1036,23 @@
         Tone.Transport.swing = 0.38;
         Tone.Transport.swingSubdivision = '16n';
 
-        // 16-Step Transport Loop
-        sequenceLoop = new Tone.Sequence((time, step) => {
+        // 16-Step Transport Loop using scheduleRepeat to guarantee continuous looping
+        if (transportScheduleId !== null) {
+          Tone.Transport.clear(transportScheduleId);
+          transportScheduleId = null;
+        }
+
+        currentStepIndex = 0;
+        transportScheduleId = Tone.Transport.scheduleRepeat((time) => {
+          const step = currentStepIndex;
+          currentStepIndex = (currentStepIndex + 1) % 16;
+
           Tone.Draw.schedule(() => {
             updateStepUI(step);
           }, time);
 
           triggerVoices(step, time);
-        }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], '16n');
-
-        sequenceLoop.start(0);
+        }, '16n', 0);
 
         audioInitialized = true;
         const promptEl = document.getElementById('audio-prompt-overlay');
@@ -1852,9 +1886,9 @@
     // =========================================================================
     // SUBGENRE PRESETS & MASTER TRANSPORT CONTROLS
     // =========================================================================
-    async function loadSubgenrePreset(subgenreKey) {
-      await unlockAudioContext();
-      if (!audioInitialized) await initAudioEngine();
+    function loadSubgenrePreset(subgenreKey) {
+      resumeAudioContextSync();
+      if (!audioInitialized) initAudioEngine();
       applyPresetData(subgenreKey);
     }
 
@@ -1992,29 +2026,21 @@
       }
     }
 
-    async function startPlayback() {
-      await unlockAudioContext();
+    function startPlayback() {
+      resumeAudioContextSync();
       if (!audioInitialized) {
-        await initAudioEngine();
+        initAudioEngine();
       }
 
       if (Tone.context && Tone.context.state !== 'running') {
-        try {
-          await Tone.context.resume();
-        } catch (e) {
-          console.warn('Tone context resume failed:', e);
-        }
+        Tone.context.resume().catch(() => {});
       }
 
       const bpmInput = document.getElementById('input-bpm');
       const targetBpm = bpmInput ? (parseInt(bpmInput.value, 10) || 142) : 142;
       Tone.Transport.bpm.value = targetBpm;
 
-      if (sequenceLoop) {
-        sequenceLoop.start(0);
-      }
-
-      Tone.Transport.start('+0.01');
+      Tone.Transport.start();
       isPlaying = true;
       updateTransportUI(true);
       showToast(`Playing @ ${targetBpm} BPM • Bank ${BANKS[currentBank].name}`);
@@ -2036,6 +2062,7 @@
         Tone.Transport.stop();
         Tone.Transport.position = 0;
       }
+      currentStepIndex = 0;
       isPlaying = false;
       updateTransportUI(false);
       document.querySelectorAll('.step-btn.current-step').forEach(btn => btn.classList.remove('current-step'));
@@ -2049,11 +2076,11 @@
       showToast('Playback Stopped (Rewound to Step 1)');
     }
 
-    async function togglePlayEngine() {
+    function togglePlayEngine() {
       if (isPlaying) {
         pausePlayback();
       } else {
-        await startPlayback();
+        startPlayback();
       }
     }
 
@@ -2403,6 +2430,32 @@
 
         showToast('FX Rack Reset to Preset Defaults');
       });
+
+      // Subgenre Profile Details Accordion Toggle
+      const btnToggleDetails = document.getElementById('btn-toggle-subgenre-details');
+      const subgenrePanel = document.getElementById('subgenre-info-panel');
+      const labelDetailsToggle = document.getElementById('label-subgenre-details-toggle');
+      if (btnToggleDetails && subgenrePanel) {
+        btnToggleDetails.addEventListener('click', () => {
+          const isHidden = subgenrePanel.classList.contains('hidden');
+          if (isHidden) {
+            subgenrePanel.classList.remove('hidden');
+            if (labelDetailsToggle) labelDetailsToggle.textContent = '[ – Close Profile Details ]';
+          } else {
+            subgenrePanel.classList.add('hidden');
+            if (labelDetailsToggle) labelDetailsToggle.textContent = '[ + Sonic Profile Details ]';
+          }
+          postIframeHeight();
+        });
+      }
+
+      // Matrix Table Details Toggle
+      const detailsMatrix = document.getElementById('details-subgenre-matrix');
+      if (detailsMatrix) {
+        detailsMatrix.addEventListener('toggle', () => {
+          postIframeHeight();
+        });
+      }
 
       window.addEventListener('load', postIframeHeight);
       window.addEventListener('resize', postIframeHeight);
