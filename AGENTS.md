@@ -206,3 +206,27 @@ Whenever the user provides a SoundCloud set embed (iframe/link) and specifies a 
    - Commit (`feat(soundcloud): update [genre] genre panel in drawer to [TITLE]`).
    - Push to `origin/main`.
 
+---
+
+## 8. Interactive Web Audio, Games & Synthesizer Engines Protocol
+Whenever designing, developing, or modifying interactive audio tools, games, or synthesizers (such as `games/techno-variants/` or future sub-apps):
+
+### 1. Web Audio Gesture & Context Synchronization
+- **Synchronous Resume Invariant**: In macOS/iOS Safari and WebKit, user gesture activation tokens expire across microtask ticks. Any call to `Tone.start()`, `audioCtx.resume()`, or `rawContext.resume()` **MUST be executed synchronously** at the very entry of user click/pointer/touch/keydown handlers. Never place an `await` before context resumption.
+- **Global Unlock Listeners**: Attach non-blocking passive synchronous resume listeners across `pointerdown`, `touchstart`, `click`, and `keydown`.
+
+### 2. Transport Clocking & Continuous 16-Step Sequencers
+- **Schedule Repeat Over Sequence**: Never rely on `new Tone.Sequence(...)` for cyclic drum-machine playback due to internal `loopEnd` boundary stalling.
+- **Robust Looping Pattern**: Use `Tone.Transport.scheduleRepeat((time) => { ... }, '16n', 0)` with modulo stepping `currentStepIndex = (currentStepIndex + 1) % 16`.
+- **UI & Scope Synchronization**: Always wrap step-highlighting UI changes and oscilloscope triggers inside `Tone.Draw.schedule(() => { updateStepUI(step); }, time)` to guarantee 60fps frame alignment with Web Audio rendering.
+
+### 3. Spatial Density & Expandable Drawer Architecture
+- **Zero Wasted Space Invariant**: Interactive audio tools must maximize space efficiency. Avoid large static parameter blocks or tall static tables below the matrix.
+- **Per-Track Inline Drawers**: Sound shaping controls (tuning, filters, envelope decay, panning, level, pitch selectors) must live inside expandable drawers toggled by a compact button on each track row (e.g. `[NOTE ▾]`, `[TUNE ▾]`).
+- **Collapsible Reference Data**: Auxiliary educational guides or subgenre comparative tables must default to collapsed `<details>` accordions to preserve viewport focus.
+
+### 4. Dynamic Iframe Height & Zero-Gap Containment
+- **Height Calculation**: Embedded apps must never enforce rigid `100vh` or `min-h-screen` classes that artificially inflate iframe heights.
+- **Dynamic PostMessage Contract**: Dispatch `{ type: 'resize-games-iframe', height: scrollHeight }` on window load, resize, `ResizeObserver`, drawer toggle, and `<details>` toggle.
+- **Host Containment**: Host iframes must apply `loading="eager"`, minimal top/bottom section padding, and update iframe style height dynamically with zero dead gap.
+
