@@ -3838,6 +3838,16 @@
 
       // Easter Egg Controller Setup: pops up at random every 30 seconds for 5 seconds on the edge of the screen
       initEasterEggController();
+
+      // Listen for dynamic iframe resizing from the Techno Variants Engine web app
+      window.addEventListener('message', (e) => {
+        if (e && e.data && e.data.type === 'resize-games-iframe' && typeof e.data.height === 'number') {
+          const iframe = document.querySelector('.games-app-iframe');
+          if (iframe && e.data.height > 600) {
+            iframe.style.height = `${e.data.height + 20}px`;
+          }
+        }
+      });
     });
 
     window.addEventListener('popstate', (e) => {

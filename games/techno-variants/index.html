@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Techno Subgenre Sound Lab & Groove Explorer</title>
+  <title>Techno Subgenre Sound Lab & 16-Beat Drum Machine</title>
   <!-- Tailwind CSS (Local Vendor) -->
   <script src="/public/vendor/tailwindcss.js"></script>
   <!-- Tone.js for high-fidelity native synthesis without external audio files (Local Vendor) -->
@@ -11,7 +11,7 @@
   <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -38,31 +38,51 @@
   </script>
 
   <style>
-    /* Step sequencer button lighting and animations */
+    /* 16-Step Button Tactile Animations & Lighting */
     .step-btn {
       transition: transform 0.05s ease, background-color 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease;
       touch-action: manipulation;
+      user-select: none;
     }
-    .step-btn.active {
-      box-shadow: 0 0 12px currentColor;
+    .step-btn.step-normal {
+      box-shadow: 0 0 10px currentColor;
+    }
+    .step-btn.step-accent {
+      box-shadow: 0 0 18px currentColor, inset 0 0 8px #ffffff;
+      border-color: #ffffff !important;
+      filter: brightness(1.3);
     }
     .step-btn.current-step {
       border-color: #ffffff !important;
       transform: scale(1.08);
-      filter: brightness(1.35);
+      filter: brightness(1.4);
       z-index: 10;
+      outline: 2px solid #ffffff;
+      outline-offset: 1px;
     }
-    /* MPC Performance Pad tactile feedback */
+
+    /* MPC Performance Pads */
     .pad-trigger {
       touch-action: manipulation;
       user-select: none;
       transition: transform 0.05s ease, background-color 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
     }
     .pad-trigger:active, .pad-trigger.pad-active {
-      transform: scale(0.94);
-      filter: brightness(1.4);
-      box-shadow: 0 0 20px currentColor;
+      transform: scale(0.93);
+      filter: brightness(1.45);
+      box-shadow: 0 0 22px currentColor;
     }
+
+    /* Piano Mini Keys */
+    .piano-key {
+      transition: background-color 0.08s ease, transform 0.05s ease;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    .piano-key:active {
+      transform: scale(0.94);
+    }
+
     /* Sliders */
     input[type=range] {
       accent-color: #10b981;
@@ -77,6 +97,7 @@
       box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
       border: 1px solid #ffffff;
     }
+
     /* Scrollbars */
     ::-webkit-scrollbar {
       width: 6px;
@@ -88,6 +109,12 @@
     ::-webkit-scrollbar-thumb {
       background: #25293d;
       border-radius: 3px;
+    }
+
+    /* Beat Group Dividers */
+    .beat-divider {
+      border-right: 2px solid rgba(255, 255, 255, 0.18);
+      padding-right: 3px;
     }
   </style>
 </head>
@@ -104,14 +131,15 @@
         </div>
         <div>
           <h1 class="text-xl font-bold font-display tracking-tight text-white flex items-center gap-2">
-            HARDGROOVE <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono font-normal tracking-normal">SOUND LAB v3</span>
+            HARDGROOVE <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono font-normal tracking-normal">DRUM MACHINE v4</span>
           </h1>
-          <p class="text-xs text-slate-400">Interactive Groove Architecture & Subgenre Synthesizer</p>
+          <p class="text-xs text-slate-400">16-Beat Polyrhythmic Sound Lab &amp; Real-Time Pitch Synthesis</p>
         </div>
       </div>
 
-      <!-- Master Transport Controls -->
+      <!-- Master Transport Controls & Pattern Banks -->
       <div class="flex flex-wrap items-center gap-3">
+        <!-- Start / Stop Engine -->
         <button id="btn-power" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wider uppercase transition shadow-lg shadow-emerald-500/20 flex items-center gap-2 cursor-pointer">
           <svg id="power-icon" class="w-4 h-4 fill-current" viewBox="0 0 24 24">
             <path d="M8 5v14l11-7z"/>
@@ -119,16 +147,27 @@
           <span id="power-label">START ENGINE</span>
         </button>
 
+        <!-- Tempo / BPM -->
         <div class="flex items-center gap-2 bg-club-850 border border-club-700/60 px-3 py-1.5 rounded-lg text-xs">
           <span class="text-slate-400 font-bold">BPM</span>
           <input id="input-bpm" type="number" min="115" max="175" value="142" class="w-14 bg-club-900 text-emerald-400 font-bold px-1.5 py-0.5 rounded border border-club-700 text-center outline-none focus:border-emerald-400">
           <button id="btn-tap-tempo" class="px-2 py-0.5 bg-club-800 hover:bg-club-700 rounded text-[11px] font-bold text-slate-300 transition active:scale-95 cursor-pointer">TAP</button>
         </div>
 
+        <!-- Swing / Shuffle -->
         <div class="flex items-center gap-2 bg-club-850 border border-club-700/60 px-3 py-1.5 rounded-lg text-xs">
           <span class="text-slate-400 font-bold">SWING</span>
           <input id="input-swing" type="range" min="0" max="60" value="38" class="w-16 sm:w-20">
           <span id="label-swing" class="text-emerald-400 w-8 text-right font-bold">38%</span>
+        </div>
+
+        <!-- Pattern Bank Selector (A, B, C, D) -->
+        <div class="flex items-center gap-1 bg-club-850 border border-club-700/60 px-2 py-1 rounded-lg text-xs">
+          <span class="text-slate-400 font-bold text-[10px] mr-1">BANK</span>
+          <button data-bank="0" class="bank-btn px-2 py-0.5 rounded text-[11px] font-extrabold transition bg-emerald-500 text-black cursor-pointer">A</button>
+          <button data-bank="1" class="bank-btn px-2 py-0.5 rounded text-[11px] font-extrabold transition bg-club-800 text-slate-400 hover:text-white cursor-pointer">B</button>
+          <button data-bank="2" class="bank-btn px-2 py-0.5 rounded text-[11px] font-extrabold transition bg-club-800 text-slate-400 hover:text-white cursor-pointer">C</button>
+          <button data-bank="3" class="bank-btn px-2 py-0.5 rounded text-[11px] font-extrabold transition bg-club-800 text-slate-400 hover:text-white cursor-pointer">D</button>
         </div>
       </div>
     </div>
@@ -193,10 +232,11 @@
       </div>
     </section>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main Workspace: Audio Bay + Matrix & Pitch Inspector -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       
-      <!-- Left Column: Waveform Scope + MPC Live Performance Pads + FX Rack -->
-      <div class="lg:col-span-1 bg-club-900 border border-club-800 rounded-xl p-4 flex flex-col gap-4 shadow-xl">
+      <!-- Left Column: Waveform Scope + MPC Performance Pads + Master FX Rack -->
+      <div class="lg:col-span-4 bg-club-900 border border-club-800 rounded-xl p-4 flex flex-col gap-4 shadow-xl">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Live Waveform Scope</span>
           <span id="scope-status" class="text-[10px] px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/20 font-bold">STANDBY</span>
@@ -227,25 +267,25 @@
             <button class="pad-trigger p-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/25 flex flex-col items-center justify-between h-16 cursor-pointer" data-voice="kick" style="color: #10b981;">
               <span class="text-[9px] font-bold text-slate-400 self-start">[1/Q]</span>
               <span class="text-xs font-extrabold text-white">KICK</span>
-              <span class="text-[9px] text-emerald-400/80">909</span>
+              <span id="pad-tune-kick" class="text-[9px] text-emerald-400/90 font-bold">C1</span>
             </button>
 
             <button class="pad-trigger p-2 rounded-lg border border-cyan-500/40 bg-cyan-500/10 hover:bg-cyan-500/25 flex flex-col items-center justify-between h-16 cursor-pointer" data-voice="bass" style="color: #06b6d4;">
               <span class="text-[9px] font-bold text-slate-400 self-start">[2/W]</span>
               <span class="text-xs font-extrabold text-white">BASS</span>
-              <span class="text-[9px] text-cyan-400/80">Roll</span>
+              <span id="pad-tune-bass" class="text-[9px] text-cyan-400/90 font-bold">G1</span>
             </button>
 
             <button class="pad-trigger p-2 rounded-lg border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/25 flex flex-col items-center justify-between h-16 cursor-pointer" data-voice="congaHigh" style="color: #f59e0b;">
               <span class="text-[9px] font-bold text-slate-400 self-start">[3/E]</span>
               <span class="text-xs font-extrabold text-white">CONGA</span>
-              <span class="text-[9px] text-amber-400/80">Slap</span>
+              <span id="pad-tune-congaHigh" class="text-[9px] text-amber-400/90 font-bold">D3</span>
             </button>
 
             <button class="pad-trigger p-2 rounded-lg border border-orange-500/40 bg-orange-500/10 hover:bg-orange-500/25 flex flex-col items-center justify-between h-16 cursor-pointer" data-voice="congaLow" style="color: #d97706;">
               <span class="text-[9px] font-bold text-slate-400 self-start">[4/R]</span>
               <span class="text-xs font-extrabold text-white">BONGO</span>
-              <span class="text-[9px] text-orange-400/80">Wood</span>
+              <span id="pad-tune-congaLow" class="text-[9px] text-orange-400/90 font-bold">G2</span>
             </button>
 
             <button class="pad-trigger p-2 rounded-lg border border-sky-500/40 bg-sky-500/10 hover:bg-sky-500/25 flex flex-col items-center justify-between h-16 cursor-pointer" data-voice="shaker" style="color: #38bdf8;">
@@ -263,13 +303,13 @@
             <button class="pad-trigger p-2 rounded-lg border border-pink-500/40 bg-pink-500/10 hover:bg-pink-500/25 flex flex-col items-center justify-between h-16 cursor-pointer" data-voice="rimshot" style="color: #ec4899;">
               <span class="text-[9px] font-bold text-slate-400 self-start">[7/D]</span>
               <span class="text-xs font-extrabold text-white">CLAP/RIM</span>
-              <span class="text-[9px] text-pink-400/80">Sharp</span>
+              <span id="pad-tune-rimshot" class="text-[9px] text-pink-400/90 font-bold">420Hz</span>
             </button>
 
             <button class="pad-trigger p-2 rounded-lg border border-purple-500/40 bg-purple-500/10 hover:bg-purple-500/25 flex flex-col items-center justify-between h-16 cursor-pointer" data-voice="synth" style="color: #a855f7;">
               <span class="text-[9px] font-bold text-slate-400 self-start">[8/F]</span>
               <span class="text-xs font-extrabold text-white">STAB</span>
-              <span class="text-[9px] text-purple-400/80">Chord</span>
+              <span id="pad-tune-synth" class="text-[9px] text-purple-400/90 font-bold">G3 Min9</span>
             </button>
           </div>
         </div>
@@ -313,56 +353,211 @@
         </div>
       </div>
 
-      <!-- 16-Step Polyrhythmic Sequencer -->
-      <div class="lg:col-span-2 bg-club-900 border border-club-800 rounded-xl p-4 flex flex-col gap-4 shadow-xl">
-        <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-club-800">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span class="text-sm font-bold text-white font-display">16-STEP POLYYRHYTHMIC MATRIX</span>
-          </div>
-          <div class="flex items-center gap-2 text-xs">
-            <button id="btn-clear-seq" class="px-2.5 py-1 bg-club-800 hover:bg-club-700 text-slate-300 rounded border border-club-700 transition cursor-pointer">Clear</button>
-            <button id="btn-random-groove" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 rounded border border-emerald-500/40 transition cursor-pointer">🎲 Mutate Groove</button>
-          </div>
-        </div>
+      <!-- Right Column: Dedicated Voice Sound & Pitch Inspector + 16-Step Matrix -->
+      <div class="lg:col-span-8 flex flex-col gap-6">
 
-        <!-- 16-Step Marker Numbers Bar -->
-        <div class="overflow-x-auto">
-          <div class="min-w-[650px]">
-            <div id="step-number-bar" class="grid grid-cols-[140px_repeat(16,1fr)] gap-1 text-[10px] text-center text-slate-500 font-bold mb-2 pr-1 select-none">
-              <div class="text-left pl-2">VOICE CHANNEL</div>
-              <div class="step-num text-emerald-400" data-step="0">1</div>
-              <div class="step-num" data-step="1">2</div>
-              <div class="step-num" data-step="2">3</div>
-              <div class="step-num" data-step="3">4</div>
-              <div class="step-num text-emerald-400" data-step="4">5</div>
-              <div class="step-num" data-step="5">6</div>
-              <div class="step-num" data-step="6">7</div>
-              <div class="step-num" data-step="7">8</div>
-              <div class="step-num text-emerald-400" data-step="8">9</div>
-              <div class="step-num" data-step="9">10</div>
-              <div class="step-num" data-step="10">11</div>
-              <div class="step-num" data-step="11">12</div>
-              <div class="step-num text-emerald-400" data-step="12">13</div>
-              <div class="step-num" data-step="13">14</div>
-              <div class="step-num" data-step="14">15</div>
-              <div class="step-num" data-step="15">16</div>
+        <!-- VOICE SOUND & PITCH INSPECTOR (Real Drum Machine Sound Shaper) -->
+        <section class="bg-club-900 border border-club-800 rounded-xl p-4 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between pb-3 border-b border-club-800 gap-2">
+            <div class="flex items-center gap-2">
+              <span id="inspector-voice-dot" class="w-3 h-3 rounded-full bg-cyan-400"></span>
+              <h3 class="text-sm font-bold text-white font-display uppercase tracking-wide">
+                VOICE SOUND &amp; PITCH LAB: <span id="inspector-voice-name" class="text-cyan-400">BASSLINE</span>
+              </h3>
+            </div>
+            <span class="text-[11px] text-slate-400">Tune pitch, shape decay, or edit step-by-step notes</span>
+          </div>
+
+          <!-- Voice Selector Quick Tabs -->
+          <div class="flex flex-wrap gap-1.5 mt-3 pb-3 border-b border-club-800/80">
+            <button data-voice-tab="kick" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer">Kick</button>
+            <button data-voice-tab="bass" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-cyan-500 bg-cyan-500/20 text-cyan-300 cursor-pointer">Bass</button>
+            <button data-voice-tab="congaHigh" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer">Conga Hi</button>
+            <button data-voice-tab="congaLow" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer">Bongo</button>
+            <button data-voice-tab="shaker" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer">Shaker</button>
+            <button data-voice-tab="openHat" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer">Open Hat</button>
+            <button data-voice-tab="rimshot" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer">Clap / Rim</button>
+            <button data-voice-tab="synth" class="voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer">Techno Stab</button>
+          </div>
+
+          <!-- Parameter Sliders Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 text-xs">
+            <!-- 1. Pitch / Tuning Control -->
+            <div id="box-param-tune" class="bg-club-950 p-2.5 rounded-lg border border-club-800">
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span class="font-bold">Pitch Tune</span>
+                <span id="inspector-val-tune" class="text-emerald-400 font-bold">+0 st</span>
+              </div>
+              <input id="inspector-slider-tune" type="range" min="-12" max="12" value="0" class="w-full">
+              <div class="flex justify-between items-center mt-1 text-[10px] text-slate-500">
+                <button id="btn-tune-minus" class="hover:text-emerald-400 cursor-pointer">-1 st</button>
+                <button id="btn-tune-reset" class="hover:text-white cursor-pointer">Reset</button>
+                <button id="btn-tune-plus" class="hover:text-emerald-400 cursor-pointer">+1 st</button>
+              </div>
             </div>
 
-            <!-- Sequencer Voice Channels Container -->
-            <div id="sequencer-rows" class="flex flex-col gap-2">
-              <!-- Dynamically populated via JS -->
+            <!-- 2. Decay / Envelope Length -->
+            <div class="bg-club-950 p-2.5 rounded-lg border border-club-800">
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span class="font-bold">Decay / Hold</span>
+                <span id="inspector-val-decay" class="text-emerald-400 font-bold">180ms</span>
+              </div>
+              <input id="inspector-slider-decay" type="range" min="30" max="650" value="180" class="w-full">
+              <div class="flex justify-between mt-1 text-[10px] text-slate-500">
+                <span>Tight</span>
+                <span>Long</span>
+              </div>
+            </div>
+
+            <!-- 3. Channel Level / Volume -->
+            <div class="bg-club-950 p-2.5 rounded-lg border border-club-800">
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span class="font-bold">Channel Level</span>
+                <span id="inspector-val-level" class="text-emerald-400 font-bold">88%</span>
+              </div>
+              <input id="inspector-slider-level" type="range" min="0" max="120" value="88" class="w-full">
+              <div class="flex justify-between mt-1 text-[10px] text-slate-500">
+                <span>0%</span>
+                <span>120%</span>
+              </div>
+            </div>
+
+            <!-- 4. Channel Stereo Panning -->
+            <div class="bg-club-950 p-2.5 rounded-lg border border-club-800">
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span class="font-bold">Stereo Pan</span>
+                <span id="inspector-val-pan" class="text-emerald-400 font-bold">Center</span>
+              </div>
+              <input id="inspector-slider-pan" type="range" min="-100" max="100" value="0" class="w-full">
+              <div class="flex justify-between mt-1 text-[10px] text-slate-500">
+                <span>L 100</span>
+                <span>R 100</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Hardgroove Architectural Tip Bar -->
-        <div class="mt-auto bg-club-950 p-3 rounded-lg border border-club-800 text-xs flex items-start gap-2.5">
-          <span class="text-emerald-400 font-bold flex-shrink-0">💡 PRODUCER NOTE:</span>
-          <span id="groove-explanation" class="text-slate-300 leading-relaxed">
-            Notice how the <strong>Congas &amp; Bongos</strong> fill the offbeats between the kick drums. This syncopation and the 38% swing creates the rolling forward propulsion distinctive of classic Hardgroove.
-          </span>
-        </div>
+          <!-- Chord Voicing Selector (Specific to Techno Stab) -->
+          <div id="box-chord-selector" class="hidden mt-3 bg-club-950 p-2.5 rounded-lg border border-purple-500/30 text-xs flex flex-wrap items-center justify-between gap-2">
+            <span class="text-purple-300 font-bold">Chord Voicing:</span>
+            <div class="flex flex-wrap gap-1.5" id="chord-type-buttons">
+              <button data-chord="min9" class="chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-purple-500 bg-purple-500/20 text-purple-200 cursor-pointer">Detroit Minor 9th</button>
+              <button data-chord="min7" class="chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-club-700 bg-club-850 text-slate-400 hover:text-white cursor-pointer">Dub Minor 7th</button>
+              <button data-chord="min" class="chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-club-700 bg-club-850 text-slate-400 hover:text-white cursor-pointer">Minor Triad</button>
+              <button data-chord="tritone" class="chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-club-700 bg-club-850 text-slate-400 hover:text-white cursor-pointer">Industrial Tritone</button>
+              <button data-chord="power5" class="chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-club-700 bg-club-850 text-slate-400 hover:text-white cursor-pointer">Rave Power 5th</button>
+              <button data-chord="sus4" class="chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-club-700 bg-club-850 text-slate-400 hover:text-white cursor-pointer">Hypnotic Sus4</button>
+              <button data-chord="single" class="chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-club-700 bg-club-850 text-slate-400 hover:text-white cursor-pointer">Monophonic Note</button>
+            </div>
+          </div>
+
+          <!-- 16-Step Pitch Sequence Editor Strip (Interactive Chromatic Pitching) -->
+          <div id="inspector-step-pitch-box" class="mt-3 bg-club-950 p-3 rounded-lg border border-club-800">
+            <div class="flex flex-wrap items-center justify-between mb-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">16-Step Note Sequence</span>
+                <span id="inspector-selected-step-label" class="text-[11px] text-emerald-400 font-bold ml-2">[ Selected: Step 1 ]</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-[10px]">
+                <button id="btn-batch-octave-down" class="px-2 py-0.5 bg-club-800 hover:bg-club-700 text-slate-300 rounded cursor-pointer">-1 Octave</button>
+                <button id="btn-batch-octave-up" class="px-2 py-0.5 bg-club-800 hover:bg-club-700 text-slate-300 rounded cursor-pointer">+1 Octave</button>
+                <button id="btn-batch-random-scale" class="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 rounded cursor-pointer">🎲 Scale Jam</button>
+              </div>
+            </div>
+
+            <!-- 16-Step Pitch Pill Buttons -->
+            <div class="overflow-x-auto pb-1">
+              <div id="inspector-pitch-steps" class="grid grid-cols-16 min-w-[580px] gap-1 text-center">
+                <!-- Dynamically generated 16 steps -->
+              </div>
+            </div>
+
+            <!-- Chromatic Mini Keyboard Picker -->
+            <div class="mt-3 pt-3 border-t border-club-800/80 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold text-slate-400">Target Note:</span>
+                <span id="current-keyboard-octave-label" class="text-xs px-2 py-0.5 bg-club-850 rounded border border-club-700 text-white font-bold">Octave 1</span>
+                <button id="btn-octave-minus" class="px-2 py-0.5 bg-club-800 hover:bg-club-700 rounded text-xs font-bold cursor-pointer">-</button>
+                <button id="btn-octave-plus" class="px-2 py-0.5 bg-club-800 hover:bg-club-700 rounded text-xs font-bold cursor-pointer">+</button>
+              </div>
+
+              <!-- Piano Keys (C, C#, D, D#, E, F, F#, G, G#, A, A#, B) -->
+              <div class="flex items-center gap-1 overflow-x-auto py-1">
+                <button data-note="C"  class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-slate-200 text-black hover:bg-white cursor-pointer shadow">C</button>
+                <button data-note="C#" class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-club-800 text-emerald-400 hover:bg-black cursor-pointer border border-club-700">C#</button>
+                <button data-note="D"  class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-slate-200 text-black hover:bg-white cursor-pointer shadow">D</button>
+                <button data-note="D#" class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-club-800 text-emerald-400 hover:bg-black cursor-pointer border border-club-700">D#</button>
+                <button data-note="E"  class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-slate-200 text-black hover:bg-white cursor-pointer shadow">E</button>
+                <button data-note="F"  class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-slate-200 text-black hover:bg-white cursor-pointer shadow">F</button>
+                <button data-note="F#" class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-club-800 text-emerald-400 hover:bg-black cursor-pointer border border-club-700">F#</button>
+                <button data-note="G"  class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-slate-200 text-black hover:bg-white cursor-pointer shadow">G</button>
+                <button data-note="G#" class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-club-800 text-emerald-400 hover:bg-black cursor-pointer border border-club-700">G#</button>
+                <button data-note="A"  class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-slate-200 text-black hover:bg-white cursor-pointer shadow">A</button>
+                <button data-note="A#" class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-club-800 text-emerald-400 hover:bg-black cursor-pointer border border-club-700">A#</button>
+                <button data-note="B"  class="piano-key px-2 py-1.5 rounded text-[11px] font-bold bg-slate-200 text-black hover:bg-white cursor-pointer shadow">B</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 16-STEP POLYYRHYTHMIC SEQUENCER MATRIX -->
+        <section class="bg-club-900 border border-club-800 rounded-xl p-4 flex flex-col gap-4 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-club-800">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span class="text-sm font-bold text-white font-display uppercase">16-STEP POLYYRHYTHMIC MATRIX</span>
+              <span class="text-[10px] px-2 py-0.5 bg-club-800 text-slate-300 rounded border border-club-700">Click: Normal &bull; Click 2: Accent &bull; Right-Click: Pitch</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-xs">
+              <button id="btn-duplicate-half" class="px-2.5 py-1 bg-club-800 hover:bg-club-700 text-slate-300 rounded border border-club-700 transition cursor-pointer" title="Copy 1-8 to 9-16">1-8 &rarr; 9-16</button>
+              <button id="btn-random-groove" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 rounded border border-emerald-500/40 transition cursor-pointer">🎲 Mutate</button>
+              <button id="btn-clear-seq" class="px-2.5 py-1 bg-club-800 hover:bg-red-500 hover:text-white text-slate-400 rounded border border-club-700 transition cursor-pointer">Clear</button>
+            </div>
+          </div>
+
+          <!-- 16-Step Marker Numbers Bar (Divided into 4/4 Bars) -->
+          <div class="overflow-x-auto">
+            <div class="min-w-[650px]">
+              <div id="step-number-bar" class="grid grid-cols-[140px_repeat(16,1fr)] gap-1 text-[10px] text-center text-slate-500 font-bold mb-2 pr-1 select-none">
+                <div class="text-left pl-2">VOICE CHANNEL</div>
+                <!-- Quarter 1 -->
+                <div class="step-num text-emerald-400" data-step="0">1</div>
+                <div class="step-num" data-step="1">2</div>
+                <div class="step-num" data-step="2">3</div>
+                <div class="step-num beat-divider" data-step="3">4</div>
+                <!-- Quarter 2 -->
+                <div class="step-num text-emerald-400" data-step="4">5</div>
+                <div class="step-num" data-step="5">6</div>
+                <div class="step-num" data-step="6">7</div>
+                <div class="step-num beat-divider" data-step="7">8</div>
+                <!-- Quarter 3 -->
+                <div class="step-num text-emerald-400" data-step="8">9</div>
+                <div class="step-num" data-step="9">10</div>
+                <div class="step-num" data-step="10">11</div>
+                <div class="step-num beat-divider" data-step="11">12</div>
+                <!-- Quarter 4 -->
+                <div class="step-num text-emerald-400" data-step="12">13</div>
+                <div class="step-num" data-step="13">14</div>
+                <div class="step-num" data-step="14">15</div>
+                <div class="step-num" data-step="15">16</div>
+              </div>
+
+              <!-- Sequencer Voice Channels Container -->
+              <div id="sequencer-rows" class="flex flex-col gap-2">
+                <!-- Dynamically populated via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Hardgroove Architectural Tip Bar -->
+          <div class="mt-auto bg-club-950 p-3 rounded-lg border border-club-800 text-xs flex items-start gap-2.5">
+            <span class="text-emerald-400 font-bold flex-shrink-0">💡 PRODUCER NOTE:</span>
+            <span id="groove-explanation" class="text-slate-300 leading-relaxed">
+              Notice how the <strong>Congas &amp; Bongos</strong> fill the offbeats between the kick drums. This syncopation and the 38% swing creates the rolling forward propulsion distinctive of classic Hardgroove.
+            </span>
+          </div>
+        </section>
+
       </div>
     </div>
 
@@ -462,35 +657,93 @@
   </main>
 
   <footer class="border-t border-club-800 bg-club-900/60 py-4 px-4 text-center text-xs text-slate-500">
-    <p>Hardgroove Architectural Comparison &amp; Live Synthesis Laboratory &bull; Fully Interactive Sound Demonstration Engine</p>
+    <p>Hardgroove Architectural Comparison &amp; Live Synthesis Laboratory &bull; Fully Interactive 16-Beat Drum Machine</p>
   </footer>
 
   <script>
-    // State Management
+    // =========================================================================
+    // MUSIC THEORY CONSTANTS & NOTE CALCULATION HELPERS
+    // =========================================================================
+    const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+    function noteToMidi(note) {
+      if (!note || typeof note !== 'string') return 36;
+      const match = note.match(/^([A-G]#?)(-?\d+)$/);
+      if (!match) return 36;
+      const name = match[1];
+      const oct = parseInt(match[2], 10);
+      const idx = NOTE_NAMES.indexOf(name);
+      if (idx === -1) return 36;
+      return (oct + 1) * 12 + idx;
+    }
+
+    function midiToNote(midi) {
+      const clamped = Math.max(0, Math.min(127, Math.round(midi)));
+      const oct = Math.floor(clamped / 12) - 1;
+      const name = NOTE_NAMES[clamped % 12];
+      return name + oct;
+    }
+
+    function transposeNote(note, semitones) {
+      return midiToNote(noteToMidi(note) + semitones);
+    }
+
+    const CHORD_VOICINGS = {
+      min9:    { name: 'Detroit Minor 9th', intervals: [0, 3, 7, 10, 14] },
+      min7:    { name: 'Dub Minor 7th',     intervals: [0, 3, 7, 10] },
+      min:     { name: 'Minor Triad',       intervals: [0, 3, 7] },
+      tritone: { name: 'Industrial Tritone',intervals: [0, 6, 12] },
+      power5:  { name: 'Rave Power 5th',    intervals: [0, 7, 12] },
+      sus4:    { name: 'Hypnotic Sus4',     intervals: [0, 5, 7] },
+      single:  { name: 'Single Monophonic', intervals: [0] }
+    };
+
+    function getChordNotes(rootNote, chordType) {
+      const voicing = CHORD_VOICINGS[chordType] || CHORD_VOICINGS.min;
+      return voicing.intervals.map(st => transposeNote(rootNote, st));
+    }
+
+    // =========================================================================
+    // STATE MANAGEMENT & CHANNEL VOICE DEFINITIONS
+    // =========================================================================
     let isPlaying = false;
     let sequenceLoop = null;
     let audioInitialized = false;
     let currentSubgenre = 'hardgroove';
+    let activeVoiceId = 'bass';
+    let selectedStepIdx = 0;
+    let keyboardOctave = 1;
     let tapTimes = [];
 
-    // Channel Voice Definitions
-    const VOICES = [
-      { id: 'kick', name: 'Kick Drum', color: '#10b981', muted: false, solo: false },
-      { id: 'bass', name: 'Bassline', color: '#06b6d4', muted: false, solo: false },
-      { id: 'congaHigh', name: 'Conga (High)', color: '#f59e0b', muted: false, solo: false },
-      { id: 'congaLow', name: 'Bongo / Mid', color: '#d97706', muted: false, solo: false },
-      { id: 'shaker', name: 'Shaker / 16th', color: '#38bdf8', muted: false, solo: false },
-      { id: 'openHat', name: 'Open Hi-Hat', color: '#818cf8', muted: false, solo: false },
-      { id: 'rimshot', name: 'Rim / Clap', color: '#ec4899', muted: false, solo: false },
-      { id: 'synth', name: 'Techno Stab', color: '#a855f7', muted: false, solo: false },
-    ];
-
-    // Master Audio Chain & Sub-bus Nodes
+    // Master Audio Chain Nodes
     let masterFilter, masterSaturation, masterReverb, masterFeedbackDelay, masterLimiter, masterGain, analyserNode;
     let percBus, synthBus, bassBus, kickBus;
 
-    // Synthesizer Instruments Dictionary
-    let synths = {};
+    // Synthesizer Instruments & Channel Mixing Nodes Dictionary
+    const synths = {};
+    const voiceGains = {};
+    const voicePanners = {};
+
+    // 8 Core Voice Channels with Full Drum Machine Parameter State
+    const VOICES = [
+      { id: 'kick',      name: 'Kick Drum',   color: '#10b981', isTonal: true,  baseNote: 'C1',  octave: 1, tune: 0,   decay: 0.24, filter: 18000, level: 0.95, pan: 0.0,  muted: false, solo: false },
+      { id: 'bass',      name: 'Bassline',    color: '#06b6d4', isTonal: true,  baseNote: 'G1',  octave: 1, tune: 0,   decay: 0.16, filter: 2600,  level: 0.88, pan: 0.0,  muted: false, solo: false },
+      { id: 'congaHigh', name: 'Conga (High)',color: '#f59e0b', isTonal: true,  baseNote: 'D3',  octave: 3, tune: 0,   decay: 0.12, filter: 18000, level: 0.82, pan: 0.25, muted: false, solo: false },
+      { id: 'congaLow',  name: 'Bongo / Mid', color: '#d97706', isTonal: true,  baseNote: 'G2',  octave: 2, tune: 0,   decay: 0.18, filter: 18000, level: 0.80, pan: -0.25,muted: false, solo: false },
+      { id: 'shaker',    name: 'Shaker 16th', color: '#38bdf8', isTonal: false, baseNote: 'N/A', octave: 0, tune: 0,   decay: 0.04, filter: 5500,  level: 0.72, pan: 0.35, muted: false, solo: false },
+      { id: 'openHat',   name: 'Open Hi-Hat', color: '#818cf8', isTonal: false, baseNote: 'N/A', octave: 0, tune: 0,   decay: 0.30, filter: 6800,  level: 0.78, pan: -0.30,muted: false, solo: false },
+      { id: 'rimshot',   name: 'Clap / Rim',  color: '#ec4899', isTonal: false, baseNote: '420Hz',octave: 0,tune: 420, decay: 0.07, filter: 18000, level: 0.82, pan: 0.10, muted: false, solo: false },
+      { id: 'synth',     name: 'Techno Stab', color: '#a855f7', isTonal: true,  baseNote: 'G3',  octave: 3, tune: 0,   decay: 0.20, filter: 2800,  level: 0.75, pan: 0.0,  muted: false, solo: false, chordType: 'min9' }
+    ];
+
+    // 4 Pattern Memory Banks (A, B, C, D)
+    let currentBank = 0;
+    const BANKS = [
+      { name: 'A', pattern: {}, stepPitches: {} },
+      { name: 'B', pattern: {}, stepPitches: {} },
+      { name: 'C', pattern: {}, stepPitches: {} },
+      { name: 'D', pattern: {}, stepPitches: {} }
+    ];
 
     // Real-World Benchmark Subgenre Profiles transcribed from classic hardware drum programming
     const SUBGENRE_PROFILES = {
@@ -509,19 +762,19 @@
         artists: 'Ben Sims, Chlär, Alarico, Mark Broom, Mutual Rytm',
         explanation: 'Modeled after <strong>Renato Cohen\'s "Pontapé"</strong> and <strong>Chlär\'s Mutual Rytm</strong> productions. Notice how the Congas and Bongos play an authentic syncopated Cuban *tumbao* rhythm across the offbeats, locked with a bouncing G-minor 16th bassline and 38% Akai MPC swing. The kick is kept short and tight so low-end frequencies stay nimble and fast.',
         bassSequence: ['G1', 'G1', 'A#1', 'G1', 'D2', 'G1', 'F1', 'G1', 'G1', 'A#1', 'G1', 'C2', 'G1', 'A#1', 'G1', 'F1'],
-        synthChords: [
-          ['G3', 'A#3', 'D4', 'F4'], // Classic Detroit minor 9th stab
-          ['F3', 'A3', 'C4', 'D#4']
-        ],
+        congaHighSequence: ['D3', 'D3', 'E3', 'D3', 'D3', 'E3', 'D3', 'D3', 'D3', 'D3', 'E3', 'D3', 'E3', 'D3', 'D3', 'E3'],
+        congaLowSequence:  ['G2', 'A2', 'G2', 'G2', 'G2', 'G2', 'G2', 'A2', 'G2', 'A2', 'G2', 'A2', 'G2', 'G2', 'A2', 'A2'],
+        synthSequence:     ['G3', 'G3', 'G3', 'G3', 'G3', 'G3', 'F3', 'G3', 'G3', 'G3', 'G3', 'G3', 'G3', 'G3', 'D#3', 'G3'],
+        chordType: 'min9',
         pattern: {
           kick:     [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-          bass:     [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1],
-          congaHigh:[0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1],
-          congaLow: [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1],
+          bass:     [0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 0, 1],
+          congaHigh:[0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 1, 0, 2, 0, 0, 1],
+          congaLow: [0, 1, 0, 0, 0, 0, 0, 2, 0, 1, 0, 2, 0, 0, 1, 2],
           shaker:   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          openHat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-          rimshot:  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-          synth:    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+          openHat:  [0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0],
+          rimshot:  [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0],
+          synth:    [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0]
         }
       },
       peaktime: {
@@ -539,19 +792,19 @@
         artists: 'Adam Beyer, Charlotte de Witte, Enrico Sangiuliano, Drumcode',
         explanation: 'Directly modeled on <strong>Adam Beyer &amp; Bart Skils\' "Your Mind"</strong> (Drumcode, 132 BPM). All congas and bongos are eliminated so the giant sub-rumble kick and massive layered 909 claps on steps 4 and 12 can dominate. The swing is locked at exactly 0% for mechanical precision.',
         bassSequence: ['F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1', 'F1'],
-        synthChords: [
-          ['F3', 'C4', 'D#4'],
-          ['D#3', 'A#3', 'D4'],
-        ],
+        congaHighSequence: ['C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3', 'C3'],
+        congaLowSequence:  ['F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2', 'F2'],
+        synthSequence:     ['F3', 'F3', 'F3', 'F3', 'F3', 'F3', 'F3', 'F3', 'D#3', 'D#3', 'D#3', 'D#3', 'F3', 'F3', 'F3', 'F3'],
+        chordType: 'min',
         pattern: {
-          kick:     [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+          kick:     [2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0],
           bass:     [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
           congaHigh:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
           congaLow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
           shaker:   [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-          openHat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-          rimshot:  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-          synth:    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]
+          openHat:  [0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0],
+          rimshot:  [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+          synth:    [2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0]
         }
       },
       industrial: {
@@ -569,19 +822,19 @@
         artists: 'Perc, Paula Temple, Ancient Methods, Dax J',
         explanation: 'Modeled after <strong>Perc\'s "Look At What Your Love Has Done To Me"</strong> and <strong>Paula Temple</strong>. The kick is hard-clipped and staggered with broken syncopation. Instead of wooden bongos, metallic industrial clangs hit on irregular offbeats alongside a dissonant tritone stab.',
         bassSequence: ['D#1', 'D#1', 'D1', 'D#1', 'D#1', 'D#1', 'F1', 'D#1', 'D#1', 'D#1', 'D1', 'D#1', 'D#1', 'D#1', 'F#1', 'D#1'],
-        synthChords: [
-          ['D#3', 'A3', 'D#4'],
-          ['C3', 'F#3', 'C4']
-        ],
+        congaHighSequence: ['D#3', 'D#3', 'A3', 'D#3', 'D#3', 'A3', 'D#3', 'D#3', 'D#3', 'D#3', 'A3', 'D#3', 'A3', 'D#3', 'D#3', 'A3'],
+        congaLowSequence:  ['A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2', 'A2'],
+        synthSequence:     ['D#3', 'D#3', 'D#3', 'D#3', 'C3', 'D#3', 'D#3', 'D#3', 'D#3', 'D#3', 'D#3', 'D#3', 'C3', 'D#3', 'D#3', 'D#3'],
+        chordType: 'tritone',
         pattern: {
-          kick:     [1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0],
+          kick:     [2, 0, 0, 1, 2, 0, 0, 0, 2, 0, 0, 1, 2, 0, 1, 0],
           bass:     [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-          congaHigh:[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
+          congaHigh:[0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 2],
           congaLow: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
           shaker:   [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-          openHat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-          rimshot:  [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1],
-          synth:    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+          openHat:  [0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0],
+          rimshot:  [0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 2, 2],
+          synth:    [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0]
         }
       },
       hardtechno: {
@@ -599,19 +852,19 @@
         artists: 'Chris Liebing, Klangkuenstler, Nico Moreno, Alignment, Sara Landry',
         explanation: 'Based on classic <strong>Frankfurt Schranz (Chris Liebing)</strong> and modern <strong>155 BPM Hard Techno (Klangkuenstler)</strong>. Discards syncopated swing in favor of a relentless machine-gun 16th reverse bass pulse on every offbeat, locked with rapid-fire 16th percussion and punishing rave stabs.',
         bassSequence: ['F#1', 'F#1', 'A1', 'F#1', 'F#1', 'F#1', 'B1', 'F#1', 'F#1', 'F#1', 'A1', 'F#1', 'F#1', 'F#1', 'C#2', 'F#1'],
-        synthChords: [
-          ['F#3', 'A3', 'C#4', 'E4'],
-          ['D3', 'F#3', 'A3', 'C#4']
-        ],
+        congaHighSequence: ['F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3', 'F#3'],
+        congaLowSequence:  ['C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3', 'C#3'],
+        synthSequence:     ['F#3', 'F#3', 'D3', 'F#3', 'F#3', 'D3', 'F#3', 'F#3', 'F#3', 'F#3', 'D3', 'F#3', 'F#3', 'D3', 'F#3', 'F#3'],
+        chordType: 'power5',
         pattern: {
-          kick:     [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-          bass:     [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+          kick:     [2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0],
+          bass:     [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
           congaHigh:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
           congaLow: [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
           shaker:   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          openHat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-          rimshot:  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-          synth:    [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]
+          openHat:  [0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0],
+          rimshot:  [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+          synth:    [2, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 2]
         }
       },
       hypnotic: {
@@ -629,27 +882,55 @@
         artists: 'DVS1, Oscar Mulero, Setaoc Mass, Token Records, Klockworks',
         explanation: 'Faithfully modeled after <strong>DVS1\'s "Black Russian"</strong> and <strong>Oscar Mulero</strong>. Instead of aggressive clatter, percussive elements are filtered down to micro-clicks and deep warm sub-bass, allowing a 3-step cyclical modular bleep sequence to evolve continuously over cavernous stereo reverbs.',
         bassSequence: ['D1', 'D1', 'F1', 'D1', 'D1', 'D1', 'G1', 'D1', 'D1', 'D1', 'F1', 'D1', 'D1', 'D1', 'A#1', 'D1'],
-        synthChords: [
-          ['D3', 'F3', 'A3'],
-          ['D3', 'G3', 'A#3'],
-          ['C3', 'E3', 'G3']
-        ],
+        congaHighSequence: ['F3', 'F3', 'G3', 'F3', 'F3', 'G3', 'F3', 'F3', 'F3', 'F3', 'G3', 'F3', 'G3', 'F3', 'F3', 'G3'],
+        congaLowSequence:  ['D2', 'F2', 'D2', 'D2', 'D2', 'D2', 'D2', 'F2', 'D2', 'F2', 'D2', 'F2', 'D2', 'D2', 'F2', 'F2'],
+        synthSequence:     ['D3', 'D3', 'F3', 'D3', 'D3', 'G3', 'D3', 'F3', 'D3', 'D3', 'F3', 'D3', 'D3', 'G3', 'D3', 'F3'],
+        chordType: 'sus4',
         pattern: {
           kick:     [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-          bass:     [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
+          bass:     [0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0],
           congaHigh:[0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
           congaLow: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
           shaker:   [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
           openHat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
           rimshot:  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-          synth:    [1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1]
+          synth:    [2, 0, 1, 0, 0, 2, 0, 1, 2, 0, 1, 0, 0, 2, 0, 1]
         }
       }
     };
 
-    // Active Sequencer Pattern Matrix
-    let currentPattern = JSON.parse(JSON.stringify(SUBGENRE_PROFILES.hardgroove.pattern));
+    // Initialize Memory Banks with Default Hardgroove Profile
+    function initializeBanksWithPreset(presetKey) {
+      const profile = SUBGENRE_PROFILES[presetKey] || SUBGENRE_PROFILES.hardgroove;
+      
+      BANKS.forEach((bank, idx) => {
+        bank.pattern = JSON.parse(JSON.stringify(profile.pattern));
+        bank.stepPitches = {
+          kick: Array(16).fill('C1'),
+          bass: [...profile.bassSequence],
+          congaHigh: [...profile.congaHighSequence],
+          congaLow: [...profile.congaLowSequence],
+          synth: [...profile.synthSequence],
+        };
 
+        // Add subtle variation to Bank B, C, D
+        if (idx === 1) {
+          // Bank B: Accentuate offbeat claps & open hats
+          bank.pattern.openHat = [0, 0, 2, 1, 0, 0, 2, 1, 0, 0, 2, 1, 0, 0, 2, 1];
+        } else if (idx === 2) {
+          // Bank C: Sparse breakdown
+          bank.pattern.kick = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0];
+        } else if (idx === 3) {
+          // Bank D: Heavy peak fill
+          bank.pattern.rimshot = [0, 0, 1, 0, 2, 0, 1, 0, 0, 0, 1, 0, 2, 1, 2, 2];
+        }
+      });
+    }
+    initializeBanksWithPreset('hardgroove');
+
+    // =========================================================================
+    // AUDIO ENGINE INITIALIZATION & DISPATCH
+    // =========================================================================
     async function ensureAudioStarted() {
       if (Tone.context.state !== 'running') {
         await Tone.start();
@@ -663,12 +944,12 @@
       if (audioInitialized) return;
 
       try {
-        // Master Chain: Analyser, Limiter, Freeverb, Delay, Distortion, Filter
+        // Master Bus: Analyser -> Limiter -> Destination
         analyserNode = new Tone.Analyser('waveform', 256);
         masterLimiter = new Tone.Limiter(-0.5).toDestination();
         masterGain = new Tone.Gain(0.92);
 
-        // Instantaneous synchronous Freeverb (no async generation stalls)
+        // Master Spatial & Saturation FX
         masterReverb = new Tone.Freeverb({
           roomSize: 0.72,
           dampening: 3500,
@@ -692,13 +973,13 @@
           rolloff: -24
         });
 
-        // Sub-Buses for Clean Frequency Stacking
+        // Sub-Buses for Clean Frequency Grouping
         kickBus = new Tone.Gain(0.95);
         bassBus = new Tone.Gain(0.85);
         percBus = new Tone.Gain(0.80);
         synthBus = new Tone.Gain(0.70);
 
-        // Routing Buses -> Filter -> Saturation -> Delay -> Reverb -> Gain -> Analyser -> Limiter -> Out
+        // Bus Routing
         kickBus.connect(masterFilter);
         bassBus.connect(masterFilter);
         percBus.connect(masterFilter);
@@ -711,61 +992,73 @@
         masterGain.connect(analyserNode);
         analyserNode.connect(masterLimiter);
 
-        // 1. Kick Drum Engine (Tight transient pop + deep sub body)
+        // Setup Individual Channel Strip Mixing Nodes (Gain + Pan for each voice)
+        VOICES.forEach(v => {
+          voiceGains[v.id] = new Tone.Gain(v.level);
+          voicePanners[v.id] = new Tone.Panner(v.pan);
+          voiceGains[v.id].connect(voicePanners[v.id]);
+
+          // Route channel panner into appropriate sub-bus
+          if (v.id === 'kick') voicePanners[v.id].connect(kickBus);
+          else if (v.id === 'bass') voicePanners[v.id].connect(bassBus);
+          else if (v.id === 'synth') voicePanners[v.id].connect(synthBus);
+          else voicePanners[v.id].connect(percBus);
+        });
+
+        // 1. Kick Drum Engine (Tunable tight transient + sub body)
         synths.kick = new Tone.MembraneSynth({
           pitchDecay: 0.045,
           octaves: 7.5,
           oscillator: { type: 'sine' },
-          envelope: { attack: 0.001, decay: 0.28, sustain: 0, release: 0.08 }
-        }).connect(kickBus);
+          envelope: { attack: 0.001, decay: 0.24, sustain: 0, release: 0.08 }
+        }).connect(voiceGains.kick);
 
         // 2. Bass Engine (Resonant lowpass mono synth with snappy filter envelope)
+        synths.bassFilter = new Tone.Filter({ frequency: 2600, type: 'lowpass', rolloff: -24, Q: 2.8 });
         synths.bass = new Tone.MonoSynth({
           oscillator: { type: 'sawtooth' },
           filter: { Q: 2.8, type: 'lowpass', rolloff: -24 },
-          envelope: { attack: 0.004, decay: 0.16, sustain: 0.05, release: 0.08 },
+          envelope: { attack: 0.003, decay: 0.16, sustain: 0.05, release: 0.08 },
           filterEnvelope: { attack: 0.002, decay: 0.14, sustain: 0.15, min: 45, octaves: 2.8 }
-        }).connect(bassBus);
+        });
+        synths.bass.connect(synths.bassFilter);
+        synths.bassFilter.connect(voiceGains.bass);
 
-        // 3. High Conga / Slap (Resonant acoustic Latin pop)
+        // 3. High Conga (Resonant Latin slap)
         synths.congaHigh = new Tone.MembraneSynth({
           pitchDecay: 0.035,
           octaves: 3.2,
           oscillator: { type: 'triangle' },
           envelope: { attack: 0.002, decay: 0.12, sustain: 0, release: 0.06 }
-        }).connect(percBus);
+        }).connect(voiceGains.congaHigh);
 
         // 4. Low Bongo / Mid Conga (Woody warm body hit)
         synths.congaLow = new Tone.MembraneSynth({
           pitchDecay: 0.055,
           octaves: 2.5,
           oscillator: { type: 'sine' },
-          envelope: { attack: 0.003, decay: 0.19, sustain: 0, release: 0.10 }
-        }).connect(percBus);
+          envelope: { attack: 0.003, decay: 0.18, sustain: 0, release: 0.10 }
+        }).connect(voiceGains.congaLow);
 
-        // 5. High-Passed 16th Shaker (Crisp egg-shaker filter band)
-        const shakerFilter = new Tone.Filter({
-          frequency: 5500,
-          type: 'highpass'
-        }).connect(percBus);
-
+        // 5. High-Passed 16th Shaker
+        synths.shakerFilter = new Tone.Filter({ frequency: 5500, type: 'highpass' });
         synths.shaker = new Tone.NoiseSynth({
           noise: { type: 'pink' },
-          envelope: { attack: 0.001, decay: 0.038, sustain: 0 }
-        }).connect(shakerFilter);
+          envelope: { attack: 0.001, decay: 0.04, sustain: 0 }
+        });
+        synths.shaker.connect(synths.shakerFilter);
+        synths.shakerFilter.connect(voiceGains.shaker);
 
         // 6. Open Hi-Hat (909 sizzle)
-        const hatFilter = new Tone.Filter({
-          frequency: 6800,
-          type: 'highpass'
-        }).connect(percBus);
-
+        synths.hatFilter = new Tone.Filter({ frequency: 6800, type: 'highpass' });
         synths.openHat = new Tone.NoiseSynth({
           noise: { type: 'white' },
           envelope: { attack: 0.002, decay: 0.30, sustain: 0.04, release: 0.12 }
-        }).connect(hatFilter);
+        });
+        synths.openHat.connect(synths.hatFilter);
+        synths.hatFilter.connect(voiceGains.openHat);
 
-        // 7. Rimshot / Metallic Clang
+        // 7. Rimshot / Metallic Clang (Tunable metallic frequency)
         synths.rimshot = new Tone.MetalSynth({
           frequency: 420,
           envelope: { attack: 0.001, decay: 0.07, release: 0.05 },
@@ -773,27 +1066,23 @@
           modulationIndex: 22,
           resonance: 3800,
           octaves: 1.2
-        }).connect(percBus);
+        }).connect(voiceGains.rimshot);
 
-        // 8. Detroit / Techno Chord Stab Synth (24dB filter envelope)
-        const stabFilter = new Tone.Filter({
-          frequency: 2400,
-          type: 'lowpass',
-          rolloff: -24,
-          Q: 2.5
-        }).connect(synthBus);
-
+        // 8. Detroit / Techno Chord Stab Synth (PolySynth with 24dB filter)
+        synths.synthFilter = new Tone.Filter({ frequency: 2800, type: 'lowpass', rolloff: -24, Q: 2.5 });
         synths.synth = new Tone.PolySynth(Tone.Synth, {
           oscillator: { type: 'sawtooth' },
-          envelope: { attack: 0.005, decay: 0.18, sustain: 0.02, release: 0.08 }
-        }).connect(stabFilter);
+          envelope: { attack: 0.005, decay: 0.20, sustain: 0.02, release: 0.08 }
+        });
+        synths.synth.connect(synths.synthFilter);
+        synths.synthFilter.connect(voiceGains.synth);
 
         // Transport Setup
         Tone.Transport.bpm.value = 142;
         Tone.Transport.swing = 0.38;
         Tone.Transport.swingSubdivision = '16n';
 
-        // 16-Step Transport Sequence Loop
+        // 16-Step Transport Loop
         sequenceLoop = new Tone.Sequence((time, step) => {
           Tone.Draw.schedule(() => {
             updateStepUI(step);
@@ -820,57 +1109,213 @@
       }
     }
 
+    // =========================================================================
+    // VOICE TRIGGERING & SOUND PLAYBACK
+    // =========================================================================
+    function triggerVoices(step, time) {
+      const anySolo = VOICES.some(v => v.solo);
+
+      VOICES.forEach(voice => {
+        if (anySolo) {
+          if (!voice.solo) return;
+        } else {
+          if (voice.muted) return;
+        }
+
+        const pattern = BANKS[currentBank].pattern[voice.id];
+        if (pattern && pattern[step] > 0) {
+          playVoiceSample(voice.id, time, step, false);
+        }
+      });
+    }
+
+    function playVoiceSample(voiceId, time, step = 0, isManualPad = false) {
+      if (!audioInitialized) return;
+      const triggerTime = time !== undefined ? time : Tone.now();
+      const voice = VOICES.find(v => v.id === voiceId);
+      if (!voice) return;
+
+      const currentPattern = BANKS[currentBank].pattern;
+      const currentPitches = BANKS[currentBank].stepPitches;
+
+      // 0: Off, 1: Normal hit, 2: Accent hit
+      const stepState = (isManualPad || !currentPattern[voiceId]) ? 1 : currentPattern[voiceId][step];
+      if (stepState === 0 && !isManualPad) return;
+
+      const velocity = (stepState === 2) ? 1.0 : (isManualPad ? 0.92 : 0.78);
+
+      try {
+        switch (voiceId) {
+          case 'kick': {
+            const rawNote = (currentPitches.kick && currentPitches.kick[step]) || voice.baseNote || 'C1';
+            const finalNote = transposeNote(rawNote, voice.tune);
+            synths.kick.envelope.decay = Math.max(0.08, voice.decay);
+            synths.kick.triggerAttackRelease(finalNote, '8n', triggerTime, velocity);
+            break;
+          }
+          case 'bass': {
+            const rawNote = (currentPitches.bass && currentPitches.bass[step]) || 'G1';
+            const finalNote = transposeNote(rawNote, voice.tune);
+            synths.bass.envelope.decay = Math.max(0.05, voice.decay);
+            synths.bassFilter.frequency.rampTo(voice.filter, 0.04, triggerTime);
+            synths.bass.triggerAttackRelease(finalNote, '16n', triggerTime, velocity);
+            break;
+          }
+          case 'congaHigh': {
+            const rawNote = (currentPitches.congaHigh && currentPitches.congaHigh[step]) || voice.baseNote || 'D3';
+            const finalNote = transposeNote(rawNote, voice.tune);
+            synths.congaHigh.envelope.decay = Math.max(0.05, voice.decay);
+            synths.congaHigh.triggerAttackRelease(finalNote, '16n', triggerTime, velocity);
+            break;
+          }
+          case 'congaLow': {
+            const rawNote = (currentPitches.congaLow && currentPitches.congaLow[step]) || voice.baseNote || 'G2';
+            const finalNote = transposeNote(rawNote, voice.tune);
+            synths.congaLow.envelope.decay = Math.max(0.06, voice.decay);
+            synths.congaLow.triggerAttackRelease(finalNote, '16n', triggerTime, velocity);
+            break;
+          }
+          case 'shaker': {
+            synths.shakerFilter.frequency.value = voice.filter;
+            synths.shaker.envelope.decay = Math.max(0.02, voice.decay);
+            synths.shaker.triggerAttackRelease('32n', triggerTime, velocity * 0.9);
+            break;
+          }
+          case 'openHat': {
+            synths.hatFilter.frequency.value = voice.filter;
+            synths.openHat.envelope.decay = Math.max(0.06, voice.decay);
+            synths.openHat.triggerAttackRelease('8n', triggerTime, velocity);
+            break;
+          }
+          case 'rimshot': {
+            const freq = typeof voice.tune === 'number' && voice.tune > 0 ? voice.tune : 420;
+            synths.rimshot.frequency.value = freq;
+            synths.rimshot.envelope.decay = Math.max(0.03, voice.decay);
+            synths.rimshot.triggerAttackRelease('16n', triggerTime, velocity);
+            break;
+          }
+          case 'synth': {
+            const rawRoot = (currentPitches.synth && currentPitches.synth[step]) || voice.baseNote || 'G3';
+            const finalRoot = transposeNote(rawRoot, voice.tune);
+            const chordNotes = getChordNotes(finalRoot, voice.chordType || 'min9');
+            synths.synthFilter.frequency.rampTo(voice.filter, 0.04, triggerTime);
+            synths.synth.triggerAttackRelease(chordNotes, '16n', triggerTime, velocity);
+            break;
+          }
+        }
+      } catch (err) {
+        console.warn('Voice playback exception handled:', err);
+      }
+    }
+
+    // =========================================================================
+    // SEQUENCER MATRIX RENDERING & STEP INTERACTION
+    // =========================================================================
     function renderSequencerGrid() {
       const container = document.getElementById('sequencer-rows');
       if (!container) return;
       container.innerHTML = '';
 
+      const currentPattern = BANKS[currentBank].pattern;
+      const currentPitches = BANKS[currentBank].stepPitches;
+
       VOICES.forEach(voice => {
         const row = document.createElement('div');
-        row.className = 'grid grid-cols-[140px_repeat(16,1fr)] gap-1 items-center bg-club-850/60 p-1 rounded-lg border border-club-800/80';
+        const isSelectedVoice = voice.id === activeVoiceId;
+        row.className = `grid grid-cols-[140px_repeat(16,1fr)] gap-1 items-center p-1 rounded-lg border transition-colors ${
+          isSelectedVoice ? 'bg-club-800/80 border-club-600' : 'bg-club-850/60 border-club-800/80 hover:border-club-700'
+        }`;
 
-        // Voice Channel Control Header
+        // Voice Channel Header (Clicking selects voice in the Inspector)
         const header = document.createElement('div');
-        header.className = 'flex items-center justify-between pr-2 pl-1 select-none';
+        header.className = 'flex items-center justify-between pr-1 pl-1 select-none cursor-pointer';
+        header.title = 'Click to open Sound & Pitch Inspector';
+
+        // Calculate display pitch label for row badge
+        let tuneBadgeText = '0st';
+        if (voice.id === 'rimshot') {
+          tuneBadgeText = `${voice.tune || 420}Hz`;
+        } else if (voice.isTonal) {
+          tuneBadgeText = voice.tune === 0 ? (voice.baseNote || '0st') : `${voice.tune > 0 ? '+' : ''}${voice.tune}st`;
+        }
+
         header.innerHTML = `
           <div class="flex items-center gap-1.5 overflow-hidden">
             <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${voice.color}"></span>
-            <span class="text-xs font-bold truncate text-slate-200">${voice.name}</span>
+            <div class="flex flex-col truncate">
+              <span class="text-xs font-bold truncate text-slate-200 leading-tight">${voice.name}</span>
+              <span class="text-[9px] text-slate-400 font-bold">${tuneBadgeText}</span>
+            </div>
           </div>
-          <div class="flex items-center gap-1">
+          <div class="flex items-center gap-1 flex-shrink-0">
             <button class="mute-btn text-[9px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${voice.muted ? 'bg-red-500 text-white' : 'bg-club-800 text-slate-400 hover:text-slate-200'}" data-voice="${voice.id}">M</button>
             <button class="solo-btn text-[9px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${voice.solo ? 'bg-amber-400 text-black' : 'bg-club-800 text-slate-400 hover:text-slate-200'}" data-voice="${voice.id}">S</button>
           </div>
         `;
+
+        header.addEventListener('click', (e) => {
+          if (e.target.classList.contains('mute-btn') || e.target.classList.contains('solo-btn')) return;
+          selectActiveVoice(voice.id);
+        });
+
         row.appendChild(header);
 
         // 16 Step Buttons
+        const voicePattern = currentPattern[voice.id] || Array(16).fill(0);
+        const voicePitches = currentPitches[voice.id] || Array(16).fill(voice.baseNote);
+
         for (let i = 0; i < 16; i++) {
           const btn = document.createElement('button');
           const isQuarterBeat = i % 4 === 0;
-          const isActive = currentPattern[voice.id] && currentPattern[voice.id][i] === 1;
+          const isDivider = (i + 1) % 4 === 0 && i !== 15;
+          const stepVal = voicePattern[i] || 0; // 0: Off, 1: Normal, 2: Accent
 
-          btn.className = `step-btn h-9 rounded text-[10px] font-bold border transition-all cursor-pointer ${
-            isActive
-              ? 'active font-extrabold text-black'
-              : isQuarterBeat
-                ? 'bg-club-800 border-club-700/80 text-slate-400'
-                : 'bg-club-900 border-club-800 text-slate-600'
-          }`;
-
-          if (isActive) {
+          // Step button styling
+          let baseClasses = `step-btn h-9 rounded text-[9px] font-bold border transition-all cursor-pointer flex flex-col items-center justify-center ${isDivider ? 'beat-divider' : ''}`;
+          
+          if (stepVal === 2) {
+            btn.className = `${baseClasses} step-accent text-black font-extrabold`;
+            btn.style.backgroundColor = voice.color;
+            btn.style.color = '#000000';
+            btn.style.borderColor = '#ffffff';
+          } else if (stepVal === 1) {
+            btn.className = `${baseClasses} step-normal text-black font-bold`;
             btn.style.backgroundColor = voice.color;
             btn.style.color = '#000000';
             btn.style.borderColor = voice.color;
+          } else {
+            btn.className = `${baseClasses} ${
+              isQuarterBeat
+                ? 'bg-club-800 border-club-700/80 text-slate-400'
+                : 'bg-club-900 border-club-800 text-slate-600'
+            }`;
+          }
+
+          // Step text label (shows pitch note if tonal voice, or velocity marker)
+          if (stepVal > 0 && voice.isTonal) {
+            const rawNote = voicePitches[i] || voice.baseNote;
+            const finalNote = transposeNote(rawNote, voice.tune);
+            btn.innerHTML = `<span class="leading-none text-[8px] font-extrabold">${finalNote}</span>${stepVal === 2 ? '<span class="text-[7px] leading-none">▲</span>' : ''}`;
+          } else if (stepVal === 2) {
+            btn.innerHTML = `<span class="text-[10px] leading-none">▲</span>`;
           }
 
           btn.dataset.voice = voice.id;
           btn.dataset.step = i;
 
+          // Left Click: Cycle 0 (Off) -> 1 (Normal) -> 2 (Accent) -> 0 (Off)
           btn.addEventListener('pointerdown', async (e) => {
             e.preventDefault();
             await ensureAudioStarted();
-            toggleStep(voice.id, i, btn, voice.color);
+            selectActiveVoice(voice.id, i);
+            cycleStepVelocity(voice.id, i, btn, voice.color);
+          });
+
+          // Right Click / Context Menu: Select step and open chromatic pitch editor
+          btn.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            selectActiveVoice(voice.id, i);
+            showToast(`${voice.name} Step ${i + 1} pitch focused in Inspector`);
           });
 
           row.appendChild(btn);
@@ -905,29 +1350,62 @@
       });
     }
 
-    function toggleStep(voiceId, stepIdx, btn, color) {
-      if (!currentPattern[voiceId]) currentPattern[voiceId] = Array(16).fill(0);
-      currentPattern[voiceId][stepIdx] = currentPattern[voiceId][stepIdx] === 1 ? 0 : 1;
+    function cycleStepVelocity(voiceId, stepIdx, btn, color) {
+      const pattern = BANKS[currentBank].pattern;
+      if (!pattern[voiceId]) pattern[voiceId] = Array(16).fill(0);
 
-      const isActive = currentPattern[voiceId][stepIdx] === 1;
+      // Cycle 0 -> 1 -> 2 -> 0
+      const currentVal = pattern[voiceId][stepIdx] || 0;
+      const nextVal = (currentVal + 1) % 3;
+      pattern[voiceId][stepIdx] = nextVal;
+
+      const voice = VOICES.find(v => v.id === voiceId);
       const isQuarterBeat = stepIdx % 4 === 0;
+      const isDivider = (stepIdx + 1) % 4 === 0 && stepIdx !== 15;
 
-      if (isActive) {
-        btn.classList.add('active');
+      if (nextVal === 2) {
+        // Accent
+        btn.className = `step-btn h-9 rounded text-[9px] border transition-all cursor-pointer flex flex-col items-center justify-center step-accent font-extrabold text-black ${isDivider ? 'beat-divider' : ''}`;
+        btn.style.backgroundColor = color;
+        btn.style.color = '#000000';
+        btn.style.borderColor = '#ffffff';
+        playVoiceSample(voiceId, undefined, stepIdx, false);
+      } else if (nextVal === 1) {
+        // Normal
+        btn.className = `step-btn h-9 rounded text-[9px] border transition-all cursor-pointer flex flex-col items-center justify-center step-normal font-bold text-black ${isDivider ? 'beat-divider' : ''}`;
         btn.style.backgroundColor = color;
         btn.style.color = '#000000';
         btn.style.borderColor = color;
-        playVoiceSample(voiceId, undefined, stepIdx);
+        playVoiceSample(voiceId, undefined, stepIdx, false);
       } else {
-        btn.classList.remove('active');
-        btn.style.backgroundColor = isQuarterBeat ? '#1c1f2e' : '#0e1017';
-        btn.style.color = isQuarterBeat ? '#94a3b8' : '#475569';
-        btn.style.borderColor = isQuarterBeat ? '#2f344c' : '#1c1f2e';
+        // Off
+        btn.className = `step-btn h-9 rounded text-[9px] font-bold border transition-all cursor-pointer flex flex-col items-center justify-center ${
+          isQuarterBeat
+            ? 'bg-club-800 border-club-700/80 text-slate-400'
+            : 'bg-club-900 border-club-800 text-slate-600'
+        } ${isDivider ? 'beat-divider' : ''}`;
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
       }
+
+      // Update step label
+      if (nextVal > 0 && voice && voice.isTonal) {
+        const currentPitches = BANKS[currentBank].stepPitches;
+        const rawNote = (currentPitches[voiceId] && currentPitches[voiceId][stepIdx]) || voice.baseNote;
+        const finalNote = transposeNote(rawNote, voice.tune);
+        btn.innerHTML = `<span class="leading-none text-[8px] font-extrabold">${finalNote}</span>${nextVal === 2 ? '<span class="text-[7px] leading-none">▲</span>' : ''}`;
+      } else if (nextVal === 2) {
+        btn.innerHTML = `<span class="text-[10px] leading-none">▲</span>`;
+      } else {
+        btn.innerHTML = '';
+      }
+
+      updateInspectorStepPills();
     }
 
     function updateStepUI(step) {
-      // Highlight active step column
+      // Highlight active step buttons
       document.querySelectorAll('.step-btn').forEach(btn => {
         if (parseInt(btn.dataset.step, 10) === step) {
           btn.classList.add('current-step');
@@ -955,101 +1433,161 @@
       });
     }
 
-    function triggerVoices(step, time) {
-      const anySolo = VOICES.some(v => v.solo);
+    // =========================================================================
+    // VOICE SOUND & PITCH INSPECTOR CONTROLLER
+    // =========================================================================
+    function selectActiveVoice(voiceId, stepIdx = 0) {
+      activeVoiceId = voiceId;
+      selectedStepIdx = stepIdx;
+      const voice = VOICES.find(v => v.id === voiceId);
+      if (!voice) return;
 
-      VOICES.forEach(voice => {
-        if (anySolo) {
-          if (!voice.solo) return;
+      // Update Inspector Header
+      document.getElementById('inspector-voice-name').textContent = voice.name;
+      document.getElementById('inspector-voice-name').style.color = voice.color;
+      document.getElementById('inspector-voice-dot').style.backgroundColor = voice.color;
+
+      // Update Voice Tabs
+      document.querySelectorAll('.voice-tab').forEach(tab => {
+        if (tab.dataset.voiceTab === voiceId) {
+          tab.className = `voice-tab px-2.5 py-1 rounded text-xs font-bold transition border cursor-pointer`;
+          tab.style.borderColor = voice.color;
+          tab.style.backgroundColor = `${voice.color}25`;
+          tab.style.color = voice.color;
         } else {
-          if (voice.muted) return;
+          tab.className = 'voice-tab px-2.5 py-1 rounded text-xs font-bold transition border border-club-700 bg-club-850 text-slate-300 hover:text-white cursor-pointer';
+          tab.style.borderColor = '';
+          tab.style.backgroundColor = '';
+          tab.style.color = '';
         }
+      });
 
-        if (currentPattern[voice.id] && currentPattern[voice.id][step] === 1) {
-          playVoiceSample(voice.id, time, step);
+      // Update Tuning Slider & Label
+      const tuneSlider = document.getElementById('inspector-slider-tune');
+      const tuneVal = document.getElementById('inspector-val-tune');
+      if (voice.id === 'rimshot') {
+        tuneSlider.min = 150;
+        tuneSlider.max = 1200;
+        tuneSlider.value = voice.tune || 420;
+        tuneVal.textContent = `${voice.tune || 420}Hz`;
+      } else {
+        tuneSlider.min = -12;
+        tuneSlider.max = 12;
+        tuneSlider.value = voice.tune || 0;
+        const sign = voice.tune > 0 ? '+' : '';
+        tuneVal.textContent = `${sign}${voice.tune || 0} st`;
+      }
+
+      // Update Decay Slider
+      const decaySlider = document.getElementById('inspector-slider-decay');
+      decaySlider.value = Math.round(voice.decay * 1000);
+      document.getElementById('inspector-val-decay').textContent = `${Math.round(voice.decay * 1000)}ms`;
+
+      // Update Level Slider
+      const levelSlider = document.getElementById('inspector-slider-level');
+      levelSlider.value = Math.round(voice.level * 100);
+      document.getElementById('inspector-val-level').textContent = `${Math.round(voice.level * 100)}%`;
+
+      // Update Pan Slider
+      const panSlider = document.getElementById('inspector-slider-pan');
+      panSlider.value = Math.round(voice.pan * 100);
+      const panText = voice.pan === 0 ? 'Center' : (voice.pan < 0 ? `L ${Math.abs(Math.round(voice.pan * 100))}` : `R ${Math.round(voice.pan * 100)}`);
+      document.getElementById('inspector-val-pan').textContent = panText;
+
+      // Show / Hide Chord Voicing Selector
+      const chordBox = document.getElementById('box-chord-selector');
+      if (voice.id === 'synth') {
+        chordBox.classList.remove('hidden');
+        updateChordButtonsUI(voice.chordType || 'min9');
+      } else {
+        chordBox.classList.add('hidden');
+      }
+
+      // Show / Hide Step Pitch Box (only for tonal instruments)
+      const stepPitchBox = document.getElementById('inspector-step-pitch-box');
+      if (voice.isTonal) {
+        stepPitchBox.classList.remove('hidden');
+        keyboardOctave = voice.octave || 1;
+        document.getElementById('current-keyboard-octave-label').textContent = `Octave ${keyboardOctave}`;
+        updateInspectorStepPills();
+      } else {
+        stepPitchBox.classList.add('hidden');
+      }
+
+      renderSequencerGrid();
+    }
+
+    function updateChordButtonsUI(currentChord) {
+      document.querySelectorAll('.chord-btn').forEach(btn => {
+        if (btn.dataset.chord === currentChord) {
+          btn.className = 'chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-purple-500 bg-purple-500/20 text-purple-200 cursor-pointer shadow-sm';
+        } else {
+          btn.className = 'chord-btn px-2 py-0.5 rounded text-[11px] font-bold border border-club-700 bg-club-850 text-slate-400 hover:text-white cursor-pointer';
         }
       });
     }
 
-    function playVoiceSample(voiceId, time, step = 0) {
-      if (!audioInitialized) return;
-      const triggerTime = time !== undefined ? time : Tone.now();
-      const profile = SUBGENRE_PROFILES[currentSubgenre] || SUBGENRE_PROFILES.hardgroove;
+    function updateInspectorStepPills() {
+      const container = document.getElementById('inspector-pitch-steps');
+      if (!container) return;
+      container.innerHTML = '';
 
-      try {
-        switch (voiceId) {
-          case 'kick':
-            if (currentSubgenre === 'industrial') {
-              synths.kick.pitchDecay = 0.08;
-              synths.kick.envelope.decay = 0.38;
-              synths.kick.triggerAttackRelease('D1', '8n', triggerTime, 1.0);
-            } else if (currentSubgenre === 'hardtechno') {
-              synths.kick.pitchDecay = 0.035;
-              synths.kick.envelope.decay = 0.25;
-              synths.kick.triggerAttackRelease('E1', '8n', triggerTime, 1.0);
-            } else if (currentSubgenre === 'peaktime') {
-              synths.kick.pitchDecay = 0.055;
-              synths.kick.envelope.decay = 0.42;
-              synths.kick.triggerAttackRelease('C1', '8n', triggerTime, 1.0);
-            } else if (currentSubgenre === 'hypnotic') {
-              synths.kick.pitchDecay = 0.04;
-              synths.kick.envelope.decay = 0.28;
-              synths.kick.triggerAttackRelease('C1', '8n', triggerTime, 0.85);
-            } else {
-              // Hardgroove: tight, punchy 909 kick leaving space for Latin percussion
-              synths.kick.pitchDecay = 0.045;
-              synths.kick.envelope.decay = 0.24;
-              synths.kick.triggerAttackRelease('C1', '8n', triggerTime, 0.95);
-            }
-            break;
+      const voice = VOICES.find(v => v.id === activeVoiceId);
+      if (!voice || !voice.isTonal) return;
 
-          case 'bass':
-            const noteSequence = profile.bassSequence || ['G1'];
-            const bassNote = noteSequence[step % noteSequence.length];
-            const bassVelocity = (currentSubgenre === 'hardgroove' && (step % 4 === 1 || step % 4 === 2)) ? 0.95 : 0.85;
-            synths.bass.triggerAttackRelease(bassNote, '16n', triggerTime, bassVelocity);
-            break;
+      const pitches = BANKS[currentBank].stepPitches[voice.id] || Array(16).fill(voice.baseNote);
+      const pattern = BANKS[currentBank].pattern[voice.id] || Array(16).fill(0);
 
-          case 'congaHigh':
-            const highPitch = (step % 4 === 2) ? 'E3' : 'D3';
-            const highVelocity = (step === 4 || step === 10 || step === 12) ? 0.95 : 0.78;
-            synths.congaHigh.triggerAttackRelease(highPitch, '16n', triggerTime, highVelocity);
-            break;
+      document.getElementById('inspector-selected-step-label').textContent = `[ Step ${selectedStepIdx + 1}: ${transposeNote(pitches[selectedStepIdx] || voice.baseNote, voice.tune)} ]`;
 
-          case 'congaLow':
-            const lowPitch = (step % 4 === 1) ? 'A2' : 'G2';
-            const lowVelocity = (step % 2 === 1) ? 0.90 : 0.75;
-            synths.congaLow.triggerAttackRelease(lowPitch, '16n', triggerTime, lowVelocity);
-            break;
+      for (let i = 0; i < 16; i++) {
+        const stepNote = pitches[i] || voice.baseNote;
+        const finalNote = transposeNote(stepNote, voice.tune);
+        const isSelected = i === selectedStepIdx;
+        const isActive = (pattern[i] || 0) > 0;
 
-          case 'shaker':
-            const shakerVelocity = (currentSubgenre === 'hardgroove')
-              ? ((step % 2 === 1) ? 0.85 : 0.50)
-              : ((step % 2 === 1) ? 0.75 : 0.55);
-            synths.shaker.triggerAttackRelease('32n', triggerTime, shakerVelocity);
-            break;
+        const pill = document.createElement('button');
+        pill.className = `p-1 rounded text-[10px] font-bold border transition cursor-pointer flex flex-col items-center justify-center ${
+          isSelected
+            ? 'border-emerald-400 bg-emerald-500/20 text-white font-extrabold shadow'
+            : isActive
+              ? 'border-club-700 bg-club-850 text-emerald-300 font-bold hover:border-slate-500'
+              : 'border-club-800 bg-club-900 text-slate-500 hover:text-slate-300'
+        }`;
 
-          case 'openHat':
-            const hatVelocity = (currentSubgenre === 'peaktime') ? 0.98 : 0.85;
-            synths.openHat.triggerAttackRelease('8n', triggerTime, hatVelocity);
-            break;
+        pill.innerHTML = `
+          <span class="text-[8px] text-slate-400 leading-none">${i + 1}</span>
+          <span class="leading-tight">${finalNote}</span>
+        `;
 
-          case 'rimshot':
-            const rimVelocity = (currentSubgenre === 'peaktime') ? 1.0 : 0.82;
-            synths.rimshot.triggerAttackRelease('16n', triggerTime, rimVelocity);
-            break;
+        pill.addEventListener('click', () => {
+          selectedStepIdx = i;
+          updateInspectorStepPills();
+          playVoiceSample(activeVoiceId, undefined, i, true);
+        });
 
-          case 'synth':
-            const chords = profile.synthChords || [['G3', 'A#3', 'D4']];
-            const chord = chords[Math.floor(step / 4) % chords.length];
-            synths.synth.triggerAttackRelease(chord, '16n', triggerTime, 0.88);
-            break;
-        }
-      } catch (err) {
-        console.warn('Voice playback handled:', err);
+        container.appendChild(pill);
       }
     }
 
+    function assignNoteToSelectedStep(noteName) {
+      const voice = VOICES.find(v => v.id === activeVoiceId);
+      if (!voice || !voice.isTonal) return;
+
+      const fullNote = `${noteName}${keyboardOctave}`;
+      const pitches = BANKS[currentBank].stepPitches[voice.id];
+      if (!pitches) return;
+
+      pitches[selectedStepIdx] = fullNote;
+      updateInspectorStepPills();
+      renderSequencerGrid();
+      playVoiceSample(activeVoiceId, undefined, selectedStepIdx, true);
+      showToast(`${voice.name} Step ${selectedStepIdx + 1} set to ${fullNote}`);
+    }
+
+    // =========================================================================
+    // SUBGENRE PRESET APPLICATION & DATA BINDING
+    // =========================================================================
     async function loadSubgenrePreset(subgenreKey) {
       await ensureAudioStarted();
       applyPresetData(subgenreKey);
@@ -1073,8 +1611,8 @@
       if (masterReverb) masterReverb.wet.value = data.reverb;
       if (masterFeedbackDelay) masterFeedbackDelay.wet.value = data.delay;
 
-      // Update Pattern Matrix
-      currentPattern = JSON.parse(JSON.stringify(data.pattern));
+      // Reset Memory Banks with authentic profile pattern & sequences
+      initializeBanksWithPreset(subgenreKey);
 
       // Update Controls UI
       document.getElementById('input-bpm').value = data.bpm;
@@ -1111,10 +1649,15 @@
         }
       });
 
+      // Update active voice tabs & inspector
+      selectActiveVoice(activeVoiceId, 0);
       renderSequencerGrid();
       showToast(`${subgenreKey.toUpperCase()} Profile Loaded (${data.bpm} BPM)`);
     }
 
+    // =========================================================================
+    // VISUALIZER & CANVAS OSCILLOSCOPE
+    // =========================================================================
     function startCanvasVisualizer() {
       const canvas = document.getElementById('scope-canvas');
       if (!canvas) return;
@@ -1201,8 +1744,7 @@
     async function handlePadTrigger(voiceId) {
       await ensureAudioStarted();
       triggerPadVisual(voiceId);
-      // Give manual finger drumming organic velocity variations
-      playVoiceSample(voiceId, undefined, Math.floor(Math.random() * 4));
+      playVoiceSample(voiceId, undefined, selectedStepIdx, true);
     }
 
     async function togglePlayEngine() {
@@ -1219,6 +1761,10 @@
         powerBtn.classList.remove('bg-red-500', 'text-white', 'hover:bg-red-400');
         powerBtn.classList.add('bg-emerald-500', 'text-black', 'hover:bg-emerald-400');
         pingEl.classList.remove('animate-ping');
+        
+        // Clear active step highlights
+        document.querySelectorAll('.step-btn.current-step').forEach(btn => btn.classList.remove('current-step'));
+        document.querySelectorAll('.step-num.scale-110').forEach(num => num.classList.remove('scale-110', 'text-white'));
         showToast('Playback Paused');
       } else {
         Tone.Transport.start();
@@ -1227,23 +1773,26 @@
         powerBtn.classList.remove('bg-emerald-500', 'text-black', 'hover:bg-emerald-400');
         powerBtn.classList.add('bg-red-500', 'text-white', 'hover:bg-red-400');
         pingEl.classList.add('animate-ping');
-        showToast('Engine Running • 16-Step Transport Active');
+        showToast(`Engine Running • Bank ${BANKS[currentBank].name} Active`);
       }
     }
 
     function randomizeGroove() {
-      currentPattern.kick = [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0];
-      currentPattern.openHat = [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0];
-      currentPattern.shaker = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+      const pattern = BANKS[currentBank].pattern;
+      pattern.kick = [2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0];
+      pattern.openHat = [0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0];
+      pattern.shaker = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
       ['congaHigh', 'congaLow', 'rimshot', 'bass', 'synth'].forEach(v => {
-        currentPattern[v] = Array(16).fill(0).map((_, idx) => {
+        pattern[v] = Array(16).fill(0).map((_, idx) => {
           if (idx % 4 === 0 && v !== 'synth') return 0;
-          return Math.random() > 0.68 ? 1 : 0;
+          const r = Math.random();
+          return r > 0.78 ? 2 : (r > 0.62 ? 1 : 0);
         });
       });
 
       renderSequencerGrid();
+      updateInspectorStepPills();
       showToast('Polyrhythmic Groove Mutated');
     }
 
@@ -1266,7 +1815,11 @@
       }
     }
 
+    // =========================================================================
+    // EVENT LISTENERS & INITIAL SETUP
+    // =========================================================================
     window.addEventListener('DOMContentLoaded', () => {
+      selectActiveVoice('bass', 0);
       renderSequencerGrid();
 
       // Master Power and Quick-Start Buttons
@@ -1291,6 +1844,26 @@
         if (audioInitialized) Tone.Transport.swing = val / 100;
       });
 
+      // Memory Pattern Bank Buttons (A, B, C, D)
+      document.querySelectorAll('.bank-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const bankIdx = parseInt(btn.dataset.bank, 10);
+          currentBank = bankIdx;
+
+          document.querySelectorAll('.bank-btn').forEach(b => {
+            if (parseInt(b.dataset.bank, 10) === bankIdx) {
+              b.className = 'bank-btn px-2 py-0.5 rounded text-[11px] font-extrabold transition bg-emerald-500 text-black cursor-pointer';
+            } else {
+              b.className = 'bank-btn px-2 py-0.5 rounded text-[11px] font-extrabold transition bg-club-800 text-slate-400 hover:text-white cursor-pointer';
+            }
+          });
+
+          renderSequencerGrid();
+          updateInspectorStepPills();
+          showToast(`Switched to Pattern Bank ${BANKS[bankIdx].name}`);
+        });
+      });
+
       // Subgenre Preset Buttons in Header
       document.querySelectorAll('.preset-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1310,13 +1883,220 @@
       // Sequencer Clear & Randomize Buttons
       document.getElementById('btn-clear-seq').addEventListener('click', () => {
         VOICES.forEach(v => {
-          currentPattern[v.id] = Array(16).fill(0);
+          BANKS[currentBank].pattern[v.id] = Array(16).fill(0);
         });
         renderSequencerGrid();
+        updateInspectorStepPills();
         showToast('Sequencer Cleared');
       });
 
       document.getElementById('btn-random-groove').addEventListener('click', randomizeGroove);
+
+      // Duplicate 1-8 to 9-16
+      document.getElementById('btn-duplicate-half').addEventListener('click', () => {
+        const pattern = BANKS[currentBank].pattern;
+        const pitches = BANKS[currentBank].stepPitches;
+
+        VOICES.forEach(v => {
+          if (pattern[v.id]) {
+            for (let i = 0; i < 8; i++) {
+              pattern[v.id][i + 8] = pattern[v.id][i];
+            }
+          }
+          if (pitches[v.id]) {
+            for (let i = 0; i < 8; i++) {
+              pitches[v.id][i + 8] = pitches[v.id][i];
+            }
+          }
+        });
+
+        renderSequencerGrid();
+        updateInspectorStepPills();
+        showToast('Duplicated Steps 1-8 to 9-16');
+      });
+
+      // Voice Tabs in Inspector
+      document.querySelectorAll('.voice-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          selectActiveVoice(tab.dataset.voiceTab, 0);
+        });
+      });
+
+      // Inspector Parameter Controls
+      // 1. Tuning Slider & Buttons
+      const tuneSlider = document.getElementById('inspector-slider-tune');
+      tuneSlider.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice) return;
+
+        voice.tune = val;
+        const tuneVal = document.getElementById('inspector-val-tune');
+        if (voice.id === 'rimshot') {
+          tuneVal.textContent = `${val}Hz`;
+        } else {
+          tuneVal.textContent = `${val > 0 ? '+' : ''}${val} st`;
+        }
+
+        renderSequencerGrid();
+        updateInspectorStepPills();
+        playVoiceSample(activeVoiceId, undefined, selectedStepIdx, true);
+      });
+
+      document.getElementById('btn-tune-reset').addEventListener('click', () => {
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice) return;
+        voice.tune = (voice.id === 'rimshot') ? 420 : 0;
+        tuneSlider.value = voice.tune;
+        document.getElementById('inspector-val-tune').textContent = (voice.id === 'rimshot') ? '420Hz' : '+0 st';
+        renderSequencerGrid();
+        updateInspectorStepPills();
+        showToast(`${voice.name} Tuning Reset`);
+      });
+
+      document.getElementById('btn-tune-minus').addEventListener('click', () => {
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice) return;
+        if (voice.id === 'rimshot') {
+          voice.tune = Math.max(150, (voice.tune || 420) - 25);
+        } else {
+          voice.tune = Math.max(-12, (voice.tune || 0) - 1);
+        }
+        tuneSlider.value = voice.tune;
+        document.getElementById('inspector-val-tune').textContent = (voice.id === 'rimshot') ? `${voice.tune}Hz` : `${voice.tune > 0 ? '+' : ''}${voice.tune} st`;
+        renderSequencerGrid();
+        updateInspectorStepPills();
+        playVoiceSample(activeVoiceId, undefined, selectedStepIdx, true);
+      });
+
+      document.getElementById('btn-tune-plus').addEventListener('click', () => {
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice) return;
+        if (voice.id === 'rimshot') {
+          voice.tune = Math.min(1200, (voice.tune || 420) + 25);
+        } else {
+          voice.tune = Math.min(12, (voice.tune || 0) + 1);
+        }
+        tuneSlider.value = voice.tune;
+        document.getElementById('inspector-val-tune').textContent = (voice.id === 'rimshot') ? `${voice.tune}Hz` : `${voice.tune > 0 ? '+' : ''}${voice.tune} st`;
+        renderSequencerGrid();
+        updateInspectorStepPills();
+        playVoiceSample(activeVoiceId, undefined, selectedStepIdx, true);
+      });
+
+      // 2. Decay Slider
+      document.getElementById('inspector-slider-decay').addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice) return;
+        voice.decay = val / 1000;
+        document.getElementById('inspector-val-decay').textContent = `${val}ms`;
+      });
+
+      // 3. Level Slider
+      document.getElementById('inspector-slider-level').addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice) return;
+        voice.level = val / 100;
+        document.getElementById('inspector-val-level').textContent = `${val}%`;
+        if (voiceGains[voice.id]) voiceGains[voice.id].gain.rampTo(voice.level, 0.05);
+      });
+
+      // 4. Pan Slider
+      document.getElementById('inspector-slider-pan').addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice) return;
+        voice.pan = val / 100;
+        const panText = val === 0 ? 'Center' : (val < 0 ? `L ${Math.abs(val)}` : `R ${val}`);
+        document.getElementById('inspector-val-pan').textContent = panText;
+        if (voicePanners[voice.id]) voicePanners[voice.id].pan.rampTo(voice.pan, 0.05);
+      });
+
+      // Chord Voicing Buttons for Synth
+      document.querySelectorAll('.chord-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const chord = btn.dataset.chord;
+          const voice = VOICES.find(v => v.id === 'synth');
+          if (!voice) return;
+          voice.chordType = chord;
+          updateChordButtonsUI(chord);
+          showToast(`Synth Chord Voicing: ${CHORD_VOICINGS[chord].name}`);
+          playVoiceSample('synth', undefined, selectedStepIdx, true);
+        });
+      });
+
+      // Chromatic Keyboard Note Buttons
+      document.querySelectorAll('.piano-key').forEach(key => {
+        key.addEventListener('click', async () => {
+          await ensureAudioStarted();
+          assignNoteToSelectedStep(key.dataset.note);
+        });
+      });
+
+      // Octave Shift Buttons in Keyboard
+      document.getElementById('btn-octave-minus').addEventListener('click', () => {
+        keyboardOctave = Math.max(0, keyboardOctave - 1);
+        document.getElementById('current-keyboard-octave-label').textContent = `Octave ${keyboardOctave}`;
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (voice) voice.octave = keyboardOctave;
+      });
+
+      document.getElementById('btn-octave-plus').addEventListener('click', () => {
+        keyboardOctave = Math.min(5, keyboardOctave + 1);
+        document.getElementById('current-keyboard-octave-label').textContent = `Octave ${keyboardOctave}`;
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (voice) voice.octave = keyboardOctave;
+      });
+
+      // Batch Sequence Actions (+1 Octave, -1 Octave, Scale Jam)
+      document.getElementById('btn-batch-octave-up').addEventListener('click', () => {
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice || !voice.isTonal) return;
+        const pitches = BANKS[currentBank].stepPitches[voice.id];
+        if (!pitches) return;
+        for (let i = 0; i < 16; i++) {
+          pitches[i] = transposeNote(pitches[i], 12);
+        }
+        updateInspectorStepPills();
+        renderSequencerGrid();
+        showToast(`${voice.name} Transposed +1 Octave`);
+        playVoiceSample(activeVoiceId, undefined, selectedStepIdx, true);
+      });
+
+      document.getElementById('btn-batch-octave-down').addEventListener('click', () => {
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice || !voice.isTonal) return;
+        const pitches = BANKS[currentBank].stepPitches[voice.id];
+        if (!pitches) return;
+        for (let i = 0; i < 16; i++) {
+          pitches[i] = transposeNote(pitches[i], -12);
+        }
+        updateInspectorStepPills();
+        renderSequencerGrid();
+        showToast(`${voice.name} Transposed -1 Octave`);
+        playVoiceSample(activeVoiceId, undefined, selectedStepIdx, true);
+      });
+
+      document.getElementById('btn-batch-random-scale').addEventListener('click', () => {
+        const voice = VOICES.find(v => v.id === activeVoiceId);
+        if (!voice || !voice.isTonal) return;
+        const pitches = BANKS[currentBank].stepPitches[voice.id];
+        if (!pitches) return;
+
+        // Minor Pentatonic scale tones
+        const rootMidi = noteToMidi(voice.baseNote);
+        const scaleOffsets = [0, 3, 5, 7, 10, 12, 15];
+        for (let i = 0; i < 16; i++) {
+          const randOffset = scaleOffsets[Math.floor(Math.random() * scaleOffsets.length)];
+          pitches[i] = midiToNote(rootMidi + randOffset);
+        }
+        updateInspectorStepPills();
+        renderSequencerGrid();
+        showToast(`${voice.name} Melody Mutated in Scale`);
+        playVoiceSample(activeVoiceId, undefined, selectedStepIdx, true);
+      });
 
       // Audition Soundpad Buttons (Pointer events for zero-delay response on desktop/mobile)
       document.querySelectorAll('.pad-trigger').forEach(pad => {
@@ -1380,7 +2160,7 @@
         document.getElementById('val-delay').textContent = `${Math.round(val * 100)}%`;
       });
 
-      // Reset FX Rack
+      // Reset Master FX Rack
       document.getElementById('btn-reset-fx').addEventListener('click', () => {
         const profile = SUBGENRE_PROFILES[currentSubgenre] || SUBGENRE_PROFILES.hardgroove;
 
@@ -1403,6 +2183,19 @@
 
         showToast('FX Rack Reset to Preset Defaults');
       });
+
+      // Auto-resize communication for parent container iframe
+      function postIframeHeight() {
+        try {
+          const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+          window.parent.postMessage({ type: 'resize-games-iframe', height: h }, '*');
+        } catch (e) {}
+      }
+      window.addEventListener('load', postIframeHeight);
+      window.addEventListener('resize', postIframeHeight);
+      if (window.ResizeObserver) {
+        new ResizeObserver(() => postIframeHeight()).observe(document.body);
+      }
     });
   </script>
 </body>
