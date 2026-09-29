@@ -178,19 +178,29 @@
 
       <!-- Master Transport Controls & Pattern Banks -->
       <div class="flex flex-wrap items-center gap-3">
-        <!-- Start / Stop Engine -->
-        <button id="btn-power" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wider uppercase transition shadow-lg shadow-emerald-500/20 flex items-center gap-2 cursor-pointer">
-          <svg id="power-icon" class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <span id="power-label">START ENGINE</span>
-        </button>
+        <!-- Play / Pause & Stop Engine -->
+        <div class="flex items-center gap-1.5">
+          <button id="btn-power" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm tracking-wider uppercase transition shadow-lg shadow-emerald-500/20 flex items-center gap-2 cursor-pointer" title="Start/Pause 16-Beat Drum Machine">
+            <svg id="power-icon" class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <span id="power-label">PLAY @ <span class="bpm-display-val">142</span> BPM</span>
+          </button>
+          <button id="btn-stop" class="px-3 py-2 rounded-lg bg-club-850 hover:bg-club-800 text-slate-300 hover:text-white font-bold text-xs tracking-wider uppercase transition border border-club-700/60 flex items-center gap-1.5 cursor-pointer" title="Stop &amp; Rewind to Step 1">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+              <path d="M6 6h12v12H6z"/>
+            </svg>
+            <span>STOP</span>
+          </button>
+        </div>
 
         <!-- Tempo / BPM -->
-        <div class="flex items-center gap-2 bg-club-850 border border-club-700/60 px-3 py-1.5 rounded-lg text-xs">
-          <span class="text-slate-400 font-bold">BPM</span>
-          <input id="input-bpm" type="number" min="115" max="175" value="142" class="w-14 bg-club-900 text-emerald-400 font-bold px-1.5 py-0.5 rounded border border-club-700 text-center outline-none focus:border-emerald-400">
-          <button id="btn-tap-tempo" class="px-2 py-0.5 bg-club-800 hover:bg-club-700 rounded text-[11px] font-bold text-slate-300 transition active:scale-95 cursor-pointer">TAP</button>
+        <div class="flex items-center gap-1 bg-club-850 border border-club-700/60 px-2.5 py-1.5 rounded-lg text-xs">
+          <span class="text-slate-400 font-bold mr-1">BPM</span>
+          <button id="btn-bpm-minus" class="w-6 h-6 flex items-center justify-center bg-club-800 hover:bg-club-700 rounded text-slate-300 font-bold transition active:scale-95 cursor-pointer" title="Decrease BPM by 1">-</button>
+          <input id="input-bpm" type="number" min="100" max="180" value="142" class="w-14 bg-club-900 text-emerald-400 font-bold px-1 py-0.5 rounded border border-club-700 text-center outline-none focus:border-emerald-400">
+          <button id="btn-bpm-plus" class="w-6 h-6 flex items-center justify-center bg-club-800 hover:bg-club-700 rounded text-slate-300 font-bold transition active:scale-95 cursor-pointer" title="Increase BPM by 1">+</button>
+          <button id="btn-tap-tempo" class="ml-1 px-2 py-0.5 bg-club-800 hover:bg-club-700 rounded text-[11px] font-bold text-slate-300 transition active:scale-95 cursor-pointer">TAP</button>
         </div>
 
         <!-- Swing / Shuffle -->
@@ -285,9 +295,10 @@
           <canvas id="scope-canvas" class="w-full h-full block"></canvas>
           <div id="audio-prompt-overlay" class="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-3 transition-opacity">
             <p class="text-xs text-emerald-400 font-bold mb-1">Synthesizer Engine Standby</p>
-            <p class="text-[11px] text-slate-400 mb-2">Tap any pad or button to initialize web audio</p>
-            <button id="btn-quick-start" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs rounded-md shadow-md transition cursor-pointer">
-              ACTIVATE SOUND ENGINE
+            <p class="text-[11px] text-slate-400 mb-2">Tap any pad or click below to play at selected tempo</p>
+            <button id="btn-quick-start" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs rounded-md shadow-md transition cursor-pointer flex items-center gap-2">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <span>PLAY @ <span class="bpm-display-val">142</span> BPM</span>
             </button>
           </div>
         </div>
@@ -398,10 +409,22 @@
         <!-- 16-STEP POLYYRHYTHMIC SEQUENCER MATRIX -->
         <section class="bg-club-900 border border-club-800 rounded-xl p-4 flex flex-col gap-4 shadow-xl">
           <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-club-800">
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-              <span class="text-sm font-bold text-white font-display uppercase">16-STEP POLYRHYTHMIC MATRIX</span>
-              <span class="text-[10px] px-2 py-0.5 bg-club-800 text-slate-300 rounded border border-club-700">Click Pad: Normal &bull; Accent &bull; Off | Tap [NOTE ▾] for Drawer</span>
+              <span class="text-sm font-bold text-white font-display uppercase">16-STEP MATRIX</span>
+
+              <!-- Direct In-Matrix Transport & Live BPM Controls -->
+              <button id="matrix-btn-play" class="px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs rounded transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Play/Pause Drum Machine">
+                <svg id="matrix-play-icon" class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <span id="matrix-play-label">PLAY @ <span class="bpm-display-val">142</span> BPM</span>
+              </button>
+              <button id="matrix-btn-stop" class="px-2.5 py-1 bg-club-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded transition flex items-center gap-1 cursor-pointer border border-club-700" title="Stop &amp; Rewind to Step 1">
+                <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+                <span>STOP</span>
+              </button>
+              <span id="playback-status-pill" class="text-[10px] px-2 py-0.5 bg-club-850 text-slate-400 rounded border border-club-700/80 font-mono">
+                STOPPED &bull; 0/16
+              </span>
             </div>
             <div class="flex items-center gap-1.5 text-xs">
               <button id="btn-duplicate-half" class="px-2.5 py-1 bg-club-800 hover:bg-club-700 text-slate-300 rounded border border-club-700 transition cursor-pointer" title="Copy 1-8 to 9-16">1-8 &rarr; 9-16</button>
@@ -823,14 +846,14 @@
     // =========================================================================
     // AUDIO ENGINE INITIALIZATION & AUDIO CONTEXT UNLOCK
     // =========================================================================
-    function unlockAudioContext() {
+    async function unlockAudioContext() {
       try {
         if (window.Tone) {
-          if (Tone.context && Tone.context.state !== 'running') {
-            Tone.context.resume();
-          }
           if (typeof Tone.start === 'function') {
-            Tone.start();
+            await Tone.start();
+          }
+          if (Tone.context && Tone.context.state !== 'running') {
+            await Tone.context.resume();
           }
         }
       } catch (e) {
@@ -843,11 +866,11 @@
       window.addEventListener(evt, unlockAudioContext, { once: true, passive: true });
     });
 
-    function initAudioEngine() {
+    async function initAudioEngine() {
       if (audioInitialized) return;
 
       try {
-        unlockAudioContext();
+        await unlockAudioContext();
 
         // Master Bus Chain
         analyserNode = new Tone.Analyser('waveform', 256);
@@ -1816,14 +1839,22 @@
           }
         }
       });
+
+      const statusPill = document.getElementById('playback-status-pill');
+      if (statusPill && isPlaying) {
+        const bpmInput = document.getElementById('input-bpm');
+        const bpm = bpmInput ? (parseInt(bpmInput.value, 10) || 142) : 142;
+        statusPill.innerHTML = `PLAYING &bull; STEP ${step + 1}/16 @ ${bpm} BPM`;
+        statusPill.className = 'text-[10px] px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/40 font-mono font-bold';
+      }
     }
 
     // =========================================================================
     // SUBGENRE PRESETS & MASTER TRANSPORT CONTROLS
     // =========================================================================
-    function loadSubgenrePreset(subgenreKey) {
-      unlockAudioContext();
-      if (!audioInitialized) initAudioEngine();
+    async function loadSubgenrePreset(subgenreKey) {
+      await unlockAudioContext();
+      if (!audioInitialized) await initAudioEngine();
       applyPresetData(subgenreKey);
     }
 
@@ -1833,8 +1864,10 @@
       if (!data) return;
 
       // Update Transport Values
-      Tone.Transport.bpm.rampTo(data.bpm, 0.2);
-      Tone.Transport.swing = data.swing;
+      if (window.Tone && Tone.Transport) {
+        Tone.Transport.bpm.value = data.bpm;
+        Tone.Transport.swing = data.swing;
+      }
 
       // Update Master FX Chain
       if (masterFilter) masterFilter.frequency.rampTo(data.filter, 0.2);
@@ -1849,7 +1882,7 @@
       initializeBanksWithPreset(subgenreKey);
 
       // Update Controls UI
-      document.getElementById('input-bpm').value = data.bpm;
+      setBpm(data.bpm);
       const swingPercent = Math.round(data.swing * 100);
       document.getElementById('input-swing').value = swingPercent;
       document.getElementById('label-swing').textContent = `${swingPercent}%`;
@@ -1887,44 +1920,140 @@
       showToast(`Loaded Preset: ${subgenreKey.toUpperCase()}`);
     }
 
-    function togglePlayEngine() {
-      unlockAudioContext();
-      if (!audioInitialized) {
-        initAudioEngine();
+    function setBpm(val) {
+      const bpm = Math.min(180, Math.max(100, parseInt(val, 10) || 142));
+      const bpmInput = document.getElementById('input-bpm');
+      if (bpmInput && parseInt(bpmInput.value, 10) !== bpm) {
+        bpmInput.value = bpm;
       }
+      if (audioInitialized && window.Tone && Tone.Transport) {
+        Tone.Transport.bpm.rampTo(bpm, 0.05);
+      }
+      updateTransportUI(isPlaying);
+    }
+
+    function updateTransportUI(playing) {
+      const bpmInput = document.getElementById('input-bpm');
+      const bpm = bpmInput ? (parseInt(bpmInput.value, 10) || 142) : 142;
+
+      document.querySelectorAll('.bpm-display-val').forEach(el => {
+        el.textContent = bpm;
+      });
 
       const powerLabel = document.getElementById('power-label');
       const powerBtn = document.getElementById('btn-power');
+      const powerIcon = document.getElementById('power-icon');
+      const matrixPlayBtn = document.getElementById('matrix-btn-play');
+      const matrixPlayIcon = document.getElementById('matrix-play-icon');
+      const matrixPlayLabel = document.getElementById('matrix-play-label');
       const pingEl = document.getElementById('status-ping');
+      const statusPill = document.getElementById('playback-status-pill');
 
-      if (isPlaying) {
-        Tone.Transport.pause();
-        isPlaying = false;
-        if (powerLabel) powerLabel.textContent = 'START ENGINE';
+      if (playing) {
+        if (powerLabel) powerLabel.innerHTML = `PAUSE @ <span class="bpm-display-val">${bpm}</span> BPM`;
+        if (powerIcon) powerIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
         if (powerBtn) {
-          powerBtn.classList.remove('bg-red-500', 'text-white', 'hover:bg-red-400');
-          powerBtn.classList.add('bg-emerald-500', 'text-black', 'hover:bg-emerald-400');
+          powerBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-400', 'text-black');
+          powerBtn.classList.add('bg-amber-400', 'hover:bg-amber-300', 'text-black');
         }
-        if (pingEl) pingEl.classList.remove('animate-ping');
-        
-        // Clear active step highlights
-        document.querySelectorAll('.step-btn.current-step').forEach(btn => btn.classList.remove('current-step'));
-        document.querySelectorAll('.step-num.scale-110').forEach(num => num.classList.remove('scale-110', 'text-white'));
-        showToast('Playback Paused');
-      } else {
-        // Ensure Tone.context is running
-        if (Tone.context && Tone.context.state !== 'running') {
-          try { Tone.context.resume(); } catch (e) {}
+
+        if (matrixPlayLabel) matrixPlayLabel.innerHTML = `PAUSE @ <span class="bpm-display-val">${bpm}</span> BPM`;
+        if (matrixPlayIcon) matrixPlayIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        if (matrixPlayBtn) {
+          matrixPlayBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-400', 'text-black');
+          matrixPlayBtn.classList.add('bg-amber-400', 'hover:bg-amber-300', 'text-black');
         }
-        Tone.Transport.start();
-        isPlaying = true;
-        if (powerLabel) powerLabel.textContent = 'STOP ENGINE';
-        if (powerBtn) {
-          powerBtn.classList.remove('bg-emerald-500', 'text-black', 'hover:bg-emerald-400');
-          powerBtn.classList.add('bg-red-500', 'text-white', 'hover:bg-red-400');
-        }
+
         if (pingEl) pingEl.classList.add('animate-ping');
-        showToast(`Engine Running • Bank ${BANKS[currentBank].name} Active`);
+        if (statusPill) {
+          statusPill.innerHTML = `PLAYING @ ${bpm} BPM`;
+          statusPill.className = 'text-[10px] px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/40 font-mono font-bold';
+        }
+      } else {
+        if (powerLabel) powerLabel.innerHTML = `PLAY @ <span class="bpm-display-val">${bpm}</span> BPM`;
+        if (powerIcon) powerIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        if (powerBtn) {
+          powerBtn.classList.remove('bg-amber-400', 'hover:bg-amber-300');
+          powerBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-400', 'text-black');
+        }
+
+        if (matrixPlayLabel) matrixPlayLabel.innerHTML = `PLAY @ <span class="bpm-display-val">${bpm}</span> BPM`;
+        if (matrixPlayIcon) matrixPlayIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        if (matrixPlayBtn) {
+          matrixPlayBtn.classList.remove('bg-amber-400', 'hover:bg-amber-300');
+          matrixPlayBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-400', 'text-black');
+        }
+
+        if (pingEl) pingEl.classList.remove('animate-ping');
+        if (statusPill) {
+          statusPill.innerHTML = `PAUSED @ ${bpm} BPM`;
+          statusPill.className = 'text-[10px] px-2 py-0.5 bg-club-850 text-slate-400 rounded border border-club-700/80 font-mono';
+        }
+      }
+    }
+
+    async function startPlayback() {
+      await unlockAudioContext();
+      if (!audioInitialized) {
+        await initAudioEngine();
+      }
+
+      if (Tone.context && Tone.context.state !== 'running') {
+        try {
+          await Tone.context.resume();
+        } catch (e) {
+          console.warn('Tone context resume failed:', e);
+        }
+      }
+
+      const bpmInput = document.getElementById('input-bpm');
+      const targetBpm = bpmInput ? (parseInt(bpmInput.value, 10) || 142) : 142;
+      Tone.Transport.bpm.value = targetBpm;
+
+      if (sequenceLoop) {
+        sequenceLoop.start(0);
+      }
+
+      Tone.Transport.start('+0.01');
+      isPlaying = true;
+      updateTransportUI(true);
+      showToast(`Playing @ ${targetBpm} BPM • Bank ${BANKS[currentBank].name}`);
+    }
+
+    function pausePlayback() {
+      if (window.Tone && Tone.Transport) {
+        Tone.Transport.pause();
+      }
+      isPlaying = false;
+      updateTransportUI(false);
+      document.querySelectorAll('.step-btn.current-step').forEach(btn => btn.classList.remove('current-step'));
+      document.querySelectorAll('.step-num.scale-110').forEach(num => num.classList.remove('scale-110', 'text-white'));
+      showToast('Playback Paused');
+    }
+
+    function stopPlayback() {
+      if (window.Tone && Tone.Transport) {
+        Tone.Transport.stop();
+        Tone.Transport.position = 0;
+      }
+      isPlaying = false;
+      updateTransportUI(false);
+      document.querySelectorAll('.step-btn.current-step').forEach(btn => btn.classList.remove('current-step'));
+      document.querySelectorAll('.step-num.scale-110').forEach(num => num.classList.remove('scale-110', 'text-white'));
+
+      const statusPill = document.getElementById('playback-status-pill');
+      if (statusPill) {
+        statusPill.innerHTML = `STOPPED &bull; 0/16`;
+        statusPill.className = 'text-[10px] px-2 py-0.5 bg-club-850 text-slate-400 rounded border border-club-700/80 font-mono';
+      }
+      showToast('Playback Stopped (Rewound to Step 1)');
+    }
+
+    async function togglePlayEngine() {
+      if (isPlaying) {
+        pausePlayback();
+      } else {
+        await startPlayback();
       }
     }
 
@@ -2072,13 +2201,44 @@
       document.getElementById('btn-power').addEventListener('click', togglePlayEngine);
       document.getElementById('btn-quick-start').addEventListener('click', togglePlayEngine);
 
-      // BPM Input
-      document.getElementById('input-bpm').addEventListener('change', (e) => {
-        const val = Math.min(180, Math.max(100, parseInt(e.target.value, 10) || 142));
-        e.target.value = val;
-        if (audioInitialized) Tone.Transport.bpm.rampTo(val, 0.1);
-        showToast(`Tempo set to ${val} BPM`);
+      // Dedicated Stop Buttons
+      const btnStop = document.getElementById('btn-stop');
+      if (btnStop) btnStop.addEventListener('click', stopPlayback);
+
+      // In-Matrix Direct Transport Controls
+      const matrixBtnPlay = document.getElementById('matrix-btn-play');
+      if (matrixBtnPlay) matrixBtnPlay.addEventListener('click', togglePlayEngine);
+      const matrixBtnStop = document.getElementById('matrix-btn-stop');
+      if (matrixBtnStop) matrixBtnStop.addEventListener('click', stopPlayback);
+
+      // BPM Input & Real-Time Controls
+      const inputBpm = document.getElementById('input-bpm');
+      inputBpm.addEventListener('input', (e) => {
+        setBpm(e.target.value);
       });
+      inputBpm.addEventListener('change', (e) => {
+        setBpm(e.target.value);
+        showToast(`Tempo set to ${inputBpm.value} BPM`);
+      });
+
+      // BPM Nudge Plus / Minus Buttons
+      const btnBpmMinus = document.getElementById('btn-bpm-minus');
+      if (btnBpmMinus) {
+        btnBpmMinus.addEventListener('click', () => {
+          const current = parseInt(inputBpm.value, 10) || 142;
+          setBpm(current - 1);
+        });
+      }
+      const btnBpmPlus = document.getElementById('btn-bpm-plus');
+      if (btnBpmPlus) {
+        btnBpmPlus.addEventListener('click', () => {
+          const current = parseInt(inputBpm.value, 10) || 142;
+          setBpm(current + 1);
+        });
+      }
+
+      // Initial Transport UI Synchronization
+      updateTransportUI(false);
 
       // Tap Tempo
       document.getElementById('btn-tap-tempo').addEventListener('click', handleTapTempo);
