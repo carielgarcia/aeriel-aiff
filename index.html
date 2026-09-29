@@ -39,7 +39,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=19.3">
+  <link rel="stylesheet" href="style.css?v=19.4">
 </head>
 <body>
 
@@ -2440,6 +2440,52 @@
   </section>
 
   <!-- ==========================================================================
+       DEDICATED GAMES SUB-WEBSITE (<section id="games-subsite">)
+       ========================================================================== -->
+  <section id="games-subsite" class="subsite-container">
+    
+    <!-- Sub-Website Sticky Navigation Bar -->
+    <div class="subsite-header-bar">
+      <div class="container subsite-header-layout">
+        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
+          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
+          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
+          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+        </button>
+        <div class="subsite-header-title">GAMES</div>
+      </div>
+    </div>
+
+    <!-- Games Hero Title & Statement Section -->
+    <section class="games-hero-section">
+      <div class="container">
+        <h1 class="games-title">GAMES</h1>
+        <p class="games-intro-text">Sometimes I jus vibe-code stuff for fun. Don't take this seriously and enjoy :D</p>
+      </div>
+    </section>
+
+    <!-- Games Showcase: Techno Variants Engine -->
+    <section class="games-app-section">
+      <div class="container">
+        <div class="games-app-header">
+          <span class="games-app-badge">[ INTERACTIVE AUDIO LAB // WEB SYNTH ]</span>
+          <h2 class="games-app-subtitle">TECHNO VARIANTS ENGINE</h2>
+        </div>
+        <div class="games-app-frame-wrapper">
+          <iframe 
+            src="/games/techno-variants/index.html" 
+            title="TECHNO VARIANTS ENGINE — Techno Subgenre Sound Lab & Groove Explorer"
+            class="games-app-iframe"
+            loading="lazy"
+            allow="autoplay">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ==========================================================================
        FOOTER
        ========================================================================== -->
   <footer class="footer" id="site-footer">
@@ -3088,6 +3134,17 @@
         if (twDesc) twDesc.setAttribute('content', writingDesc);
         if (metaDesc) metaDesc.setAttribute('content', writingDesc);
         if (ogUrl) ogUrl.setAttribute('content', origin + writingPath);
+      } else if (currentView === 'games') {
+        const gamesTitle = "GAMES // ÆRIEL";
+        const gamesDesc = "Sometimes I jus vibe-code stuff for fun. Don't take this seriously and enjoy :D";
+        document.title = gamesTitle;
+        if (canonicalEl) canonicalEl.setAttribute('href', origin + '/games');
+        if (ogTitle) ogTitle.setAttribute('content', gamesTitle);
+        if (twTitle) twTitle.setAttribute('content', gamesTitle);
+        if (ogDesc) ogDesc.setAttribute('content', gamesDesc);
+        if (twDesc) twDesc.setAttribute('content', gamesDesc);
+        if (metaDesc) metaDesc.setAttribute('content', gamesDesc);
+        if (ogUrl) ogUrl.setAttribute('content', origin + '/games');
       } else {
         const homeTitle = "ÆRIEL | TECHNO, TRANCE, HOUSE, ITALO DISCO";
         const homeDesc = "ÆRIEL is an artistic project honoring music, community, and queerness. Based in Santiago, Chile.";
@@ -3323,6 +3380,19 @@
       }, 40);
     }
 
+    function openGamesSubsite(event) {
+      if (event) event.preventDefault();
+      closeMobileNav();
+      document.body.setAttribute('data-view', 'games');
+      updatePageTitle();
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.location.pathname.toLowerCase() !== '/games') {
+          history.pushState({ view: 'games' }, '', '/games');
+        }
+      }, 40);
+    }
+
     function openWritingSubsiteAndArticle(articleId) {
       openWritingSubsite();
       openArticleReader(articleId);
@@ -3528,7 +3598,118 @@
     window.shareEssay = shareEssay;
 
     window.openAe000xSubsite = openAe000xSubsite;
+    window.openGamesSubsite = openGamesSubsite;
     window.openMainPortfolio = openMainPortfolio;
+
+    /* ==========================================================================
+       EASTER EGG CONTROLLER: GAME-CONTROL EMOJI (🎮)
+       Pops up at random every 30 seconds, stays for 5 seconds, somewhere on edge of screen.
+       Clicking takes user to ÆRIEL.NET/GAMES
+       ========================================================================== */
+    let easterEggTimer = null;
+    let easterEggHideTimer = null;
+    let easterEggBtn = null;
+
+    function initEasterEggController() {
+      // Clean up any existing timers or button
+      if (easterEggTimer) clearInterval(easterEggTimer);
+      if (easterEggHideTimer) clearTimeout(easterEggHideTimer);
+      if (easterEggBtn && easterEggBtn.parentNode) {
+        easterEggBtn.parentNode.removeChild(easterEggBtn);
+      }
+
+      easterEggBtn = document.createElement('button');
+      easterEggBtn.type = 'button';
+      easterEggBtn.className = 'easter-egg-btn';
+      easterEggBtn.innerHTML = '🎮';
+      easterEggBtn.setAttribute('aria-label', 'Easter Egg: Play Games');
+      easterEggBtn.style.display = 'none';
+
+      easterEggBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        hideEasterEgg();
+        openGamesSubsite(e);
+      });
+
+      document.body.appendChild(easterEggBtn);
+
+      // Schedule random appearance every 30 seconds
+      scheduleNextEasterEgg();
+    }
+
+    function scheduleNextEasterEgg() {
+      if (easterEggTimer) clearTimeout(easterEggTimer);
+      // Pops up at random every 30 seconds (25s - 35s jitter centered around 30 seconds)
+      const nextDelay = 25000 + Math.floor(Math.random() * 10000);
+      easterEggTimer = setTimeout(() => {
+        showEasterEgg();
+      }, nextDelay);
+    }
+
+    function showEasterEgg() {
+      if (!easterEggBtn) return;
+      // Do not popup if the user is already on the games subsite
+      const currentView = document.body.getAttribute('data-view');
+      if (currentView === 'games') {
+        scheduleNextEasterEgg();
+        return;
+      }
+
+      // Pick a random edge of the screen: 0: top, 1: bottom, 2: left, 3: right
+      const edge = Math.floor(Math.random() * 4);
+      // Reset all positioning styles
+      easterEggBtn.style.top = '';
+      easterEggBtn.style.bottom = '';
+      easterEggBtn.style.left = '';
+      easterEggBtn.style.right = '';
+
+      // Margin from exact viewport edge
+      const edgeOffset = '18px';
+      // Random position along the edge (between 10% and 80% to avoid extreme corners)
+      const randomAlong = (10 + Math.floor(Math.random() * 70)) + '%';
+
+      if (edge === 0) {
+        // Top edge
+        easterEggBtn.style.top = edgeOffset;
+        easterEggBtn.style.left = randomAlong;
+      } else if (edge === 1) {
+        // Bottom edge
+        easterEggBtn.style.bottom = edgeOffset;
+        easterEggBtn.style.left = randomAlong;
+      } else if (edge === 2) {
+        // Left edge
+        easterEggBtn.style.left = edgeOffset;
+        easterEggBtn.style.top = randomAlong;
+      } else {
+        // Right edge
+        easterEggBtn.style.right = edgeOffset;
+        easterEggBtn.style.top = randomAlong;
+      }
+
+      easterEggBtn.style.display = 'flex';
+
+      // Remains visible for exactly 5 seconds
+      if (easterEggHideTimer) clearTimeout(easterEggHideTimer);
+      easterEggHideTimer = setTimeout(() => {
+        hideEasterEgg();
+        scheduleNextEasterEgg();
+      }, 5000);
+    }
+
+    function hideEasterEgg() {
+      if (easterEggBtn) {
+        easterEggBtn.style.display = 'none';
+      }
+      if (easterEggHideTimer) {
+        clearTimeout(easterEggHideTimer);
+        easterEggHideTimer = null;
+      }
+    }
+
+    window.initEasterEggController = initEasterEggController;
+    window.showEasterEgg = showEasterEgg;
+    window.hideEasterEgg = hideEasterEgg;
 
     function detectInitialLanguage() {
       // 1. Check URL query parameters (e.g. ?lang=es) from search or hash
@@ -3601,6 +3782,9 @@
           const targetPath = isSpanishRoute ? '/ae000x/es' : '/ae000x';
           history.replaceState({ view: 'ae000x' }, '', targetPath);
         }
+      } else if (path.startsWith('/games') || baseHash.includes('games')) {
+        document.body.setAttribute('data-view', 'games');
+        history.replaceState({ view: 'games' }, '', '/games');
       } else if (path.startsWith('/ensayos') || path.startsWith('/writing') || baseHash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
         if (targetEssayId && document.getElementById(targetEssayId)) {
@@ -3663,6 +3847,9 @@
           });
         }
       });
+
+      // Easter Egg Controller Setup: pops up at random every 30 seconds for 5 seconds on the edge of the screen
+      initEasterEggController();
     });
 
     window.addEventListener('popstate', (e) => {
@@ -3695,6 +3882,8 @@
       if ((e.state && e.state.view === 'ae000x') || path.startsWith('/ae000x') || baseHash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
         if (path.startsWith('/ae000x/es')) setLanguage('es');
+      } else if ((e.state && e.state.view === 'games') || path.startsWith('/games') || baseHash.includes('games')) {
+        document.body.setAttribute('data-view', 'games');
       } else if ((e.state && e.state.view === 'writing') || path.startsWith('/ensayos') || path.startsWith('/writing') || baseHash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
         if (path.startsWith('/ensayos')) setLanguage('es');
