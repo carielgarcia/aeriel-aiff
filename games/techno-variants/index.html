@@ -1015,44 +1015,202 @@
     });
     loadPresetState('hardgroove');
 
-    // 3. PURE WEB AUDIO SYNTHESIZER ENGINE (ZERO EXTERNAL DEPENDENCY)
+    // 3. PURE WEB AUDIO SYNTHESIZER ENGINE (HIGH-FIDELITY ANALOG & CLUB DSP)
     let audioCtx = null;
     let masterGain = null;
+    let masterSaturation = null;
     let compressor = null;
     let analyser = null;
     let noiseBuffer = null;
+    let cymbal909Buffer = null;
+    let reverbInput = null;
+    let delayInput = null;
+
+    // Distortion & Tape Saturation Curves
+    function makeSoftClipCurve(drive = 1.6) {
+      const n = 1024;
+      const curve = new Float32Array(n);
+      for (let i = 0; i < n; i++) {
+        const x = (i / (n - 1)) * 2 - 1;
+        curve[i] = Math.tanh(x * drive) / Math.tanh(drive);
+      }
+      return curve;
+    }
+
+    function makeKickDistortionCurve() {
+      const n = 1024;
+      const curve = new Float32Array(n);
+      for (let i = 0; i < n; i++) {
+        const x = (i / (n - 1)) * 2 - 1;
+        // Asymmetric warm diode clipping for kick chest punch
+        curve[i] = x < 0 ? Math.tanh(x * 1.8) : Math.tanh(x * 2.6);
+      }
+      return curve;
+    }
+
+    // Precompute Roland TR-909 6-Oscillator Schmitt Trigger Metallic Cymbal Tone
+    function create909CymbalBuffer(ctx) {
+      const length = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      // Classic TR-909 6 detuned square wave frequencies
+      const freqs = [213.5, 303.4, 345.8, 412.3, 517.2, 804.1];
+      for (let i = 0; i < length; i++) {
+        const t = i / ctx.sampleRate;
+        let s = 0;
+        for (let f = 0; f < freqs.length; f++) {
+          s += Math.sin(2 * Math.PI * freqs[f] * t) > 0 ? 0.15 : -0.15;
+        }
+        // High-frequency noise sizzle layer
+        s += (Math.random() * 2 - 1) * 0.28;
+        data[i] = s;
+      }
+      return buffer;
+    }
+
+    // Schroeder Algorithmic Club / Warehouse Reverb Network
+    function createClubReverb(ctx, destination) {
+      reverbInput = ctx.createGain();
+      reverbInput.gain.setValueAtTime(0.4, ctx.currentTime);
+
+      const revFilter = ctx.createBiquadFilter();
+      revFilter.type = 'lowpass';
+      revFilter.frequency.setValueAtTime(4500, ctx.currentTime);
+
+      // 4 parallel comb delay lines (delays: 29.7ms, 37.1ms, 41.3ms, 49.9ms)
+      const combDelays = [0.0297, 0.0371, 0.0413, 0.0499];
+      const combFeedbacks = [0.78, 0.76, 0.74, 0.72];
+      const combMix = ctx.createGain();
+      combMix.gain.setValueAtTime(0.25, ctx.currentTime);
+
+      combDelays.forEach((delayTime, idx) => {
+        const delay = ctx.createDelay();
+        delay.delayTime.setValueAtTime(delayTime, ctx.currentTime);
+        const fb = ctx.createGain();
+        fb.gain.setValueAtTime(combFeedbacks[idx], ctx.currentTime);
+
+        const damp = ctx.createBiquadFilter();
+        damp.type = 'lowpass';
+        damp.frequency.setValueAtTime(3800, ctx.currentTime);
+
+        reverbInput.connect(delay);
+        delay.connect(damp);
+        damp.connect(fb);
+        fb.connect(delay);
+        damp.connect(combMix);
+      });
+
+      // 2 series allpass diffusers (delays: 5ms, 1.7ms)
+      const ap1 = ctx.createDelay();
+      ap1.delayTime.setValueAtTime(0.005, ctx.currentTime);
+      const ap1Gain = ctx.createGain();
+      ap1Gain.gain.setValueAtTime(0.5, ctx.currentTime);
+
+      const ap2 = ctx.createDelay();
+      ap2.delayTime.setValueAtTime(0.0017, ctx.currentTime);
+      const ap2Gain = ctx.createGain();
+      ap2Gain.gain.setValueAtTime(0.5, ctx.currentTime);
+
+      combMix.connect(revFilter);
+      revFilter.connect(ap1);
+      ap1.connect(ap1Gain);
+      ap1Gain.connect(ap2);
+      ap2.connect(ap2Gain);
+      ap2Gain.connect(destination);
+    }
+
+    // Stereo Ping-Pong Delay Network
+    function createStereoDelay(ctx, destination) {
+      delayInput = ctx.createGain();
+      delayInput.gain.setValueAtTime(0.35, ctx.currentTime);
+
+      const delayL = ctx.createDelay();
+      const delayR = ctx.createDelay();
+      // 3/16th note sync (approx 160ms at 140 BPM)
+      delayL.delayTime.setValueAtTime(0.165, ctx.currentTime);
+      delayR.delayTime.setValueAtTime(0.220, ctx.currentTime);
+
+      const fbL = ctx.createGain();
+      const fbR = ctx.createGain();
+      fbL.gain.setValueAtTime(0.32, ctx.currentTime);
+      fbR.gain.setValueAtTime(0.32, ctx.currentTime);
+
+      const dampL = ctx.createBiquadFilter();
+      dampL.type = 'lowpass';
+      dampL.frequency.setValueAtTime(2800, ctx.currentTime);
+
+      const dampR = ctx.createBiquadFilter();
+      dampR.type = 'lowpass';
+      dampR.frequency.setValueAtTime(2800, ctx.currentTime);
+
+      delayInput.connect(delayL);
+      delayL.connect(dampL);
+      dampL.connect(fbL);
+      fbL.connect(delayR); // Cross to Right
+
+      delayR.connect(dampR);
+      dampR.connect(fbR);
+      fbR.connect(delayL); // Cross back to Left
+
+      // Stereo Panning
+      if (ctx.createStereoPanner) {
+        const panL = ctx.createStereoPanner();
+        panL.pan.setValueAtTime(-0.6, ctx.currentTime);
+        const panR = ctx.createStereoPanner();
+        panR.pan.setValueAtTime(0.6, ctx.currentTime);
+        dampL.connect(panL);
+        panL.connect(destination);
+        dampR.connect(panR);
+        panR.connect(destination);
+      } else {
+        dampL.connect(destination);
+        dampR.connect(destination);
+      }
+    }
 
     function initWebAudio() {
       if (audioCtx) return;
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       audioCtx = new AudioContextClass();
 
-      // Master Limiter / Compressor (prevents harsh clipping)
+      // Master Tape Saturation (Warm Analog Drive)
+      masterSaturation = audioCtx.createWaveShaper();
+      masterSaturation.curve = makeSoftClipCurve(1.6);
+      masterSaturation.oversample = '2x';
+
+      // Master Club Compressor / Limiter (Glues low-end and controls transient peaks)
       compressor = audioCtx.createDynamicsCompressor();
-      compressor.threshold.setValueAtTime(-1.5, audioCtx.currentTime);
-      compressor.knee.setValueAtTime(30, audioCtx.currentTime);
-      compressor.ratio.setValueAtTime(12, audioCtx.currentTime);
-      compressor.attack.setValueAtTime(0.003, audioCtx.currentTime);
-      compressor.release.setValueAtTime(0.25, audioCtx.currentTime);
+      compressor.threshold.setValueAtTime(-3.0, audioCtx.currentTime);
+      compressor.knee.setValueAtTime(24, audioCtx.currentTime);
+      compressor.ratio.setValueAtTime(6.0, audioCtx.currentTime);
+      compressor.attack.setValueAtTime(0.005, audioCtx.currentTime);
+      compressor.release.setValueAtTime(0.14, audioCtx.currentTime);
 
       // Analyser for Live Waveform Scope
       analyser = audioCtx.createAnalyser();
       analyser.fftSize = 256;
 
       masterGain = audioCtx.createGain();
-      masterGain.gain.setValueAtTime(0.85, audioCtx.currentTime);
+      masterGain.gain.setValueAtTime(0.88, audioCtx.currentTime);
 
-      masterGain.connect(compressor);
+      // FX Master Routing
+      masterGain.connect(masterSaturation);
+      masterSaturation.connect(compressor);
       compressor.connect(analyser);
       analyser.connect(audioCtx.destination);
 
-      // Pre-synthesize 2 seconds of clean white noise for percussive hats/shakers/claps
+      // Initialize Reverb & Delay Send Buses
+      createClubReverb(audioCtx, masterGain);
+      createStereoDelay(audioCtx, masterGain);
+
+      // Pre-synthesize Noise & 909 Cymbal Tone Buffers
       const bufferSize = audioCtx.sampleRate * 2;
       noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const output = noiseBuffer.getChannelData(0);
+      const noiseData = noiseBuffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        output[i] = Math.random() * 2 - 1;
+        noiseData[i] = Math.random() * 2 - 1;
       }
+      cymbal909Buffer = create909CymbalBuffer(audioCtx);
 
       startScopeVisualizer();
     }
@@ -1068,7 +1226,7 @@
       window.addEventListener(evt, resumeAudioContextSync, { passive: true });
     });
 
-    // Pure DSP Voice Trigger
+    // PURE HIGH-FIDELITY DSP VOICE SYNTHESIS
     function playVoiceDSP(voiceId, time, velocity = 0.8, step = 0) {
       if (!audioCtx) initWebAudio();
       if (audioCtx.state !== 'running') audioCtx.resume();
@@ -1095,185 +1253,295 @@
       const freq = noteToFreq(transNote);
 
       switch (voiceId) {
+        // 1. KICK DRUM: Heavy Sub Sine (240Hz -> 48Hz) + Fast Click Transient + Dedicated Overdrive
         case 'kick': {
-          // Dual element: 150Hz -> 38Hz punch pitch sweep + click impulse
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(155, t);
-          osc.frequency.exponentialRampToValueAtTime(38, t + 0.08);
+          const kickBus = audioCtx.createGain();
 
-          gain.gain.setValueAtTime(1.0, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.12, voice.decay));
+          // Main Sub Pitch Envelope
+          const subOsc = audioCtx.createOscillator();
+          const subGain = audioCtx.createGain();
+          subOsc.type = 'sine';
+          subOsc.frequency.setValueAtTime(240, t);
+          subOsc.frequency.exponentialRampToValueAtTime(52, t + 0.038);
+          subOsc.frequency.exponentialRampToValueAtTime(39, t + Math.max(0.18, voice.decay));
 
-          osc.connect(gain);
-          gain.connect(trackGain);
-          osc.start(t);
-          osc.stop(t + voice.decay + 0.05);
+          subGain.gain.setValueAtTime(1.0, t);
+          subGain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.18, voice.decay));
 
-          // Click transient
+          subOsc.connect(subGain);
+          subGain.connect(kickBus);
+          subOsc.start(t);
+          subOsc.stop(t + voice.decay + 0.05);
+
+          // Punch Beater Click Transient (bandpass impulse)
           const clickOsc = audioCtx.createOscillator();
           const clickGain = audioCtx.createGain();
-          clickOsc.type = 'triangle';
-          clickOsc.frequency.setValueAtTime(450, t);
-          clickOsc.frequency.exponentialRampToValueAtTime(80, t + 0.015);
-          clickGain.gain.setValueAtTime(0.7, t);
-          clickGain.gain.exponentialRampToValueAtTime(0.001, t + 0.015);
-          clickOsc.connect(clickGain);
-          clickGain.connect(trackGain);
+          const clickFilter = audioCtx.createBiquadFilter();
+          clickOsc.type = 'sine';
+          clickOsc.frequency.setValueAtTime(1200, t);
+          clickOsc.frequency.exponentialRampToValueAtTime(90, t + 0.012);
+
+          clickFilter.type = 'bandpass';
+          clickFilter.frequency.setValueAtTime(1400, t);
+          clickFilter.Q.setValueAtTime(2.0, t);
+
+          clickGain.gain.setValueAtTime(0.85, t);
+          clickGain.gain.exponentialRampToValueAtTime(0.001, t + 0.012);
+
+          clickOsc.connect(clickFilter);
+          clickFilter.connect(clickGain);
+          clickGain.connect(kickBus);
           clickOsc.start(t);
           clickOsc.stop(t + 0.02);
+
+          // Kick Saturation Shaper (adds analog harmonics & chest punch)
+          const kickShaper = audioCtx.createWaveShaper();
+          kickShaper.curve = makeKickDistortionCurve();
+          kickBus.connect(kickShaper);
+          kickShaper.connect(trackGain);
           break;
         }
 
+        // 2. BASSLINE: Clean Sub Layer + Dual Detuned Sawtooths + 24dB Resonant Filter + Diode Clipper
         case 'bass': {
-          // Sawtooth + 24dB resonant lowpass filter envelope
-          const osc = audioCtx.createOscillator();
+          // Layer A: Pure Low Sub Foundation
+          const subOsc = audioCtx.createOscillator();
+          const subGain = audioCtx.createGain();
+          subOsc.type = 'sine';
+          subOsc.frequency.setValueAtTime(freq, t);
+          subGain.gain.setValueAtTime(0.7, t);
+          subGain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.1, voice.decay));
+          subOsc.connect(subGain);
+          subGain.connect(trackGain);
+          subOsc.start(t);
+          subOsc.stop(t + voice.decay + 0.04);
+
+          // Layer B: Detuned Sawtooth Mid Grit with Resonant Filter
+          const saw1 = audioCtx.createOscillator();
+          const saw2 = audioCtx.createOscillator();
+          saw1.type = 'sawtooth';
+          saw2.type = 'sawtooth';
+          saw1.frequency.setValueAtTime(freq, t);
+          saw2.frequency.setValueAtTime(freq, t);
+          saw1.detune.setValueAtTime(-7, t);
+          saw2.detune.setValueAtTime(7, t);
+
           const filter = audioCtx.createBiquadFilter();
-          const gain = audioCtx.createGain();
-
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(freq, t);
-
           filter.type = 'lowpass';
-          filter.Q.setValueAtTime(4.0, t);
-          filter.frequency.setValueAtTime(2800, t);
-          filter.frequency.exponentialRampToValueAtTime(180, t + voice.decay);
+          filter.Q.setValueAtTime(5.5, t);
+          filter.frequency.setValueAtTime(2600, t);
+          filter.frequency.exponentialRampToValueAtTime(220, t + Math.max(0.08, voice.decay));
 
-          gain.gain.setValueAtTime(1.0, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.08, voice.decay));
+          const gritGain = audioCtx.createGain();
+          gritGain.gain.setValueAtTime(0.65, t);
+          gritGain.gain.exponentialRampToValueAtTime(0.001, t + voice.decay);
 
-          osc.connect(filter);
-          filter.connect(gain);
-          gain.connect(trackGain);
-          osc.start(t);
-          osc.stop(t + voice.decay + 0.02);
+          const gritShaper = audioCtx.createWaveShaper();
+          gritShaper.curve = makeSoftClipCurve(2.0);
+
+          saw1.connect(filter);
+          saw2.connect(filter);
+          filter.connect(gritGain);
+          gritGain.connect(gritShaper);
+          gritShaper.connect(trackGain);
+
+          saw1.start(t);
+          saw2.start(t);
+          saw1.stop(t + voice.decay + 0.04);
+          saw2.stop(t + voice.decay + 0.04);
           break;
         }
 
+        // 3. CONGA HIGH: Pitched Skin Membrane (Sine FM) + Palm Slap Transient + Room Reverb
         case 'congaHigh': {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq * 1.3, t);
-          osc.frequency.exponentialRampToValueAtTime(freq, t + 0.035);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq * 1.28, t);
+          osc.frequency.exponentialRampToValueAtTime(freq, t + 0.04);
 
-          gain.gain.setValueAtTime(0.9, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.06, voice.decay));
+          gain.gain.setValueAtTime(0.85, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.08, voice.decay));
+
+          // Palm Slap Noise Impulse
+          if (noiseBuffer) {
+            const slap = audioCtx.createBufferSource();
+            slap.buffer = noiseBuffer;
+            const slapFilter = audioCtx.createBiquadFilter();
+            slapFilter.type = 'bandpass';
+            slapFilter.frequency.setValueAtTime(2400, t);
+            slapFilter.Q.setValueAtTime(3.0, t);
+            const slapGain = audioCtx.createGain();
+            slapGain.gain.setValueAtTime(0.7, t);
+            slapGain.gain.exponentialRampToValueAtTime(0.001, t + 0.016);
+            slap.connect(slapFilter);
+            slapFilter.connect(slapGain);
+            slapGain.connect(trackGain);
+            slap.start(t);
+            slap.stop(t + 0.02);
+          }
 
           osc.connect(gain);
           gain.connect(trackGain);
+          if (reverbInput) gain.connect(reverbInput);
           osc.start(t);
-          osc.stop(t + voice.decay + 0.02);
+          osc.stop(t + voice.decay + 0.03);
           break;
         }
 
+        // 4. CONGA LOW / BONGO: Deep Woody Resonance + Skin Slap + Room Reverb
         case 'congaLow': {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq * 1.35, t);
-          osc.frequency.exponentialRampToValueAtTime(freq, t + 0.045);
+          osc.frequency.setValueAtTime(freq * 1.32, t);
+          osc.frequency.exponentialRampToValueAtTime(freq, t + 0.048);
 
-          gain.gain.setValueAtTime(1.0, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.08, voice.decay));
+          gain.gain.setValueAtTime(0.9, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.12, voice.decay));
+
+          // Woody Knock Impulse
+          if (noiseBuffer) {
+            const knock = audioCtx.createBufferSource();
+            knock.buffer = noiseBuffer;
+            const knockFilter = audioCtx.createBiquadFilter();
+            knockFilter.type = 'bandpass';
+            knockFilter.frequency.setValueAtTime(1100, t);
+            knockFilter.Q.setValueAtTime(2.5, t);
+            const knockGain = audioCtx.createGain();
+            knockGain.gain.setValueAtTime(0.5, t);
+            knockGain.gain.exponentialRampToValueAtTime(0.001, t + 0.02);
+            knock.connect(knockFilter);
+            knockFilter.connect(knockGain);
+            knockGain.connect(trackGain);
+            knock.start(t);
+            knock.stop(t + 0.025);
+          }
 
           osc.connect(gain);
           gain.connect(trackGain);
+          if (reverbInput) gain.connect(reverbInput);
           osc.start(t);
-          osc.stop(t + voice.decay + 0.02);
+          osc.stop(t + voice.decay + 0.03);
           break;
         }
 
+        // 5. 16TH SHAKER: Roland TR-909 Metallic Sizzle + Highpass Filtering
         case 'shaker': {
-          if (!noiseBuffer) return;
-          const noise = audioCtx.createBufferSource();
-          noise.buffer = noiseBuffer;
+          if (!cymbal909Buffer) return;
+          const shaker = audioCtx.createBufferSource();
+          shaker.buffer = cymbal909Buffer;
+
           const filter = audioCtx.createBiquadFilter();
           filter.type = 'highpass';
-          filter.frequency.setValueAtTime(6000, t);
+          filter.frequency.setValueAtTime(7500, t);
 
           const gain = audioCtx.createGain();
-          gain.gain.setValueAtTime(0.8, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.025, voice.decay));
+          gain.gain.setValueAtTime(0.75, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.03, voice.decay));
 
-          noise.connect(filter);
+          shaker.connect(filter);
           filter.connect(gain);
           gain.connect(trackGain);
-          noise.start(t);
-          noise.stop(t + voice.decay + 0.01);
+          if (reverbInput) gain.connect(reverbInput);
+          shaker.start(t);
+          shaker.stop(t + voice.decay + 0.02);
           break;
         }
 
+        // 6. OPEN HI-HAT: Authentic Roland TR-909 6-Oscillator Metallic Ring + Decay Tail
         case 'openHat': {
-          if (!noiseBuffer) return;
-          const noise = audioCtx.createBufferSource();
-          noise.buffer = noiseBuffer;
-          const filter = audioCtx.createBiquadFilter();
-          filter.type = 'highpass';
-          filter.frequency.setValueAtTime(7200, t);
+          if (!cymbal909Buffer) return;
+          const hat = audioCtx.createBufferSource();
+          hat.buffer = cymbal909Buffer;
+
+          const bandpass = audioCtx.createBiquadFilter();
+          bandpass.type = 'bandpass';
+          bandpass.frequency.setValueAtTime(7800, t);
+          bandpass.Q.setValueAtTime(1.8, t);
+
+          const highpass = audioCtx.createBiquadFilter();
+          highpass.type = 'highpass';
+          highpass.frequency.setValueAtTime(6800, t);
 
           const gain = audioCtx.createGain();
-          gain.gain.setValueAtTime(0.9, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.1, voice.decay));
+          gain.gain.setValueAtTime(0.95, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.18, voice.decay));
 
-          noise.connect(filter);
-          filter.connect(gain);
+          hat.connect(bandpass);
+          bandpass.connect(highpass);
+          highpass.connect(gain);
           gain.connect(trackGain);
-          noise.start(t);
-          noise.stop(t + voice.decay + 0.01);
+          if (reverbInput) gain.connect(reverbInput);
+          hat.start(t);
+          hat.stop(t + voice.decay + 0.05);
           break;
         }
 
+        // 7. CLAP / RIMSHOT: 4 Staggered Micro-Impulses (909 Multi-Hand Clap) + Reverb Tail
         case 'rimshot': {
           if (!noiseBuffer) return;
-          // 3-pulse noise clap bursts
-          [0, 0.011, 0.024].forEach((offset, idx) => {
+          const clapDelays = [0.0, 0.011, 0.022, 0.033];
+          clapDelays.forEach((delay, idx) => {
             const burst = audioCtx.createBufferSource();
             burst.buffer = noiseBuffer;
+
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'bandpass';
-            filter.frequency.setValueAtTime(1400, t + offset);
-            filter.Q.setValueAtTime(2.0, t + offset);
+            filter.frequency.setValueAtTime(1250, t + delay);
+            filter.Q.setValueAtTime(2.2, t + delay);
 
-            const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(idx === 2 ? 0.9 : 0.6, t + offset);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + offset + (idx === 2 ? voice.decay : 0.015));
+            const burstGain = audioCtx.createGain();
+            const isFinalBurst = idx === clapDelays.length - 1;
+            burstGain.gain.setValueAtTime(isFinalBurst ? 0.9 : 0.65, t + delay);
+            burstGain.gain.exponentialRampToValueAtTime(0.001, t + delay + (isFinalBurst ? voice.decay : 0.018));
 
             burst.connect(filter);
-            filter.connect(gain);
-            gain.connect(trackGain);
-            burst.start(t + offset);
-            burst.stop(t + offset + voice.decay + 0.02);
+            filter.connect(burstGain);
+            burstGain.connect(trackGain);
+            if (isFinalBurst && reverbInput) burstGain.connect(reverbInput);
+
+            burst.start(t + delay);
+            burst.stop(t + delay + voice.decay + 0.04);
           });
           break;
         }
 
+        // 8. TECHNO STAB: Detroit Supersaw Multi-Osc Cluster + Resonant Filter Sweep + Stereo Ping-Pong Delay
         case 'synth': {
-          // Polyphonic Minor 9th / Minor Triad Stabs
           const intervals = voice.chordType === 'min9' ? [0, 3, 7, 10, 14] : [0, 3, 7];
           const filter = audioCtx.createBiquadFilter();
           filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(3200, t);
-          filter.frequency.exponentialRampToValueAtTime(450, t + voice.decay);
-          filter.Q.setValueAtTime(3.2, t);
+          filter.frequency.setValueAtTime(3400, t);
+          filter.frequency.exponentialRampToValueAtTime(320, t + voice.decay);
+          filter.Q.setValueAtTime(3.8, t);
 
           const synthGain = audioCtx.createGain();
-          synthGain.gain.setValueAtTime(0.5 / intervals.length, t);
+          synthGain.gain.setValueAtTime(0.55 / intervals.length, t);
           synthGain.gain.exponentialRampToValueAtTime(0.001, t + voice.decay);
 
+          // 2 Detuned Oscillators per note for rich analog supersaw width
           intervals.forEach(semi => {
             const chordNote = transposeNote(transNote, semi);
-            const osc = audioCtx.createOscillator();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(noteToFreq(chordNote), t);
-            osc.connect(filter);
-            osc.start(t);
-            osc.stop(t + voice.decay + 0.02);
+            const noteFreq = noteToFreq(chordNote);
+
+            [-8, 8].forEach(detuneCents => {
+              const osc = audioCtx.createOscillator();
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(noteFreq, t);
+              osc.detune.setValueAtTime(detuneCents, t);
+              osc.connect(filter);
+              osc.start(t);
+              osc.stop(t + voice.decay + 0.03);
+            });
           });
 
           filter.connect(synthGain);
           synthGain.connect(trackGain);
+
+          // Send to Stereo Ping-Pong Delay & Club Reverb
+          if (delayInput) synthGain.connect(delayInput);
+          if (reverbInput) synthGain.connect(reverbInput);
           break;
         }
       }
