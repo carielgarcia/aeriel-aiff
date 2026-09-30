@@ -14029,6 +14029,7 @@
     let reverbInput = null;
     let delayInput = null;
     let activeBassVoice = null;
+    let activeOpenHat = null;
 
     // Distortion & Tape Saturation Curves
     function makeSoftClipCurve(drive = 1.6) {
@@ -14075,17 +14076,24 @@
     // Schroeder Algorithmic Club / Warehouse Reverb Network
     function createClubReverb(ctx, destination) {
       reverbInput = ctx.createGain();
-      reverbInput.gain.setValueAtTime(0.4, ctx.currentTime);
+      reverbInput.gain.setValueAtTime(0.32, ctx.currentTime);
+
+      // Low-cut Highpass Filter: strips frequencies under 280 Hz to prevent low-end mud/rumble
+      const revHP = ctx.createBiquadFilter();
+      revHP.type = 'highpass';
+      revHP.frequency.setValueAtTime(280, ctx.currentTime);
+      revHP.Q.setValueAtTime(0.707, ctx.currentTime);
+      reverbInput.connect(revHP);
 
       const revFilter = ctx.createBiquadFilter();
       revFilter.type = 'lowpass';
-      revFilter.frequency.setValueAtTime(4500, ctx.currentTime);
+      revFilter.frequency.setValueAtTime(4200, ctx.currentTime);
 
       // 4 parallel comb delay lines (delays: 29.7ms, 37.1ms, 41.3ms, 49.9ms)
       const combDelays = [0.0297, 0.0371, 0.0413, 0.0499];
-      const combFeedbacks = [0.78, 0.76, 0.74, 0.72];
+      const combFeedbacks = [0.76, 0.74, 0.72, 0.70];
       const combMix = ctx.createGain();
-      combMix.gain.setValueAtTime(0.25, ctx.currentTime);
+      combMix.gain.setValueAtTime(0.24, ctx.currentTime);
 
       combDelays.forEach((delayTime, idx) => {
         const delay = ctx.createDelay();
@@ -14095,9 +14103,9 @@
 
         const damp = ctx.createBiquadFilter();
         damp.type = 'lowpass';
-        damp.frequency.setValueAtTime(3800, ctx.currentTime);
+        damp.frequency.setValueAtTime(3600, ctx.currentTime);
 
-        reverbInput.connect(delay);
+        revHP.connect(delay);
         delay.connect(damp);
         damp.connect(fb);
         fb.connect(delay);
@@ -14141,19 +14149,30 @@
 
       const dampL = ctx.createBiquadFilter();
       dampL.type = 'lowpass';
-      dampL.frequency.setValueAtTime(2800, ctx.currentTime);
+      dampL.frequency.setValueAtTime(2600, ctx.currentTime);
 
       const dampR = ctx.createBiquadFilter();
       dampR.type = 'lowpass';
-      dampR.frequency.setValueAtTime(2800, ctx.currentTime);
+      dampR.frequency.setValueAtTime(2600, ctx.currentTime);
+
+      // Low-cut Highpass Filters: prevents low-mid feedback build-up
+      const hpL = ctx.createBiquadFilter();
+      hpL.type = 'highpass';
+      hpL.frequency.setValueAtTime(260, ctx.currentTime);
+
+      const hpR = ctx.createBiquadFilter();
+      hpR.type = 'highpass';
+      hpR.frequency.setValueAtTime(260, ctx.currentTime);
 
       delayInput.connect(delayL);
       delayL.connect(dampL);
-      dampL.connect(fbL);
+      dampL.connect(hpL);
+      hpL.connect(fbL);
       fbL.connect(delayR); // Cross to Right
 
       delayR.connect(dampR);
-      dampR.connect(fbR);
+      dampR.connect(hpR);
+      hpR.connect(fbR);
       fbR.connect(delayL); // Cross back to Left
 
       // Stereo Panning
@@ -14195,10 +14214,17 @@
       analyser.fftSize = 256;
 
       masterGain = audioCtx.createGain();
-      masterGain.gain.setValueAtTime(0.88, audioCtx.currentTime);
+      masterGain.gain.setValueAtTime(0.84, audioCtx.currentTime);
+
+      // Master 24 Hz DC-Blocker & Sub-Sonic Rumble Highpass (preserves compressor headroom)
+      const masterDCBlocker = audioCtx.createBiquadFilter();
+      masterDCBlocker.type = 'highpass';
+      masterDCBlocker.frequency.setValueAtTime(24, audioCtx.currentTime);
+      masterDCBlocker.Q.setValueAtTime(0.707, audioCtx.currentTime);
 
       // FX Master Routing
-      masterGain.connect(masterSaturation);
+      masterGain.connect(masterDCBlocker);
+      masterDCBlocker.connect(masterSaturation);
       masterSaturation.connect(compressor);
       compressor.connect(analyser);
       analyser.connect(audioCtx.destination);
@@ -14269,7 +14295,8 @@
           subOsc.frequency.exponentialRampToValueAtTime(52, t + 0.038);
           subOsc.frequency.exponentialRampToValueAtTime(39, t + Math.max(0.18, voice.decay));
 
-          subGain.gain.setValueAtTime(1.0, t);
+          subGain.gain.setValueAtTime(0.0001, t);
+          subGain.gain.linearRampToValueAtTime(1.0 * velocity, t + 0.002);
           subGain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.18, voice.decay));
 
           subOsc.connect(subGain);
@@ -14277,7 +14304,7 @@
           subOsc.start(t);
           subOsc.stop(t + voice.decay + 0.05);
 
-          // Punch Beater Click Transient (bandpass impulse)
+          // Punch Beater Click Transient (bandpass impulse with anti-click attack)
           const clickOsc = audioCtx.createOscillator();
           const clickGain = audioCtx.createGain();
           const clickFilter = audioCtx.createBiquadFilter();
@@ -14289,7 +14316,8 @@
           clickFilter.frequency.setValueAtTime(1400, t);
           clickFilter.Q.setValueAtTime(2.0, t);
 
-          clickGain.gain.setValueAtTime(0.85, t);
+          clickGain.gain.setValueAtTime(0.0001, t);
+          clickGain.gain.linearRampToValueAtTime(0.85 * velocity, t + 0.001);
           clickGain.gain.exponentialRampToValueAtTime(0.001, t + 0.012);
 
           clickOsc.connect(clickFilter);
@@ -14429,10 +14457,11 @@
           osc.frequency.setValueAtTime(freq * 1.28, t);
           osc.frequency.exponentialRampToValueAtTime(freq, t + 0.04);
 
-          gain.gain.setValueAtTime(0.85, t);
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.linearRampToValueAtTime(0.85 * velocity, t + 0.002);
           gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.08, voice.decay));
 
-          // Palm Slap Noise Impulse
+          // Palm Slap Noise Impulse with anti-click attack
           if (noiseBuffer) {
             const slap = audioCtx.createBufferSource();
             slap.buffer = noiseBuffer;
@@ -14441,7 +14470,8 @@
             slapFilter.frequency.setValueAtTime(2400, t);
             slapFilter.Q.setValueAtTime(3.0, t);
             const slapGain = audioCtx.createGain();
-            slapGain.gain.setValueAtTime(0.7, t);
+            slapGain.gain.setValueAtTime(0.0001, t);
+            slapGain.gain.linearRampToValueAtTime(0.7 * velocity, t + 0.001);
             slapGain.gain.exponentialRampToValueAtTime(0.001, t + 0.016);
             slap.connect(slapFilter);
             slapFilter.connect(slapGain);
@@ -14466,10 +14496,11 @@
           osc.frequency.setValueAtTime(freq * 1.32, t);
           osc.frequency.exponentialRampToValueAtTime(freq, t + 0.048);
 
-          gain.gain.setValueAtTime(0.9, t);
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.linearRampToValueAtTime(0.9 * velocity, t + 0.002);
           gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.12, voice.decay));
 
-          // Woody Knock Impulse
+          // Woody Knock Impulse with anti-click attack
           if (noiseBuffer) {
             const knock = audioCtx.createBufferSource();
             knock.buffer = noiseBuffer;
@@ -14478,7 +14509,8 @@
             knockFilter.frequency.setValueAtTime(1100, t);
             knockFilter.Q.setValueAtTime(2.5, t);
             const knockGain = audioCtx.createGain();
-            knockGain.gain.setValueAtTime(0.5, t);
+            knockGain.gain.setValueAtTime(0.0001, t);
+            knockGain.gain.linearRampToValueAtTime(0.5 * velocity, t + 0.0015);
             knockGain.gain.exponentialRampToValueAtTime(0.001, t + 0.02);
             knock.connect(knockFilter);
             knockFilter.connect(knockGain);
@@ -14498,22 +14530,32 @@
         // 5. 16TH SHAKER: Roland TR-909 Metallic Sizzle + Highpass Filtering
         case 'shaker': {
           if (!cymbal909Buffer) return;
+          // Soft-choke previous open hat if open hat is ringing
+          if (activeOpenHat) {
+            activeOpenHat.choke(t);
+            activeOpenHat = null;
+          }
+
           const shaker = audioCtx.createBufferSource();
           shaker.buffer = cymbal909Buffer;
 
           const filter = audioCtx.createBiquadFilter();
           filter.type = 'highpass';
-          filter.frequency.setValueAtTime(7500, t);
+          filter.frequency.setValueAtTime(7200, t);
 
           const gain = audioCtx.createGain();
-          gain.gain.setValueAtTime(0.75, t);
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.linearRampToValueAtTime(0.75 * velocity, t + 0.0015);
           gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.03, voice.decay));
 
           shaker.connect(filter);
           filter.connect(gain);
           gain.connect(trackGain);
           if (reverbInput) gain.connect(reverbInput);
-          shaker.start(t);
+
+          // Free-running analog oscillator phase offset
+          const offset = (Math.random() * 1.5);
+          shaker.start(t, offset);
           shaker.stop(t + voice.decay + 0.02);
           break;
         }
@@ -14521,20 +14563,27 @@
         // 6. OPEN HI-HAT: Authentic Roland TR-909 6-Oscillator Metallic Ring + Decay Tail
         case 'openHat': {
           if (!cymbal909Buffer) return;
+          // Choke previous open hat cleanly to prevent phase flanging
+          if (activeOpenHat) {
+            activeOpenHat.choke(t);
+            activeOpenHat = null;
+          }
+
           const hat = audioCtx.createBufferSource();
           hat.buffer = cymbal909Buffer;
 
           const bandpass = audioCtx.createBiquadFilter();
           bandpass.type = 'bandpass';
           bandpass.frequency.setValueAtTime(7800, t);
-          bandpass.Q.setValueAtTime(1.8, t);
+          bandpass.Q.setValueAtTime(1.6, t);
 
           const highpass = audioCtx.createBiquadFilter();
           highpass.type = 'highpass';
-          highpass.frequency.setValueAtTime(6800, t);
+          highpass.frequency.setValueAtTime(6500, t);
 
           const gain = audioCtx.createGain();
-          gain.gain.setValueAtTime(0.95, t);
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.linearRampToValueAtTime(0.92 * velocity, t + 0.002);
           gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.18, voice.decay));
 
           hat.connect(bandpass);
@@ -14542,8 +14591,22 @@
           highpass.connect(gain);
           gain.connect(trackGain);
           if (reverbInput) gain.connect(reverbInput);
-          hat.start(t);
+
+          // Free-running analog oscillator phase offset
+          const offset = (Math.random() * 1.5);
+          hat.start(t, offset);
           hat.stop(t + voice.decay + 0.05);
+
+          activeOpenHat = {
+            choke: (now) => {
+              try {
+                gain.gain.cancelScheduledValues(now);
+                gain.gain.setValueAtTime(gain.gain.value, now);
+                gain.gain.linearRampToValueAtTime(0.0001, now + 0.008);
+                hat.stop(now + 0.010);
+              } catch(e) {}
+            }
+          };
           break;
         }
 
@@ -14562,7 +14625,9 @@
 
             const burstGain = audioCtx.createGain();
             const isFinalBurst = idx === clapDelays.length - 1;
-            burstGain.gain.setValueAtTime(isFinalBurst ? 0.9 : 0.65, t + delay);
+            const targetBurst = (isFinalBurst ? 0.88 : 0.60) * velocity;
+            burstGain.gain.setValueAtTime(0.0001, t + delay);
+            burstGain.gain.linearRampToValueAtTime(targetBurst, t + delay + 0.001);
             burstGain.gain.exponentialRampToValueAtTime(0.001, t + delay + (isFinalBurst ? voice.decay : 0.018));
 
             burst.connect(filter);
@@ -14581,12 +14646,14 @@
           const intervals = voice.chordType === 'min9' ? [0, 3, 7, 10, 14] : [0, 3, 7];
           const filter = audioCtx.createBiquadFilter();
           filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(3400, t);
-          filter.frequency.exponentialRampToValueAtTime(320, t + voice.decay);
-          filter.Q.setValueAtTime(3.8, t);
+          filter.frequency.setValueAtTime(2800, t);
+          filter.frequency.exponentialRampToValueAtTime(240, t + voice.decay);
+          filter.Q.setValueAtTime(1.8, t); // Musical Q prevents harsh resonance screech
 
           const synthGain = audioCtx.createGain();
-          synthGain.gain.setValueAtTime(0.55 / intervals.length, t);
+          const targetSynth = (0.42 / Math.sqrt(intervals.length)) * velocity;
+          synthGain.gain.setValueAtTime(0.0001, t);
+          synthGain.gain.linearRampToValueAtTime(targetSynth, t + 0.003);
           synthGain.gain.exponentialRampToValueAtTime(0.001, t + voice.decay);
 
           // 2 Detuned Oscillators per note for rich analog supersaw width
@@ -14686,6 +14753,10 @@
       if (activeBassVoice && audioCtx) {
         activeBassVoice.fadeAndStop(audioCtx.currentTime);
         activeBassVoice = null;
+      }
+      if (activeOpenHat && audioCtx) {
+        activeOpenHat.choke(audioCtx.currentTime);
+        activeOpenHat = null;
       }
 
       const btnPlay = document.getElementById('btn-play-master');
