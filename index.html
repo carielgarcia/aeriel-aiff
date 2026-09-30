@@ -130,7 +130,7 @@
 
           <div class="soundcloud-drawer-wrapper" id="soundcloud-drawer">
             <div class="drawer-header-bar">
-              <div class="player-header" id="sc-stream-label">[ CURRENT_STREAM // Æ000.4 ]</div>
+              <div class="player-header" id="sc-stream-label">[ CURRENT_STREAM // Æ000.5 ]</div>
               <button type="button" class="drawer-toggle-btn" id="sc-drawer-toggle" onclick="toggleSoundCloudDrawer()" aria-expanded="true" aria-controls="sc-drawer-content">
                 <span class="toggle-text-open">[ HIDE STREAM ▲ ]</span>
                 <span class="toggle-text-closed">[ SHOW STREAM ▼ ]</span>
@@ -139,9 +139,9 @@
             
             <div class="soundcloud-drawer-content" id="sc-drawer-content">
             <!-- TECHNO PANEL (DEFAULT) -->
-            <div class="sc-track-panel active" data-genre="default" data-title="Æ000.4">
-              <iframe title="SoundCloud Player - Æ000.4 Techno" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2382736134&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
-              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/ae0004" title="Æ000.4 // ASCIENDE LA VIRGEN EN ÉXTASIS, MANCHADA DE DESEO Y GLORIA" target="_blank" rel="noopener noreferrer">Æ000.4 // ASCIENDE LA VIRGEN EN ÉXTASIS, MANCHADA DE DESEO Y GLORIA</a></div>
+            <div class="sc-track-panel active" data-genre="default" data-title="Æ000.5">
+              <iframe title="SoundCloud Player - Æ000.5 Techno" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2410142040&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false"></iframe>
+              <div class="sc-credit-bar"><a href="https://soundcloud.com/aeriel-aiff" title="ÆRIEL" target="_blank" rel="noopener noreferrer">ÆRIEL</a> · <a href="https://soundcloud.com/aeriel-aiff/ae0005" title="Æ000.5 - PATRIA EFÍMERA SIN HISTORIA. LLENA DE HUMO, POLVO Y SUDOR" target="_blank" rel="noopener noreferrer">Æ000.5 - PATRIA EFÍMERA SIN HISTORIA. LLENA DE HUMO, POLVO Y SUDOR</a></div>
             </div>
 
             <!-- TRANCE PANEL -->
@@ -3185,7 +3185,7 @@
 
     function updateSoundCloudDrawerForMode(mode) {
       const panels = document.querySelectorAll('.sc-track-panel');
-      let activeTitle = 'Æ000.4';
+      let activeTitle = 'Æ000.5';
       panels.forEach(panel => {
         if (panel.getAttribute('data-genre') === mode) {
           panel.classList.add('active');
