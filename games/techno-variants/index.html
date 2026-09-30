@@ -14028,6 +14028,7 @@
     let cymbal909Buffer = null;
     let reverbInput = null;
     let delayInput = null;
+    let activeBassVoice = null;
 
     // Distortion & Tape Saturation Curves
     function makeSoftClipCurve(drive = 1.6) {
@@ -14305,53 +14306,118 @@
           break;
         }
 
-        // 2. BASSLINE: Clean Sub Layer + Dual Detuned Sawtooths + 24dB Resonant Filter + Diode Clipper
+        // 2. BASSLINE: Continuous Monophonic Sub + Dual Saw Grit + Dynamic Step Phrasing
         case 'bass': {
-          // Layer A: Pure Low Sub Foundation
+          const vel = velocity;
+          // Monophonic voice management: smoothly crossfade previous bass voice to prevent phase collision
+          if (activeBassVoice) {
+            activeBassVoice.fadeAndStop(t);
+            activeBassVoice = null;
+          }
+
+          const stepSec = (60.0 / bpm) * 0.25;
+          const nextStepIdx = (step + 1) % 16;
+          const nextIsActive = currentPattern.bass && currentPattern.bass[nextStepIdx] > 0;
+          const kickOnStep = currentPattern.kick && currentPattern.kick[step] > 0;
+
+          // Gate duration: if continuous notes, hold full 16th duration; if followed by rest, sustain 82% then musical release
+          const gateDuration = nextIsActive ? (stepSec * 1.02) : Math.max(0.08, stepSec * 0.85);
+          const stopTime = t + gateDuration + 0.03;
+
+          const voiceBus = audioCtx.createGain();
+          voiceBus.gain.setValueAtTime(1.0, t);
+
+          // Layer A: Sub Sine Foundation
           const subOsc = audioCtx.createOscillator();
           const subGain = audioCtx.createGain();
           subOsc.type = 'sine';
           subOsc.frequency.setValueAtTime(freq, t);
-          subGain.gain.setValueAtTime(0.7, t);
-          subGain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(0.1, voice.decay));
-          subOsc.connect(subGain);
-          subGain.connect(trackGain);
-          subOsc.start(t);
-          subOsc.stop(t + voice.decay + 0.04);
 
-          // Layer B: Detuned Sawtooth Mid Grit with Resonant Filter
+          // Smooth micro-attack to avoid DC clicks
+          subGain.gain.setValueAtTime(0.0001, t);
+          const subTarget = 0.82 * vel;
+
+          if (kickOnStep) {
+            // Sidechain ducking under kick transient
+            subGain.gain.linearRampToValueAtTime(subTarget * 0.45, t + 0.015);
+            subGain.gain.linearRampToValueAtTime(subTarget, t + 0.045);
+          } else {
+            subGain.gain.linearRampToValueAtTime(subTarget, t + 0.004);
+          }
+
+          if (nextIsActive) {
+            // Continuous running phrase: maintain steady driving sub through step
+            subGain.gain.setValueAtTime(subTarget * 0.95, t + stepSec - 0.005);
+            subGain.gain.linearRampToValueAtTime(subTarget * 0.9, t + stepSec);
+          } else {
+            // Natural release into rest/stop
+            subGain.gain.setValueAtTime(subTarget * 0.9, t + gateDuration * 0.7);
+            subGain.gain.exponentialRampToValueAtTime(0.001, t + gateDuration);
+          }
+
+          subOsc.connect(subGain);
+          subGain.connect(voiceBus);
+
+          // Layer B: Detuned Dual Sawtooths + Resonant Filter
           const saw1 = audioCtx.createOscillator();
           const saw2 = audioCtx.createOscillator();
           saw1.type = 'sawtooth';
           saw2.type = 'sawtooth';
           saw1.frequency.setValueAtTime(freq, t);
           saw2.frequency.setValueAtTime(freq, t);
-          saw1.detune.setValueAtTime(-7, t);
-          saw2.detune.setValueAtTime(7, t);
+          saw1.detune.setValueAtTime(-5, t);
+          saw2.detune.setValueAtTime(5, t);
 
           const filter = audioCtx.createBiquadFilter();
           filter.type = 'lowpass';
-          filter.Q.setValueAtTime(5.5, t);
-          filter.frequency.setValueAtTime(2600, t);
-          filter.frequency.exponentialRampToValueAtTime(220, t + Math.max(0.08, voice.decay));
+          filter.Q.setValueAtTime(2.2, t);
+          filter.frequency.setValueAtTime(680 * vel, t);
+          filter.frequency.exponentialRampToValueAtTime(280, t + gateDuration);
 
           const gritGain = audioCtx.createGain();
-          gritGain.gain.setValueAtTime(0.65, t);
-          gritGain.gain.exponentialRampToValueAtTime(0.001, t + voice.decay);
+          gritGain.gain.setValueAtTime(0.0001, t);
+          const gritTarget = 0.55 * vel;
+          gritGain.gain.linearRampToValueAtTime(gritTarget, t + 0.004);
+
+          if (nextIsActive) {
+            gritGain.gain.setValueAtTime(gritTarget * 0.85, t + stepSec - 0.005);
+            gritGain.gain.linearRampToValueAtTime(gritTarget * 0.75, t + stepSec);
+          } else {
+            gritGain.gain.setValueAtTime(gritTarget * 0.8, t + gateDuration * 0.65);
+            gritGain.gain.exponentialRampToValueAtTime(0.001, t + gateDuration);
+          }
 
           const gritShaper = audioCtx.createWaveShaper();
-          gritShaper.curve = makeSoftClipCurve(2.0);
+          gritShaper.curve = makeSoftClipCurve(1.6);
 
           saw1.connect(filter);
           saw2.connect(filter);
           filter.connect(gritGain);
           gritGain.connect(gritShaper);
-          gritShaper.connect(trackGain);
+          gritShaper.connect(voiceBus);
 
+          voiceBus.connect(trackGain);
+
+          subOsc.start(t);
           saw1.start(t);
           saw2.start(t);
-          saw1.stop(t + voice.decay + 0.04);
-          saw2.stop(t + voice.decay + 0.04);
+
+          subOsc.stop(stopTime);
+          saw1.stop(stopTime);
+          saw2.stop(stopTime);
+
+          activeBassVoice = {
+            fadeAndStop: (now) => {
+              try {
+                voiceBus.gain.cancelScheduledValues(now);
+                voiceBus.gain.setValueAtTime(voiceBus.gain.value, now);
+                voiceBus.gain.linearRampToValueAtTime(0.0001, now + 0.004);
+                subOsc.stop(now + 0.006);
+                saw1.stop(now + 0.006);
+                saw2.stop(now + 0.006);
+              } catch (e) {}
+            }
+          };
           break;
         }
 
@@ -14616,6 +14682,11 @@
       isPlaying = false;
       if (timerID) clearInterval(timerID);
       timerID = null;
+
+      if (activeBassVoice && audioCtx) {
+        activeBassVoice.fadeAndStop(audioCtx.currentTime);
+        activeBassVoice = null;
+      }
 
       const btnPlay = document.getElementById('btn-play-master');
       btnPlay.classList.remove('playing');
