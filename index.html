@@ -2468,7 +2468,7 @@
         </div>
         <div class="games-app-frame-wrapper">
           <iframe 
-            src="/games/techno-variants/index.html" 
+            data-src="/games/techno-variants/index.html"
             title="TECHNO VARIANTS ENGINE — Techno Subgenre Sound Lab & 16-Beat Drum Machine"
             class="games-app-iframe"
             loading="eager"
@@ -3123,6 +3123,8 @@
         if (metaDesc) metaDesc.setAttribute('content', writingDesc);
         if (ogUrl) ogUrl.setAttribute('content', origin + writingPath);
       } else if (currentView === 'games') {
+        const gamesFrame = document.querySelector('.games-app-iframe');
+        if (gamesFrame && !gamesFrame.getAttribute('src')) gamesFrame.setAttribute('src', gamesFrame.getAttribute('data-src'));
         const gamesTitle = "GAMES // ÆRIEL";
         const gamesDesc = "Sometimes I just vibe-code stuff for fun. Don't take this seriously and enjoy :D";
         document.title = gamesTitle;
@@ -3135,7 +3137,12 @@
         if (ogUrl) ogUrl.setAttribute('content', origin + '/games');
       } else {
         const homeTitle = "ÆRIEL | TECHNO, TRANCE, HOUSE, ITALO DISCO";
-        const homeDesc = "ÆRIEL is an artistic project honoring music, community, and queerness. Based in Santiago, Chile.";
+        const homeDescs = {
+          en: "ÆRIEL is an artistic project honoring music, community, and queerness. Based in Santiago, Chile.",
+          es: "ÆRIEL es un proyecto artístico que honra la música, la comunidad y lo queer. Con base en Santiago, Chile.",
+          pt: "ÆRIEL é um projeto artístico que honra a música, a comunidade e a queeridade. Sediado em Santiago, Chile."
+        };
+        const homeDesc = homeDescs[document.documentElement.getAttribute('lang')] || homeDescs.en;
         document.title = homeTitle;
         if (canonicalEl) canonicalEl.setAttribute('href', origin + '/');
         if (ogTitle) ogTitle.setAttribute('content', homeTitle);
@@ -3148,10 +3155,10 @@
     }
     window.updatePageTitle = updatePageTitle;
 
-    function setLanguage(lang) {
+    function setLanguage(lang, persist = true) {
       const html = document.documentElement;
       html.setAttribute('lang', lang);
-      localStorage.setItem('preferred-lang', lang);
+      if (persist) localStorage.setItem('preferred-lang', lang);
       
       // Update active button state
       document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -3165,21 +3172,7 @@
       updateTitleAndMeta(lang);
     }
     
-    function updateTitleAndMeta(lang) {
-      const descMeta = document.querySelector('meta[name="description"]');
-      if (lang === 'es') {
-        if (descMeta) {
-          descMeta.setAttribute('content', "Archivos de mezclas oficiales y registro técnico de contrataciones para ÆRIEL. Perfil de sonido: Techno, Trance, House e Italo Disco. Selecciones crudas, cíclicas, en vinilo y digital.");
-        }
-      } else if (lang === 'pt') {
-        if (descMeta) {
-          descMeta.setAttribute('content', "Arquivos de mixes oficiais e registro técnico de contratação para ÆRIEL. Perfil sonoro: Techno, Trance, House e Italo Disco. Seleções brutas, cíclicas, em vinil e digital.");
-        }
-      } else {
-        if (descMeta) {
-          descMeta.setAttribute('content', "Official mix archives & technical booking registry for ÆRIEL. Sound profile: Techno, Trance, House, and Italo Disco. Raw, cyclic, vinyl & digital selections.");
-        }
-      }
+    function updateTitleAndMeta() {
       updatePageTitle();
     }
 
@@ -3406,7 +3399,7 @@
       });
     }
 
-    function openArticleReader(articleId) {
+    function openArticleReader(articleId, opts = {}) {
       lastActiveElement = document.activeElement;
       const indexEl = document.getElementById('articles-index');
       const heroEl = document.getElementById('writing-hero');
@@ -3428,7 +3421,11 @@
       if (heroEl) heroEl.style.display = 'none';
       if (readerContainer) {
         readerContainer.style.display = 'block';
-        trapFocusInModal(readerContainer);
+        const visibleTitle = readerContainer.querySelector(`#${articleId} .reader-title`);
+        if (visibleTitle) {
+          visibleTitle.setAttribute('tabindex', '-1');
+          visibleTitle.focus({ preventScroll: true });
+        }
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3439,8 +3436,8 @@
       const slug = ESSAY_SLUGS[articleId] || articleId.replace(/^essay-/, '');
       const essayPath = `${baseRoute}/${slug}`;
 
-      if (window.location.pathname.toLowerCase() !== essayPath) {
-        history.pushState({ modal: 'article', essayId: articleId, view: 'writing' }, '', essayPath);
+      if (opts.push !== false && window.location.pathname.toLowerCase() !== essayPath) {
+        history.pushState({ modal: 'article', essayId: articleId, view: 'writing', pushed: true }, '', essayPath);
       }
       updatePageTitle();
     }
@@ -3465,7 +3462,11 @@
       if (wasOpen && !fromPopState) {
         const lang = document.documentElement.getAttribute('lang') || 'en';
         const writingPath = (lang === 'es' || window.location.pathname.toLowerCase().includes('/ensayos')) ? '/ensayos' : '/writing';
-        history.pushState({ view: 'writing' }, '', writingPath);
+        if (history.state && history.state.pushed) {
+          history.back();
+          return;
+        }
+        history.replaceState({ view: 'writing' }, '', writingPath);
       }
       updatePageTitle();
     }
@@ -3776,7 +3777,7 @@
       } else if (path.startsWith('/ensayos') || path.startsWith('/writing') || baseHash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
         if (targetEssayId && document.getElementById(targetEssayId)) {
-          openArticleReader(targetEssayId);
+          openArticleReader(targetEssayId, { push: false });
           const lang = document.documentElement.getAttribute('lang') || 'en';
           const baseRoute = (isSpanishRoute || lang === 'es') ? '/ensayos' : '/writing';
           const slug = ESSAY_SLUGS[targetEssayId] || targetEssayId;
@@ -3841,11 +3842,10 @@
 
       // Listen for dynamic iframe resizing from the Techno Variants Engine web app
       window.addEventListener('message', (e) => {
-        if (e && e.data && e.data.type === 'resize-games-iframe' && typeof e.data.height === 'number') {
-          const iframe = document.querySelector('.games-app-iframe');
-          if (iframe && e.data.height > 600) {
-            iframe.style.height = `${e.data.height}px`;
-          }
+        const iframe = document.querySelector('.games-app-iframe');
+        if (!iframe || e.origin !== window.location.origin || e.source !== iframe.contentWindow) return;
+        if (e.data && e.data.type === 'resize-games-iframe' && Number.isFinite(e.data.height)) {
+          iframe.style.height = `${Math.min(Math.max(Math.round(e.data.height), 300), 20000)}px`;
         }
       });
     });
@@ -3879,15 +3879,15 @@
 
       if ((e.state && e.state.view === 'ae000x') || path.startsWith('/ae000x') || baseHash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
-        if (path.startsWith('/ae000x/es')) setLanguage('es');
+        if (path.startsWith('/ae000x/es')) setLanguage('es', false);
       } else if ((e.state && e.state.view === 'games') || path.startsWith('/games') || baseHash.includes('games')) {
         document.body.setAttribute('data-view', 'games');
       } else if ((e.state && e.state.view === 'writing') || path.startsWith('/ensayos') || path.startsWith('/writing') || baseHash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
-        if (path.startsWith('/ensayos')) setLanguage('es');
+        if (path.startsWith('/ensayos')) setLanguage('es', false);
         
         if (targetEssayId && document.getElementById(targetEssayId)) {
-          openArticleReader(targetEssayId);
+          openArticleReader(targetEssayId, { push: false });
         } else {
           closeArticleReader(true);
         }
