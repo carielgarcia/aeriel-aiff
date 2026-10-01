@@ -342,7 +342,7 @@ html[lang="pt"] [lang="es"] {
   text-align: center;
   padding: 14px 8px;
   letter-spacing: 0.5px !important;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: none;
   min-height: 52px;
   cursor: pointer;
   box-sizing: border-box;
@@ -367,7 +367,7 @@ html[lang="pt"] [lang="es"] {
   box-sizing: border-box;
   max-width: 100%;
   overflow: hidden;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  transition: none;
 }
 
 .soundcloud-drawer-wrapper .drawer-header-bar {
@@ -399,7 +399,7 @@ html[lang="pt"] [lang="es"] {
   letter-spacing: 0.5px;
   padding: 4px 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: none;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -453,7 +453,7 @@ html[lang="pt"] [lang="es"] {
   width: 100%;
   display: block;
   border: none;
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 
 .sc-credit-bar {
@@ -472,7 +472,7 @@ html[lang="pt"] [lang="es"] {
 .sc-credit-bar a {
   color: var(--text-primary);
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: none;
 }
 
 .sc-credit-bar a:hover {
@@ -635,13 +635,12 @@ html[lang="pt"] [lang="es"] {
   padding: 8px;
   box-sizing: border-box;
   margin: 0;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: none;
 }
 
 .intent-portrait-frame:hover {
-  transform: translateY(-2px);
   border-color: var(--text-primary);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 .intent-portrait-media {
@@ -870,7 +869,7 @@ html[lang="pt"] [lang="es"] {
 .footer-email-link {
   color: inherit;
   text-decoration: underline;
-  transition: opacity var(--transition-fast);
+  transition: none;
 }
 
 .footer-email-link:hover {
@@ -1062,8 +1061,8 @@ html[lang="pt"] [lang="es"] {
     font-weight: 800;
     padding: 6px 10px;
     cursor: pointer;
-    border-radius: 0;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    border-radius: 0 !important;
+    transition: none;
   }
 
   .mobile-nav-toggle-btn:hover,
@@ -1094,7 +1093,7 @@ html[lang="pt"] [lang="es"] {
     max-height: 70vh;
     overflow-y: auto;
     border-bottom: 2px solid var(--text-primary);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -1157,10 +1156,10 @@ html[lang="pt"] [lang="es"] {
     font-weight: 900;
     padding: 10px 14px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.2s ease;
+    transition: none;
   }
 
   .mobile-back-to-top.visible {
@@ -2151,8 +2150,8 @@ body[data-view="games"] #games-subsite {
   padding: 8px 10px;
   cursor: pointer;
   border-radius: 0 !important;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-  transition: none !important;
+  box-shadow: none;
+  transition: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2682,7 +2681,7 @@ html.house-mode .writing-preview-quote { border-left-color: #B81D24 !important; 
     padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
-    box-shadow: none !important;
+  box-shadow: none;
   }
 
   /* Ensure themes do not reinstate borders/backgrounds on mobile reader-content */
@@ -2843,13 +2842,13 @@ html.house-mode .writing-preview-quote { border-left-color: #B81D24 !important; 
   text-decoration: none;
   border-radius: 0 !important;
   box-sizing: border-box;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: none;
   white-space: nowrap;
 }
 
 .share-btn .share-icon {
   flex-shrink: 0;
-  transition: transform 0.15s ease;
+  transition: none;
 }
 
 .share-btn:hover,
@@ -2971,7 +2970,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   left: 0;
   height: 100%;
   background: var(--text-primary);
-  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: none;
 }
 
 /* Scrollable Gallery Track with CSS Scroll-Snap */
@@ -3018,7 +3017,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   flex-direction: column;
   scroll-snap-align: start;
   scroll-snap-stop: normal;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition: none;
 }
 
 /* Minimal Poster Card Component */
@@ -3030,7 +3029,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   cursor: pointer;
   width: 100%;
   box-sizing: border-box;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: none;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -3047,7 +3046,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
 .poster-card:hover {
   transform: translateY(-4px);
   border-color: var(--text-primary);
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
+  box-shadow: none;
 }
 
 .poster-card-top {
@@ -3093,7 +3092,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: none;
 }
 
 .poster-card:hover .poster-card-media .poster-img {
@@ -3110,7 +3109,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
 
 .poster-card-empty:hover {
   transform: none !important;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .poster-empty-media {
@@ -3206,7 +3205,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: none;
   border-radius: 0 !important;
 }
 
@@ -3226,7 +3225,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   cursor: pointer;
   position: relative;
   z-index: 100015;
-  transition: all 0.2s ease;
+  transition: none;
   min-height: 38px;
   border-radius: 0 !important;
 }
@@ -3265,7 +3264,7 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   height: auto;
   object-fit: contain;
   border: 2px solid #FFFFFF;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+  box-shadow: none;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -3363,7 +3362,7 @@ html:not(.trance-mode):not(.house-mode):not(.disco-mode) .poster-card {
 }
 html:not(.trance-mode):not(.house-mode):not(.disco-mode) .poster-card:hover {
   border-color: #FFFFFF !important;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8) !important;
+  box-shadow: none;
 }
 html:not(.trance-mode):not(.house-mode):not(.disco-mode) .poster-card-media {
   border-color: #FFFFFF !important;
@@ -3484,7 +3483,7 @@ html.house-mode .contact-feedback-banner.success {
   width: 100%;
   margin: 0;
   overflow: hidden;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: none;
 }
 
 .ae-drawer-header-bar,
@@ -3872,7 +3871,7 @@ html.house-mode .faq-drawer-toggle-btn:hover, html.house-mode .faq-drawer-toggle
   width: 100%;
   margin: 0;
   overflow: hidden;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: none;
 }
 
 .gallery-drawer-header-bar {
@@ -4077,5 +4076,15 @@ html.house-mode .variant-item-body { color: #FFF8E7 !important; }
   .variant-item-body {
     font-size: 0.88rem;
     line-height: 1.6;
+  }
+}
+
+/* Reduced motion: disable smooth scrolling and animated drawers */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
   }
 }
