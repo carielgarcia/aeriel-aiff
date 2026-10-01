@@ -506,7 +506,7 @@
                   <span lang="es">TU_NOMBRE</span>
                   <span lang="pt">SEU_NOME</span>
                 </label>
-                <input type="text" id="contact-name" name="name" class="form-input" placeholder="NAME / MONIKER" required="true">
+                <input type="text" id="contact-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required="true">
               </div>
               
               <div class="form-group">
@@ -515,7 +515,7 @@
                   <span lang="es">TU_CORREO</span>
                   <span lang="pt">SEU_E-MAIL</span>
                 </label>
-                <input type="email" id="contact-email" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required="true">
+                <input type="email" id="contact-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required="true">
               </div>
             </div>
 
@@ -526,7 +526,7 @@
                   <span lang="es">RED_SOCIAL (OPCIONAL)</span>
                   <span lang="pt">REDES_SOCIAIS (OPCIONAL)</span>
                 </label>
-                <input type="text" id="contact-social" name="social_handle" class="form-input" placeholder="@HANDLE / LINK">
+                <input type="text" id="contact-social" maxlength="250" name="social_handle" class="form-input" placeholder="@HANDLE / LINK">
               </div>
               
               <div class="form-group">
@@ -535,7 +535,7 @@
                   <span lang="es">TELÉFONO (OPCIONAL)</span>
                   <span lang="pt">TELEFONE (OPCIONAL)</span>
                 </label>
-                <input type="tel" id="contact-phone" name="phone" class="form-input" placeholder="+123...">
+                <input type="tel" id="contact-phone" maxlength="250" name="phone" class="form-input" placeholder="+123...">
               </div>
             </div>
             
@@ -545,7 +545,7 @@
                 <span lang="es">DATOS_DE_TRANSMISIÓN</span>
                 <span lang="pt">DADOS_DE_TRANSMISSÃO</span>
               </label>
-              <textarea id="contact-message-text" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." required="true"></textarea>
+              <textarea id="contact-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." required="true"></textarea>
             </div>
             
             <button type="submit" class="btn-brutal" id="message-submit-btn">
@@ -1097,7 +1097,7 @@
                         <span class="poster-card-date">2026.04</span>
                       </div>
                       <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster Artwork" class="poster-img" loading="lazy">
+                        <img src="./public/images/posters/poster_ae000_1.jpg" alt="Æ000.1 Poster Artwork" class="poster-img" loading="lazy" width="731" height="1024" decoding="async">
                       </div>
                     </button>
                   </div>
@@ -1110,7 +1110,7 @@
                         <span class="poster-card-date">2026.06</span>
                       </div>
                       <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster Artwork" class="poster-img" loading="lazy">
+                        <img src="./public/images/posters/poster_ae000_2.jpg" alt="Æ000.2 Poster Artwork" class="poster-img" loading="lazy" width="719" height="1024" decoding="async">
                       </div>
                     </button>
                   </div>
@@ -1123,7 +1123,7 @@
                         <span class="poster-card-date">2026.07</span>
                       </div>
                       <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster Artwork" class="poster-img" loading="lazy">
+                        <img src="./public/images/posters/poster_ae000_3.jpg" alt="Æ000.3 Poster Artwork" class="poster-img" loading="lazy" width="724" height="1024" decoding="async">
                       </div>
                     </button>
                   </div>
@@ -1136,7 +1136,7 @@
                         <span class="poster-card-date">2026.08</span>
                       </div>
                       <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster Artwork" class="poster-img" loading="lazy">
+                        <img src="./public/images/posters/poster_ae000_4.jpg" alt="Æ000.4 Poster Artwork" class="poster-img" loading="lazy" width="717" height="1024" decoding="async">
                       </div>
                     </button>
                   </div>
@@ -1149,7 +1149,7 @@
                         <span class="poster-card-date">2026.08</span>
                       </div>
                       <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_4_5.jpg" alt="Æ000.4.5 Flyer Artwork — El Sol Marca Una Coordenada" class="poster-img" loading="lazy">
+                        <img src="./public/images/posters/poster_ae000_4_5.jpg" alt="Æ000.4.5 Flyer Artwork — El Sol Marca Una Coordenada" class="poster-img" loading="lazy" width="733" height="1024" decoding="async">
                       </div>
                     </button>
                   </div>
@@ -1162,7 +1162,7 @@
                         <span class="poster-card-date">2026.09</span>
                       </div>
                       <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_4_after.jpg" alt="Æ000.4_after Flyer Artwork" class="poster-img" loading="lazy">
+                        <img src="./public/images/posters/poster_ae000_4_after.jpg" alt="Æ000.4_after Flyer Artwork" class="poster-img" loading="lazy" width="717" height="1024" decoding="async">
                       </div>
                     </button>
                   </div>
@@ -1175,7 +1175,7 @@
                         <span class="poster-card-date">2026.09</span>
                       </div>
                       <div class="poster-card-media">
-                        <img src="./public/images/posters/poster_ae000_5.jpg" alt="Æ000.5 Flyer Artwork — Patria Efímera Sin Historia" class="poster-img" loading="lazy">
+                        <img src="./public/images/posters/poster_ae000_5.jpg" alt="Æ000.5 Flyer Artwork — Patria Efímera Sin Historia" class="poster-img" loading="lazy" width="722" height="1024" decoding="async">
                       </div>
                     </button>
                   </div>
@@ -1216,7 +1216,7 @@
                 <span lang="es">NOMBRE COMPLETO / SEUDÓNIMO (REQUERIDO)</span>
                 <span lang="pt">NOME COMPLETO / NOME ARTÍSTICO (OBRIGATÓRIO)</span>
               </label>
-              <input type="text" id="invite-name" name="name" class="form-input" placeholder="NAME / MONIKER" required>
+              <input type="text" id="invite-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required>
             </div>
 
             <div class="form-row">
@@ -1227,7 +1227,7 @@
                   <span lang="es">RED SOCIAL (REQUERIDO)</span>
                   <span lang="pt">REDES SOCIAIS (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-social" name="social" class="form-input" placeholder="@HANDLE / LINK" required>
+                <input type="text" id="invite-social" maxlength="250" name="social" class="form-input" placeholder="@HANDLE / LINK" required>
               </div>
 
               <!-- Field 3: WhatsApp -->
@@ -1237,7 +1237,7 @@
                   <span lang="es">WHATSAPP — TELÉFONO O USUARIO (REQUERIDO)</span>
                   <span lang="pt">WHATSAPP — TELEFONE OU USUÁRIO (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-whatsapp" name="whatsapp" class="form-input" placeholder="+123... / @username" required>
+                <input type="text" id="invite-whatsapp" maxlength="250" name="whatsapp" class="form-input" placeholder="+123... / @username" required>
               </div>
             </div>
 
@@ -1248,7 +1248,7 @@
                 <span lang="es">CORREO ELECTRÓNICO (REQUERIDO)</span>
                 <span lang="pt">ENDEREÇO DE E-MAIL (OBRIGATÓRIO)</span>
               </label>
-              <input type="email" id="invite-email" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required>
+              <input type="email" id="invite-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required>
             </div>
 
             <!-- Field 5: Preferred Contact Method -->
@@ -2545,16 +2545,44 @@
     </div>
     <div class="lightbox-body">
       <div class="lightbox-content">
-        <img id="lightbox-img" src="" alt="Full Screen Poster">
+        <img id="lightbox-img" src="" alt="Full Screen Poster" width="731" height="1024" decoding="async">
       </div>
     </div>
   </div>
 
   <!-- Floating Back-to-Top Button for Mobile Web App View -->
-  <button class="mobile-back-to-top" id="mobile-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to Top">[↑ TOP]</button>
+  <button class="mobile-back-to-top" id="mobile-back-to-top" onclick="window.scrollTo({top: 0, behavior: scrollBehavior()})" aria-label="Back to Top">[↑ TOP]</button>
 
   <!-- Language Selection and Form Transmission Handler Scripts -->
   <script>
+    function scrollBehavior() {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    }
+
+    const FORM_MSG = {
+      transmitting: { en: '[ TRANSMITTING... ]', es: '[ TRANSMITIENDO... ]', pt: '[ TRANSMITINDO... ]' },
+      contactOk: {
+        en: '[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]',
+        es: '[ TRANSMISIÓN ENTREGADA // MENSAJE DIRECTO ENVIADO ]',
+        pt: '[ TRANSMISSÃO ENTREGUE // MENSAGEM DIRETA ENVIADA ]'
+      },
+      registerOk: {
+        en: '[ REGISTRATION LOGGED // AWAIT TRANSMISSION ]',
+        es: '[ REGISTRO GUARDADO // ESPERA LA TRANSMISIÓN ]',
+        pt: '[ REGISTRO SALVO // AGUARDE A TRANSMISSÃO ]'
+      },
+      error: {
+        en: '[ TRANSMISSION ERROR // TRY AGAIN ]',
+        es: '[ ERROR DE TRANSMISIÓN // INTENTA DE NUEVO ]',
+        pt: '[ ERRO DE TRANSMISSÃO // TENTE NOVAMENTE ]'
+      }
+    };
+
+    function formMsg(key) {
+      const lang = document.documentElement.getAttribute('lang') || 'en';
+      return FORM_MSG[key][lang] || FORM_MSG[key].en;
+    }
+
     function toggleMobileNav() {
       const nav = document.getElementById('main-navigation');
       const toggleBtn = document.getElementById('mobile-nav-toggle');
@@ -2608,6 +2636,25 @@
     ];
     let currentLightboxIndex = 0;
 
+    const POSTER_ALT_SUFFIX = { en: 'poster artwork', es: 'arte del afiche', pt: 'arte do cartaz' };
+    const POSTER_SUBTITLES = { 'poster_ae000_4_5.jpg': 'El Sol Marca Una Coordenada', 'poster_ae000_5.jpg': 'Patria Efímera Sin Historia' };
+
+    function posterAlt(item, lang) {
+      const file = item.src.split('/').pop();
+      const sub = POSTER_SUBTITLES[file] ? ` — ${POSTER_SUBTITLES[file]}` : '';
+      return `${item.title} ${POSTER_ALT_SUFFIX[lang] || POSTER_ALT_SUFFIX.en}${sub}`;
+    }
+
+    function updatePosterAltText(lang) {
+      document.querySelectorAll('img.poster-img').forEach(img => {
+        const item = posterGallery.find(p => img.getAttribute('src') === p.src);
+        if (item) img.setAttribute('alt', posterAlt(item, lang));
+      });
+      const lbImg = document.getElementById('lightbox-img');
+      const item = posterGallery[currentLightboxIndex];
+      if (lbImg && item && lbImg.getAttribute('src')) lbImg.setAttribute('alt', posterAlt(item, lang));
+    }
+
     function updatePosterCarousel() {
       const counter = document.getElementById('carousel-slide-counter');
       const progressBar = document.getElementById('gallery-progress-bar');
@@ -2643,7 +2690,7 @@
       if (track) {
         const slides = track.querySelectorAll('.carousel-slide');
         if (slides[index]) {
-          slides[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          slides[index].scrollIntoView({ behavior: scrollBehavior(), inline: 'center', block: 'nearest' });
         }
       }
       updatePosterCarousel();
@@ -2666,7 +2713,10 @@
       const lightboxTitle = document.getElementById('lightbox-title');
       const lightboxCounter = document.getElementById('lightbox-counter');
 
-      if (lightboxImg) lightboxImg.src = item.src;
+      if (lightboxImg) {
+        lightboxImg.src = item.src;
+        lightboxImg.alt = posterAlt(item, document.documentElement.getAttribute('lang') || 'en');
+      }
       if (lightboxTitle) lightboxTitle.textContent = item.title;
       if (lightboxCounter) lightboxCounter.textContent = `0${currentLightboxIndex + 1} / 0${posterGallery.length}`;
     }
@@ -2734,6 +2784,7 @@
           }
         }, { passive: true });
       }
+    });
 
       // Google Apps Script Contact Form Submission Controller
       const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQIwvjoxpjt48GvOm5mN0E8HXrVu0foNH83DLBEBYxciuP0cs83FZAED70Z_qN9zDk/exec";
@@ -2750,7 +2801,7 @@
 
         if (submitBtn) {
           submitBtn.disabled = true;
-          submitBtn.textContent = "[ TRANSMITTING... ]";
+          submitBtn.textContent = formMsg('transmitting');
         }
 
         if (feedbackBanner) {
@@ -2775,7 +2826,7 @@
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
             feedbackBanner.style.display = "block";
-            feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
+            feedbackBanner.textContent = formMsg('contactOk');
           }
           if (submitBtn) {
             submitBtn.disabled = false;
@@ -2798,14 +2849,14 @@
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
             feedbackBanner.style.display = "block";
-            feedbackBanner.textContent = "[ TRANSMISSION DELIVERED // DIRECT MESSAGE SENT ]";
+            feedbackBanner.textContent = formMsg('contactOk');
           }
         } catch (err) {
           console.error('Contact Form Submission Exception:', err);
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner error";
             feedbackBanner.style.display = "block";
-            feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
+            feedbackBanner.textContent = formMsg('error');
           }
         } finally {
           if (submitBtn) {
@@ -2824,7 +2875,7 @@
 
         if (submitBtn) {
           submitBtn.disabled = true;
-          submitBtn.textContent = "[ TRANSMITTING... ]";
+          submitBtn.textContent = formMsg('transmitting');
         }
 
         if (feedbackBanner) {
@@ -2851,7 +2902,7 @@
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
             feedbackBanner.style.display = "block";
-            feedbackBanner.textContent = "[ REGISTRATION LOGGED // AWAIT TRANSMISSION ]";
+            feedbackBanner.textContent = formMsg('registerOk');
           }
           if (submitBtn) {
             submitBtn.disabled = false;
@@ -2874,14 +2925,14 @@
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
             feedbackBanner.style.display = "block";
-            feedbackBanner.textContent = "[ REGISTRATION LOGGED // AWAIT TRANSMISSION ]";
+            feedbackBanner.textContent = formMsg('registerOk');
           }
         } catch (err) {
           console.error('Registration Form Submission Exception:', err);
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner error";
             feedbackBanner.style.display = "block";
-            feedbackBanner.textContent = "[ TRANSMISSION ERROR // TRY AGAIN ]";
+            feedbackBanner.textContent = formMsg('error');
           }
         } finally {
           if (submitBtn) {
@@ -2893,9 +2944,15 @@
 
       window.handleContactFormSubmit = handleContactFormSubmit;
       window.handleInvitationFormSubmit = handleInvitationFormSubmit;
-    });
 
     let lastActiveElement = null;
+
+    function setBackgroundInert(isInert) {
+      ['site-header', 'main-content', 'ae000x-subsite', 'writing-subsite', 'games-subsite', 'site-footer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.toggleAttribute('inert', isInert);
+      });
+    }
 
     function trapFocusInModal(modalEl) {
       if (!modalEl) return;
@@ -2922,6 +2979,7 @@
         const wasOpen = lightbox.style.display === 'flex';
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        setBackgroundInert(true);
         trapFocusInModal(lightbox);
         if (!wasOpen && window.location.hash !== '#overlay') {
           history.pushState({ modal: 'lightbox' }, '', '#overlay');
@@ -2945,6 +3003,7 @@
       if (lightbox && lightbox.style.display === 'flex') {
         lightbox.style.display = 'none';
         document.body.style.overflow = '';
+        setBackgroundInert(false);
         if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
           lastActiveElement.focus();
         }
@@ -3169,6 +3228,7 @@
         targetBtn.classList.add('active');
       }
       
+      updatePosterAltText(lang);
       updateTitleAndMeta(lang);
     }
     
@@ -3305,7 +3365,7 @@
       document.body.setAttribute('data-view', 'ae000x');
       updatePageTitle();
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: scrollBehavior() });
         if (window.location.pathname !== '/ae000x') {
           history.pushState({ view: 'ae000x' }, '', '/ae000x');
         }
@@ -3329,7 +3389,7 @@
 
             window.scrollTo({
               top: Math.max(0, offsetPosition),
-              behavior: 'smooth'
+              behavior: scrollBehavior()
             });
             
             if (window.location.hash !== targetHash) {
@@ -3339,7 +3399,7 @@
           }
         }
         
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: scrollBehavior() });
         if (window.location.pathname !== '/' || window.location.hash || window.location.search) {
           history.pushState({ view: 'main' }, '', '/');
         }
@@ -3352,7 +3412,7 @@
       document.body.setAttribute('data-view', 'writing');
       updatePageTitle();
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: scrollBehavior() });
         const lang = document.documentElement.getAttribute('lang') || 'en';
         const writingPath = lang === 'es' ? '/ensayos' : '/writing';
         if (!window.location.pathname.includes('writing') && !window.location.pathname.includes('ensayos')) {
@@ -3367,7 +3427,7 @@
       document.body.setAttribute('data-view', 'games');
       updatePageTitle();
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: scrollBehavior() });
         if (window.location.pathname.toLowerCase() !== '/games') {
           history.pushState({ view: 'games' }, '', '/games');
         }
@@ -3428,7 +3488,7 @@
         }
       }
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
 
       const lang = document.documentElement.getAttribute('lang') || 'en';
       const isSpanish = lang === 'es' || window.location.pathname.toLowerCase().includes('/ensayos');
@@ -3453,7 +3513,7 @@
       if (heroEl) heroEl.style.display = 'block';
       if (readerContainer) readerContainer.style.display = 'none';
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
 
       if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
         lastActiveElement.focus();
