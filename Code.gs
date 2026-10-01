@@ -15,6 +15,10 @@ const SHEET_TAB = "Registrations";
 const MAX_MESSAGE_LENGTH = 5000;
 const MAX_FIELD_LENGTH = 250;
 
+// Abuse throttling (protects the MailApp daily quota and the registration sheet)
+const PER_SENDER_COOLDOWN_SECONDS = 60;   // one submission per email address per minute
+const GLOBAL_MAX_PER_MINUTE = 20;         // all submissions combined, per minute
+
 /**
  * Handles GET requests for quick health check & status testing.
  */
@@ -52,6 +56,37 @@ function doPost(e) {
   } catch (err) {
     console.error("doPost handler exception:", err);
     return jsonResponse({ ok: false, error: "INTERNAL_PROCESSING_ERROR" });
+  }
+}
+
+/**
+ * Returns true when the submission should be rejected for rate limiting.
+ * Uses CacheService (per-sender cooldown + global per-minute ceiling) under a script lock.
+ */
+function isRateLimited(email, formType) {
+  const cache = CacheService.getScriptCache();
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(5000);
+  } catch (e) {
+    return true;
+  }
+  try {
+    const digest = Utilities.base64EncodeWebSafe(
+      Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, formType + "|" + String(email).trim().toLowerCase())
+    );
+    const senderKey = "rl_" + digest;
+    if (cache.get(senderKey)) return true;
+
+    const globalKey = "rl_global_" + Math.floor(Date.now() / 60000);
+    const count = Number(cache.get(globalKey) || 0);
+    if (count >= GLOBAL_MAX_PER_MINUTE) return true;
+
+    cache.put(senderKey, "1", PER_SENDER_COOLDOWN_SECONDS);
+    cache.put(globalKey, String(count + 1), 120);
+    return false;
+  } finally {
+    lock.releaseLock();
   }
 }
 
@@ -94,6 +129,10 @@ function handleContactForm(data) {
 
   if (!isValidEmail(rawEmail)) {
     return jsonResponse({ ok: false, error: "INVALID_EMAIL_FORMAT" });
+  }
+
+  if (isRateLimited(rawEmail, "contact")) {
+    return jsonResponse({ ok: false, error: "RATE_LIMITED" });
   }
 
   const name = sanitizeHeader(String(data.name || "Anonymous").slice(0, MAX_FIELD_LENGTH));
@@ -141,6 +180,10 @@ function handleRegistrationForm(data) {
     return jsonResponse({ ok: false, error: "INVALID_EMAIL_FORMAT" });
   }
 
+  if (isRateLimited(rawEmail, "registration")) {
+    return jsonResponse({ ok: false, error: "RATE_LIMITED" });
+  }
+
   const ss = SpreadsheetApp.openById(SHEET_ID);
   let sheet = ss.getSheetByName(SHEET_TAB);
 
@@ -150,6 +193,17 @@ function handleRegistrationForm(data) {
 
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(["Timestamp", "Name", "Email", "Social", "WhatsApp/Phone", "Preferred Contact"]);
+  }
+
+  // Skip duplicate registrations for the same email (case-insensitive)
+  if (sheet.getLastRow() > 1) {
+    const existing = sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).getValues();
+    const target = rawEmail.toLowerCase();
+    for (let i = 0; i < existing.length; i++) {
+      if (String(existing[i][0]).replace(/^'/, "").trim().toLowerCase() === target) {
+        return jsonResponse({ ok: true });
+      }
+    }
   }
 
   sheet.appendRow([
