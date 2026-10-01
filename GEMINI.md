@@ -114,6 +114,7 @@ Any modifications to HTML, CSS, or JavaScript must strictly adhere to the follow
   - Sharp White: `#FFFFFF` (borders, primary text, active states)
   - Industrial Gray: `#7F7F7F` (metadata, secondary labels, timestamps)
   - *Never introduce unapproved accent colors, gradients, or soft drop shadows.*
+  - **Intentional exception — Genre Mode Easter Eggs**: The `disco-mode`, `trance-mode`, and `house-mode` themes (`html.*-mode` rules in `style.css`, including their accent colors, backgrounds, and glow `box-shadow`s) are deliberate homages to the visual identity of those genres. They are approved, must not be flagged or "fixed" in audits, and must not be removed. All other UI remains strictly monochromatic.
 - **Zero Border-Radius Invariant**:
   - Every UI element (buttons, inputs, cards, dialogs, modals, containers) must have sharp 90-degree corners: `border-radius: 0 !important;`.
 - **Exposed Structural Grids**:
