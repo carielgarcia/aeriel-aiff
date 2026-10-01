@@ -114,6 +114,7 @@ Any modifications to HTML, CSS, or JavaScript must strictly adhere to the follow
   - Sharp White: `#FFFFFF` (borders, primary text, active states)
   - Industrial Gray: `#7F7F7F` (metadata, secondary labels, timestamps)
   - *Never introduce unapproved accent colors, gradients, or soft drop shadows.*
+  - **Intentional exception — Sound Pads**: In `games/techno-variants/`, the performance pads, active step pads and voice dots carry a per-voice colour so each voice stays distinguishable. Everything else in the game follows the monochrome palette, zero radius, white borders, uppercase monospace labels and binary hover rules.
   - **Intentional exception — Genre Mode Easter Eggs**: The `disco-mode`, `trance-mode`, and `house-mode` themes (`html.*-mode` rules in `style.css`, including their accent colors, backgrounds, and glow `box-shadow`s) are deliberate homages to the visual identity of those genres. They are approved, must not be flagged or "fixed" in audits, and must not be removed. All other UI remains strictly monochromatic.
 - **Zero Border-Radius Invariant**:
   - Every UI element (buttons, inputs, cards, dialogs, modals, containers) must have sharp 90-degree corners: `border-radius: 0 !important;`.
@@ -213,13 +214,16 @@ Whenever the user provides a SoundCloud set embed (iframe/link) and specifies a 
 Whenever designing, developing, or modifying interactive audio tools, games, or synthesizers (such as `games/techno-variants/` or future sub-apps):
 
 ### 1. Web Audio Gesture & Context Synchronization
-- **Synchronous Resume Invariant**: In macOS/iOS Safari and WebKit, user gesture activation tokens expire across microtask ticks. Any call to `Tone.start()`, `audioCtx.resume()`, or `rawContext.resume()` **MUST be executed synchronously** at the very entry of user click/pointer/touch/keydown handlers. Never place an `await` before context resumption.
+- **Synchronous Resume Invariant**: In macOS/iOS Safari and WebKit, user gesture activation tokens expire across microtask ticks. Any call to `audioCtx.resume()` (e.g. `TVEngine.resume()`) **MUST be executed synchronously** at the very entry of user click/pointer/touch/keydown handlers. Never place an `await` before context resumption.
 - **Global Unlock Listeners**: Attach non-blocking passive synchronous resume listeners across `pointerdown`, `touchstart`, `click`, and `keydown`.
 
-### 2. Transport Clocking & Continuous 16-Step Sequencers
-- **Schedule Repeat Over Sequence**: Never rely on `new Tone.Sequence(...)` for cyclic drum-machine playback due to internal `loopEnd` boundary stalling.
-- **Robust Looping Pattern**: Use `Tone.Transport.scheduleRepeat((time) => { ... }, '16n', 0)` with modulo stepping `currentStepIndex = (currentStepIndex + 1) % 16`.
-- **UI & Scope Synchronization**: Always wrap step-highlighting UI changes and oscilloscope triggers inside `Tone.Draw.schedule(() => { updateStepUI(step); }, time)` to guarantee 60fps frame alignment with Web Audio rendering.
+### 2. Architecture & Transport Clocking
+- **Raw Web Audio, framework-free**: `games/techno-variants/` is split into `engine.js` (synthesis, FX, sequencer), `tracks.js` (data), `app.js` (UI + i18n), `techno.css`, and `clock-worker.js`. No Tone.js or other audio libraries.
+- **Look-ahead scheduler**: every event is placed at an explicit `AudioContext` time (look-ahead ≥ 150 ms). The tick runs in a Worker (`clock-worker.js`) so background-tab timer throttling cannot starve it; fall back to `setInterval` only if Workers are unavailable. Modulo stepping `step = (step + 1) % 16`; pause resumes, stop rewinds.
+- **Visual sync**: queue step highlights with the scheduled audio time and release them at `ctx.currentTime - outputLatency` so the playhead matches what is heard.
+- **Tempo-synced FX**: delay times derive from BPM (`delayTime = stepSeconds × division`); never hard-code millisecond delays.
+- **Band-limited oscillators only**: use native `OscillatorNode` types or `PeriodicWave`; never hand-roll naive `sign(sin)` square/saw buffers (aliasing). Use seeded noise so offline renders are repeatable.
+- **Gain staging**: master peaks ≤ −1 dBFS with a real limiter and ceiling; no whole-mix saturation. Verify changes with an offline render (`OfflineAudioContext`) and report peak, RMS, crest factor and clipped-sample share before and after.
 
 ### 3. Spatial Density & Expandable Drawer Architecture
 - **Zero Wasted Space Invariant**: Interactive audio tools must maximize space efficiency. Avoid large static parameter blocks or tall static tables below the matrix.
@@ -228,6 +232,14 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 
 ### 4. Dynamic Iframe Height & Zero-Gap Containment
 - **Height Calculation**: Embedded apps must never enforce rigid `100vh` or `min-h-screen` classes that artificially inflate iframe heights.
-- **Dynamic PostMessage Contract**: Dispatch `{ type: 'resize-games-iframe', height: scrollHeight }` on window load, resize, `ResizeObserver`, drawer toggle, and `<details>` toggle.
-- **Host Containment**: Host iframes must apply `loading="eager"`, minimal top/bottom section padding, and update iframe style height dynamically with zero dead gap.
+- **Dynamic PostMessage Contract**: Dispatch `{ type: 'resize-games-iframe', height: scrollHeight }` (to the same origin) on window load, resize, `ResizeObserver`, drawer toggle, and `<details>` toggle. The host validates `origin` and `source` and clamps the height.
+- **Host Containment**: The host assigns the iframe `src` from `data-src` when the Games view opens (no hidden audio engine on other views), uses minimal top/bottom section padding, and updates the iframe height dynamically with zero dead gap.
 
+### 5. Reference Data Integrity (`tracks.js`)
+- **Never invent records.** Every reference track must be an entry from a named specialist list (Resident Advisor, Bandcamp Daily, Mixmag, Electronic Beats, etc.) and carry a `source` key pointing to `TV_SOURCES` with the list's URL. Title, artist, label and year come from the list or the release listing; `bpm` is the listed tempo or `null`.
+- **No unsourced descriptions.** Do not write descriptive claims about a specific record that the source does not make.
+- **Grooves are style templates**, not transcriptions of the referenced records, and the UI must say so.
+- Keep at most 5 tracks per subgenre. When a list cannot be read in full, include only entries confirmed from it.
+
+### 6. Trilingual UI
+- All game UI text, aria-labels and toasts live in the `I18N` dictionary in `app.js` (EN/ES/PT). The game follows the host language (`?lang=`, `localStorage['preferred-lang']`, live `storage` event).
