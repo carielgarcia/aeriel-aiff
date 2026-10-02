@@ -32,6 +32,7 @@
       'toast.playing': 'Playing @ {bpm} BPM • {name}', 'toast.loaded': 'Loaded: {name} ({bpm} BPM)', 'toast.cleared': 'Sequencer cleared', 'toast.random': 'Randomized groove',
       'toast.tempo': 'Tempo set to {bpm} BPM', 'toast.stopped': 'Stopped (rewound to step 1)', 'toast.noteSet': '{voice} step {step} set to {note}',
       'toast.genre': 'Style: {name}',
+      'toast.lite': 'Performance mode: reverb/delay reduced to keep timing', 'toast.suspended': 'Audio paused by the browser — press PLAY to resume', 'toast.restarted': 'Audio device restarted',
       'voice.kick': 'KICK DRUM', 'voice.bass': 'BASSLINE', 'voice.congaHigh': 'CONGA HIGH', 'voice.congaLow': 'CONGA LOW', 'voice.hat': 'HI-HAT / SHAKER', 'voice.openHat': 'OPEN HAT', 'voice.clap': 'CLAP', 'voice.synth': 'TECHNO STAB',
       'pad.kick': 'KICK', 'pad.bass': 'BASS', 'pad.congaHigh': 'CONGA HI', 'pad.congaLow': 'CONGA LO', 'pad.hat': 'HAT', 'pad.openHat': 'OPEN HAT', 'pad.clap': 'CLAP', 'pad.synth': 'STAB',
       'drawer.params': '{voice} PARAMETERS', 'drawer.transpose': 'TRANSPOSE', 'drawer.decay': 'DECAY', 'drawer.level': 'LEVEL', 'drawer.pan': 'PAN', 'drawer.timbre': 'TIMBRE',
@@ -59,6 +60,7 @@
       'toast.playing': 'Sonando @ {bpm} BPM • {name}', 'toast.loaded': 'Cargado: {name} ({bpm} BPM)', 'toast.cleared': 'Secuenciador limpio', 'toast.random': 'Groove aleatorio',
       'toast.tempo': 'Tempo fijado en {bpm} BPM', 'toast.stopped': 'Detenido (vuelve al paso 1)', 'toast.noteSet': '{voice}: paso {step} = {note}',
       'toast.genre': 'Estilo: {name}',
+      'toast.lite': 'Modo rendimiento: reverb/delay reducidos para mantener el tempo', 'toast.suspended': 'Audio en pausa por el navegador — pulsa REPRODUCIR para continuar', 'toast.restarted': 'Dispositivo de audio reiniciado',
       'voice.kick': 'BOMBO', 'voice.bass': 'LÍNEA DE BAJO', 'voice.congaHigh': 'CONGA AGUDA', 'voice.congaLow': 'CONGA GRAVE', 'voice.hat': 'HI-HAT / SHAKER', 'voice.openHat': 'HI-HAT ABIERTO', 'voice.clap': 'PALMAS', 'voice.synth': 'ACORDE TECHNO',
       'pad.kick': 'BOMBO', 'pad.bass': 'BAJO', 'pad.congaHigh': 'CONGA AG', 'pad.congaLow': 'CONGA GR', 'pad.hat': 'HAT', 'pad.openHat': 'HAT ABIERTO', 'pad.clap': 'PALMAS', 'pad.synth': 'ACORDE',
       'drawer.params': 'PARÁMETROS: {voice}', 'drawer.transpose': 'TRANSPOSICIÓN', 'drawer.decay': 'DECAIMIENTO', 'drawer.level': 'NIVEL', 'drawer.pan': 'PAN', 'drawer.timbre': 'TIMBRE',
@@ -86,6 +88,7 @@
       'toast.playing': 'Tocando @ {bpm} BPM • {name}', 'toast.loaded': 'Carregado: {name} ({bpm} BPM)', 'toast.cleared': 'Sequenciador limpo', 'toast.random': 'Groove aleatório',
       'toast.tempo': 'Andamento definido em {bpm} BPM', 'toast.stopped': 'Parado (volta ao passo 1)', 'toast.noteSet': '{voice}: passo {step} = {note}',
       'toast.genre': 'Estilo: {name}',
+      'toast.lite': 'Modo desempenho: reverb/delay reduzidos para manter o tempo', 'toast.suspended': 'Áudio pausado pelo navegador — toque em TOCAR para continuar', 'toast.restarted': 'Dispositivo de áudio reiniciado',
       'voice.kick': 'BUMBO', 'voice.bass': 'LINHA DE BAIXO', 'voice.congaHigh': 'CONGA AGUDA', 'voice.congaLow': 'CONGA GRAVE', 'voice.hat': 'HI-HAT / SHAKER', 'voice.openHat': 'HI-HAT ABERTO', 'voice.clap': 'PALMAS', 'voice.synth': 'ACORDE TECHNO',
       'pad.kick': 'BUMBO', 'pad.bass': 'BAIXO', 'pad.congaHigh': 'CONGA AG', 'pad.congaLow': 'CONGA GR', 'pad.hat': 'HAT', 'pad.openHat': 'HAT ABERTO', 'pad.clap': 'PALMAS', 'pad.synth': 'ACORDE',
       'drawer.params': 'PARÂMETROS: {voice}', 'drawer.transpose': 'TRANSPOSIÇÃO', 'drawer.decay': 'DECAIMENTO', 'drawer.level': 'NÍVEL', 'drawer.pan': 'PAN', 'drawer.timbre': 'TIMBRE',
@@ -294,11 +297,12 @@
     if (scopeStarted || !Engine.nodes) return;
     scopeStarted = true;
     const canvas = $('scope-canvas'), c2d = canvas.getContext('2d');
-    const analyser = Engine.nodes.analyser;
-    const data = new Uint8Array(analyser.fftSize);
+    const data = new Uint8Array(1024);
     (function draw() {
       requestAnimationFrame(draw);
       if (document.hidden) return;
+      const analyser = Engine.nodes && Engine.nodes.analyser;      // re-read: the context may have been rebuilt
+      if (!analyser) return;
       if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
         canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight;
       }
@@ -782,6 +786,13 @@
     ['pointerdown', 'touchstart', 'click', 'keydown'].forEach(ev => {
       window.addEventListener(ev, () => Engine.resume(), { passive: true });
     });
+
+    // engine health: overload governor, suspended/stalled audio context
+    Engine.onLite = on => { if (on) showToast(t('toast.lite')); };
+    Engine.onState = st => {
+      if (st === 'restarted') { showToast(t('toast.restarted')); return; }
+      if (transportMode === 'playing') { pausePlayback(); showToast(t('toast.suspended')); }
+    };
 
     // language follows the host page
     window.addEventListener('storage', e => { if (e.key === 'preferred-lang' && e.newValue) setLang(e.newValue); });
