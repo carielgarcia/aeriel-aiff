@@ -223,6 +223,8 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 - **Visual sync**: queue step highlights with the scheduled audio time and release them at `ctx.currentTime - outputLatency` so the playhead matches what is heard.
 - **Tempo-synced FX**: delay times derive from BPM (`delayTime = stepSeconds × division`); never hard-code millisecond delays.
 - **Band-limited oscillators only**: use native `OscillatorNode` types or `PeriodicWave`; never hand-roll naive `sign(sin)` square/saw buffers (aliasing). Use seeded noise so offline renders are repeatable.
+- **Keep per-hit node counts minimal.** A hit may create only its sources and an envelope gain. Filters, shapers, panners and FX sends are persistent shared chains (see `chainFor()` in `engine.js`). Heavy one-off synthesis (e.g. the pre-rendered metallic hat buffer) happens at init, never inside the scheduler. Budget: profile with an offline render and report cost per audio second before and after.
+- **Scheduler resilience.** After a main-thread stall the scheduler must skip missed steps (never replay them at once), drop notes that are already late, cap steps per tick, and fall back to a reduced-effects mode under sustained overload. A watchdog detects a suspended/stalled `AudioContext`, pauses the UI with a message, or rebuilds the context once. Never forward the `running` state as a fault.
 - **Gain staging**: master peaks ≤ −1 dBFS with a real limiter and ceiling; no whole-mix saturation. Verify changes with an offline render (`OfflineAudioContext`) and report peak, RMS, crest factor and clipped-sample share before and after.
 
 ### 3. Spatial Density & Expandable Drawer Architecture
