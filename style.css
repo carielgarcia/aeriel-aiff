@@ -1872,12 +1872,11 @@ body[data-view="ae000x"] #ae000x-subsite {
 
 /* Sub-Website Sticky Header Bar */
 .subsite-header-bar {
-  position: sticky;
-  top: 70px;
-  z-index: 990;
-  background: var(--bg-primary);
+  position: static;
+  background: var(--bg-secondary);
   border-bottom: var(--border-thick);
-  padding: var(--spacing-sm) 0;
+  border-left: 10px solid var(--text-primary); /* monochrome sub-site marker */
+  padding: var(--spacing-xs) 0;
 }
 
 .subsite-header-layout {
@@ -4086,5 +4085,295 @@ html.house-mode .variant-item-body { color: #FFF8E7 !important; }
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   NAVIGATION RESTRUCTURE: DESTINATIONS (TOP BAR) + ON THIS PAGE (RAIL)
+   ========================================================================== */
+
+/* Top-bar groups: desktop shows the sub-site destinations only (logo = home) */
+.nav-group {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
+.nav-group-home,
+.nav-group-label {
+  display: none;
+}
+
+.nav-arrow {
+  margin-left: 6px;
+  font-size: 0.8em;
+}
+
+#main-navigation .nav-link[aria-current="page"] {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.skip-link:focus-visible,
+.skip-link:focus {
+  top: 16px;
+}
+
+/* View switching for the MESSAGE sub-site */
+body:not([data-view="message"]) #message-subsite {
+  display: none !important;
+}
+
+body[data-view="message"] #main-content,
+body[data-view="message"] #ae000x-subsite,
+body[data-view="message"] #writing-subsite,
+body[data-view="message"] #games-subsite {
+  display: none !important;
+}
+
+body[data-view="message"] #message-subsite {
+  display: block !important;
+}
+
+/* Breadcrumb */
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin: 0 8px;
+  color: var(--text-muted);
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 8px;
+  text-decoration: underline;
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  transition: none;
+}
+
+.breadcrumb li[aria-current="page"] {
+  padding: 0 8px;
+}
+
+.subsite-tag {
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border: var(--border-muted);
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+/* Back to ÆRIEL (bottom of every sub-site) */
+.subsite-back-row {
+  border-top: var(--border-thick);
+  padding: var(--spacing-lg) 0;
+}
+
+.subsite-back-row .back-btn {
+  min-height: 44px;
+}
+
+#message-section .subsite-main-title {
+  margin-bottom: var(--spacing-md);
+}
+
+/* ON THIS PAGE rail */
+.page-rail[hidden] {
+  display: none !important;
+}
+
+.page-rail {
+  background: var(--bg-primary);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.page-rail-heading {
+  padding: 10px 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border-bottom: var(--border-thin);
+}
+
+.page-rail-toggle {
+  display: none;
+}
+
+.page-rail-list {
+  list-style: none;
+}
+
+.page-rail-list a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  border-top: var(--border-thin);
+  transition: none;
+}
+
+.page-rail-list li:first-child a {
+  border-top: none;
+}
+
+.rail-num {
+  color: var(--text-muted);
+}
+
+.rail-arrow {
+  margin-left: auto;
+}
+
+.page-rail-list a:hover,
+.page-rail-list a:focus-visible,
+.page-rail-list a[aria-current="location"] {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.page-rail-list a:hover .rail-num,
+.page-rail-list a:focus-visible .rail-num,
+.page-rail-list a[aria-current="location"] .rail-num {
+  color: inherit;
+}
+
+/* Desktop: sticky left rail */
+@media (min-width: 1100px) {
+  .page-rail {
+    position: fixed;
+    top: 86px;
+    left: 16px;
+    width: 190px;
+    z-index: 900;
+    border: var(--border-thin);
+  }
+
+  body.has-page-rail #main-content,
+  body.has-page-rail .subsite-container {
+    padding-left: 222px;
+  }
+}
+
+/* Tablet / mobile: compact bar under the header */
+@media (max-width: 1099px) {
+  .page-rail {
+    position: sticky;
+    top: 70px;
+    z-index: 980;
+    border-bottom: var(--border-thick);
+  }
+
+  .page-rail-heading {
+    display: none;
+  }
+
+  .page-rail-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 16px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: none;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .page-rail-toggle:hover,
+  .page-rail-toggle:focus-visible {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+  }
+
+  .page-rail-list {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--bg-primary);
+    border-bottom: var(--border-thick);
+  }
+
+  .page-rail.open .page-rail-list {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-rail {
+    top: 48px;
+  }
+
+  /* Mobile dropdown: two labeled groups */
+  #main-navigation .nav-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  #main-navigation .nav-group-home {
+    display: flex;
+  }
+
+  #main-navigation .nav-group-label {
+    display: block;
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  #main-navigation .nav-group .nav-link:last-child {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  #main-navigation .nav-group:last-child .nav-link:last-child {
+    border-bottom: none;
+  }
+
+  #main-navigation .nav-link[aria-current="page"] {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+  }
+
+  .subsite-tag {
+    display: none;
   }
 }

@@ -39,12 +39,12 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=19.5">
+  <link rel="stylesheet" href="style.css?v=20.0">
 </head>
 <body>
 
   <!-- Accessibility: Skip to Content Bypass Link -->
-  <a href="#main-content" class="skip-link">
+  <a href="#main-content" class="skip-link" onclick="skipToContent(event)">
     <span lang="en">[ SKIP TO MAIN CONTENT ]</span>
     <span lang="es">[ SALTAR AL CONTENIDO PRINCIPAL ]</span>
     <span lang="pt">[ IR PARA O CONTEÚDO PRINCIPAL ]</span>
@@ -61,35 +61,35 @@
       </div>
 
       <!-- Navigation Links -->
-      <nav id="main-navigation" class="nav-links" aria-label="Brutalist System Navigation">
-        <a href="/" class="nav-link" id="nav-system" onclick="openMainPortfolio(event);">
-          <span lang="en">SYSTEM</span>
-          <span lang="es">SISTEMA</span>
-          <span lang="pt">SISTEMA</span>
-        </a>
-        <a href="#archives" class="nav-link" id="nav-mixes" onclick="openMainPortfolio(event, '#archives');">
-          <span lang="en">ARCHIVES</span>
-          <span lang="es">ARCHIVOS</span>
-          <span lang="pt">ARQUIVOS</span>
-        </a>
-        <a href="#intent" class="nav-link" id="nav-philosophy" onclick="openMainPortfolio(event, '#intent');">
-          <span lang="en">INTENT</span>
-          <span lang="es">INTENCIÓN</span>
-          <span lang="pt">INTENÇÃO</span>
-        </a>
-        <a href="/ae000x" class="nav-link" id="nav-brand" onclick="openAe000xSubsite(event);">
-          Æ000.X
-        </a>
-        <a href="/writing" class="nav-link" id="nav-writing" onclick="openWritingSubsite(event);">
-          <span lang="en">WRITING</span>
-          <span lang="es">ENSAYOS</span>
-          <span lang="pt">ESCRITOS</span>
-        </a>
-        <a href="#contact" class="nav-link" id="nav-message" onclick="openMainPortfolio(event, '#contact');">
-          <span lang="en">MESSAGE</span>
-          <span lang="es">MENSAJE</span>
-          <span lang="pt">MENSAGEM</span>
-        </a>
+      <nav id="main-navigation" class="nav-links" aria-label="Site destinations">
+        <div class="nav-group nav-group-home" role="group" aria-labelledby="nav-label-home">
+          <p class="nav-group-label" id="nav-label-home">
+            <span lang="en">[ HOME ]</span>
+            <span lang="es">[ INICIO ]</span>
+            <span lang="pt">[ INÍCIO ]</span>
+          </p>
+          <a href="/" class="nav-link" id="nav-home" data-nav-view="main" onclick="openMainPortfolio(event);">ÆRIEL</a>
+        </div>
+        <div class="nav-group nav-group-sites" role="group" aria-labelledby="nav-label-sites">
+          <p class="nav-group-label" id="nav-label-sites">
+            <span lang="en">[ SUB-SITES ↗ ]</span>
+            <span lang="es">[ SUBSITIOS ↗ ]</span>
+            <span lang="pt">[ SUBSITES ↗ ]</span>
+          </p>
+          <a href="/ae000x" class="nav-link" id="nav-brand" data-nav-view="ae000x" onclick="openAe000xSubsite(event);">Æ000.X <span class="nav-arrow" aria-hidden="true">↗</span></a>
+          <a href="/writing" class="nav-link" id="nav-writing" data-nav-view="writing" onclick="openWritingSubsite(event);">
+            <span lang="en">ESSAYS</span>
+            <span lang="es">ENSAYOS</span>
+            <span lang="pt">ENSAIOS</span>
+            <span class="nav-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a href="/message" class="nav-link" id="nav-message" data-nav-view="message" onclick="openMessageSubsite(event);">
+            <span lang="en">MESSAGE</span>
+            <span lang="es">MENSAJE</span>
+            <span lang="pt">MENSAGEM</span>
+            <span class="nav-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
       </nav>
 
       <!-- Language & System Controls -->
@@ -106,6 +106,24 @@
       </div>
     </div>
   </header>
+
+  <!-- ON THIS PAGE rail (populated per view by initPageRail) -->
+  <nav id="page-rail" class="page-rail" aria-label="On this page" hidden>
+    <p class="page-rail-heading" id="page-rail-heading">
+      <span lang="en">[ ON THIS PAGE ]</span>
+      <span lang="es">[ EN ESTA PÁGINA ]</span>
+      <span lang="pt">[ NESTA PÁGINA ]</span>
+    </p>
+    <button type="button" class="page-rail-toggle" id="page-rail-toggle" aria-expanded="false" aria-controls="page-rail-list">
+      <span>
+        <span lang="en">[ ON THIS PAGE ]</span>
+        <span lang="es">[ EN ESTA PÁGINA ]</span>
+        <span lang="pt">[ NESTA PÁGINA ]</span>
+      </span>
+      <span class="page-rail-caret" aria-hidden="true">▼</span>
+    </button>
+    <ol class="page-rail-list" id="page-rail-list"></ol>
+  </nav>
 
   <!-- ==========================================================================
        MAIN SYSTEM BLOCKS (<main>)
@@ -317,9 +335,9 @@
     <section class="structural-row" id="writing">
       <div class="container">
         <h2 class="intent-header">
-          <span lang="en">WRITING</span>
+          <span lang="en">ESSAYS</span>
           <span lang="es">ENSAYOS</span>
-          <span lang="pt">ESCRITOS</span>
+          <span lang="pt">ENSAIOS</span>
         </h2>
         
         <div class="dj-grid">
@@ -473,7 +491,7 @@
           <button class="btn-brutal portal-btn" onclick="openWritingSubsite(event)">
             <span lang="en">EXPLORE ALL ESSAYS →</span>
             <span lang="es">EXPLORAR TODOS LOS ENSAYOS →</span>
-            <span lang="pt">EXPLORAR TODOS OS ESCRITOS →</span>
+            <span lang="pt">EXPLORAR TODOS OS ENSAIOS →</span>
           </button>
         </div>
 
@@ -489,6 +507,14 @@
           <span lang="pt">MENSAGEM</span>
         </h2>
         
+        <div data-contact-form-mount="contact"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Shared contact form component (stamped into #contact and #message-subsite by mountContactForms) -->
+  <template id="contact-form-tpl">
         <p class="section-intro-subtitle">
           <span lang="en">If you want to communicate with me, use this form. Your message will be sent to contact@aeriel.net and I will get back to you shortly.</span>
           <span lang="es">Si deseas comunicarte conmigo, utiliza este formulario. Tu mensaje será enviado a contact@aeriel.net y te responderé a la brevedad.</span>
@@ -496,89 +522,86 @@
         </p>
         
         <div class="portal-form-container">
-          <form class="portal-form" id="contact-form" onsubmit="handleContactFormSubmit(event)">
-            <input type="text" name="hp_check" id="contact-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+          <form class="portal-form" id="__P__-form" data-contact-form>
+            <input type="text" name="hp_check" id="__P__-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
             
             <div class="form-row">
               <div class="form-group">
-                <label for="contact-name" class="form-label">
+                <label for="__P__-name" class="form-label">
                   <span lang="en">YOUR_NAME</span>
                   <span lang="es">TU_NOMBRE</span>
                   <span lang="pt">SEU_NOME</span>
                 </label>
-                <input type="text" id="contact-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required="true">
+                <input type="text" id="__P__-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required="true">
               </div>
               
               <div class="form-group">
-                <label for="contact-email" class="form-label">
+                <label for="__P__-email" class="form-label">
                   <span lang="en">YOUR_EMAIL</span>
                   <span lang="es">TU_CORREO</span>
                   <span lang="pt">SEU_E-MAIL</span>
                 </label>
-                <input type="email" id="contact-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required="true">
+                <input type="email" id="__P__-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required="true">
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="contact-social" class="form-label">
+                <label for="__P__-social" class="form-label">
                   <span lang="en">SOCIAL_HANDLE (OPTIONAL)</span>
                   <span lang="es">RED_SOCIAL (OPCIONAL)</span>
                   <span lang="pt">REDES_SOCIAIS (OPCIONAL)</span>
                 </label>
-                <input type="text" id="contact-social" maxlength="250" name="social_handle" class="form-input" placeholder="@HANDLE / LINK">
+                <input type="text" id="__P__-social" maxlength="250" name="social_handle" class="form-input" placeholder="@HANDLE / LINK">
               </div>
               
               <div class="form-group">
-                <label for="contact-phone" class="form-label">
+                <label for="__P__-phone" class="form-label">
                   <span lang="en">PHONE_NUMBER (OPTIONAL)</span>
                   <span lang="es">TELÉFONO (OPCIONAL)</span>
                   <span lang="pt">TELEFONE (OPCIONAL)</span>
                 </label>
-                <input type="tel" id="contact-phone" maxlength="250" name="phone" class="form-input" placeholder="+123...">
+                <input type="tel" id="__P__-phone" maxlength="250" name="phone" class="form-input" placeholder="+123...">
               </div>
             </div>
             
             <div class="form-group">
-              <label for="contact-message-text" class="form-label">
+              <label for="__P__-message-text" class="form-label">
                 <span lang="en">TRANSMISSION_DATA</span>
                 <span lang="es">DATOS_DE_TRANSMISIÓN</span>
                 <span lang="pt">DADOS_DE_TRANSMISSÃO</span>
               </label>
-              <textarea id="contact-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." required="true"></textarea>
+              <textarea id="__P__-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." required="true"></textarea>
             </div>
             
-            <button type="submit" class="btn-brutal" id="message-submit-btn">
+            <button type="submit" class="btn-brutal" id="__P__-submit-btn">
               <span lang="en">TRANSMIT_DATA</span>
               <span lang="es">TRANSMITIR_DATOS</span>
               <span lang="pt">TRANSMITIR_DADOS</span>
             </button>
 
-            <div id="contact-form-feedback" class="contact-feedback-banner" aria-live="polite"></div>
+            <div id="__P__-feedback" class="contact-feedback-banner" data-contact-feedback aria-live="polite"></div>
           </form>
         </div>
-      </div>
-    </section>
-
-  </main>
+  </template>
 
   <!-- ==========================================================================
        DEDICATED Æ000.X SUB-WEBSITE (<section id="ae000x-subsite">)
        ========================================================================== -->
   <section id="ae000x-subsite" class="subsite-container">
     
-    <!-- Sub-Website Sticky Navigation Bar -->
+    <!-- Sub-Website Breadcrumb -->
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
-        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
-          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
-          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
-          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
-        </button>
-        <div class="subsite-header-title">Æ000.X</div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/" onclick="openMainPortfolio(event)">ÆRIEL</a></li>
+            <li aria-current="page">Æ000.X</li>
+          </ol>
+        </nav>
+        <span class="subsite-tag" aria-hidden="true">[ SUB-SITE ↗ ]</span>
       </div>
     </div>
-
     <!-- Sub-Website Hero -->
     <section class="hero-block subsite-hero" id="ae000x-hero">
       <div class="container hero-layout">
@@ -1188,6 +1211,18 @@
 
       </div>
     </div>
+
+    <!-- Back to ÆRIEL -->
+    <div class="subsite-back-row">
+      <div class="container">
+        <a href="/" class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
+          <span lang="en">← BACK TO ÆRIEL</span>
+          <span lang="es">← VOLVER A ÆRIEL</span>
+          <span lang="pt">← VOLTAR PARA ÆRIEL</span>
+        </a>
+      </div>
+    </div>
+
   </section>
 
     <!-- Section E: Invitation Registration Form -->
@@ -1320,29 +1355,25 @@
        ========================================================================== -->
   <section id="writing-subsite" class="subsite-container">
     
-    <!-- Sub-Website Sticky Navigation Bar -->
+    <!-- Sub-Website Breadcrumb -->
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
-        <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
-          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
-          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
-          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
-        </button>
-        <div class="subsite-header-title">
-          <span lang="en">WRITING</span>
-          <span lang="es">ENSAYOS</span>
-          <span lang="pt">ESCRITOS</span>
-        </div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/" onclick="openMainPortfolio(event)">ÆRIEL</a></li>
+            <li aria-current="page"><span lang="en">ESSAYS</span><span lang="es">ENSAYOS</span><span lang="pt">ENSAIOS</span></li>
+          </ol>
+        </nav>
+        <span class="subsite-tag" aria-hidden="true">[ SUB-SITE ↗ ]</span>
       </div>
     </div>
-
     <!-- Writing Hero & Topic Filter Bar -->
     <section class="hero-block subsite-hero" id="writing-hero">
       <div class="container hero-layout">
         <h1 class="subsite-main-title">
-          <span lang="en">WRITING</span>
+          <span lang="en">ESSAYS</span>
           <span lang="es">ENSAYOS</span>
-          <span lang="pt">ESCRITOS</span>
+          <span lang="pt">ENSAIOS</span>
         </h1>
 
         <!-- Minimalist Tag Filter Bar -->
@@ -1494,7 +1525,7 @@
             <button class="btn-brutal back-btn" onclick="closeArticleReader()">
               <span lang="en">← BACK TO ESSAYS</span>
               <span lang="es">← VOLVER A ENSAYOS</span>
-              <span lang="pt">← VOLTAR PARA ESCRITOS</span>
+              <span lang="pt">← VOLTAR PARA ENSAIOS</span>
             </button>
           </div>
 
@@ -2432,6 +2463,60 @@
       </div>
     </section>
 
+
+    <!-- Back to ÆRIEL -->
+    <div class="subsite-back-row">
+      <div class="container">
+        <a href="/" class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
+          <span lang="en">← BACK TO ÆRIEL</span>
+          <span lang="es">← VOLVER A ÆRIEL</span>
+          <span lang="pt">← VOLTAR PARA ÆRIEL</span>
+        </a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       DEDICATED MESSAGE SUB-WEBSITE (<section id="message-subsite">)
+       ========================================================================== -->
+  <section id="message-subsite" class="subsite-container">
+
+    <!-- Sub-Website Breadcrumb -->
+    <div class="subsite-header-bar">
+      <div class="container subsite-header-layout">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/" onclick="openMainPortfolio(event)">ÆRIEL</a></li>
+            <li aria-current="page"><span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span></li>
+          </ol>
+        </nav>
+        <span class="subsite-tag" aria-hidden="true">[ SUB-SITE ↗ ]</span>
+      </div>
+    </div>
+
+    <section class="structural-row" id="message-section">
+      <div class="container">
+        <h1 class="subsite-main-title" id="message-title" tabindex="-1">
+          <span lang="en">MESSAGE</span>
+          <span lang="es">MENSAJE</span>
+          <span lang="pt">MENSAGEM</span>
+        </h1>
+        <div data-contact-form-mount="message"></div>
+      </div>
+    </section>
+
+    <!-- Back to ÆRIEL -->
+    <div class="subsite-back-row">
+      <div class="container">
+        <a href="/" class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
+          <span lang="en">← BACK TO ÆRIEL</span>
+          <span lang="es">← VOLVER A ÆRIEL</span>
+          <span lang="pt">← VOLTAR PARA ÆRIEL</span>
+        </a>
+      </div>
+    </div>
+
   </section>
 
   <!-- ==========================================================================
@@ -2491,41 +2576,25 @@
       
       <ul class="footer-nav" id="footer-navigation-links">
         <li>
-          <a href="/" class="footer-nav-link" onclick="openMainPortfolio(event)">
-            <span lang="en">SYSTEM</span>
-            <span lang="es">SISTEMA</span>
-            <span lang="pt">SISTEMA</span>
-          </a>
+          <a href="/" class="footer-nav-link" onclick="openMainPortfolio(event)">ÆRIEL</a>
         </li>
         <li>
-          <a href="#archives" class="footer-nav-link" onclick="openMainPortfolio(event, '#archives')">
-            <span lang="en">ARCHIVES</span>
-            <span lang="es">ARCHIVOS</span>
-            <span lang="pt">ARQUIVO</span>
-          </a>
-        </li>
-        <li>
-          <a href="#intent" class="footer-nav-link" onclick="openMainPortfolio(event, '#intent')">
-            <span lang="en">INTENT</span>
-            <span lang="es">INTENCIÓN</span>
-            <span lang="pt">INTENÇÃO</span>
-          </a>
-        </li>
-        <li>
-          <a href="/ae000x" class="footer-nav-link" onclick="openAe000xSubsite(event)">Æ000.X</a>
+          <a href="/ae000x" class="footer-nav-link" onclick="openAe000xSubsite(event)">Æ000.X <span aria-hidden="true">↗</span></a>
         </li>
         <li>
           <a href="/writing" class="footer-nav-link" onclick="openWritingSubsite(event)">
-            <span lang="en">WRITING</span>
+            <span lang="en">ESSAYS</span>
             <span lang="es">ENSAYOS</span>
-            <span lang="pt">ESCRITOS</span>
+            <span lang="pt">ENSAIOS</span>
+            <span aria-hidden="true">↗</span>
           </a>
         </li>
         <li>
-          <a href="#contact" class="footer-nav-link" onclick="openMainPortfolio(event, '#contact')">
+          <a href="/message" class="footer-nav-link" onclick="openMessageSubsite(event)">
             <span lang="en">MESSAGE</span>
             <span lang="es">MENSAJE</span>
             <span lang="pt">MENSAGEM</span>
+            <span aria-hidden="true">↗</span>
           </a>
         </li>
       </ul>
@@ -2584,6 +2653,7 @@
     }
 
     function toggleMobileNav() {
+      closePageRail();
       const nav = document.getElementById('main-navigation');
       const toggleBtn = document.getElementById('mobile-nav-toggle');
       if (nav) {
@@ -2792,11 +2862,11 @@
       async function handleContactFormSubmit(event) {
         if (event) event.preventDefault();
         
-        const contactForm = document.getElementById('contact-form') || document.querySelector('#contact form');
+        const contactForm = event && event.target && event.target.closest ? event.target.closest('form') : null;
         if (!contactForm) return;
 
         const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const feedbackBanner = document.getElementById('contact-form-feedback');
+        const feedbackBanner = contactForm.querySelector('[data-contact-feedback]');
         const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
 
         if (submitBtn) {
@@ -2865,6 +2935,20 @@
           }
         }
       }
+
+      // Shared contact form component: one <template>, stamped into every [data-contact-form-mount]
+      // (landing #contact and the /message sub-site) so markup, validation and submission never drift.
+      function mountContactForms() {
+        const tpl = document.getElementById('contact-form-tpl');
+        if (!tpl) return;
+        document.querySelectorAll('[data-contact-form-mount]').forEach(mount => {
+          const prefix = mount.getAttribute('data-contact-form-mount');
+          mount.innerHTML = tpl.innerHTML.replace(/__P__/g, prefix);
+          const form = mount.querySelector('form');
+          if (form) form.addEventListener('submit', handleContactFormSubmit);
+        });
+      }
+      mountContactForms();
 
       async function handleInvitationFormSubmit(event) {
         if (event) event.preventDefault();
@@ -3109,6 +3193,7 @@
 
     function updatePageTitle() {
       const currentView = document.body.getAttribute('data-view') || 'main';
+      syncNavigationChrome(currentView);
       const canonicalEl = document.getElementById('canonical-link');
       const origin = window.location.origin;
 
@@ -3170,7 +3255,7 @@
             return;
           }
         }
-        const writingTitle = isSpanish ? "ENSAYOS — ÆRIEL" : "WRITING — ÆRIEL";
+        const writingTitle = isSpanish ? "ENSAYOS — ÆRIEL" : (lang === 'pt' ? "ENSAIOS — ÆRIEL" : "ESSAYS — ÆRIEL");
         const writingDesc = isSpanish ? "Ensayos sobre la política de la noche - por ÆRIEL." : "Essays on nightlife politics - by ÆRIEL.";
         document.title = writingTitle;
         const writingPath = isSpanish ? '/ensayos' : '/writing';
@@ -3181,6 +3266,29 @@
         if (twDesc) twDesc.setAttribute('content', writingDesc);
         if (metaDesc) metaDesc.setAttribute('content', writingDesc);
         if (ogUrl) ogUrl.setAttribute('content', origin + writingPath);
+      } else if (currentView === 'message') {
+        const lang = document.documentElement.getAttribute('lang') || 'en';
+        const msgTitles = { en: 'MESSAGE — ÆRIEL', es: 'MENSAJE — ÆRIEL', pt: 'MENSAGEM — ÆRIEL' };
+        const msgDescs = {
+          en: 'Write to ÆRIEL: bookings, collaborations, press and questions. Your message is delivered to contact@aeriel.net.',
+          es: 'Escribe a ÆRIEL: bookings, colaboraciones, prensa y preguntas. Tu mensaje llega a contact@aeriel.net.',
+          pt: 'Escreva para ÆRIEL: bookings, colaborações, imprensa e perguntas. Sua mensagem chega a contact@aeriel.net.'
+        };
+        const msgTitle = msgTitles[lang] || msgTitles.en;
+        const msgDesc = msgDescs[lang] || msgDescs.en;
+        const msgPath = lang === 'es' ? '/mensaje' : '/message';
+        document.title = msgTitle;
+        if (canonicalEl) canonicalEl.setAttribute('href', origin + msgPath);
+        if (ogTitle) ogTitle.setAttribute('content', msgTitle);
+        if (twTitle) twTitle.setAttribute('content', msgTitle);
+        if (ogDesc) ogDesc.setAttribute('content', msgDesc);
+        if (twDesc) twDesc.setAttribute('content', msgDesc);
+        if (metaDesc) metaDesc.setAttribute('content', msgDesc);
+        if (ogUrl) ogUrl.setAttribute('content', origin + msgPath);
+        const curPath = window.location.pathname.toLowerCase();
+        if ((curPath.startsWith('/message') || curPath.startsWith('/mensaje')) && !curPath.startsWith(msgPath)) {
+          history.replaceState(history.state, '', msgPath);
+        }
       } else if (currentView === 'games') {
         const gamesFrame = document.querySelector('.games-app-iframe');
         if (gamesFrame && !gamesFrame.getAttribute('src')) gamesFrame.setAttribute('src', gamesFrame.getAttribute('data-src'));
@@ -3371,6 +3479,209 @@
         }
       }, 40);
     }
+
+    function openMessageSubsite(event) {
+      if (event) event.preventDefault();
+      closeMobileNav();
+      document.body.setAttribute('data-view', 'message');
+      updatePageTitle();
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: scrollBehavior() });
+        const lang = document.documentElement.getAttribute('lang') || 'en';
+        const msgPath = lang === 'es' ? '/mensaje' : '/message';
+        const cur = window.location.pathname.toLowerCase();
+        if (!cur.startsWith('/message') && !cur.startsWith('/mensaje')) {
+          history.pushState({ view: 'message' }, '', msgPath);
+        }
+      }, 40);
+    }
+    window.openMessageSubsite = openMessageSubsite;
+
+    // ---------- ON THIS PAGE rail ----------
+    const PAGE_RAIL_CONFIG = {
+      main: [
+        { target: '#hero', labels: { en: 'STREAM', es: 'STREAM', pt: 'STREAM' } },
+        { target: '#archives', heading: '#archives h2' },
+        { target: '#intent', heading: '#intent h2' }
+      ],
+      ae000x: [
+        { target: '#ae000x-residents-drawer', heading: '#ae000x-residents-title' },
+        { target: '#ae000x-variants-drawer', heading: '#ae000x-variants-title' },
+        { target: '#ae000x-faq-drawer', heading: '#ae000x-faq-title' },
+        { target: '#ae000x-gallery-drawer', heading: '#ae000x-gallery-title' },
+        { target: '#ae000x-invite-section', heading: '#ae000x-invite-section h2' }
+      ]
+    };
+    const PAGE_RAIL_MIN = 3;
+    const PAGE_RAIL_MAX = 5;
+    let pageRailItems = [];
+    let pageRailView = null;
+
+    function railLabels(item) {
+      if (item.labels) return item.labels;
+      const out = {};
+      const headingEl = document.querySelector(item.heading);
+      ['en', 'es', 'pt'].forEach(l => {
+        const span = headingEl && headingEl.querySelector(`[lang="${l}"]`);
+        const text = span ? span.textContent : (headingEl ? headingEl.textContent : '');
+        out[l] = text.split('//')[0].replace(/\s+/g, ' ').trim();
+      });
+      return out;
+    }
+
+    function initPageRail(view) {
+      const rail = document.getElementById('page-rail');
+      const list = document.getElementById('page-rail-list');
+      if (!rail || !list) return;
+      if (pageRailView === view) { updateRailSpy(); return; }
+      pageRailView = view;
+      closePageRail();
+      list.textContent = '';
+      pageRailItems = [];
+      const config = (PAGE_RAIL_CONFIG[view] || []).slice(0, PAGE_RAIL_MAX);
+      const basePath = view === 'ae000x' ? '/ae000x' : '/';
+      if (config.length < PAGE_RAIL_MIN) {
+        rail.hidden = true;
+        document.body.classList.remove('has-page-rail');
+        return;
+      }
+      config.forEach((item, i) => {
+        const labels = railLabels(item);
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = basePath + item.target;
+        a.setAttribute('data-rail-target', item.target);
+        const num = document.createElement('span');
+        num.className = 'rail-num';
+        num.setAttribute('aria-hidden', 'true');
+        num.textContent = String(i + 1).padStart(2, '0');
+        a.appendChild(num);
+        ['en', 'es', 'pt'].forEach(l => {
+          const sp = document.createElement('span');
+          sp.setAttribute('lang', l);
+          sp.textContent = labels[l];
+          a.appendChild(sp);
+        });
+        const arrow = document.createElement('span');
+        arrow.className = 'rail-arrow';
+        arrow.setAttribute('aria-hidden', 'true');
+        arrow.textContent = '↓';
+        a.appendChild(arrow);
+        li.appendChild(a);
+        list.appendChild(li);
+        pageRailItems.push({ target: item.target, link: a });
+      });
+      rail.hidden = false;
+      document.body.classList.add('has-page-rail');
+      updateRailSpy();
+    }
+
+    function pageRailOffset() {
+      const header = document.getElementById('site-header');
+      const rail = document.getElementById('page-rail');
+      let offset = header ? header.offsetHeight : 0;
+      if (rail && !rail.hidden && getComputedStyle(rail).position === 'sticky') offset += rail.offsetHeight;
+      return offset + 8;
+    }
+
+    function scrollToSection(sel, updateUrl = true) {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - pageRailOffset();
+      window.scrollTo({ top: Math.max(0, top), behavior: scrollBehavior() });
+      if (updateUrl) {
+        const url = (sel === '#hero') ? window.location.pathname : window.location.pathname + sel;
+        history.replaceState(history.state, '', url);
+      }
+    }
+
+    function closePageRail() {
+      const rail = document.getElementById('page-rail');
+      const btn = document.getElementById('page-rail-toggle');
+      if (rail) rail.classList.remove('open');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        const caret = btn.querySelector('.page-rail-caret');
+        if (caret) caret.textContent = '▼';
+      }
+    }
+
+    function togglePageRail() {
+      const rail = document.getElementById('page-rail');
+      const btn = document.getElementById('page-rail-toggle');
+      if (!rail || !btn) return;
+      const open = !rail.classList.contains('open');
+      if (open) closeMobileNav();
+      rail.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.querySelector('.page-rail-caret').textContent = open ? '▲' : '▼';
+    }
+
+    let railSpyQueued = false;
+    function updateRailSpy() {
+      if (railSpyQueued) return;
+      railSpyQueued = true;
+      requestAnimationFrame(() => {
+        railSpyQueued = false;
+        if (!pageRailItems.length) return;
+        const line = pageRailOffset() + 24;
+        let active = null;
+        pageRailItems.forEach(it => {
+          const el = document.querySelector(it.target);
+          if (el && el.getBoundingClientRect().top <= line) active = it;
+        });
+        if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4) {
+          active = pageRailItems[pageRailItems.length - 1];
+        }
+        pageRailItems.forEach(it => {
+          if (it === active) it.link.setAttribute('aria-current', 'location');
+          else it.link.removeAttribute('aria-current');
+        });
+      });
+    }
+
+    function syncNavigationChrome(view) {
+      document.querySelectorAll('#main-navigation .nav-link[data-nav-view]').forEach(a => {
+        if (a.getAttribute('data-nav-view') === view) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      });
+      initPageRail(view);
+    }
+
+    function skipToContent(event) {
+      if (event) event.preventDefault();
+      const view = document.body.getAttribute('data-view') || 'main';
+      const candidates = view === 'main'
+        ? ['#main-content']
+        : [`#${view}-subsite .reader-content[style*="block"] .reader-title`, `#${view}-subsite h1`, `#${view}-subsite`];
+      for (const sel of candidates) {
+        const el = document.querySelector(sel);
+        if (el && el.offsetParent !== null) {
+          el.setAttribute('tabindex', '-1');
+          el.focus({ preventScroll: true });
+          window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - pageRailOffset()), behavior: scrollBehavior() });
+          return;
+        }
+      }
+    }
+    window.skipToContent = skipToContent;
+
+    window.addEventListener('scroll', updateRailSpy, { passive: true });
+    window.addEventListener('resize', updateRailSpy, { passive: true });
+    document.addEventListener('DOMContentLoaded', () => {
+      const list = document.getElementById('page-rail-list');
+      const btn = document.getElementById('page-rail-toggle');
+      if (list) list.addEventListener('click', e => {
+        const a = e.target.closest('a[data-rail-target]');
+        if (!a) return;
+        e.preventDefault();
+        closePageRail();
+        scrollToSection(a.getAttribute('data-rail-target'));
+      });
+      if (btn) btn.addEventListener('click', togglePageRail);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closePageRail(); });
+      document.addEventListener('click', e => { if (!e.target.closest('#page-rail')) closePageRail(); });
+    });
 
     function openMainPortfolio(event, targetHash) {
       if (event) event.preventDefault();
@@ -3773,7 +4084,7 @@
 
       // 2. Check Spanish-specific URL routes (/ae000x/es, /ensayos)
       const path = window.location.pathname.toLowerCase();
-      if (path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || path.startsWith('/writing/es')) {
+      if (path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || path.startsWith('/writing/es') || path.startsWith('/mensaje')) {
         return 'es';
       }
 
@@ -3810,7 +4121,9 @@
       const hashQuery = rawHash.includes('?') ? rawHash.split('?')[1] : '';
       const hashParams = new URLSearchParams(hashQuery);
 
-      const isSpanishRoute = (path.startsWith('/ae000x/es') && !path.startsWith('/ae000x/faq')) || path.startsWith('/ensayos') || searchParams.get('lang') === 'es' || hashParams.get('lang') === 'es';
+      const initialSection = hashParams.get('section') ? `#${hashParams.get('section')}` : '';
+      const isMessageRoute = path.startsWith('/message') || path.startsWith('/mensaje') || baseHash.includes('message-subsite');
+      const isSpanishRoute = (path.startsWith('/ae000x/es') && !path.startsWith('/ae000x/faq')) || path.startsWith('/ensayos') || path.startsWith('/mensaje') || searchParams.get('lang') === 'es' || hashParams.get('lang') === 'es';
 
       // Parse essay slug if present in path, query (search or hash), or hash anchor
       let targetEssayId = searchParams.get('essay') || hashParams.get('essay');
@@ -3825,7 +4138,11 @@
         }
       }
 
-      if ((path.startsWith('/ae000x') && !path.startsWith('/ae000x/faq')) || (baseHash.includes('ae000x') && !baseHash.includes('faq'))) {
+      if (isMessageRoute) {
+        document.body.setAttribute('data-view', 'message');
+        const msgLang = document.documentElement.getAttribute('lang') || 'en';
+        history.replaceState({ view: 'message' }, '', msgLang === 'es' ? '/mensaje' : '/message');
+      } else if ((path.startsWith('/ae000x') && !path.startsWith('/ae000x/faq')) || (baseHash.includes('ae000x') && !baseHash.includes('faq'))) {
         document.body.setAttribute('data-view', 'ae000x');
         if (baseHash.includes('ae000x') || isSpanishRoute) {
           const targetPath = isSpanishRoute ? '/ae000x/es' : '/ae000x';
@@ -3850,6 +4167,18 @@
         document.body.setAttribute('data-view', 'main');
       }
       updatePageTitle();
+
+      // Deep link to a section (/#archives, /ae000x#ae000x-faq-drawer, stub ?section=...)
+      const deepTarget = initialSection || (baseHash && !baseHash.includes('-subsite') ? baseHash : '');
+      if (deepTarget && /^#[a-z0-9_-]+$/.test(deepTarget)) {
+        const viewNow = document.body.getAttribute('data-view');
+        const targetEl = document.querySelector(deepTarget);
+        const scope = viewNow === 'main' ? document.getElementById('main-content') : document.getElementById(`${viewNow}-subsite`);
+        if (targetEl && scope && scope.contains(targetEl)) {
+          requestAnimationFrame(() => scrollToSection(deepTarget, viewNow === 'main' ? false : true));
+          if (viewNow === 'ae000x') history.replaceState({ view: 'ae000x' }, '', window.location.pathname + deepTarget);
+        }
+      }
 
       // Attach direct event listeners to theme triggers
       const defaultTriggers = [document.getElementById('trigger-techno')];
@@ -3937,7 +4266,10 @@
         }
       }
 
-      if ((e.state && e.state.view === 'ae000x') || path.startsWith('/ae000x') || baseHash.includes('ae000x')) {
+      if ((e.state && e.state.view === 'message') || path.startsWith('/message') || path.startsWith('/mensaje')) {
+        document.body.setAttribute('data-view', 'message');
+        if (path.startsWith('/mensaje')) setLanguage('es', false);
+      } else if ((e.state && e.state.view === 'ae000x') || path.startsWith('/ae000x') || baseHash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
         if (path.startsWith('/ae000x/es')) setLanguage('es', false);
       } else if ((e.state && e.state.view === 'games') || path.startsWith('/games') || baseHash.includes('games')) {
