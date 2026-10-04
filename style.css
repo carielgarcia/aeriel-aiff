@@ -4169,3 +4169,93 @@ html.house-mode .variant-item-body { color: #FFF8E7 !important; }
   /* Anchored sections clear the sticky header */
   section[id], .structural-row[id] { scroll-margin-top: 56px; }
 }
+
+/* ==========================================================================
+   READER: PROGRESS HAIRLINE, CHRONOLOGICAL PAGER, MOBILE LONG-FORM TYPE
+   ========================================================================== */
+.reader-progress {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1100;
+  background: transparent;
+  pointer-events: none;
+}
+
+.reader-progress span {
+  display: block;
+  height: 100%;
+  background: var(--text-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: none;
+}
+
+body[data-view="writing"].reading .reader-progress { display: block; }
+
+.reader-pager {
+  display: flex;
+  gap: var(--spacing-sm);
+  max-width: 900px;
+  margin: var(--spacing-md) 0 0;
+}
+
+.reader-pager-btn {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 44px;
+  height: auto !important;
+  padding: 14px;
+  text-align: left;
+  cursor: pointer;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: var(--border-thick);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  transition: none;
+}
+
+.reader-pager-btn:hover,
+.reader-pager-btn:focus-visible,
+.reader-pager-btn:active {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  outline: none;
+}
+
+.reader-pager-older { margin-left: auto; align-items: flex-end; text-align: right; }
+.reader-pager-label { font-size: 0.75rem; letter-spacing: 1px; font-weight: 800; }
+.reader-pager-title { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.2; font-weight: 800; }
+
+@media (max-width: 600px) {
+  .reader-pager { flex-direction: column; margin: var(--spacing-md) 0; }
+  .reader-pager-btn,
+  .reader-pager-older { flex: 0 0 auto; align-items: flex-start; text-align: left; width: 100%; }
+
+  /* Long-form reading: generous leading and ~17px body; chrome stays dense */
+  .reader-body { font-size: 1rem !important; }
+  .reader-body p,
+  .reader-body p *,
+  .reader-body li,
+  .reader-body li *,
+  .reader-body blockquote,
+  .reader-body blockquote * {
+    line-height: 1.62 !important;
+  }
+  .reader-body p { margin-bottom: 1.1em !important; }
+
+  /* Metadata never drops below 12.8px */
+  .article-card-meta,
+  .article-card-meta *,
+  .reader-meta-header .article-card-meta *,
+  .article-card-action {
+    font-size: 0.8rem;
+  }
+}
