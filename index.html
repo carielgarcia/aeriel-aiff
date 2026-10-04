@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ÆRIEL">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/public/icons/icon-180.png">
   <meta name="description" content="ÆRIEL is an artistic project honoring music, community, and queerness. Based in Santiago, Chile.">
   
   <!-- Predefined Title and Meta Description -->
@@ -506,7 +514,7 @@
                   <span lang="es">TU_NOMBRE</span>
                   <span lang="pt">SEU_NOME</span>
                 </label>
-                <input type="text" id="contact-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required="true">
+                <input type="text" id="contact-name" maxlength="250" name="name" class="form-input" autocomplete="name" enterkeyhint="next" placeholder="NAME / MONIKER" data-placeholder-en="NAME / MONIKER" data-placeholder-es="NOMBRE / ALIAS" data-placeholder-pt="NOME / APELIDO" required="true">
               </div>
               
               <div class="form-group">
@@ -515,7 +523,7 @@
                   <span lang="es">TU_CORREO</span>
                   <span lang="pt">SEU_E-MAIL</span>
                 </label>
-                <input type="email" id="contact-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required="true">
+                <input type="email" id="contact-email" maxlength="250" name="email" class="form-input" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" enterkeyhint="next" placeholder="COORDINATES@EMAIL.COM" data-placeholder-en="COORDINATES@EMAIL.COM" data-placeholder-es="COORDENADAS@CORREO.COM" data-placeholder-pt="COORDENADAS@EMAIL.COM" required="true">
               </div>
             </div>
 
@@ -526,7 +534,7 @@
                   <span lang="es">RED_SOCIAL (OPCIONAL)</span>
                   <span lang="pt">REDES_SOCIAIS (OPCIONAL)</span>
                 </label>
-                <input type="text" id="contact-social" maxlength="250" name="social_handle" class="form-input" placeholder="@HANDLE / LINK">
+                <input type="text" id="contact-social" maxlength="250" name="social_handle" class="form-input" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="@HANDLE / LINK" data-placeholder-en="@HANDLE / LINK" data-placeholder-es="@USUARIO / ENLACE" data-placeholder-pt="@USUÁRIO / LINK">
               </div>
               
               <div class="form-group">
@@ -535,7 +543,7 @@
                   <span lang="es">TELÉFONO (OPCIONAL)</span>
                   <span lang="pt">TELEFONE (OPCIONAL)</span>
                 </label>
-                <input type="tel" id="contact-phone" maxlength="250" name="phone" class="form-input" placeholder="+123...">
+                <input type="tel" id="contact-phone" maxlength="250" name="phone" class="form-input" autocomplete="tel" inputmode="tel" enterkeyhint="next" placeholder="+123..." data-placeholder-en="+123..." data-placeholder-es="+123..." data-placeholder-pt="+123...">
               </div>
             </div>
             
@@ -545,7 +553,7 @@
                 <span lang="es">DATOS_DE_TRANSMISIÓN</span>
                 <span lang="pt">DADOS_DE_TRANSMISSÃO</span>
               </label>
-              <textarea id="contact-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." required="true"></textarea>
+              <textarea id="contact-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." data-placeholder-en="WRITE YOUR MESSAGE HERE..." data-placeholder-es="ESCRIBE TU MENSAJE AQUÍ..." data-placeholder-pt="ESCREVA SUA MENSAGEM AQUI..." required="true"></textarea>
             </div>
             
             <button type="submit" class="btn-brutal" id="message-submit-btn">
@@ -1216,7 +1224,7 @@
                 <span lang="es">NOMBRE COMPLETO / SEUDÓNIMO (REQUERIDO)</span>
                 <span lang="pt">NOME COMPLETO / NOME ARTÍSTICO (OBRIGATÓRIO)</span>
               </label>
-              <input type="text" id="invite-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required>
+              <input type="text" id="invite-name" maxlength="250" name="name" class="form-input" autocomplete="name" enterkeyhint="next" placeholder="NAME / MONIKER" data-placeholder-en="NAME / MONIKER" data-placeholder-es="NOMBRE / ALIAS" data-placeholder-pt="NOME / APELIDO" required>
             </div>
 
             <div class="form-row">
@@ -1227,7 +1235,7 @@
                   <span lang="es">RED SOCIAL (REQUERIDO)</span>
                   <span lang="pt">REDES SOCIAIS (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-social" maxlength="250" name="social" class="form-input" placeholder="@HANDLE / LINK" required>
+                <input type="text" id="invite-social" maxlength="250" name="social" class="form-input" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="@HANDLE / LINK" data-placeholder-en="@HANDLE / LINK" data-placeholder-es="@USUARIO / ENLACE" data-placeholder-pt="@USUÁRIO / LINK" required>
               </div>
 
               <!-- Field 3: WhatsApp -->
@@ -1237,7 +1245,7 @@
                   <span lang="es">WHATSAPP — TELÉFONO O USUARIO (REQUERIDO)</span>
                   <span lang="pt">WHATSAPP — TELEFONE OU USUÁRIO (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-whatsapp" maxlength="250" name="whatsapp" class="form-input" placeholder="+123... / @username" required>
+                <input type="text" id="invite-whatsapp" maxlength="250" name="whatsapp" class="form-input" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="+123... / @username" data-placeholder-en="+123... / @username" data-placeholder-es="+123... / @usuario" data-placeholder-pt="+123... / @usuário" required>
               </div>
             </div>
 
@@ -1248,7 +1256,7 @@
                 <span lang="es">CORREO ELECTRÓNICO (REQUERIDO)</span>
                 <span lang="pt">ENDEREÇO DE E-MAIL (OBRIGATÓRIO)</span>
               </label>
-              <input type="email" id="invite-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required>
+              <input type="email" id="invite-email" maxlength="250" name="email" class="form-input" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" enterkeyhint="next" placeholder="COORDINATES@EMAIL.COM" data-placeholder-en="COORDINATES@EMAIL.COM" data-placeholder-es="COORDENADAS@CORREO.COM" data-placeholder-pt="COORDENADAS@EMAIL.COM" required>
             </div>
 
             <!-- Field 5: Preferred Contact Method -->
@@ -3230,6 +3238,9 @@
       
       updatePosterAltText(lang);
       updateTitleAndMeta(lang);
+      document.querySelectorAll('[data-placeholder-en]').forEach(el => {
+        el.setAttribute('placeholder', el.getAttribute('data-placeholder-' + lang) || el.getAttribute('data-placeholder-en'));
+      });
     }
     
     function updateTitleAndMeta() {

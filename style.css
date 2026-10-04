@@ -56,6 +56,9 @@ html {
   overflow-x: clip;
   max-width: 100vw;
   width: 100%;
+  touch-action: manipulation; /* removes 300ms tap delay, keeps pinch-zoom */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Headings, Navigation & Titles System - Full Helvetica Neue Upper Case */
@@ -73,6 +76,7 @@ h1, h2, h3, h4, h5, h6,
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow-x: clip;
   max-width: 100vw;
@@ -999,7 +1003,6 @@ html[lang="pt"] [lang="es"] {
     z-index: 1000;
     background: var(--bg-primary);
     border-bottom: 2px solid var(--border-color);
-    backdrop-filter: blur(10px);
   }
 
   .header-container {
@@ -1091,6 +1094,8 @@ html[lang="pt"] [lang="es"] {
     display: flex !important;
     flex-direction: column;
     max-height: 70vh;
+    max-height: 70dvh;
+    overscroll-behavior: contain;
     overflow-y: auto;
     border-bottom: 2px solid var(--text-primary);
   box-shadow: none;
@@ -1129,6 +1134,8 @@ html[lang="pt"] [lang="es"] {
   /* Touch Feedback for Native Web-App Experience */
   body {
     -webkit-tap-highlight-color: transparent;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
 
   .btn-brutal:active,
@@ -1145,8 +1152,8 @@ html[lang="pt"] [lang="es"] {
   .mobile-back-to-top {
     display: flex !important;
     position: fixed;
-    bottom: 16px;
-    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: calc(16px + env(safe-area-inset-right, 0px));
     z-index: 999;
     background: var(--bg-primary);
     color: var(--text-primary);
@@ -3148,6 +3155,9 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   margin: 0;
   overflow: hidden;
   touch-action: none;
+  overscroll-behavior: contain;
+  padding-top: calc(var(--spacing-md) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px));
 }
 
 .lightbox-header {
