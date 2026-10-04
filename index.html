@@ -579,9 +579,12 @@
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
         <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
-          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
-          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
-          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-long" lang="en">← BACK TO MAIN PORTFOLIO</span>
+          <span class="back-long" lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
+          <span class="back-long" lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-short" lang="en">← BACK</span>
+          <span class="back-short" lang="es">← VOLVER</span>
+          <span class="back-short" lang="pt">← VOLTAR</span>
         </button>
         <div class="subsite-header-title">Æ000.X</div>
       </div>
@@ -1332,9 +1335,12 @@
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
         <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
-          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
-          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
-          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-long" lang="en">← BACK TO MAIN PORTFOLIO</span>
+          <span class="back-long" lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
+          <span class="back-long" lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-short" lang="en">← BACK</span>
+          <span class="back-short" lang="es">← VOLVER</span>
+          <span class="back-short" lang="pt">← VOLTAR</span>
         </button>
         <div class="subsite-header-title">
           <span lang="en">WRITING</span>
@@ -2454,9 +2460,12 @@
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
         <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
-          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
-          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
-          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-long" lang="en">← BACK TO MAIN PORTFOLIO</span>
+          <span class="back-long" lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
+          <span class="back-long" lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-short" lang="en">← BACK</span>
+          <span class="back-short" lang="es">← VOLVER</span>
+          <span class="back-short" lang="pt">← VOLTAR</span>
         </button>
         <div class="subsite-header-title">GAMES</div>
       </div>
@@ -2641,6 +2650,16 @@
 
     window.toggleMobileNav = toggleMobileNav;
     window.closeMobileNav = closeMobileNav;
+
+    // Keep sticky offsets in sync with the real header height (no hard-coded 48px)
+    (function trackHeaderHeight() {
+      const header = document.getElementById('site-header');
+      if (!header) return;
+      const apply = () => document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+      apply();
+      if (window.ResizeObserver) new ResizeObserver(apply).observe(header);
+      window.addEventListener('resize', apply);
+    })();
 
     // Mobile bottom tab bar: routing, active state, keyboard-aware hiding
     function tabNav(event, tab) {
