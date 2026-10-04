@@ -3785,7 +3785,11 @@
         }
       };
 
-      if (platform === 'copy') {
+      if (platform === 'native') {
+        if (navigator.share) {
+          navigator.share({ title: shareText, text: shareText, url: fullUrl }).catch(() => {});
+        }
+      } else if (platform === 'copy') {
         copyToClipboard(fullUrl).then(() => {
           const msgs = {
             en: '[ ESSAY LINK COPIED TO CLIPBOARD ]',
@@ -3821,6 +3825,24 @@
         window.open(fbUrl, '_blank', 'noopener,noreferrer');
       }
     }
+
+    // Native share sheet: offered first wherever the Web Share API exists (iOS, Android)
+    function injectNativeShareButtons() {
+      if (!navigator.share) return;
+      document.querySelectorAll('.essay-share-block').forEach(block => {
+        const buttons = block.querySelector('.essay-share-buttons');
+        const essayId = block.getAttribute('data-essay-id');
+        if (!buttons || !essayId || buttons.querySelector('.share-btn-native')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'share-btn share-btn-native';
+        btn.setAttribute('aria-label', 'Share essay');
+        btn.innerHTML = '<svg class="share-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M4 14v7h16v-7"/></svg><span><span lang="en">SHARE</span><span lang="es">COMPARTIR</span><span lang="pt">COMPARTILHAR</span></span>';
+        btn.addEventListener('click', (e) => shareEssay('native', essayId, e));
+        buttons.insertBefore(btn, buttons.firstChild);
+      });
+    }
+    injectNativeShareButtons();
 
     window.openWritingSubsite = openWritingSubsite;
     window.filterArticles = filterArticles;

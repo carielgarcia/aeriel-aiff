@@ -4259,3 +4259,39 @@ body[data-view="writing"].reading .reader-progress { display: block; }
     font-size: 0.8rem;
   }
 }
+
+/* Native share action: primary, full-width, inverted */
+.share-btn-native {
+  flex: 1 1 100%;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+.share-btn-native:hover,
+.share-btn-native:focus-visible,
+.share-btn-native:active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Topic filter: single-row, swipeable strip on phones (clipped last chip signals more) */
+@media (max-width: 600px) {
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    gap: 8px;
+    margin-right: calc(var(--spacing-sm) * -1);
+    padding: 0 var(--spacing-sm) 0 0;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-label { flex: 0 0 auto; }
+  .filter-btn {
+    flex: 0 0 auto;
+    min-height: 44px;
+    scroll-snap-align: start;
+    white-space: nowrap;
+  }
+}
