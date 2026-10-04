@@ -4098,3 +4098,74 @@ html.house-mode .variant-item-body { color: #FFF8E7 !important; }
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+   MOBILE BOTTOM TAB BAR (thumb-reach navigation)
+   ========================================================================== */
+.tab-bar { display: none; }
+
+@media (max-width: 600px) {
+  :root { --tab-h: 56px; }
+
+  /* Header keeps only logo + language; navigation lives at the thumb */
+  .mobile-nav-toggle-btn { display: none !important; }
+  #main-navigation,
+  #main-navigation.open { display: none !important; }
+
+  .tab-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: var(--bg-primary);
+    border-top: 2px solid var(--border-color);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .tab-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tab-h);
+    padding: 0 2px;
+    border-right: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    transition: none;
+  }
+
+  .tab-link:last-child { border-right: none; }
+
+  .tab-link.active,
+  .tab-link:active,
+  .tab-link:focus-visible {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    outline: none;
+  }
+
+  /* Reserve room so content and footer are never hidden behind the bar */
+  body { padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px)); }
+  body.kb-open { padding-bottom: 0; }
+  body.kb-open .tab-bar { display: none; }
+
+  .mobile-back-to-top {
+    bottom: calc(var(--tab-h) + 12px + env(safe-area-inset-bottom, 0px));
+  }
+  body.kb-open .mobile-back-to-top { display: none !important; }
+
+  /* Anchored sections clear the sticky header */
+  section[id], .structural-row[id] { scroll-margin-top: 56px; }
+}

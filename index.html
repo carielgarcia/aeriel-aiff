@@ -2561,6 +2561,23 @@
   <!-- Floating Back-to-Top Button for Mobile Web App View -->
   <button class="mobile-back-to-top" id="mobile-back-to-top" onclick="window.scrollTo({top: 0, behavior: scrollBehavior()})" aria-label="Back to Top">[↑ TOP]</button>
 
+  <!-- Mobile Bottom Tab Bar (thumb-reach navigation, <=600px) -->
+  <nav class="tab-bar" id="tab-bar" aria-label="Primary">
+    <a href="/" class="tab-link" data-tab="system" onclick="tabNav(event, 'system')">
+      <span lang="en">SYSTEM</span><span lang="es">SISTEMA</span><span lang="pt">SISTEMA</span>
+    </a>
+    <a href="#archives" class="tab-link" data-tab="archives" onclick="tabNav(event, 'archives')">
+      <span lang="en">ARCHIVES</span><span lang="es">ARCHIVOS</span><span lang="pt">ARQUIVOS</span>
+    </a>
+    <a href="/writing" class="tab-link" data-tab="writing" onclick="tabNav(event, 'writing')">
+      <span lang="en">WRITING</span><span lang="es">ENSAYOS</span><span lang="pt">ESCRITOS</span>
+    </a>
+    <a href="/ae000x" class="tab-link" data-tab="ae000x" onclick="tabNav(event, 'ae000x')">Æ000.X</a>
+    <a href="#contact" class="tab-link" data-tab="message" onclick="tabNav(event, 'message')">
+      <span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span>
+    </a>
+  </nav>
+
   <!-- Language Selection and Form Transmission Handler Scripts -->
   <script>
     function scrollBehavior() {
@@ -2618,6 +2635,77 @@
 
     window.toggleMobileNav = toggleMobileNav;
     window.closeMobileNav = closeMobileNav;
+
+    // Mobile bottom tab bar: routing, active state, keyboard-aware hiding
+    function tabNav(event, tab) {
+      const view = document.body.getAttribute('data-view') || 'main';
+      const readerEl = document.getElementById('article-reader-container');
+      const readerOpen = readerEl && readerEl.style.display === 'block';
+      if (tab === 'writing') {
+        if (view === 'writing' && readerOpen) { if (event) event.preventDefault(); closeArticleReader(); return; }
+        if (view === 'writing') { if (event) event.preventDefault(); window.scrollTo({ top: 0, behavior: scrollBehavior() }); return; }
+        return openWritingSubsite(event);
+      }
+      if (tab === 'ae000x') {
+        if (view === 'ae000x') { if (event) event.preventDefault(); window.scrollTo({ top: 0, behavior: scrollBehavior() }); return; }
+        return openAe000xSubsite(event);
+      }
+      if (tab === 'archives') return openMainPortfolio(event, '#archives');
+      if (tab === 'message') return openMainPortfolio(event, '#contact');
+      if (view === 'main' && window.scrollY < 40) { if (event) event.preventDefault(); return; }
+      return openMainPortfolio(event);
+    }
+    window.tabNav = tabNav;
+
+    function syncTabBar() {
+      const bar = document.getElementById('tab-bar');
+      if (!bar) return;
+      const view = document.body.getAttribute('data-view') || 'main';
+      let active = null;
+      if (view === 'writing') active = 'writing';
+      else if (view === 'ae000x') active = 'ae000x';
+      else if (view === 'main') {
+        active = 'system';
+        const contact = document.getElementById('contact');
+        const archives = document.getElementById('archives');
+        const mid = window.innerHeight * 0.5;
+        if (contact && contact.getBoundingClientRect().top < mid) active = 'message';
+        else if (archives) {
+          const r = archives.getBoundingClientRect();
+          if (r.top < mid && r.bottom > mid) active = 'archives';
+        }
+      }
+      bar.querySelectorAll('.tab-link').forEach(a => {
+        const on = a.getAttribute('data-tab') === active;
+        a.classList.toggle('active', on);
+        if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      });
+    }
+    let tabSyncQueued = false;
+    function queueTabSync() {
+      if (tabSyncQueued) return;
+      tabSyncQueued = true;
+      requestAnimationFrame(() => { tabSyncQueued = false; syncTabBar(); });
+    }
+    window.addEventListener('scroll', queueTabSync, { passive: true });
+    window.addEventListener('resize', queueTabSync);
+    new MutationObserver(queueTabSync).observe(document.body, { attributes: true, attributeFilter: ['data-view'] });
+    document.addEventListener('DOMContentLoaded', syncTabBar);
+
+    // Hide the tab bar while the on-screen keyboard is up (Android resizes the layout viewport)
+    document.addEventListener('focusin', (e) => {
+      if (e.target && e.target.matches && e.target.matches('input:not([type="checkbox"]):not([type="radio"]), textarea, select')) {
+        document.body.classList.add('kb-open');
+      }
+    });
+    document.addEventListener('focusout', () => {
+      setTimeout(() => {
+        const a = document.activeElement;
+        if (!(a && a.matches && a.matches('input:not([type="checkbox"]):not([type="radio"]), textarea, select'))) {
+          document.body.classList.remove('kb-open');
+        }
+      }, 0);
+    });
 
     // Mobile Back-to-Top Visibility Controller
     window.addEventListener('scroll', () => {
