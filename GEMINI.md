@@ -245,3 +245,12 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 
 ### 6. Trilingual UI
 - All game UI text, aria-labels and toasts live in the `I18N` dictionary in `app.js` (EN/ES/PT). The game follows the host language (`?lang=`, `localStorage['preferred-lang']`, live `storage` event).
+
+---
+
+## 9. Navigation Architecture (Destinations vs. On-Page)
+- **Top bar = destinations only**, identical on every page: ÆRIEL wordmark → `/`, `Æ000.X ↗` → `/ae000x`, `ESSAYS ↗` (ES `ENSAYOS`, PT `ENSAIOS`) → `/writing` (`/ensayos`), `MESSAGE ↗` → `/message` (`/mensaje`). No scroll anchors in the top bar; the active sub-site carries `aria-current="page"`. The footer menu mirrors it. `GAMES` stays hidden (never in menu, rail or sitemap).
+- **`#page-rail` = "ON THIS PAGE"**: built by `initPageRail()` from `PAGE_RAIL_CONFIG` (landing: Stream, Archives, Intent; `/ae000x`: Residents, Variants, FAQ, Past Flyers, Registration). Hidden when a view has fewer than 3 items; maximum 5. Link text is read from the section's own heading. Anchors are absolute (`/#archives`). Sticky left rail ≥1100px, "ON THIS PAGE ▼" bar below that.
+- **Sub-sites** (`#ae000x-subsite`, `#writing-subsite`, `#message-subsite`) show a breadcrumb (`ÆRIEL / <SUB-SITE>`) in `.subsite-header-bar` and end with a `← BACK TO ÆRIEL` link. The sub-site distinction is monochrome only (sub-panel background, 10px white left block, `[ SUB-SITE ↗ ]` tag).
+- **Shared contact form**: markup lives once in `<template id="contact-form-tpl">` and is stamped into every `[data-contact-form-mount]` (landing `#contact` and `/message`) by `mountContactForms()`. Never duplicate the form markup or its handler.
+- **Static stubs** exist for `/message` and `/mensaje` (same pattern as `/writing`/`/ensayos`). The `/mensaje` stub passes `?lang=es`.
