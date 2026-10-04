@@ -245,3 +245,15 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 
 ### 6. Trilingual UI
 - All game UI text, aria-labels and toasts live in the `I18N` dictionary in `app.js` (EN/ES/PT). The game follows the host language (`?lang=`, `localStorage['preferred-lang']`, live `storage` event).
+
+---
+
+## 9. Mobile Native-Feel Invariants (≤600px)
+- **Navigation lives at the thumb**: the fixed `#tab-bar` (SYSTEM, ARCHIVES, WRITING, Æ000.X, MESSAGE) replaces the hamburger. New top-level destinations need a tab entry in EN/ES/PT, an active-state rule in `syncTabBar()`, and a label short enough for a 5-column grid. Tapping the active tab scrolls to top (or closes an open essay).
+- **Device framing**: keep `viewport-fit=cover`, `theme-color`, the manifest and `env(safe-area-inset-*)` padding on every fixed element. Use `dvh`, never bare `vh`, for heights tied to the visible viewport.
+- **Reader**: progress hairline (`#reader-progress`), index scroll restoration on close/back (`indexScrollY`), and the chronological newer/older pager (`#reader-pager`, built from `#articles-index` order — never recommendations). View swaps scroll with `behavior: 'instant'`.
+- **Sticky offsets** come from `--header-h` (measured), never a hard-coded pixel value.
+- **Sharing**: the native share sheet button is injected where `navigator.share` exists; platform links remain the fallback.
+- **Offline**: `sw.js` is network-first with a cache fallback. Never make it cache-first for HTML/CSS, and keep audio, video and `/games/` out of the cache. Bump `CACHE` only when the strategy changes.
+- **Forms**: placeholders are trilingual via `data-placeholder-{en,es,pt}`; keep `autocomplete`, `inputmode` and `enterkeyhint` hints.
+- **No soft effects**: no `backdrop-filter` blur, gradients or shadows for edge cues — clipped chips and hard borders only.

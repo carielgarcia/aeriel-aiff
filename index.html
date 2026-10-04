@@ -3845,6 +3845,13 @@
       }
     }
 
+    // Offline reading: register the service worker (network-first, cache is a fallback only)
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+
     // Native share sheet: offered first wherever the Web Share API exists (iOS, Android)
     function injectNativeShareButtons() {
       if (!navigator.share) return;
