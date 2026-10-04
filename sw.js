@@ -5,7 +5,7 @@ const CACHE = 'aeriel-offline-v1';
 const SHELL = [
   '/',
   '/index.html',
-  '/style.css?v=19.5',
+  '/style.css?v=20.0',
   '/manifest.webmanifest',
   '/public/icons/icon-192.png'
 ];
