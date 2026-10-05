@@ -2,7 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ÆRIEL">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/public/icons/icon-180.png">
   <title>Æ000.X FAQ // PREGUNTAS FRECUENTES — ÆRIEL</title>
   <meta name="description" content="Admisión, entradas, protocolos e infraestructura de cuidado para Æ000.X — fiesta de música electrónica enfocada en la comunidad, el cuidado y la soberanía queer. Curada por ÆRIEL.">
   <meta name="author" content="ÆRIEL">
@@ -37,10 +45,15 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
 
   <!-- Linking Main Brutalist Stylesheet -->
-  <link rel="stylesheet" href="/style.css?v=19.5">
+  <link rel="stylesheet" href="/style.css?v=20.0">
 
   <style>
     /* Standalone FAQ Page Specific Refinements */
+    @media (max-width: 600px) {
+      /* Clear the fixed bottom tab bar (this block overrides the body padding reset below) */
+      body { padding-bottom: calc(var(--tab-h, 56px) + env(safe-area-inset-bottom, 0px)) !important; }
+    }
+
     body {
       min-height: 100vh;
       display: flex;
@@ -547,6 +560,23 @@
     </footer>
 
   </main>
+
+  <!-- Mobile Bottom Tab Bar (same destinations as the main app; FAQ belongs to Æ000.X) -->
+  <nav class="tab-bar" id="tab-bar" aria-label="Primary">
+    <a href="/" class="tab-link" data-tab="system">
+      <span lang="en">SYSTEM</span><span lang="es">SISTEMA</span><span lang="pt">SISTEMA</span>
+    </a>
+    <a href="/#archives" class="tab-link" data-tab="archives">
+      <span lang="en">ARCHIVES</span><span lang="es">ARCHIVOS</span><span lang="pt">ARQUIVOS</span>
+    </a>
+    <a href="/writing" class="tab-link" data-tab="writing">
+      <span lang="en">WRITING</span><span lang="es">ENSAYOS</span><span lang="pt">ESCRITOS</span>
+    </a>
+    <a href="/ae000x" class="tab-link active" data-tab="ae000x" aria-current="page">Æ000.X</a>
+    <a href="/#contact" class="tab-link" data-tab="message">
+      <span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span>
+    </a>
+  </nav>
 
   <script>
     // Mobile Navigation Controller
