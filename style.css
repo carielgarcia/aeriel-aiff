@@ -4098,11 +4098,6 @@ html.house-mode .variant-item-body { color: #FFF8E7 !important; }
    NAVIGATION RESTRUCTURE: DESTINATIONS (TOP BAR) + ON THIS PAGE (RAIL)
    ========================================================================== */
 
-.nav-arrow {
-  margin-left: 6px;
-  font-size: 0.8em;
-}
-
 #main-navigation .nav-link[aria-current="page"] {
   background-color: var(--text-primary);
   color: var(--bg-primary);
@@ -4398,7 +4393,6 @@ body[data-view="message"] #message-subsite {
   }
 
   .tab-link:last-child { border-right: none; }
-  .tab-link span[aria-hidden="true"] { margin-left: 3px; font-size: 0.8em; }
 
   /* Auto-hide while reading down (instant, no easing) */
   .tab-bar.tab-hidden { transform: translateY(100%); }
