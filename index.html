@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=20.2">
+  <link rel="stylesheet" href="style.css?v=20.3">
 </head>
 <body>
 
@@ -3586,7 +3586,10 @@
       main: [
         { target: '#hero', labels: { en: 'STREAM', es: 'STREAM', pt: 'STREAM' } },
         { target: '#archives', heading: '#archives h2' },
-        { target: '#intent', heading: '#intent h2' }
+        { target: '#intent', heading: '#intent h2' },
+        { target: '#brand', heading: '#brand h2' },
+        { target: '#writing', heading: '#writing h2' },
+        { target: '#contact', heading: '#contact h2' }
       ],
       ae000x: [
         { target: '#ae000x-residents-drawer', heading: '#ae000x-residents-title' },
@@ -3597,7 +3600,7 @@
       ]
     };
     const PAGE_RAIL_MIN = 3;
-    const PAGE_RAIL_MAX = 5;
+    const PAGE_RAIL_MAX = 6;
     let pageRailItems = [];
     let pageRailView = null;
 
