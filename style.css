@@ -1,5 +1,4 @@
-/* ==========================================================================
-   ÆRIEL BRUTALIST DESIGN SYSTEM (MONOCHROMATIC & STRUCTURAL)
+/* ===================================================================   ÆRIEL BRUTALIST DESIGN SYSTEM (MONOCHROMATIC & STRUCTURAL)
    ========================================================================== */
 
 :root {
@@ -56,6 +55,9 @@ html {
   overflow-x: clip;
   max-width: 100vw;
   width: 100%;
+  touch-action: manipulation; /* removes 300ms tap delay, keeps pinch-zoom */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Headings, Navigation & Titles System - Full Helvetica Neue Upper Case */
@@ -73,6 +75,7 @@ h1, h2, h3, h4, h5, h6,
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow-x: clip;
   max-width: 100vw;
@@ -973,10 +976,6 @@ html[lang="pt"] [lang="es"] {
     font-size: 16px !important;
   }
 
-  /* Sticky Subsite Header Bar Alignment for Collapsed 48px Header */
-  .subsite-header-bar {
-    top: 48px !important;
-  }
 
   /* Minimum 44px x 44px Touch Targets */
   .lang-btn,
@@ -999,7 +998,6 @@ html[lang="pt"] [lang="es"] {
     z-index: 1000;
     background: var(--bg-primary);
     border-bottom: 2px solid var(--border-color);
-    backdrop-filter: blur(10px);
   }
 
   .header-container {
@@ -1091,6 +1089,8 @@ html[lang="pt"] [lang="es"] {
     display: flex !important;
     flex-direction: column;
     max-height: 70vh;
+    max-height: 70dvh;
+    overscroll-behavior: contain;
     overflow-y: auto;
     border-bottom: 2px solid var(--text-primary);
   box-shadow: none;
@@ -1129,6 +1129,8 @@ html[lang="pt"] [lang="es"] {
   /* Touch Feedback for Native Web-App Experience */
   body {
     -webkit-tap-highlight-color: transparent;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
 
   .btn-brutal:active,
@@ -1145,8 +1147,8 @@ html[lang="pt"] [lang="es"] {
   .mobile-back-to-top {
     display: flex !important;
     position: fixed;
-    bottom: 16px;
-    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: calc(16px + env(safe-area-inset-right, 0px));
     z-index: 999;
     background: var(--bg-primary);
     color: var(--text-primary);
@@ -3147,6 +3149,9 @@ html.house-mode .share-toast-msg { border-color: #FF7B00 !important; background:
   margin: 0;
   overflow: hidden;
   touch-action: none;
+  overscroll-behavior: contain;
+  padding-top: calc(var(--spacing-md) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px));
 }
 
 .lightbox-header {
@@ -4093,18 +4098,6 @@ html.house-mode .variant-item-body { color: #FFF8E7 !important; }
    NAVIGATION RESTRUCTURE: DESTINATIONS (TOP BAR) + ON THIS PAGE (RAIL)
    ========================================================================== */
 
-/* Top-bar groups: desktop shows the sub-site destinations only (logo = home) */
-.nav-group {
-  display: flex;
-  align-items: stretch;
-  height: 100%;
-}
-
-.nav-group-home,
-.nav-group-label {
-  display: none;
-}
-
 .nav-arrow {
   margin-left: 6px;
   font-size: 0.8em;
@@ -4266,7 +4259,7 @@ body[data-view="message"] #message-subsite {
 @media (min-width: 1100px) {
   .page-rail {
     position: fixed;
-    top: 86px;
+    top: calc(var(--header-h, 70px) + 16px);
     left: 16px;
     width: 190px;
     z-index: 900;
@@ -4283,7 +4276,7 @@ body[data-view="message"] #message-subsite {
 @media (max-width: 1099px) {
   .page-rail {
     position: sticky;
-    top: 70px;
+    top: calc(var(--header-h, 70px) - 1px);
     z-index: 980;
     border-bottom: var(--border-thick);
   }
@@ -4311,6 +4304,21 @@ body[data-view="message"] #message-subsite {
     transition: none;
   }
 
+  .page-rail-current {
+    margin-left: auto;
+    padding-right: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 55%;
+  }
+
+  .page-rail-toggle:hover .page-rail-current,
+  .page-rail-toggle:focus-visible .page-rail-current {
+    color: inherit;
+  }
+
   .page-rail-toggle:hover,
   .page-rail-toggle:focus-visible {
     background: var(--text-primary);
@@ -4333,47 +4341,273 @@ body[data-view="message"] #message-subsite {
 }
 
 @media (max-width: 600px) {
-  .page-rail {
-    top: 48px;
-  }
-
-  /* Mobile dropdown: two labeled groups */
-  #main-navigation .nav-group {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-  }
-
-  #main-navigation .nav-group-home {
-    display: flex;
-  }
-
-  #main-navigation .nav-group-label {
-    display: block;
-    padding: 8px 16px;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: var(--text-muted);
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  #main-navigation .nav-group .nav-link:last-child {
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  #main-navigation .nav-group:last-child .nav-link:last-child {
-    border-bottom: none;
-  }
-
-  #main-navigation .nav-link[aria-current="page"] {
-    background: var(--text-primary);
-    color: var(--bg-primary);
-  }
 
   .subsite-tag {
     display: none;
+  }
+
+  /* The tab bar replaces the footer menu on phones */
+  .footer-nav { display: none; }
+}
+
+/* ==========================================================================
+   MOBILE BOTTOM TAB BAR (thumb-reach navigation)
+   ========================================================================== */
+.tab-bar { display: none; }
+
+@media (max-width: 600px) {
+  :root { --tab-h: 56px; }
+
+  /* Header keeps only logo + language; navigation lives at the thumb */
+  .mobile-nav-toggle-btn { display: none !important; }
+  #main-navigation,
+  #main-navigation.open { display: none !important; }
+
+  .tab-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: var(--bg-primary);
+    border-top: 2px solid var(--border-color);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .tab-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tab-h);
+    padding: 0 2px;
+    border-right: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    transition: none;
+  }
+
+  .tab-link:last-child { border-right: none; }
+  .tab-link span[aria-hidden="true"] { margin-left: 3px; font-size: 0.8em; }
+
+  /* Auto-hide while reading down (instant, no easing) */
+  .tab-bar.tab-hidden { transform: translateY(100%); }
+  body:has(.tab-bar.tab-hidden) .mobile-back-to-top { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+
+  .tab-link.active,
+  .tab-link:active,
+  .tab-link:focus-visible {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    outline: none;
+  }
+
+  /* Reserve room so content and footer are never hidden behind the bar */
+  body { padding-bottom: calc(var(--tab-h) + 2px + env(safe-area-inset-bottom, 0px)); } /* +2px = bar's top border */
+  body.kb-open { padding-bottom: 0; }
+  body.kb-open .tab-bar { display: none; }
+
+  .mobile-back-to-top {
+    bottom: calc(var(--tab-h) + 12px + env(safe-area-inset-bottom, 0px));
+  }
+  body.kb-open .mobile-back-to-top { display: none !important; }
+
+  /* Anchored sections clear the sticky header */
+  section[id], .structural-row[id] { scroll-margin-top: 56px; }
+}
+
+/* ==========================================================================
+   READER: PROGRESS HAIRLINE, CHRONOLOGICAL PAGER, MOBILE LONG-FORM TYPE
+   ========================================================================== */
+.reader-progress {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1100;
+  background: transparent;
+  pointer-events: none;
+}
+
+.reader-progress span {
+  display: block;
+  height: 100%;
+  background: var(--text-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: none;
+}
+
+body[data-view="writing"].reading .reader-progress { display: block; }
+
+.reader-pager {
+  display: flex;
+  gap: var(--spacing-sm);
+  max-width: 900px;
+  margin: var(--spacing-md) 0 0;
+}
+
+.reader-pager-btn {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 44px;
+  height: auto !important;
+  padding: 14px;
+  text-align: left;
+  cursor: pointer;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: var(--border-thick);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  transition: none;
+}
+
+.reader-pager-btn:hover,
+.reader-pager-btn:focus-visible,
+.reader-pager-btn:active {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  outline: none;
+}
+
+.reader-pager-older { margin-left: auto; align-items: flex-end; text-align: right; }
+.reader-pager-label { font-size: 0.75rem; letter-spacing: 1px; font-weight: 800; }
+.reader-pager-title { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.2; font-weight: 800; }
+
+@media (max-width: 600px) {
+  .reader-pager { flex-direction: column; margin: var(--spacing-md) 0; }
+  .reader-pager-btn,
+  .reader-pager-older { flex: 0 0 auto; align-items: flex-start; text-align: left; width: 100%; }
+
+  /* Long-form reading: generous leading and ~17px body; chrome stays dense */
+  .reader-body { font-size: 1rem !important; }
+  .reader-body p,
+  .reader-body p *,
+  .reader-body li,
+  .reader-body li *,
+  .reader-body blockquote,
+  .reader-body blockquote * {
+    line-height: 1.62 !important;
+  }
+  .reader-body p { margin-bottom: 1.1em !important; }
+
+  /* Metadata never drops below 12.8px */
+  .article-card-meta,
+  .article-card-meta *,
+  .reader-meta-header .article-card-meta *,
+  .article-card-action {
+    font-size: 0.8rem;
+  }
+}
+
+/* Native share action: primary, full-width, inverted */
+.share-btn-native {
+  flex: 1 1 100%;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+.share-btn-native:hover,
+.share-btn-native:focus-visible,
+.share-btn-native:active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Topic filter: single-row, swipeable strip on phones (clipped last chip signals more) */
+@media (max-width: 600px) {
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    gap: 8px;
+    margin-right: calc(var(--spacing-sm) * -1);
+    padding: 0 var(--spacing-sm) 0 0;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-label { flex: 0 0 auto; }
+  .filter-btn {
+    flex: 0 0 auto;
+    min-height: 44px;
+    scroll-snap-align: start;
+    white-space: nowrap;
+  }
+}
+
+/* Sub-site wayfinding: compact native-style top bar on phones */
+.back-short { display: none; }
+
+@media (max-width: 600px) {
+  .back-long { display: none; }
+  .back-short { display: inline; }
+
+  .subsite-header-bar {
+    padding: 0;
+  }
+  .subsite-header-layout {
+    min-height: 44px;
+    gap: 12px;
+  }
+  .subsite-header-bar .back-btn {
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin: 4px 0;
+  }
+  .subsite-header-title {
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+}
+
+
+/* Mobile sub-site breadcrumb lives in the header (ÆRIEL / ESSAYS); the strip is desktop-only */
+.header-crumb { display: none; }
+.header-crumb[hidden],
+.header-crumb [data-crumb][hidden] { display: none !important; }
+
+@media (max-width: 600px) {
+  .subsite-crumb-bar { display: none; }
+
+  .header-crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .header-crumb-sep { color: var(--text-muted); }
+
+  .header-crumb-label {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    padding: 3px 8px;
   }
 }

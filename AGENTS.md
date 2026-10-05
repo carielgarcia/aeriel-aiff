@@ -248,9 +248,23 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 
 ---
 
-## 9. Navigation Architecture (Destinations vs. On-Page)
+## 9. Mobile Native-Feel Invariants (≤600px)
+- **Navigation lives at the thumb**: the fixed `#tab-bar` (ÆRIEL, Æ000.X ↗, ESSAYS ↗, MESSAGE ↗ — destinations only, never on-page anchors) replaces the hamburger. New top-level destinations need a tab entry in EN/ES/PT, an active-state mapping in `syncTabBar()`, and a label short enough for a 4-column grid at 380px (verify `MENSAGEM ↗`). Tapping the active tab scrolls to top (or closes an open essay).
+- **Device framing**: keep `viewport-fit=cover`, `theme-color`, the manifest and `env(safe-area-inset-*)` padding on every fixed element. Use `dvh`, never bare `vh`, for heights tied to the visible viewport.
+- **Reader**: progress hairline (`#reader-progress`), index scroll restoration on close/back (`indexScrollY`), and the chronological newer/older pager (`#reader-pager`, built from `#articles-index` order — never recommendations). View swaps scroll with `behavior: 'instant'`.
+- **Sticky offsets** come from `--header-h` (measured), never a hard-coded pixel value (the ON THIS PAGE rail uses it too).
+- **Sharing**: the native share sheet button is injected where `navigator.share` exists; platform links remain the fallback.
+- **Offline**: `sw.js` is network-first with a cache fallback. Never make it cache-first for HTML/CSS, and keep audio, video and `/games/` out of the cache. Bump `CACHE` only when the strategy changes.
+- **Forms**: placeholders are trilingual via `data-placeholder-{en,es,pt}`; keep `autocomplete`, `inputmode` and `enterkeyhint` hints.
+- **No soft effects**: no `backdrop-filter` blur, gradients or shadows for edge cues — clipped chips and hard borders only.
+
+---
+
+## 10. Navigation Architecture (Destinations vs. On-Page)
 - **Top bar = destinations only**, identical on every page: ÆRIEL wordmark → `/`, `Æ000.X ↗` → `/ae000x`, `ESSAYS ↗` (ES `ENSAYOS`, PT `ENSAIOS`) → `/writing` (`/ensayos`), `MESSAGE ↗` → `/message` (`/mensaje`). No scroll anchors in the top bar; the active sub-site carries `aria-current="page"`. The footer menu mirrors it. `GAMES` stays hidden (never in menu, rail or sitemap).
 - **`#page-rail` = "ON THIS PAGE"**: built by `initPageRail()` from `PAGE_RAIL_CONFIG` (landing: Stream, Archives, Intent; `/ae000x`: Residents, Variants, FAQ, Past Flyers, Registration). Hidden when a view has fewer than 3 items; maximum 5. Link text is read from the section's own heading. Anchors are absolute (`/#archives`). Sticky left rail ≥1100px, "ON THIS PAGE ▼" bar below that.
 - **Sub-sites** (`#ae000x-subsite`, `#writing-subsite`, `#message-subsite`) show a breadcrumb (`ÆRIEL / <SUB-SITE>`) in `.subsite-header-bar` and end with a `← BACK TO ÆRIEL` link. The sub-site distinction is monochrome only (sub-panel background, 10px white left block, `[ SUB-SITE ↗ ]` tag).
 - **Shared contact form**: markup lives once in `<template id="contact-form-tpl">` and is stamped into every `[data-contact-form-mount]` (landing `#contact` and `/message`) by `mountContactForms()`. Never duplicate the form markup or its handler.
 - **Static stubs** exist for `/message` and `/mensaje` (same pattern as `/writing`/`/ensayos`). The `/mensaje` stub passes `?lang=es`.
+- **Mobile (≤600px)**: the top-bar destinations live in the fixed 4-cell `#tab-bar` (ÆRIEL, Æ000.X ↗, ESSAYS ↗, MESSAGE ↗). There is no hamburger and no mobile dropdown; the footer menu is hidden because the tab bar replaces it. The tab bar slides away while scrolling down and returns on any upward scroll, at the top, at the bottom and on focus. On sub-sites the header carries the breadcrumb chip (`ÆRIEL / ESSAYS`, `#header-crumb`) and the desktop breadcrumb strip (`.subsite-crumb-bar`) is hidden. The "ON THIS PAGE" bar shows the current section (`#page-rail-current`) and is the only dropdown.
+- Any new destination needs: a top-bar link, a tab-bar cell, a footer link, a breadcrumb label, EN/ES/PT labels and a static stub (+ Spanish route).

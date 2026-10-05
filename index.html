@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ÆRIEL">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/public/icons/icon-180.png">
   <meta name="description" content="ÆRIEL is an artistic project honoring music, community, and queerness. Based in Santiago, Chile.">
   
   <!-- Predefined Title and Meta Description -->
@@ -39,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=20.0">
+  <link rel="stylesheet" href="style.css?v=20.1">
 </head>
 <body>
 
@@ -58,38 +66,30 @@
       <!-- Logo Block -->
       <div class="logo-block">
         <a href="/" class="logo-link" aria-label="ÆRIEL Home Page" onclick="openMainPortfolio(event);">ÆRIEL</a>
+        <!-- Mobile breadcrumb: shown on sub-sites in place of the desktop breadcrumb strip -->
+        <span class="header-crumb" id="header-crumb" hidden>
+          <span class="header-crumb-sep" aria-hidden="true">/</span>
+          <span class="header-crumb-label" data-crumb="ae000x">Æ000.X</span>
+          <span class="header-crumb-label" data-crumb="writing"><span lang="en">ESSAYS</span><span lang="es">ENSAYOS</span><span lang="pt">ENSAIOS</span></span>
+          <span class="header-crumb-label" data-crumb="message"><span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span></span>
+        </span>
       </div>
 
       <!-- Navigation Links -->
       <nav id="main-navigation" class="nav-links" aria-label="Site destinations">
-        <div class="nav-group nav-group-home" role="group" aria-labelledby="nav-label-home">
-          <p class="nav-group-label" id="nav-label-home">
-            <span lang="en">[ HOME ]</span>
-            <span lang="es">[ INICIO ]</span>
-            <span lang="pt">[ INÍCIO ]</span>
-          </p>
-          <a href="/" class="nav-link" id="nav-home" data-nav-view="main" onclick="openMainPortfolio(event);">ÆRIEL</a>
-        </div>
-        <div class="nav-group nav-group-sites" role="group" aria-labelledby="nav-label-sites">
-          <p class="nav-group-label" id="nav-label-sites">
-            <span lang="en">[ SUB-SITES ↗ ]</span>
-            <span lang="es">[ SUBSITIOS ↗ ]</span>
-            <span lang="pt">[ SUBSITES ↗ ]</span>
-          </p>
-          <a href="/ae000x" class="nav-link" id="nav-brand" data-nav-view="ae000x" onclick="openAe000xSubsite(event);">Æ000.X <span class="nav-arrow" aria-hidden="true">↗</span></a>
-          <a href="/writing" class="nav-link" id="nav-writing" data-nav-view="writing" onclick="openWritingSubsite(event);">
-            <span lang="en">ESSAYS</span>
-            <span lang="es">ENSAYOS</span>
-            <span lang="pt">ENSAIOS</span>
-            <span class="nav-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href="/message" class="nav-link" id="nav-message" data-nav-view="message" onclick="openMessageSubsite(event);">
-            <span lang="en">MESSAGE</span>
-            <span lang="es">MENSAJE</span>
-            <span lang="pt">MENSAGEM</span>
-            <span class="nav-arrow" aria-hidden="true">↗</span>
-          </a>
-        </div>
+        <a href="/ae000x" class="nav-link" id="nav-brand" data-nav-view="ae000x" onclick="openAe000xSubsite(event);">Æ000.X <span class="nav-arrow" aria-hidden="true">↗</span></a>
+        <a href="/writing" class="nav-link" id="nav-writing" data-nav-view="writing" onclick="openWritingSubsite(event);">
+          <span lang="en">ESSAYS</span>
+          <span lang="es">ENSAYOS</span>
+          <span lang="pt">ENSAIOS</span>
+          <span class="nav-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="/message" class="nav-link" id="nav-message" data-nav-view="message" onclick="openMessageSubsite(event);">
+          <span lang="en">MESSAGE</span>
+          <span lang="es">MENSAJE</span>
+          <span lang="pt">MENSAGEM</span>
+          <span class="nav-arrow" aria-hidden="true">↗</span>
+        </a>
       </nav>
 
       <!-- Language & System Controls -->
@@ -99,10 +99,6 @@
           <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
           <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
         </div>
-
-        <button class="mobile-nav-toggle-btn" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="main-navigation">
-          <span class="toggle-icon">NAV ▼</span>
-        </button>
       </div>
     </div>
   </header>
@@ -120,6 +116,7 @@
         <span lang="es">[ EN ESTA PÁGINA ]</span>
         <span lang="pt">[ NESTA PÁGINA ]</span>
       </span>
+      <span class="page-rail-current" id="page-rail-current"></span>
       <span class="page-rail-caret" aria-hidden="true">▼</span>
     </button>
     <ol class="page-rail-list" id="page-rail-list"></ol>
@@ -532,7 +529,7 @@
                   <span lang="es">TU_NOMBRE</span>
                   <span lang="pt">SEU_NOME</span>
                 </label>
-                <input type="text" id="__P__-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" data-ph-en="NAME / MONIKER" data-ph-es="NOMBRE / ALIAS" data-ph-pt="NOME / APELIDO" required="true">
+                <input type="text" id="__P__-name" maxlength="250" name="name" class="form-input" autocomplete="name" enterkeyhint="next" placeholder="NAME / MONIKER" data-placeholder-en="NAME / MONIKER" data-placeholder-es="NOMBRE / ALIAS" data-placeholder-pt="NOME / APELIDO" required="true">
               </div>
               
               <div class="form-group">
@@ -541,7 +538,7 @@
                   <span lang="es">TU_CORREO</span>
                   <span lang="pt">SEU_E-MAIL</span>
                 </label>
-                <input type="email" id="__P__-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" data-ph-en="COORDINATES@EMAIL.COM" data-ph-es="COORDENADAS@CORREO.COM" data-ph-pt="COORDENADAS@EMAIL.COM" required="true">
+                <input type="email" id="__P__-email" maxlength="250" name="email" class="form-input" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" enterkeyhint="next" placeholder="COORDINATES@EMAIL.COM" data-placeholder-en="COORDINATES@EMAIL.COM" data-placeholder-es="COORDENADAS@CORREO.COM" data-placeholder-pt="COORDENADAS@EMAIL.COM" required="true">
               </div>
             </div>
 
@@ -552,7 +549,7 @@
                   <span lang="es">RED_SOCIAL (OPCIONAL)</span>
                   <span lang="pt">REDES_SOCIAIS (OPCIONAL)</span>
                 </label>
-                <input type="text" id="__P__-social" maxlength="250" name="social_handle" class="form-input" placeholder="@HANDLE / LINK" data-ph-en="@HANDLE / LINK" data-ph-es="@USUARIO / ENLACE" data-ph-pt="@USUÁRIO / LINK">
+                <input type="text" id="__P__-social" maxlength="250" name="social_handle" class="form-input" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="@HANDLE / LINK" data-placeholder-en="@HANDLE / LINK" data-placeholder-es="@USUARIO / ENLACE" data-placeholder-pt="@USUÁRIO / LINK">
               </div>
               
               <div class="form-group">
@@ -561,7 +558,7 @@
                   <span lang="es">TELÉFONO (OPCIONAL)</span>
                   <span lang="pt">TELEFONE (OPCIONAL)</span>
                 </label>
-                <input type="tel" id="__P__-phone" maxlength="250" name="phone" class="form-input" placeholder="+123...">
+                <input type="tel" id="__P__-phone" maxlength="250" name="phone" class="form-input" autocomplete="tel" inputmode="tel" enterkeyhint="next" placeholder="+123..." data-placeholder-en="+123..." data-placeholder-es="+123..." data-placeholder-pt="+123...">
               </div>
             </div>
             
@@ -571,7 +568,7 @@
                 <span lang="es">DATOS_DE_TRANSMISIÓN</span>
                 <span lang="pt">DADOS_DE_TRANSMISSÃO</span>
               </label>
-              <textarea id="__P__-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." data-ph-en="WRITE YOUR MESSAGE HERE..." data-ph-es="ESCRIBE TU MENSAJE AQUÍ..." data-ph-pt="ESCREVA SUA MENSAGEM AQUI..." required="true"></textarea>
+              <textarea id="__P__-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." data-placeholder-en="WRITE YOUR MESSAGE HERE..." data-placeholder-es="ESCRIBE TU MENSAJE AQUÍ..." data-placeholder-pt="ESCREVA SUA MENSAGEM AQUI..." required="true"></textarea>
             </div>
             
             <button type="submit" class="btn-brutal" id="__P__-submit-btn">
@@ -591,7 +588,7 @@
   <section id="ae000x-subsite" class="subsite-container">
     
     <!-- Sub-Website Breadcrumb -->
-    <div class="subsite-header-bar">
+    <div class="subsite-header-bar subsite-crumb-bar">
       <div class="container subsite-header-layout">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
@@ -1251,7 +1248,7 @@
                 <span lang="es">NOMBRE COMPLETO / SEUDÓNIMO (REQUERIDO)</span>
                 <span lang="pt">NOME COMPLETO / NOME ARTÍSTICO (OBRIGATÓRIO)</span>
               </label>
-              <input type="text" id="invite-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" data-ph-en="NAME / MONIKER" data-ph-es="NOMBRE / ALIAS" data-ph-pt="NOME / APELIDO" required>
+              <input type="text" id="invite-name" maxlength="250" name="name" class="form-input" autocomplete="name" enterkeyhint="next" placeholder="NAME / MONIKER" data-placeholder-en="NAME / MONIKER" data-placeholder-es="NOMBRE / ALIAS" data-placeholder-pt="NOME / APELIDO" required>
             </div>
 
             <div class="form-row">
@@ -1262,7 +1259,7 @@
                   <span lang="es">RED SOCIAL (REQUERIDO)</span>
                   <span lang="pt">REDES SOCIAIS (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-social" maxlength="250" name="social" class="form-input" placeholder="@HANDLE / LINK" data-ph-en="@HANDLE / LINK" data-ph-es="@USUARIO / ENLACE" data-ph-pt="@USUÁRIO / LINK" required>
+                <input type="text" id="invite-social" maxlength="250" name="social" class="form-input" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="@HANDLE / LINK" data-placeholder-en="@HANDLE / LINK" data-placeholder-es="@USUARIO / ENLACE" data-placeholder-pt="@USUÁRIO / LINK" required>
               </div>
 
               <!-- Field 3: WhatsApp -->
@@ -1272,7 +1269,7 @@
                   <span lang="es">WHATSAPP — TELÉFONO O USUARIO (REQUERIDO)</span>
                   <span lang="pt">WHATSAPP — TELEFONE OU USUÁRIO (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-whatsapp" maxlength="250" name="whatsapp" class="form-input" placeholder="+123... / @username" data-ph-en="+123... / @username" data-ph-es="+123... / @usuario" data-ph-pt="+123... / @usuário" required>
+                <input type="text" id="invite-whatsapp" maxlength="250" name="whatsapp" class="form-input" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="+123... / @username" data-placeholder-en="+123... / @username" data-placeholder-es="+123... / @usuario" data-placeholder-pt="+123... / @usuário" required>
               </div>
             </div>
 
@@ -1283,7 +1280,7 @@
                 <span lang="es">CORREO ELECTRÓNICO (REQUERIDO)</span>
                 <span lang="pt">ENDEREÇO DE E-MAIL (OBRIGATÓRIO)</span>
               </label>
-              <input type="email" id="invite-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" data-ph-en="COORDINATES@EMAIL.COM" data-ph-es="COORDENADAS@CORREO.COM" data-ph-pt="COORDENADAS@EMAIL.COM" required>
+              <input type="email" id="invite-email" maxlength="250" name="email" class="form-input" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" enterkeyhint="next" placeholder="COORDINATES@EMAIL.COM" data-placeholder-en="COORDINATES@EMAIL.COM" data-placeholder-es="COORDENADAS@CORREO.COM" data-placeholder-pt="COORDENADAS@EMAIL.COM" required>
             </div>
 
             <!-- Field 5: Preferred Contact Method -->
@@ -1356,7 +1353,7 @@
   <section id="writing-subsite" class="subsite-container">
     
     <!-- Sub-Website Breadcrumb -->
-    <div class="subsite-header-bar">
+    <div class="subsite-header-bar subsite-crumb-bar">
       <div class="container subsite-header-layout">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
@@ -2459,6 +2456,9 @@
             </div>
           </article>
 
+          <!-- Chronological essay pager (populated from the index order; no recommendations) -->
+          <nav class="reader-pager" id="reader-pager" aria-label="Essay navigation"></nav>
+
         </div>
       </div>
     </section>
@@ -2483,7 +2483,7 @@
   <section id="message-subsite" class="subsite-container">
 
     <!-- Sub-Website Breadcrumb -->
-    <div class="subsite-header-bar">
+    <div class="subsite-header-bar subsite-crumb-bar">
       <div class="container subsite-header-layout">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
@@ -2528,9 +2528,12 @@
     <div class="subsite-header-bar">
       <div class="container subsite-header-layout">
         <button class="btn-brutal back-btn" onclick="openMainPortfolio(event)">
-          <span lang="en">← BACK TO MAIN PORTFOLIO</span>
-          <span lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
-          <span lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-long" lang="en">← BACK TO MAIN PORTFOLIO</span>
+          <span class="back-long" lang="es">← VOLVER AL PORTAFOLIO PRINCIPAL</span>
+          <span class="back-long" lang="pt">← VOLTAR AO PORTFÓLIO PRINCIPAL</span>
+          <span class="back-short" lang="en">← BACK</span>
+          <span class="back-short" lang="es">← VOLVER</span>
+          <span class="back-short" lang="pt">← VOLTAR</span>
         </button>
         <div class="subsite-header-title">GAMES</div>
       </div>
@@ -2622,6 +2625,21 @@
   <!-- Floating Back-to-Top Button for Mobile Web App View -->
   <button class="mobile-back-to-top" id="mobile-back-to-top" onclick="window.scrollTo({top: 0, behavior: scrollBehavior()})" aria-label="Back to Top">[↑ TOP]</button>
 
+  <!-- Reader progress hairline (visible only while an essay is open) -->
+  <div class="reader-progress" id="reader-progress" role="progressbar" aria-hidden="true"><span id="reader-progress-fill"></span></div>
+
+  <!-- Mobile Bottom Tab Bar (thumb-reach navigation, <=600px) -->
+  <nav class="tab-bar" id="tab-bar" aria-label="Primary">
+    <a href="/" class="tab-link" data-tab="home" onclick="tabNav(event, 'home')">ÆRIEL</a>
+    <a href="/ae000x" class="tab-link" data-tab="ae000x" onclick="tabNav(event, 'ae000x')">Æ000.X<span aria-hidden="true">↗</span></a>
+    <a href="/writing" class="tab-link" data-tab="writing" onclick="tabNav(event, 'writing')">
+      <span lang="en">ESSAYS</span><span lang="es">ENSAYOS</span><span lang="pt">ENSAIOS</span><span aria-hidden="true">↗</span>
+    </a>
+    <a href="/message" class="tab-link" data-tab="message" onclick="tabNav(event, 'message')">
+      <span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span><span aria-hidden="true">↗</span>
+    </a>
+  </nav>
+
   <!-- Language Selection and Form Transmission Handler Scripts -->
   <script>
     function scrollBehavior() {
@@ -2652,34 +2670,95 @@
       return FORM_MSG[key][lang] || FORM_MSG[key].en;
     }
 
-    function toggleMobileNav() {
-      closePageRail();
-      const nav = document.getElementById('main-navigation');
-      const toggleBtn = document.getElementById('mobile-nav-toggle');
-      if (nav) {
-        nav.classList.toggle('open');
-        const isOpen = nav.classList.contains('open');
-        if (toggleBtn) {
-          toggleBtn.querySelector('.toggle-icon').textContent = isOpen ? 'NAV ▲' : 'NAV ▼';
-          toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        }
+    // Keep sticky offsets in sync with the real header height (no hard-coded 48px)
+    (function trackHeaderHeight() {
+      const header = document.getElementById('site-header');
+      if (!header) return;
+      const apply = () => document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+      apply();
+      if (window.ResizeObserver) new ResizeObserver(apply).observe(header);
+      window.addEventListener('resize', apply);
+    })();
+
+    // Mobile bottom tab bar: four destinations, active state, auto-hide on scroll, keyboard-aware hiding
+    function tabNav(event, tab) {
+      const view = document.body.getAttribute('data-view') || 'main';
+      const readerEl = document.getElementById('article-reader-container');
+      const readerOpen = readerEl && readerEl.style.display === 'block';
+      const toTop = () => { if (event) event.preventDefault(); window.scrollTo({ top: 0, behavior: scrollBehavior() }); };
+      if (tab === 'writing') {
+        if (view === 'writing' && readerOpen) { if (event) event.preventDefault(); closeArticleReader(); return; }
+        if (view === 'writing') return toTop();
+        return openWritingSubsite(event);
       }
+      if (tab === 'ae000x') return view === 'ae000x' ? toTop() : openAe000xSubsite(event);
+      if (tab === 'message') return view === 'message' ? toTop() : openMessageSubsite(event);
+      if (view === 'main') return toTop();
+      return openMainPortfolio(event);
+    }
+    window.tabNav = tabNav;
+
+    function syncTabBar() {
+      const bar = document.getElementById('tab-bar');
+      if (!bar) return;
+      const view = document.body.getAttribute('data-view') || 'main';
+      const active = view === 'main' ? 'home' : view;
+      bar.querySelectorAll('.tab-link').forEach(a => {
+        const on = a.getAttribute('data-tab') === active;
+        a.classList.toggle('active', on);
+        if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      });
+      showTabBar();
     }
 
-    function closeMobileNav() {
-      const nav = document.getElementById('main-navigation');
-      const toggleBtn = document.getElementById('mobile-nav-toggle');
-      if (nav && nav.classList.contains('open')) {
-        nav.classList.remove('open');
-        if (toggleBtn) {
-          toggleBtn.querySelector('.toggle-icon').textContent = 'NAV ▼';
-          toggleBtn.setAttribute('aria-expanded', 'false');
-        }
-      }
+    // Auto-hide: slides away while reading down, returns on any upward scroll, at the top and at the bottom
+    let lastTabScrollY = 0;
+    function showTabBar() {
+      const bar = document.getElementById('tab-bar');
+      if (bar) bar.classList.remove('tab-hidden');
     }
+    function updateTabBarVisibility() {
+      const bar = document.getElementById('tab-bar');
+      if (!bar) return;
+      const y = window.pageYOffset;
+      const delta = y - lastTabScrollY;
+      const atBottom = window.innerHeight + y >= document.documentElement.scrollHeight - 8;
+      if (y < 80 || delta < -6 || atBottom || bar.contains(document.activeElement)) {
+        bar.classList.remove('tab-hidden');
+      } else if (delta > 6) {
+        bar.classList.add('tab-hidden');
+      }
+      if (Math.abs(delta) > 6) lastTabScrollY = y;
+    }
+    document.addEventListener('focusin', (e) => {
+      const bar = document.getElementById('tab-bar');
+      if (bar && bar.contains(e.target)) showTabBar();
+    });
+    let tabSyncQueued = false;
+    function queueTabSync() {
+      if (tabSyncQueued) return;
+      tabSyncQueued = true;
+      requestAnimationFrame(() => { tabSyncQueued = false; updateTabBarVisibility(); });
+    }
+    window.addEventListener('scroll', queueTabSync, { passive: true });
+    window.addEventListener('resize', queueTabSync);
+    new MutationObserver(() => { lastTabScrollY = window.pageYOffset; syncTabBar(); }).observe(document.body, { attributes: true, attributeFilter: ['data-view'] });
+    document.addEventListener('DOMContentLoaded', syncTabBar);
 
-    window.toggleMobileNav = toggleMobileNav;
-    window.closeMobileNav = closeMobileNav;
+    // Hide the tab bar while the on-screen keyboard is up (Android resizes the layout viewport)
+    document.addEventListener('focusin', (e) => {
+      if (e.target && e.target.matches && e.target.matches('input:not([type="checkbox"]):not([type="radio"]), textarea, select')) {
+        document.body.classList.add('kb-open');
+      }
+    });
+    document.addEventListener('focusout', () => {
+      setTimeout(() => {
+        const a = document.activeElement;
+        if (!(a && a.matches && a.matches('input:not([type="checkbox"]):not([type="radio"]), textarea, select'))) {
+          document.body.classList.remove('kb-open');
+        }
+      }, 0);
+    });
 
     // Mobile Back-to-Top Visibility Controller
     window.addEventListener('scroll', () => {
@@ -3114,7 +3193,6 @@
           closeArticleReader();
           return;
         }
-        closeMobileNav();
         return;
       }
 
@@ -3326,8 +3404,8 @@
     // Translate input placeholders (attributes cannot use the lang-span CSS toggle)
     function applyPlaceholders(lang) {
       lang = lang || document.documentElement.getAttribute('lang') || 'en';
-      document.querySelectorAll('[data-ph-en]').forEach(el => {
-        el.setAttribute('placeholder', el.getAttribute(`data-ph-${lang}`) || el.getAttribute('data-ph-en'));
+      document.querySelectorAll('[data-placeholder-en]').forEach(el => {
+        el.setAttribute('placeholder', el.getAttribute('data-placeholder-' + lang) || el.getAttribute('data-placeholder-en'));
       });
     }
 
@@ -3479,7 +3557,6 @@
     
     function openAe000xSubsite(event) {
       if (event) event.preventDefault();
-      closeMobileNav();
       document.body.setAttribute('data-view', 'ae000x');
       updatePageTitle();
       setTimeout(() => {
@@ -3492,7 +3569,6 @@
 
     function openMessageSubsite(event) {
       if (event) event.preventDefault();
-      closeMobileNav();
       document.body.setAttribute('data-view', 'message');
       updatePageTitle();
       setTimeout(() => {
@@ -3621,7 +3697,6 @@
       const btn = document.getElementById('page-rail-toggle');
       if (!rail || !btn) return;
       const open = !rail.classList.contains('open');
-      if (open) closeMobileNav();
       rail.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       btn.querySelector('.page-rail-caret').textContent = open ? '▲' : '▼';
@@ -3640,13 +3715,27 @@
           const el = document.querySelector(it.target);
           if (el && el.getBoundingClientRect().top <= line) active = it;
         });
-        if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4) {
-          active = pageRailItems[pageRailItems.length - 1];
+        // Past the end of the last matching section (e.g. the contact form below Intent): nothing is current
+        if (active) {
+          const el = document.querySelector(active.target);
+          const atBottom = window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4;
+          if (el && el.getBoundingClientRect().bottom < line && !(atBottom && active === pageRailItems[pageRailItems.length - 1] && el.getBoundingClientRect().bottom > 0)) active = null;
         }
         pageRailItems.forEach(it => {
           if (it === active) it.link.setAttribute('aria-current', 'location');
           else it.link.removeAttribute('aria-current');
         });
+        const cur = document.getElementById('page-rail-current');
+        if (cur) {
+          cur.textContent = '';
+          if (active) {
+            const idx = pageRailItems.indexOf(active) + 1;
+            const num = document.createElement('span');
+            num.textContent = String(idx).padStart(2, '0') + ' ';
+            cur.appendChild(num);
+            active.link.querySelectorAll('[lang]').forEach(sp => cur.appendChild(sp.cloneNode(true)));
+          }
+        }
       });
     }
 
@@ -3655,6 +3744,12 @@
         if (a.getAttribute('data-nav-view') === view) a.setAttribute('aria-current', 'page');
         else a.removeAttribute('aria-current');
       });
+      const crumb = document.getElementById('header-crumb');
+      if (crumb) {
+        const known = ['ae000x', 'writing', 'message'].includes(view);
+        crumb.hidden = !known;
+        crumb.querySelectorAll('[data-crumb]').forEach(el => { el.hidden = el.getAttribute('data-crumb') !== view; });
+      }
       initPageRail(view);
     }
 
@@ -3695,7 +3790,6 @@
 
     function openMainPortfolio(event, targetHash) {
       if (event) event.preventDefault();
-      closeMobileNav();
       document.body.setAttribute('data-view', 'main');
       updatePageTitle();
 
@@ -3729,7 +3823,6 @@
 
     function openWritingSubsite(event) {
       if (event) event.preventDefault();
-      closeMobileNav();
       document.body.setAttribute('data-view', 'writing');
       updatePageTitle();
       setTimeout(() => {
@@ -3744,7 +3837,6 @@
 
     function openGamesSubsite(event) {
       if (event) event.preventDefault();
-      closeMobileNav();
       document.body.setAttribute('data-view', 'games');
       updatePageTitle();
       setTimeout(() => {
@@ -3758,6 +3850,7 @@
     function openWritingSubsiteAndArticle(articleId) {
       openWritingSubsite();
       openArticleReader(articleId);
+      indexScrollY = 0; // closing returns to the top of the essay index, not the home scroll offset
     }
     window.openWritingSubsiteAndArticle = openWritingSubsiteAndArticle;
 
@@ -3780,6 +3873,71 @@
       });
     }
 
+    // Reader state: remembered index scroll position, progress hairline, chronological pager
+    let indexScrollY = null;
+    let readerProgressQueued = false;
+
+    function updateReaderProgress() {
+      readerProgressQueued = false;
+      const fill = document.getElementById('reader-progress-fill');
+      const container = document.getElementById('article-reader-container');
+      if (!fill || !container || container.style.display !== 'block') return;
+      const art = Array.from(container.querySelectorAll('.reader-content')).find(a => a.style.display !== 'none');
+      if (!art) return;
+      const top = art.getBoundingClientRect().top + window.pageYOffset;
+      const total = Math.max(1, art.offsetHeight - window.innerHeight * 0.6);
+      const pct = Math.min(1, Math.max(0, (window.pageYOffset - top) / total));
+      fill.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
+    }
+    function queueReaderProgress() {
+      if (readerProgressQueued) return;
+      readerProgressQueued = true;
+      requestAnimationFrame(updateReaderProgress);
+    }
+    window.addEventListener('scroll', queueReaderProgress, { passive: true });
+    window.addEventListener('resize', queueReaderProgress);
+
+    function buildReaderPager(articleId) {
+      const pager = document.getElementById('reader-pager');
+      if (!pager) return;
+      const ids = Array.from(document.querySelectorAll('#articles-index .article-card'))
+        .map(c => c.id.replace(/^card-/, ''));
+      const i = ids.indexOf(articleId);
+      pager.innerHTML = '';
+      if (i < 0) return;
+      const labels = {
+        newer: { en: '← NEWER ESSAY', es: '← ENSAYO MÁS RECIENTE', pt: '← ESCRITO MAIS RECENTE' },
+        older: { en: 'OLDER ESSAY →', es: 'ENSAYO MÁS ANTIGUO →', pt: 'ESCRITO MAIS ANTIGO →' }
+      };
+      const mk = (targetId, kind) => {
+        if (!targetId) return;
+        const card = document.getElementById('card-' + targetId);
+        const title = card && card.querySelector('.article-card-title');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'reader-pager-btn reader-pager-' + kind;
+        const lab = document.createElement('span');
+        lab.className = 'reader-pager-label';
+        ['en', 'es', 'pt'].forEach(l => {
+          const sp = document.createElement('span');
+          sp.setAttribute('lang', l);
+          sp.textContent = labels[kind][l];
+          lab.appendChild(sp);
+        });
+        btn.appendChild(lab);
+        if (title) {
+          const t = document.createElement('span');
+          t.className = 'reader-pager-title';
+          t.innerHTML = title.innerHTML;
+          btn.appendChild(t);
+        }
+        btn.addEventListener('click', () => openArticleReader(targetId));
+        pager.appendChild(btn);
+      };
+      mk(ids[i - 1], 'newer');
+      mk(ids[i + 1], 'older');
+    }
+
     function openArticleReader(articleId, opts = {}) {
       lastActiveElement = document.activeElement;
       const indexEl = document.getElementById('articles-index');
@@ -3787,6 +3945,7 @@
       const readerContainer = document.getElementById('article-reader-container');
 
       const wasOpen = readerContainer && readerContainer.style.display === 'block';
+      if (!wasOpen) indexScrollY = window.pageYOffset;
 
       if (readerContainer) {
         readerContainer.querySelectorAll('.reader-content').forEach(art => {
@@ -3809,7 +3968,10 @@
         }
       }
 
-      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.body.classList.add('reading');
+      buildReaderPager(articleId);
+      queueReaderProgress();
 
       const lang = document.documentElement.getAttribute('lang') || 'en';
       const isSpanish = lang === 'es' || window.location.pathname.toLowerCase().includes('/ensayos');
@@ -3818,6 +3980,8 @@
       const essayPath = `${baseRoute}/${slug}`;
 
       if (opts.push !== false && window.location.pathname.toLowerCase() !== essayPath) {
+        // The index entry restores its own scroll (indexScrollY); stop the browser racing it
+        try { history.scrollRestoration = 'manual'; } catch (_) {}
         history.pushState({ modal: 'article', essayId: articleId, view: 'writing', pushed: true }, '', essayPath);
       }
       updatePageTitle();
@@ -3833,11 +3997,16 @@
       if (indexEl) indexEl.style.display = 'flex';
       if (heroEl) heroEl.style.display = 'block';
       if (readerContainer) readerContainer.style.display = 'none';
+      document.body.classList.remove('reading');
 
-      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+      // Restore the index position (native back behaviour); deep links start at the top
+      const restoreY = (wasOpen && indexScrollY !== null) ? indexScrollY : 0;
+      indexScrollY = null;
+      window.scrollTo({ top: restoreY, behavior: 'instant' });
+      try { history.scrollRestoration = 'auto'; } catch (_) {}
 
       if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
-        lastActiveElement.focus();
+        lastActiveElement.focus({ preventScroll: true });
       }
 
       if (wasOpen && !fromPopState) {
@@ -3924,7 +4093,11 @@
         }
       };
 
-      if (platform === 'copy') {
+      if (platform === 'native') {
+        if (navigator.share) {
+          navigator.share({ title: shareText, text: shareText, url: fullUrl }).catch(() => {});
+        }
+      } else if (platform === 'copy') {
         copyToClipboard(fullUrl).then(() => {
           const msgs = {
             en: '[ ESSAY LINK COPIED TO CLIPBOARD ]',
@@ -3960,6 +4133,31 @@
         window.open(fbUrl, '_blank', 'noopener,noreferrer');
       }
     }
+
+    // Offline reading: register the service worker (network-first, cache is a fallback only)
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+
+    // Native share sheet: offered first wherever the Web Share API exists (iOS, Android)
+    function injectNativeShareButtons() {
+      if (!navigator.share) return;
+      document.querySelectorAll('.essay-share-block').forEach(block => {
+        const buttons = block.querySelector('.essay-share-buttons');
+        const essayId = block.getAttribute('data-essay-id');
+        if (!buttons || !essayId || buttons.querySelector('.share-btn-native')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'share-btn share-btn-native';
+        btn.setAttribute('aria-label', 'Share essay');
+        btn.innerHTML = '<svg class="share-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M4 14v7h16v-7"/></svg><span><span lang="en">SHARE</span><span lang="es">COMPARTIR</span><span lang="pt">COMPARTILHAR</span></span>';
+        btn.addEventListener('click', (e) => shareEssay('native', essayId, e));
+        buttons.insertBefore(btn, buttons.firstChild);
+      });
+    }
+    injectNativeShareButtons();
 
     window.openWritingSubsite = openWritingSubsite;
     window.filterArticles = filterArticles;
