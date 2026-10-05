@@ -4124,52 +4124,6 @@ body[data-view="message"] #message-subsite {
   display: block !important;
 }
 
-/* Breadcrumb */
-.breadcrumb ol {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  list-style: none;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 800;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-}
-
-.breadcrumb li + li::before {
-  content: "/";
-  margin: 0 8px;
-  color: var(--text-muted);
-}
-
-.breadcrumb a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 8px;
-  text-decoration: underline;
-}
-
-.breadcrumb a:hover,
-.breadcrumb a:focus-visible {
-  background: var(--text-primary);
-  color: var(--bg-primary);
-  transition: none;
-}
-
-.breadcrumb li[aria-current="page"] {
-  padding: 0 8px;
-}
-
-.subsite-tag {
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  border: var(--border-muted);
-  padding: 2px 8px;
-  white-space: nowrap;
-}
-
 /* Back to ÆRIEL (bottom of every sub-site) */
 .subsite-back-row {
   border-top: var(--border-thick);
@@ -4336,10 +4290,6 @@ body[data-view="message"] #message-subsite {
 }
 
 @media (max-width: 600px) {
-
-  .subsite-tag {
-    display: none;
-  }
 
   /* The tab bar replaces the footer menu on phones */
   .footer-nav { display: none; }
@@ -4576,14 +4526,12 @@ body[data-view="writing"].reading .reader-progress { display: block; }
 }
 
 
-/* Mobile sub-site breadcrumb lives in the header (ÆRIEL / ESSAYS); the strip is desktop-only */
+/* Sub-site wayfinding: the top bar marks the active destination; on phones the header also carries a crumb chip (ÆRIEL / ESSAYS) */
 .header-crumb { display: none; }
 .header-crumb[hidden],
 .header-crumb [data-crumb][hidden] { display: none !important; }
 
 @media (max-width: 600px) {
-  .subsite-crumb-bar { display: none; }
-
   .header-crumb {
     display: inline-flex;
     align-items: center;
