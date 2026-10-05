@@ -532,7 +532,7 @@
                   <span lang="es">TU_NOMBRE</span>
                   <span lang="pt">SEU_NOME</span>
                 </label>
-                <input type="text" id="__P__-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required="true">
+                <input type="text" id="__P__-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" data-ph-en="NAME / MONIKER" data-ph-es="NOMBRE / ALIAS" data-ph-pt="NOME / APELIDO" required="true">
               </div>
               
               <div class="form-group">
@@ -541,7 +541,7 @@
                   <span lang="es">TU_CORREO</span>
                   <span lang="pt">SEU_E-MAIL</span>
                 </label>
-                <input type="email" id="__P__-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required="true">
+                <input type="email" id="__P__-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" data-ph-en="COORDINATES@EMAIL.COM" data-ph-es="COORDENADAS@CORREO.COM" data-ph-pt="COORDENADAS@EMAIL.COM" required="true">
               </div>
             </div>
 
@@ -552,7 +552,7 @@
                   <span lang="es">RED_SOCIAL (OPCIONAL)</span>
                   <span lang="pt">REDES_SOCIAIS (OPCIONAL)</span>
                 </label>
-                <input type="text" id="__P__-social" maxlength="250" name="social_handle" class="form-input" placeholder="@HANDLE / LINK">
+                <input type="text" id="__P__-social" maxlength="250" name="social_handle" class="form-input" placeholder="@HANDLE / LINK" data-ph-en="@HANDLE / LINK" data-ph-es="@USUARIO / ENLACE" data-ph-pt="@USUÁRIO / LINK">
               </div>
               
               <div class="form-group">
@@ -571,7 +571,7 @@
                 <span lang="es">DATOS_DE_TRANSMISIÓN</span>
                 <span lang="pt">DADOS_DE_TRANSMISSÃO</span>
               </label>
-              <textarea id="__P__-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." required="true"></textarea>
+              <textarea id="__P__-message-text" maxlength="5000" name="message" class="form-input form-textarea" placeholder="WRITE YOUR MESSAGE HERE..." data-ph-en="WRITE YOUR MESSAGE HERE..." data-ph-es="ESCRIBE TU MENSAJE AQUÍ..." data-ph-pt="ESCREVA SUA MENSAGEM AQUI..." required="true"></textarea>
             </div>
             
             <button type="submit" class="btn-brutal" id="__P__-submit-btn">
@@ -1251,7 +1251,7 @@
                 <span lang="es">NOMBRE COMPLETO / SEUDÓNIMO (REQUERIDO)</span>
                 <span lang="pt">NOME COMPLETO / NOME ARTÍSTICO (OBRIGATÓRIO)</span>
               </label>
-              <input type="text" id="invite-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" required>
+              <input type="text" id="invite-name" maxlength="250" name="name" class="form-input" placeholder="NAME / MONIKER" data-ph-en="NAME / MONIKER" data-ph-es="NOMBRE / ALIAS" data-ph-pt="NOME / APELIDO" required>
             </div>
 
             <div class="form-row">
@@ -1262,7 +1262,7 @@
                   <span lang="es">RED SOCIAL (REQUERIDO)</span>
                   <span lang="pt">REDES SOCIAIS (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-social" maxlength="250" name="social" class="form-input" placeholder="@HANDLE / LINK" required>
+                <input type="text" id="invite-social" maxlength="250" name="social" class="form-input" placeholder="@HANDLE / LINK" data-ph-en="@HANDLE / LINK" data-ph-es="@USUARIO / ENLACE" data-ph-pt="@USUÁRIO / LINK" required>
               </div>
 
               <!-- Field 3: WhatsApp -->
@@ -1272,7 +1272,7 @@
                   <span lang="es">WHATSAPP — TELÉFONO O USUARIO (REQUERIDO)</span>
                   <span lang="pt">WHATSAPP — TELEFONE OU USUÁRIO (OBRIGATÓRIO)</span>
                 </label>
-                <input type="text" id="invite-whatsapp" maxlength="250" name="whatsapp" class="form-input" placeholder="+123... / @username" required>
+                <input type="text" id="invite-whatsapp" maxlength="250" name="whatsapp" class="form-input" placeholder="+123... / @username" data-ph-en="+123... / @username" data-ph-es="+123... / @usuario" data-ph-pt="+123... / @usuário" required>
               </div>
             </div>
 
@@ -1283,7 +1283,7 @@
                 <span lang="es">CORREO ELECTRÓNICO (REQUERIDO)</span>
                 <span lang="pt">ENDEREÇO DE E-MAIL (OBRIGATÓRIO)</span>
               </label>
-              <input type="email" id="invite-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" required>
+              <input type="email" id="invite-email" maxlength="250" name="email" class="form-input" placeholder="COORDINATES@EMAIL.COM" data-ph-en="COORDINATES@EMAIL.COM" data-ph-es="COORDENADAS@CORREO.COM" data-ph-pt="COORDENADAS@EMAIL.COM" required>
             </div>
 
             <!-- Field 5: Preferred Contact Method -->
@@ -2949,6 +2949,7 @@
         });
       }
       mountContactForms();
+      applyPlaceholders();
 
       async function handleInvitationFormSubmit(event) {
         if (event) event.preventDefault();
@@ -3322,9 +3323,18 @@
     }
     window.updatePageTitle = updatePageTitle;
 
+    // Translate input placeholders (attributes cannot use the lang-span CSS toggle)
+    function applyPlaceholders(lang) {
+      lang = lang || document.documentElement.getAttribute('lang') || 'en';
+      document.querySelectorAll('[data-ph-en]').forEach(el => {
+        el.setAttribute('placeholder', el.getAttribute(`data-ph-${lang}`) || el.getAttribute('data-ph-en'));
+      });
+    }
+
     function setLanguage(lang, persist = true) {
       const html = document.documentElement;
       html.setAttribute('lang', lang);
+      applyPlaceholders(lang);
       if (persist) localStorage.setItem('preferred-lang', lang);
       
       // Update active button state
