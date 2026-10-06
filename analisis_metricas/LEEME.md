@@ -20,7 +20,7 @@ Estado: **código escrito y revisado en sintaxis; sin desplegar y sin probar con
 3. Probar `pruebas/probar_local.sh` (necesita `wrangler`; no se pudo ejecutar aquí).
 4. Probar a 375 px y en los 4 temas en un navegador real.
 5. Cableado en el sitio: `contador.js` detecta rutas, ensayos, lectura, portales, mix y tema por delegación, pero **éxito/error de formularios, compartir, cajones, afiches, lightbox y easter egg** necesitan que el sitio llame `window.aerielContar('form:contacto:enviado')`, etc. (cambio mínimo en `index.html`, con OK).
-6. Ley 21.719 (datos personales, Chile): decidir plazos de retención de `eventos` y `formularios_meta` y publicar `/privacy`.
+6. Ley 21.719: retención decidida (eventos 90 d, formularios_meta 30 d, limites 2 d; `purgarVencidos` en `api/comun.js`, una vez al día desde `/api/uso`). Falta publicar `/privacy` con `privacidad.md`.
 
 ## Qué se copiaría fuera de la carpeta (tras el OK)
 | Origen | Destino |

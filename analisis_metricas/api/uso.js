@@ -1,5 +1,5 @@
 // POST /api/uso  → contadores (uso_diario) + registro (eventos) + metadata de formularios.
-import { claveValida, limpiarInicio, diaChile, huella, ipDe, ipCorta, limitar, HOSTS_PERMITIDOS } from './comun.js';
+import { claveValida, limpiarInicio, diaChile, huella, ipDe, ipCorta, limitar, purgarVencidos, HOSTS_PERMITIDOS } from './comun.js';
 
 const TOPE_DIA = 400;      // escrituras por conexión y día
 const MAX_EVENTOS = 25;    // por pedido
@@ -78,6 +78,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     if (stmts.length) await env.DB.batch(stmts);
+    await purgarVencidos(env.DB, dia, ts);
   } catch (_) { /* un contador que falla no molesta a nadie */ }
   return sinContenido();
 }

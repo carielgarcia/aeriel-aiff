@@ -58,6 +58,21 @@ export async function limitar(db, h, dia, ambito) {
 export const leerLimite = async (db, h, dia, ambito) =>
   (await db.prepare('SELECT n FROM limites WHERE huella = ?1 AND dia = ?2 AND ambito = ?3').bind(h, dia, ambito).first())?.n || 0;
 
+// Retención (Ley 21.719): eventos 90 días, formularios_meta 30, limites 2. uso_diario y cloudflare_diario no se borran (son sumas).
+// Corre como máximo una vez al día, desde el primer pedido a /api/uso (no hay cron en Pages Functions).
+export const RETENCION_DIAS = { eventos: 90, formularios_meta: 30, limites: 2 };
+export async function purgarVencidos(db, dia, ts = Date.now()) {
+  const hecho = await db.prepare("SELECT valor FROM meta WHERE clave = 'purga_dia'").first();
+  if (hecho && hecho.valor === dia) return;
+  const corte = (d) => diaChile(ts - d * 86400000);
+  await db.batch([
+    db.prepare('DELETE FROM eventos WHERE dia < ?1').bind(corte(RETENCION_DIAS.eventos)),
+    db.prepare('DELETE FROM formularios_meta WHERE dia < ?1').bind(corte(RETENCION_DIAS.formularios_meta)),
+    db.prepare('DELETE FROM limites WHERE dia < ?1').bind(corte(RETENCION_DIAS.limites)),
+    db.prepare("INSERT INTO meta (clave, valor) VALUES ('purga_dia', ?1) ON CONFLICT (clave) DO UPDATE SET valor = ?1").bind(dia)
+  ]);
+}
+
 export async function igualesSeguro(a, b) {
   const enc = new TextEncoder();
   const [x, y] = await Promise.all([crypto.subtle.digest('SHA-256', enc.encode(a)), crypto.subtle.digest('SHA-256', enc.encode(b))]);
