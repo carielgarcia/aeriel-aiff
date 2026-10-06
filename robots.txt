@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /party/
+Disallow: /metricas
+Disallow: /api/
 
 Sitemap: https://aeriel.net/sitemap.xml

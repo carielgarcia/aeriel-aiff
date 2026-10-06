@@ -20,7 +20,7 @@ Estado: **código escrito y revisado en sintaxis; sin desplegar y sin probar con
 3. Probar `pruebas/probar_local.sh` (necesita `wrangler`; no se pudo ejecutar aquí).
 4. Probar a 375 px y en los 4 temas en un navegador real.
 5. Cableado en el sitio: `contador.js` detecta rutas, ensayos, lectura, portales, mix y tema por delegación, pero **éxito/error de formularios, compartir, cajones, afiches, lightbox y easter egg** necesitan que el sitio llame `window.aerielContar('form:contacto:enviado')`, etc. (cambio mínimo en `index.html`, con OK).
-6. Ley 21.719: retención decidida (eventos 90 d, formularios_meta 30 d, limites 2 d; `purgarVencidos` en `api/comun.js`, una vez al día desde `/api/uso`). Falta publicar `/privacy` con `privacidad.md`.
+6. Ley 21.719: retención decidida (eventos 90 d, formularios_meta 30 d, limites 2 d; `purgarVencidos` en `api/comun.js`, una vez al día desde `/api/uso`). `/privacy` y `/privacidad` publicadas (PT por `?lang=pt` o `preferred-lang`).
 
 ## Qué se copiaría fuera de la carpeta (tras el OK)
 | Origen | Destino |
@@ -41,3 +41,6 @@ Rotar = repetir el comando y volver a entregar el link `/metricas#k=…` por un 
 
 ## Deploy
 `npx wrangler d1 create aeriel-metricas` → binding `DB` → `npx wrangler d1 migrations apply aeriel-metricas --remote` (mover `migraciones/` a la carpeta que pida wrangler o usar `d1 execute --file`) → desplegar con el comando del proyecto, con un sí del dueño.
+
+## Ya conectado en el sitio (PR #5)
+`contador.js` en la raíz, cargado desde `index.html` (los stubs redirigen al SPA, no lo necesitan); `robots.txt` y `sw.js` excluyen `/api/` y `/metricas`. **Falta**: convertir `api/*.js` a Worker con D1 (el sitio es un Worker, no Pages) y copiar el visor `metricas.*` a la raíz. Mientras no exista la API, `POST /api/uso` falla en silencio.
