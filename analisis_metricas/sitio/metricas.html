@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="default">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ÆRIEL / MÉTRICAS</title>
+  <link rel="stylesheet" href="/metricas.css">
+</head>
+<body>
+  <header class="barra">
+    <h1>ÆRIEL / MÉTRICAS</h1>
+    <nav class="temas" aria-label="Tema del visor">
+      <button type="button" data-tema="default" aria-pressed="true">[ DEFAULT ]</button>
+      <button type="button" data-tema="disco" aria-pressed="false">[ DISCO ]</button>
+      <button type="button" data-tema="house" aria-pressed="false">[ HOUSE ]</button>
+      <button type="button" data-tema="trance" aria-pressed="false">[ TRANCE ]</button>
+      <button type="button" id="olvidar">[ OLVIDAR CLAVE ]</button>
+    </nav>
+  </header>
+  <main id="raiz"><p class="estado" id="estado">ACTUALIZANDO… <span class="cursor">▮</span></p></main>
+  <div id="tip" class="tip" role="status" hidden></div>
+  <script src="/metricas.js"></script>
+</body>
+</html>

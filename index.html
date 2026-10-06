@@ -48,6 +48,9 @@
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
   <link rel="stylesheet" href="style.css?v=20.6">
+
+  <!-- Contador de visitas sin cookies (analisis_metricas/): ver /privacy -->
+  <script src="/contador.js" defer></script>
 </head>
 <body>
 
@@ -2536,7 +2539,7 @@
   <footer class="footer" id="site-footer">
     <div class="container footer-layout">
       <div class="footer-copy" id="footer-copyright-text">
-        ÆRIEL &copy; 2026 // <a href="mailto:contact@aeriel.net" class="footer-email-link">contact@aeriel.net</a>
+        ÆRIEL &copy; 2026 // <a href="mailto:contact@aeriel.net" class="footer-email-link">contact@aeriel.net</a> // <a href="/privacy" class="footer-email-link"><span lang="en">PRIVACY</span><span lang="es">PRIVACIDAD</span><span lang="pt">PRIVACIDADE</span></a>
       </div>
       
       <ul class="footer-nav" id="footer-navigation-links">
@@ -2956,6 +2959,7 @@
           const result = await response.json();
           if (!result || result.ok !== true) throw new Error(result?.error || 'SERVER_REJECTED');
 
+          contar('form:contacto:enviado');
           contactForm.reset();
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
@@ -2964,6 +2968,7 @@
           }
         } catch (err) {
           console.error('Contact Form Submission Exception:', err);
+          contar('form:contacto:error');
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner error";
             feedbackBanner.style.display = "block";
@@ -3047,6 +3052,7 @@
           const result = await response.json();
           if (!result || result.ok !== true) throw new Error(result?.error || 'SERVER_REJECTED');
 
+          contar('form:invitacion:enviado');
           if (inviteForm) inviteForm.reset();
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner success";
@@ -3055,6 +3061,7 @@
           }
         } catch (err) {
           console.error('Registration Form Submission Exception:', err);
+          contar('form:invitacion:error');
           if (feedbackBanner) {
             feedbackBanner.className = "contact-feedback-banner error";
             feedbackBanner.style.display = "block";
@@ -3090,6 +3097,7 @@
 
     function openPosterLightbox(imgSrc, title, index) {
       const lightbox = document.getElementById('poster-lightbox');
+      contar('lightbox');
 
       if (typeof index === 'number' && index >= 0 && index < posterGallery.length) {
         currentLightboxIndex = index;
@@ -3434,6 +3442,7 @@
       const isCollapsed = drawer.classList.contains('is-collapsed');
       if (isCollapsed) {
         drawer.classList.remove('is-collapsed');
+        contar('cajon:residentes');
         toggleBtn.setAttribute('aria-expanded', 'true');
       } else {
         drawer.classList.add('is-collapsed');
@@ -3449,6 +3458,7 @@
       const isCollapsed = drawer.classList.contains('is-collapsed');
       if (isCollapsed) {
         drawer.classList.remove('is-collapsed');
+        contar('cajon:variantes');
         toggleBtn.setAttribute('aria-expanded', 'true');
       } else {
         drawer.classList.add('is-collapsed');
@@ -3464,6 +3474,7 @@
       const isCollapsed = drawer.classList.contains('is-collapsed');
       if (isCollapsed) {
         drawer.classList.remove('is-collapsed');
+        contar('cajon:faq');
         toggleBtn.setAttribute('aria-expanded', 'true');
       } else {
         drawer.classList.add('is-collapsed');
@@ -3479,6 +3490,7 @@
       const isCollapsed = drawer.classList.contains('is-collapsed');
       if (isCollapsed) {
         drawer.classList.remove('is-collapsed');
+        contar('cajon:galeria');
         toggleBtn.setAttribute('aria-expanded', 'true');
         // Recalculate and update poster carousel display when opened
         requestAnimationFrame(() => {
@@ -4012,6 +4024,9 @@
       const slug = ESSAY_SLUGS[essayId] || essayId.replace(/^essay-/, '');
       const fullUrl = window.location.origin + subRoute + '/' + slug;
 
+      const canalCompartir = { native: 'nativo', copy: 'copiar', whatsapp: 'whatsapp', telegram: 'telegram', x: 'x', facebook: 'facebook' }[platform] || 'otro';
+      contar('compartir:' + canalCompartir + ':' + essayId);
+
       const essayLabel = currentLang === 'es' ? 'Ensayo por ÆRIEL' : (currentLang === 'pt' ? 'Escrito por ÆRIEL' : 'Essay by ÆRIEL');
       const shareText = `${titleText} — ${essayLabel}`;
       const encodedText = encodeURIComponent(shareText);
@@ -4139,6 +4154,10 @@
        Pops up at random every 30 seconds, stays for 5 seconds, somewhere on edge of screen.
        Clicking takes user to ÆRIEL.NET/GAMES
        ========================================================================== */
+    // Métricas (analisis_metricas/sitio/contador.js): solo claves de una lista cerrada, sin contenido ni datos personales.
+    // No hace nada si el contador no está cargado.
+    function contar(clave) { try { if (window.aerielContar) window.aerielContar(clave); } catch (_) {} }
+
     let easterEggTimer = null;
     let easterEggHideTimer = null;
     let easterEggBtn = null;
@@ -4161,6 +4180,7 @@
       easterEggBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
+        contar('easter_egg');
         hideEasterEgg();
         openGamesSubsite(e);
       });

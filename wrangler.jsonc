@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aeriel-aiff",
+  "main": "analisis_metricas/worker.js",
+  "compatibility_date": "2026-07-28",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  // Base D1 creada para las métricas; migraciones de analisis_metricas/migraciones/ ya aplicadas.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "aeriel-metricas", "database_id": "865a0a62-45df-4161-a467-81e310102f91" }
+  ]
+}

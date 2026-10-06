@@ -10,7 +10,7 @@ const SHELL = [
   '/public/icons/icon-192.png'
 ];
 const MAX_BYTES = 2 * 1024 * 1024;
-const SKIP = [/^\/games\//, /^\/public\/audio\//, /^\/public\/video\//];
+const SKIP = [/^\/api\//, /^\/metricas/, /^\/games\//, /^\/public\/audio\//, /^\/public\/video\//];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
