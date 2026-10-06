@@ -2500,15 +2500,27 @@
           <span class="back-short" lang="es">← VOLVER</span>
           <span class="back-short" lang="pt">← VOLTAR</span>
         </button>
-        <div class="subsite-header-title">GAMES</div>
+        <div class="subsite-header-title">
+          <span lang="en">GAMES</span>
+          <span lang="es">JUEGOS</span>
+          <span lang="pt">JOGOS</span>
+        </div>
       </div>
     </div>
 
     <!-- Games Hero Title & Statement Section -->
     <section class="games-hero-section">
       <div class="container">
-        <h1 class="games-title">GAMES</h1>
-        <p class="games-intro-text">Sometimes I just vibe-code stuff for fun. Don't take this seriously and enjoy :D</p>
+        <h1 class="games-title">
+          <span lang="en">GAMES</span>
+          <span lang="es">JUEGOS</span>
+          <span lang="pt">JOGOS</span>
+        </h1>
+        <p class="games-intro-text">
+          <span lang="en">Sometimes I just vibe-code stuff for fun. Don't take this seriously and enjoy :D</span>
+          <span lang="es">A veces programo cosas por pura diversión, dejándome llevar. No lo tomes en serio y disfruta :D</span>
+          <span lang="pt">Às vezes eu só programo coisas por diversão, no embalo. Não leve isso a sério e aproveite :D</span>
+        </p>
       </div>
     </section>
 
@@ -2516,7 +2528,11 @@
     <section class="games-app-section">
       <div class="container">
         <div class="games-app-header">
-          <span class="games-app-badge">[ INTERACTIVE AUDIO LAB // WEB SYNTH ]</span>
+          <span class="games-app-badge">
+            <span lang="en">[ INTERACTIVE AUDIO LAB // WEB SYNTH ]</span>
+            <span lang="es">[ LABORATORIO DE AUDIO INTERACTIVO // SINTETIZADOR WEB ]</span>
+            <span lang="pt">[ LABORATÓRIO DE ÁUDIO INTERATIVO // SINTETIZADOR WEB ]</span>
+          </span>
           <h2 class="games-app-subtitle">TECHNO VARIANTS ENGINE</h2>
         </div>
         <div class="games-app-frame-wrapper">
@@ -3341,8 +3357,19 @@
       } else if (currentView === 'games') {
         const gamesFrame = document.querySelector('.games-app-iframe');
         if (gamesFrame && !gamesFrame.getAttribute('src')) gamesFrame.setAttribute('src', gamesFrame.getAttribute('data-src'));
-        const gamesTitle = "GAMES // ÆRIEL";
-        const gamesDesc = "Sometimes I just vibe-code stuff for fun. Don't take this seriously and enjoy :D";
+        const gLang = document.documentElement.getAttribute('lang') || 'en';
+        const gamesTitle = { en: 'GAMES // ÆRIEL', es: 'JUEGOS // ÆRIEL', pt: 'JOGOS // ÆRIEL' }[gLang] || 'GAMES // ÆRIEL';
+        const gamesDesc = {
+          en: "Sometimes I just vibe-code stuff for fun. Don't take this seriously and enjoy :D",
+          es: 'A veces programo cosas por pura diversión, dejándome llevar. No lo tomes en serio y disfruta :D',
+          pt: 'Às vezes eu só programo coisas por diversão, no embalo. Não leve isso a sério e aproveite :D'
+        }[gLang] || '';
+        const gamesFrameTitle = {
+          en: 'TECHNO VARIANTS ENGINE — Techno Subgenre Sound Lab & 16-Step Drum Machine',
+          es: 'TECHNO VARIANTS ENGINE — Laboratorio de sonido de subgéneros techno y caja de ritmos de 16 pasos',
+          pt: 'TECHNO VARIANTS ENGINE — Laboratório de som de subgêneros techno e caixa de ritmos de 16 passos'
+        }[gLang];
+        if (gamesFrame && gamesFrameTitle) gamesFrame.setAttribute('title', gamesFrameTitle);
         document.title = gamesTitle;
         if (canonicalEl) canonicalEl.setAttribute('href', origin + '/games');
         if (ogTitle) ogTitle.setAttribute('content', gamesTitle);

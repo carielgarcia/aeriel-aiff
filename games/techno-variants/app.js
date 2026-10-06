@@ -32,6 +32,7 @@
       'toast.playing': 'Playing @ {bpm} BPM • {name}', 'toast.loaded': 'Loaded: {name} ({bpm} BPM)', 'toast.cleared': 'Sequencer cleared', 'toast.random': 'Randomized groove',
       'toast.tempo': 'Tempo set to {bpm} BPM', 'toast.stopped': 'Stopped (rewound to step 1)', 'toast.noteSet': '{voice} step {step} set to {note}',
       'toast.genre': 'Style: {name}',
+      'aria.presets': 'Subgenre presets', 'aria.refsSection': 'Reference tracks', 'aria.performance': 'Performance', 'aria.sequencer': 'Sequencer', 'doc.title': 'Techno Variants Engine — Subgenre Sound Lab & 16-Step Drum Machine', 'label.self': 'Self-released',
       'toast.lite': 'Performance mode: reverb/delay reduced to keep timing', 'toast.suspended': 'Audio paused by the browser — press PLAY to resume', 'toast.restarted': 'Audio device restarted',
       'voice.kick': 'KICK DRUM', 'voice.bass': 'BASSLINE', 'voice.congaHigh': 'CONGA HIGH', 'voice.congaLow': 'CONGA LOW', 'voice.hat': 'HI-HAT / SHAKER', 'voice.openHat': 'OPEN HAT', 'voice.clap': 'CLAP', 'voice.synth': 'TECHNO STAB',
       'pad.kick': 'KICK', 'pad.bass': 'BASS', 'pad.congaHigh': 'CONGA HI', 'pad.congaLow': 'CONGA LO', 'pad.hat': 'HAT', 'pad.openHat': 'OPEN HAT', 'pad.clap': 'CLAP', 'pad.synth': 'STAB',
@@ -60,6 +61,7 @@
       'toast.playing': 'Sonando @ {bpm} BPM • {name}', 'toast.loaded': 'Cargado: {name} ({bpm} BPM)', 'toast.cleared': 'Secuenciador limpio', 'toast.random': 'Groove aleatorio',
       'toast.tempo': 'Tempo fijado en {bpm} BPM', 'toast.stopped': 'Detenido (vuelve al paso 1)', 'toast.noteSet': '{voice}: paso {step} = {note}',
       'toast.genre': 'Estilo: {name}',
+      'aria.presets': 'Presets de subgénero', 'aria.refsSection': 'Temas de referencia', 'aria.performance': 'Interpretación', 'aria.sequencer': 'Secuenciador', 'doc.title': 'Techno Variants Engine — Laboratorio de sonido de subgéneros y caja de ritmos de 16 pasos', 'label.self': 'Autoeditado',
       'toast.lite': 'Modo rendimiento: reverb/delay reducidos para mantener el tempo', 'toast.suspended': 'Audio en pausa por el navegador — pulsa REPRODUCIR para continuar', 'toast.restarted': 'Dispositivo de audio reiniciado',
       'voice.kick': 'BOMBO', 'voice.bass': 'LÍNEA DE BAJO', 'voice.congaHigh': 'CONGA AGUDA', 'voice.congaLow': 'CONGA GRAVE', 'voice.hat': 'HI-HAT / SHAKER', 'voice.openHat': 'HI-HAT ABIERTO', 'voice.clap': 'PALMAS', 'voice.synth': 'ACORDE TECHNO',
       'pad.kick': 'BOMBO', 'pad.bass': 'BAJO', 'pad.congaHigh': 'CONGA AG', 'pad.congaLow': 'CONGA GR', 'pad.hat': 'HAT', 'pad.openHat': 'HAT ABIERTO', 'pad.clap': 'PALMAS', 'pad.synth': 'ACORDE',
@@ -88,6 +90,7 @@
       'toast.playing': 'Tocando @ {bpm} BPM • {name}', 'toast.loaded': 'Carregado: {name} ({bpm} BPM)', 'toast.cleared': 'Sequenciador limpo', 'toast.random': 'Groove aleatório',
       'toast.tempo': 'Andamento definido em {bpm} BPM', 'toast.stopped': 'Parado (volta ao passo 1)', 'toast.noteSet': '{voice}: passo {step} = {note}',
       'toast.genre': 'Estilo: {name}',
+      'aria.presets': 'Presets de subgênero', 'aria.refsSection': 'Faixas de referência', 'aria.performance': 'Performance', 'aria.sequencer': 'Sequenciador', 'doc.title': 'Techno Variants Engine — Laboratório de som de subgêneros e caixa de ritmos de 16 passos', 'label.self': 'Autoeditado',
       'toast.lite': 'Modo desempenho: reverb/delay reduzidos para manter o tempo', 'toast.suspended': 'Áudio pausado pelo navegador — toque em TOCAR para continuar', 'toast.restarted': 'Dispositivo de áudio reiniciado',
       'voice.kick': 'BUMBO', 'voice.bass': 'LINHA DE BAIXO', 'voice.congaHigh': 'CONGA AGUDA', 'voice.congaLow': 'CONGA GRAVE', 'voice.hat': 'HI-HAT / SHAKER', 'voice.openHat': 'HI-HAT ABERTO', 'voice.clap': 'PALMAS', 'voice.synth': 'ACORDE TECHNO',
       'pad.kick': 'BUMBO', 'pad.bass': 'BAIXO', 'pad.congaHigh': 'CONGA AG', 'pad.congaLow': 'CONGA GR', 'pad.hat': 'HAT', 'pad.openHat': 'HAT ABERTO', 'pad.clap': 'PALMAS', 'pad.synth': 'ACORDE',
@@ -130,6 +133,7 @@
 
   function applyStaticI18n() {
     document.documentElement.lang = lang;
+    document.title = t('doc.title');
     document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.getAttribute('data-i18n')); });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria'))); });
   }
@@ -208,6 +212,8 @@
     }
     postHeight();
   }
+
+  const labelName = l => (l === 'Self-released' ? t('label.self') : l);
 
   function trackName(tr) {
     return tr.artist + ' – ' + tr.title + (tr.version ? ' (' + tr.version + ')' : '');
@@ -358,7 +364,7 @@
     g.tracks.forEach((tr, i) => {
       const o = document.createElement('option');
       o.value = i;
-      o.textContent = '[' + String(i + 1).padStart(2, '0') + '] ' + trackName(tr) + ' — ' + tr.label + ', ' + tr.year;
+      o.textContent = '[' + String(i + 1).padStart(2, '0') + '] ' + trackName(tr) + ' — ' + labelName(tr.label) + ', ' + tr.year;
       if (i === trackIdx) o.selected = true;
       select.appendChild(o);
     });
@@ -376,7 +382,7 @@
 
       const title = document.createElement('div'); title.className = 'ref-card-title'; title.textContent = trackName(tr);
       const meta = document.createElement('div'); meta.className = 'ref-card-meta';
-      meta.textContent = tr.label + ' • ' + tr.year + ' • ' + t('format.' + tr.format) + ' • ' +
+      meta.textContent = labelName(tr.label) + ' • ' + tr.year + ' • ' + t('format.' + tr.format) + ' • ' +
         (tr.bpm ? t('card.listed', { bpm: tr.bpm }) : t('card.style', { bpm: g.bpm }));
       const source = document.createElement('div'); source.className = 'ref-card-source';
       source.append(t('card.source') + ': ');
