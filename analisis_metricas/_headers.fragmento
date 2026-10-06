@@ -1,0 +1,9 @@
+# Se AGREGA a /_headers de la raíz SOLO tras el OK del dueño (ver LEEME.md).
+/metricas
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/metricas.js
+  Cache-Control: no-store
+/metricas.css
+  Cache-Control: no-store
