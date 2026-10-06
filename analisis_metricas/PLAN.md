@@ -1,7 +1,7 @@
 # PLAN — Métricas de aeriel.net (reconocimiento)
 
 ## Lo que se encontró en el repo (06-10-2026)
-- Sitio **100 % estático**: `index.html`, `style.css`, `sw.js`, carpetas `writing/ ensayos/ message/ mensaje/ ae000x/ games/ party/ wikidrogas/`.
+- Sitio **100 % estático**: `index.html`, `style.css`, `sw.js`, carpetas `writing/ ensayos/ message/ mensaje/ ae000x/ games/ party/`.
 - **No hay** `wrangler.toml`, `package.json`, `functions/` ni build. Hay `_headers` y `_redirects` (formato Cloudflare Pages / Netlify). `.gitignore` ya menciona `.dev.vars` y `.wrangler/`, y `AGENTS.md` habla de Netlify, así que **el hosting no está confirmado**.
 - `server: cloudflare` en la respuesta → hay proxy de Cloudflare delante.
 - **CSP actual** (`_headers`): `script-src 'self' 'unsafe-inline'`, `connect-src 'self' https://script.google.com …`. `POST /api/uso` es same-origin, así que **ya cabe**. Web Analytics con snippet exigiría sumar `static.cloudflareinsights.com` (script-src) y `cloudflareinsights.com` (connect-src).
