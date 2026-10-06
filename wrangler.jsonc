@@ -13,8 +13,9 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  // Base D1 creada para las métricas; migraciones de analisis_metricas/migraciones/ ya aplicadas.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "aeriel-metricas", "database_id": "865a0a62-45df-4161-a467-81e310102f91" }
   ]
-  // Cuando exista la base D1 (npx wrangler d1 create aeriel-metricas), descomentar con su id y aplicar
-  // analisis_metricas/migraciones/*.sql. Sin este binding /api/uso responde 204 sin guardar y /api/metricas 500.
-  // , "d1_databases": [{ "binding": "DB", "database_name": "aeriel-metricas", "database_id": "<ID>" }]
 }
