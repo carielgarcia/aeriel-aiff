@@ -22,8 +22,9 @@ METRICAS_CLAVE=clave-de-prueba
 FIRMA=firma-de-prueba
 PERMITIR_LOCAL=1
 VARS
+RAIZ_ABS="$(pwd)/$RAIZ"
 cd "$BASE"
-for f in ../"$RAIZ"/migraciones/*.sql; do npx wrangler d1 execute aeriel-metricas --local --file "$f"; done
+for f in "$RAIZ_ABS"/migraciones/*.sql; do npx wrangler d1 execute aeriel-metricas --local --file "$f"; done
 npx wrangler pages dev public --port 8788 --local &
 PID=$!; trap 'kill $PID 2>/dev/null || true' EXIT; sleep 6
 H='-H Origin:http://localhost:8788'
