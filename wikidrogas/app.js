@@ -441,6 +441,25 @@ const UI_TRANSLATIONS = {
     footerSourcesTitle: "Authoritative Partners",
     footerLegalTitle: "Medical Disclaimer",
     footerLegalText: "This wiki is for educational and harm reduction purposes only. It does not promote or encourage substance use. Using unsanctioned psychoactive substances always carries inherent health risks.",
+    skipLink: "Skip to main content",
+    wikiIndex: "Wiki Index",
+    ecosystemTitle: "ÆRIEL Ecosystem",
+    homeLink: "ÆRIEL Platform Home ↗",
+    writingLink: "Writing & Essays ↗",
+    partiesLink: "Æ000.X Parties ↗",
+    versionLine: "Version 1.0.0 • Peer-Reviewed Harm Reduction",
+    factOnset: "Onset",
+    factDuration: "Duration",
+    factDose: "Dose",
+    commonOral: "Common Oral:",
+    ruleLabel: "Rule:",
+    pageTitleSuffix: "Harm Reduction & Safety Wiki",
+    ariaHome: "WIKIDROGAS Homepage",
+    ariaLangSelector: "Language Selector",
+    ariaSearchFilters: "Search and Substance Filters",
+    ariaSearchInput: "Search psychoactive substances",
+    ariaFilterClass: "Filter by Substance Classification",
+    ariaProfiles: "Substance Profiles",
     copyrightNotice: "ÆRIEL // Wikidrogas — Safety, care, and sovereignty in electronic nightlife."
   },
   es: {
@@ -484,6 +503,25 @@ const UI_TRANSLATIONS = {
     footerSourcesTitle: "Fuentes Científicas",
     footerLegalTitle: "Aviso Médico",
     footerLegalText: "Este wiki tiene propósitos formativos y de reducción de riesgos. No incita al consumo de sustancias ilícitas, las cuales siempre entrañan riesgos biológicos individuales.",
+    skipLink: "Saltar al contenido principal",
+    wikiIndex: "Índice de la wiki",
+    ecosystemTitle: "Ecosistema ÆRIEL",
+    homeLink: "Inicio de la plataforma ÆRIEL ↗",
+    writingLink: "Ensayos ↗",
+    partiesLink: "Fiestas Æ000.X ↗",
+    versionLine: "Versión 1.0.0 • Reducción de daños revisada por pares",
+    factOnset: "Inicio",
+    factDuration: "Duración",
+    factDose: "Dosis",
+    commonOral: "Oral común:",
+    ruleLabel: "Regla:",
+    pageTitleSuffix: "Wiki de reducción de daños y seguridad",
+    ariaHome: "Inicio de WIKIDROGAS",
+    ariaLangSelector: "Selector de idioma",
+    ariaSearchFilters: "Búsqueda y filtros de sustancias",
+    ariaSearchInput: "Buscar sustancias psicoactivas",
+    ariaFilterClass: "Filtrar por clasificación de sustancia",
+    ariaProfiles: "Fichas de sustancias",
     copyrightNotice: "ÆRIEL // Wikidrogas — Cuidado, seguridad y soberanía en la noche electrónica."
   },
   pt: {
@@ -527,9 +565,59 @@ const UI_TRANSLATIONS = {
     footerSourcesTitle: "Parceiros & Pesquisas",
     footerLegalTitle: "Aviso Legal de Saúde",
     footerLegalText: "Esta enciclopédia possui finalidade informativa e educativa. O consumo de substâncias não regulamentadas envolve riscos à saúde e não é incentivado por este espaço.",
+    skipLink: "Ir para o conteúdo principal",
+    wikiIndex: "Índice da wiki",
+    ecosystemTitle: "Ecossistema ÆRIEL",
+    homeLink: "Início da plataforma ÆRIEL ↗",
+    writingLink: "Escritos ↗",
+    partiesLink: "Festas Æ000.X ↗",
+    versionLine: "Versão 1.0.0 • Redução de danos revisada por pares",
+    factOnset: "Início",
+    factDuration: "Duração",
+    factDose: "Dose",
+    commonOral: "Oral comum:",
+    ruleLabel: "Regra:",
+    pageTitleSuffix: "Wiki de redução de danos e segurança",
+    ariaHome: "Início do WIKIDROGAS",
+    ariaLangSelector: "Seletor de idioma",
+    ariaSearchFilters: "Busca e filtros de substâncias",
+    ariaSearchInput: "Buscar substâncias psicoativas",
+    ariaFilterClass: "Filtrar por classificação da substância",
+    ariaProfiles: "Fichas de substâncias",
     copyrightNotice: "ÆRIEL // Wikidrogas — Cuidado, segurança e soberania na noite eletrônica."
   }
 };
+
+// Locale-aware rendering of the short dosing/timeline strings that live in the (English) data table.
+const VALUE_I18N = {
+  "1–5 min (snorted)": { es: "1–5 min (esnifado)", pt: "1–5 min (cheirado)" },
+  "20–60 min (oral) / 5–15 min (snorted)": { es: "20–60 min (oral) / 5–15 min (esnifado)", pt: "20–60 min (oral) / 5–15 min (cheirado)" },
+  "1–3 min (snorted)": { es: "1–3 min (esnifado)", pt: "1–3 min (cheirado)" },
+  "5–10 seconds": { es: "5–10 segundos", pt: "5–10 segundos" },
+  "3–6 hrs": { es: "3–6 h", pt: "3–6 h" },
+  "1.5–3 hrs": { es: "1,5–3 h", pt: "1,5–3 h" },
+  "4–8 hrs": { es: "4–8 h", pt: "4–8 h" },
+  "8–12 hrs": { es: "8–12 h", pt: "8–12 h" },
+  "12–48 hrs": { es: "12–48 h", pt: "12–48 h" },
+  "1–3 hrs": { es: "1–3 h", pt: "1–3 h" },
+  "2–4 hrs": { es: "2–4 h", pt: "2–4 h" },
+  "12–24 hrs": { es: "12–24 h", pt: "12–24 h" },
+  "1.5–2.0 ml": { es: "1,5–2,0 ml", pt: "1,5–2,0 ml" },
+  "2–3 sniffs": { es: "2–3 inhalaciones", pt: "2–3 inalações" },
+  "1.5 mg × bodyweight in kg (max ~120mg)": { es: "1,5 mg × peso corporal en kg (máx. ~120 mg)", pt: "1,5 mg × peso corporal em kg (máx. ~120 mg)" },
+  "Start with bumps (<20mg), not lines.": { es: "Empieza con toques pequeños (<20 mg), no con rayas.", pt: "Comece com pequenas doses (<20 mg), não com carreiras." },
+  "Always measure with 1ml oral syringe. NEVER use bottle caps.": { es: "Mide siempre con una jeringa oral de 1 ml. NUNCA uses tapas de botella.", pt: "Meça sempre com uma seringa oral de 1 ml. NUNCA use tampas de garrafa." },
+  "Dry paste fully before measuring; wet paste contains toxic industrial solvents.": { es: "Deja secar por completo la pasta antes de medir; la pasta húmeda contiene solventes industriales tóxicos.", pt: "Deixe a pasta secar por completo antes de medir; a pasta úmida contém solventes industriais tóxicos." },
+  "Crush into fine powder; wash nasal cavity with saline spray.": { es: "Tritura hasta obtener un polvo fino; lava la cavidad nasal con spray salino.", pt: "Triture até obter um pó fino; lave a cavidade nasal com spray salino." },
+  "Extremely steep dose-response curve: 2mg drastically alters intensity.": { es: "Curva dosis-respuesta extremadamente pronunciada: 2 mg alteran drásticamente la intensidad.", pt: "Curva dose-resposta extremamente íngreme: 2 mg alteram drasticamente a intensidade." },
+  "Measured in micrograms (µg, 1/1,000,000 g). Street blotters are often unevenly dosed.": { es: "Se mide en microgramos (µg, 1/1.000.000 g). Los sellos de la calle suelen estar dosificados de forma desigual.", pt: "Medido em microgramas (µg, 1/1.000.000 g). Os selos de rua costumam ter dosagem desigual." },
+  "Inhaled vapor ONLY. NEVER DRINK LIQUID (lethal poison!).": { es: "Solo vapor inhalado. NUNCA BEBAS EL LÍQUIDO (¡veneno letal!).", pt: "Somente vapor inalado. NUNCA BEBA O LÍQUIDO (veneno letal!)." }
+};
+function loc(str, lang) {
+  if (lang === "en") return str;
+  const hit = VALUE_I18N[str];
+  return hit ? hit[lang] : str;
+}
 
 class WikidrogasApp {
   constructor() {
@@ -539,12 +627,18 @@ class WikidrogasApp {
     
     this.initElements();
     this.bindEvents();
-    this.render();
+    this.setLanguage(this.currentLang, false);   // sets <html lang>, button state and renders without persisting a detected default
   }
 
   detectInitialLanguage() {
-    const saved = localStorage.getItem("wikidrogas_lang");
-    if (saved && ["en", "es", "pt"].includes(saved)) return saved;
+    const valid = (l) => ["en", "es", "pt"].includes(l);
+    const q = new URLSearchParams(window.location.search).get("lang");
+    if (q && valid(q.toLowerCase())) return q.toLowerCase();
+    // the wiki's own choice first, then the language chosen on the main site
+    let saved = null, site = null;
+    try { saved = localStorage.getItem("wikidrogas_lang"); site = localStorage.getItem("preferred-lang"); } catch (e) { /* storage unavailable */ }
+    if (valid(saved)) return saved;
+    if (valid(site)) return site;
     const browserLang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
     if (browserLang.startsWith("es")) return "es";
     if (browserLang.startsWith("pt")) return "pt";
@@ -596,10 +690,12 @@ class WikidrogasApp {
     });
   }
 
-  setLanguage(lang) {
+  setLanguage(lang, persist = true) {
     if (!["en", "es", "pt"].includes(lang)) return;
     this.currentLang = lang;
-    localStorage.setItem("wikidrogas_lang", lang);
+    if (persist) {
+      try { localStorage.setItem("wikidrogas_lang", lang); localStorage.setItem("preferred-lang", lang); } catch (e) { /* storage unavailable */ }
+    }
     document.documentElement.lang = lang;
     
     this.langBtns.forEach(btn => {
@@ -619,13 +715,21 @@ class WikidrogasApp {
     const t = UI_TRANSLATIONS[this.currentLang];
     
     // Page Title
-    document.title = `${t.siteTitle} // ÆRIEL — Harm Reduction & Safety Wiki`;
+    document.title = `${t.siteTitle} // ÆRIEL — ${t.pageTitleSuffix}`;
 
     // Elements with data-i18n
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const key = el.dataset.i18n;
       if (t[key]) {
         el.textContent = t[key];
+      }
+    });
+
+    // Elements with data-i18n-aria (accessibility labels)
+    document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+      const key = el.dataset.i18nAria;
+      if (t[key]) {
+        el.setAttribute("aria-label", t[key]);
       }
     });
 
@@ -700,16 +804,16 @@ class WikidrogasApp {
 
         <div class="facts-table">
           <div class="fact-item">
-            <span class="fact-label">Onset</span>
-            <span class="fact-value">${item.timeline.onset}</span>
+            <span class="fact-label">${t.factOnset}</span>
+            <span class="fact-value">${loc(item.timeline.onset, this.currentLang)}</span>
           </div>
           <div class="fact-item">
-            <span class="fact-label">Duration</span>
-            <span class="fact-value">${item.timeline.duration}</span>
+            <span class="fact-label">${t.factDuration}</span>
+            <span class="fact-value">${loc(item.timeline.duration, this.currentLang)}</span>
           </div>
           <div class="fact-item">
-            <span class="fact-label">Dose</span>
-            <span class="fact-value">${item.dosimetry.oral.common}</span>
+            <span class="fact-label">${t.factDose}</span>
+            <span class="fact-value">${loc(item.dosimetry.oral.common, this.currentLang)}</span>
           </div>
         </div>
 
@@ -725,7 +829,7 @@ class WikidrogasApp {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
                 ${t.dosimetryLabel}
               </h4>
-              <p class="info-text"><strong>Common Oral:</strong> ${item.dosimetry.oral.common} | <strong>Rule:</strong> ${item.dosimetry.formula}</p>
+              <p class="info-text"><strong>${t.commonOral}</strong> ${loc(item.dosimetry.oral.common, this.currentLang)} | <strong>${t.ruleLabel}</strong> ${loc(item.dosimetry.formula, this.currentLang)}</p>
             </div>
 
             <div class="risk-warning-box">

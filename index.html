@@ -148,8 +148,8 @@
             <div class="drawer-header-bar">
               <div class="player-header" id="sc-stream-label">[ CURRENT_STREAM // Æ000.5 ]</div>
               <button type="button" class="drawer-toggle-btn" id="sc-drawer-toggle" onclick="toggleSoundCloudDrawer()" aria-expanded="true" aria-controls="sc-drawer-content">
-                <span class="toggle-text-open">[ HIDE STREAM ▲ ]</span>
-                <span class="toggle-text-closed">[ SHOW STREAM ▼ ]</span>
+                <span class="toggle-text-open"><span lang="en">[ HIDE STREAM ▲ ]</span><span lang="es">[ OCULTAR STREAM ▲ ]</span><span lang="pt">[ OCULTAR STREAM ▲ ]</span></span>
+                <span class="toggle-text-closed"><span lang="en">[ SHOW STREAM ▼ ]</span><span lang="es">[ MOSTRAR STREAM ▼ ]</span><span lang="pt">[ MOSTRAR STREAM ▼ ]</span></span>
               </button>
             </div>
             
@@ -271,7 +271,7 @@
               <div class="intent-portrait-media">
                 <img 
                   src="./public/images/press/aeriel_portrait.jpg" 
-                  alt="ÆRIEL — Artist Portrait" 
+                  alt="ÆRIEL — Artist Portrait" data-alt-en="ÆRIEL — Artist Portrait" data-alt-es="ÆRIEL — Retrato artístico" data-alt-pt="ÆRIEL — Retrato artístico" 
                   class="intent-portrait-img"
                   width="1024" 
                   height="1024" 
@@ -2623,6 +2623,50 @@
 
   <!-- Language Selection and Form Transmission Handler Scripts -->
   <script>
+    // ---- aria-label translation tables (declared first: used by applyPlaceholders during early setup) ----
+    const ARIA_I18N = {
+      'ÆRIEL Home Page': { es: 'Página de inicio de ÆRIEL', pt: 'Página inicial da ÆRIEL' },
+      'Site destinations': { es: 'Destinos del sitio', pt: 'Destinos do site' },
+      'On this page': { es: 'En esta página', pt: 'Nesta página' },
+      'Primary': { es: 'Principal', pt: 'Principal' },
+      'Language Selector': { es: 'Selector de idioma', pt: 'Seletor de idioma' },
+      'ÆRIEL on SoundCloud': { es: 'ÆRIEL en SoundCloud', pt: 'ÆRIEL no SoundCloud' },
+      'ÆRIEL on Instagram': { es: 'ÆRIEL en Instagram', pt: 'ÆRIEL no Instagram' },
+      'ÆRIEL on Bandcamp': { es: 'ÆRIEL en Bandcamp', pt: 'ÆRIEL no Bandcamp' },
+      'ÆRIEL on YouTube': { es: 'ÆRIEL en YouTube', pt: 'ÆRIEL no YouTube' },
+      'Previous Poster': { es: 'Afiche anterior', pt: 'Cartaz anterior' },
+      'Next Poster': { es: 'Afiche siguiente', pt: 'Próximo cartaz' },
+      'Gallery Scroll Progress': { es: 'Progreso de la galería', pt: 'Progresso da galeria' },
+      'Invitation Archives Gallery': { es: 'Galería del archivo de invitaciones', pt: 'Galeria do arquivo de convites' },
+      'Swipeable posters gallery': { es: 'Galería de afiches deslizable', pt: 'Galeria de cartazes deslizável' },
+      'Article Reader': { es: 'Lector de ensayos', pt: 'Leitor de ensaios' },
+      'Essay navigation': { es: 'Navegación entre ensayos', pt: 'Navegação entre ensaios' },
+      'Share on Instagram': { es: 'Compartir en Instagram', pt: 'Compartilhar no Instagram' },
+      'Share on WhatsApp': { es: 'Compartir en WhatsApp', pt: 'Compartilhar no WhatsApp' },
+      'Share on Bluesky': { es: 'Compartir en Bluesky', pt: 'Compartilhar no Bluesky' },
+      'Share on X': { es: 'Compartir en X', pt: 'Compartilhar no X' },
+      'Share on Facebook': { es: 'Compartir en Facebook', pt: 'Compartilhar no Facebook' },
+      'Copy Essay Link': { es: 'Copiar enlace del ensayo', pt: 'Copiar link do ensaio' },
+      'Poster Fullscreen View': { es: 'Vista del afiche a pantalla completa', pt: 'Visualização do cartaz em tela cheia' },
+      'Close Poster Lightbox': { es: 'Cerrar visor de afiches', pt: 'Fechar visualizador de cartazes' },
+      'Back to Top': { es: 'Volver arriba', pt: 'Voltar ao topo' }
+    };
+    const ESSAY_TITLES_I18N = {
+      'The Inevitable Economy of Nightlife': { es: 'La inevitable economía de la noche', pt: 'A inevitável economia da noite' },
+      'The Emancipation of Desire and the Politics of Sex-Positive Spaces': { es: 'La emancipación del deseo y la política de los espacios sex-positivos', pt: 'A emancipação do desejo e a política dos espaços sex-positivos' },
+      'Beyond Moral Panic: Harm Reduction as an Ethical Imperative in Nightlife': { es: 'Más allá del pánico moral: la reducción de daños como imperativo ético en la noche', pt: 'Além do pânico moral: a redução de danos como imperativo ético na noite' }
+    };
+    const ARIA_PATTERNS = [
+      { re: /^Read essay: (.+)$/, es: (m) => 'Leer ensayo: ' + ((ESSAY_TITLES_I18N[m[1]] || {}).es || m[1]), pt: (m) => 'Ler ensaio: ' + ((ESSAY_TITLES_I18N[m[1]] || {}).pt || m[1]) },
+      { re: /^Open essay: (.+)$/, es: (m) => 'Abrir ensayo: ' + ((ESSAY_TITLES_I18N[m[1]] || {}).es || m[1]), pt: (m) => 'Abrir ensaio: ' + ((ESSAY_TITLES_I18N[m[1]] || {}).pt || m[1]) },
+      { re: /^Poster (\d+) of (\d+): (.+)$/, es: (m) => 'Afiche ' + m[1] + ' de ' + m[2] + ': ' + m[3], pt: (m) => 'Cartaz ' + m[1] + ' de ' + m[2] + ': ' + m[3] },
+      { re: /^(.+) - Open Fullscreen$/, es: (m) => m[1] + ' - Abrir a pantalla completa', pt: (m) => m[1] + ' - Abrir em tela cheia' }
+    ];
+
+    // Localized Games routes: EN /games, ES /juegos, PT /jogos (static crawler stubs exist for all three)
+    function gamesPath(lang) { return lang === 'es' ? '/juegos' : (lang === 'pt' ? '/jogos' : '/games'); }
+    function isGamesPath(p) { return /^\/(games|juegos|jogos)(\/|$)/.test(p); }
+
     function scrollBehavior() {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     }
@@ -3371,13 +3415,16 @@
         }[gLang];
         if (gamesFrame && gamesFrameTitle) gamesFrame.setAttribute('title', gamesFrameTitle);
         document.title = gamesTitle;
-        if (canonicalEl) canonicalEl.setAttribute('href', origin + '/games');
+        const gPath = gamesPath(gLang);
+        if (canonicalEl) canonicalEl.setAttribute('href', origin + gPath);
         if (ogTitle) ogTitle.setAttribute('content', gamesTitle);
         if (twTitle) twTitle.setAttribute('content', gamesTitle);
         if (ogDesc) ogDesc.setAttribute('content', gamesDesc);
         if (twDesc) twDesc.setAttribute('content', gamesDesc);
         if (metaDesc) metaDesc.setAttribute('content', gamesDesc);
-        if (ogUrl) ogUrl.setAttribute('content', origin + '/games');
+        if (ogUrl) ogUrl.setAttribute('content', origin + gPath);
+        const curG = window.location.pathname.toLowerCase();
+        if (isGamesPath(curG) && !curG.startsWith(gPath)) history.replaceState(history.state, '', gPath);
       } else {
         const homeTitle = "ÆRIEL | TECHNO, TRANCE, HOUSE, ITALO DISCO";
         const homeDescs = {
@@ -3404,12 +3451,45 @@
       document.querySelectorAll('[data-placeholder-en]').forEach(el => {
         el.setAttribute('placeholder', el.getAttribute('data-placeholder-' + lang) || el.getAttribute('data-placeholder-en'));
       });
+      document.querySelectorAll('[data-alt-en]').forEach(el => {
+        el.setAttribute('alt', el.getAttribute('data-alt-' + lang) || el.getAttribute('data-alt-en'));
+      });
+      applyAriaLabels(lang);
     }
+
+    // Accessibility labels (aria-label) follow the page language. The English text in the markup is the
+    // source of truth (kept in data-aria-en); translations live here so no element needs duplicate markup.
+    function translateAria(en, lang) {
+      if (lang === 'en') return en;
+      const hit = ARIA_I18N[en];
+      if (hit) return hit[lang] || en;
+      for (const p of ARIA_PATTERNS) {
+        const m = en.match(p.re);
+        if (m) return p[lang](m);
+      }
+      return en;
+    }
+
+    function applyAriaLabels(lang) {
+      lang = lang || document.documentElement.getAttribute('lang') || 'en';
+      document.querySelectorAll('[aria-label]').forEach(el => {
+        if (el.closest('template')) return;
+        if (!el.hasAttribute('data-aria-en')) {
+          // elements whose label is managed elsewhere (already localized) are left alone
+          const cur = el.getAttribute('aria-label');
+          if (translateAria(cur, 'es') === cur && !ARIA_I18N[cur]) return;
+          el.setAttribute('data-aria-en', cur);
+        }
+        el.setAttribute('aria-label', translateAria(el.getAttribute('data-aria-en'), lang));
+      });
+    }
+    window.applyAriaLabels = applyAriaLabels;
 
     function setLanguage(lang, persist = true) {
       const html = document.documentElement;
       html.setAttribute('lang', lang);
       applyPlaceholders(lang);
+      try { updateSoundCloudDrawerForMode(localStorage.getItem('theme-mode') || 'default'); } catch (e) { /* theme not ready yet */ }
       if (persist) localStorage.setItem('preferred-lang', lang);
       
       // Update active button state
@@ -3443,7 +3523,9 @@
 
       const labelEl = document.getElementById('sc-stream-label');
       if (labelEl) {
-        labelEl.textContent = `[ CURRENT_STREAM // ${activeTitle} ]`;
+        const sLang = document.documentElement.getAttribute('lang') || 'en';
+        const streamWord = { en: 'CURRENT_STREAM', es: 'STREAM_ACTUAL', pt: 'STREAM_ATUAL' }[sLang] || 'CURRENT_STREAM';
+        labelEl.textContent = `[ ${streamWord} // ${activeTitle} ]`;
       }
     }
 
@@ -3845,8 +3927,9 @@
       updatePageTitle();
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: scrollBehavior() });
-        if (window.location.pathname.toLowerCase() !== '/games') {
-          history.pushState({ view: 'games' }, '', '/games');
+        const gp = gamesPath(document.documentElement.getAttribute('lang') || 'en');
+        if (!isGamesPath(window.location.pathname.toLowerCase())) {
+          history.pushState({ view: 'games' }, '', gp);
         }
       }, 40);
     }
@@ -3989,6 +4072,7 @@
         history.pushState({ modal: 'article', essayId: articleId, view: 'writing', pushed: true }, '', essayPath);
       }
       updatePageTitle();
+      if (window.applyAriaLabels) applyAriaLabels();   // share buttons etc. are injected on open
     }
 
     function closeArticleReader(fromPopState = false) {
@@ -4304,9 +4388,10 @@
 
       // 2. Check Spanish-specific URL routes (/ae000x/es, /ensayos)
       const path = window.location.pathname.toLowerCase();
-      if (path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || path.startsWith('/writing/es') || path.startsWith('/mensaje')) {
+      if (path.startsWith('/ae000x/es') || path.startsWith('/ensayos') || path.startsWith('/writing/es') || path.startsWith('/mensaje') || path.startsWith('/juegos')) {
         return 'es';
       }
+      if (path.startsWith('/jogos')) return 'pt';
 
       // 3. Check explicit user preference stored in localStorage
       const savedLang = localStorage.getItem('preferred-lang');
@@ -4368,9 +4453,9 @@
           const targetPath = isSpanishRoute ? '/ae000x/es' : '/ae000x';
           history.replaceState({ view: 'ae000x' }, '', targetPath);
         }
-      } else if (path.startsWith('/games') || baseHash.includes('games')) {
+      } else if (isGamesPath(path) || baseHash.includes('games')) {
         document.body.setAttribute('data-view', 'games');
-        history.replaceState({ view: 'games' }, '', '/games');
+        history.replaceState({ view: 'games' }, '', gamesPath(document.documentElement.getAttribute('lang') || 'en'));
       } else if (path.startsWith('/ensayos') || path.startsWith('/writing') || baseHash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
         if (targetEssayId && document.getElementById(targetEssayId)) {
@@ -4492,8 +4577,10 @@
       } else if ((e.state && e.state.view === 'ae000x') || path.startsWith('/ae000x') || baseHash.includes('ae000x')) {
         document.body.setAttribute('data-view', 'ae000x');
         if (path.startsWith('/ae000x/es')) setLanguage('es', false);
-      } else if ((e.state && e.state.view === 'games') || path.startsWith('/games') || baseHash.includes('games')) {
+      } else if ((e.state && e.state.view === 'games') || isGamesPath(path) || baseHash.includes('games')) {
         document.body.setAttribute('data-view', 'games');
+        if (path.startsWith('/juegos')) setLanguage('es', false);
+        else if (path.startsWith('/jogos')) setLanguage('pt', false);
       } else if ((e.state && e.state.view === 'writing') || path.startsWith('/ensayos') || path.startsWith('/writing') || baseHash.includes('writing') || targetEssayId) {
         document.body.setAttribute('data-view', 'writing');
         if (path.startsWith('/ensayos')) setLanguage('es', false);

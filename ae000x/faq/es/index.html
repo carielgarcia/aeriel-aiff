@@ -580,6 +580,20 @@
         btn.classList.toggle('active', btn.id === 'btn-lang-' + lang);
       });
 
+      // Accessibility labels follow the language (English text in markup is the source of truth)
+      var ariaDict = {
+        'ÆRIEL Home Page': { es: 'Página de inicio de ÆRIEL', pt: 'Página inicial da ÆRIEL' },
+        'Site destinations': { es: 'Destinos del sitio', pt: 'Destinos do site' },
+        'Language Selector': { es: 'Selector de idioma', pt: 'Seletor de idioma' },
+        'Primary': { es: 'Principal', pt: 'Principal' }
+      };
+      document.querySelectorAll('[aria-label]').forEach(function(el) {
+        var en = el.getAttribute('data-aria-en') || el.getAttribute('aria-label');
+        if (!ariaDict[en]) return;
+        el.setAttribute('data-aria-en', en);
+        el.setAttribute('aria-label', lang === 'en' ? en : ariaDict[en][lang]);
+      });
+
       var titles = {
         en: 'Æ000.X FAQ // FREQUENTLY ASKED QUESTIONS — ÆRIEL',
         es: 'Æ000.X FAQ // PREGUNTAS FRECUENTES — ÆRIEL',

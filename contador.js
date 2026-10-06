@@ -59,7 +59,7 @@
     if (/^\/(ae000x)/.test(p) || /ae000x-subsite/.test(h)) return 'ae000x';
     if (/^\/(writing|ensayos)/.test(p) || /writing-subsite|article-reader/.test(h)) return 'writing';
     if (/^\/(message|mensaje)/.test(p) || /message-subsite/.test(h)) return 'message';
-    if (/^\/games/.test(p) || /games/.test(h)) return 'games';
+    if (/^\/(games|juegos|jogos)/.test(p) || /games/.test(h)) return 'games';
     return 'inicio';
   };
 

@@ -35,12 +35,12 @@
 </head>
 <body>
   <!-- a11y Skip Link -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <a href="#main-content" class="skip-link" data-i18n="skipLink">Skip to main content</a>
 
   <!-- Main Site Header -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a href="/wikidrogas" class="brand-wrapper" aria-label="WIKIDROGAS Homepage">
+      <a href="/wikidrogas" class="brand-wrapper" aria-label="WIKIDROGAS Homepage" data-i18n-aria="ariaHome">
         <div class="brand-logo-badge" aria-hidden="true">W</div>
         <div class="brand-titles">
           <span class="brand-title" data-i18n="siteTitle">WIKIDROGAS</span>
@@ -59,7 +59,7 @@
         </a>
 
         <!-- Language Switcher Bar -->
-        <nav class="lang-selector" aria-label="Language Selector">
+        <nav class="lang-selector" aria-label="Language Selector" data-i18n-aria="ariaLangSelector">
           <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
           <button type="button" class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
           <button type="button" class="lang-btn" data-lang="pt" aria-pressed="false">PT</button>
@@ -91,7 +91,7 @@
   </section>
 
   <!-- Search & Category Filter Section -->
-  <section class="search-filter-section" aria-label="Search and Substance Filters">
+  <section class="search-filter-section" aria-label="Search and Substance Filters" data-i18n-aria="ariaSearchFilters">
     <div class="container search-bar-wrapper">
       <div class="search-input-box">
         <svg class="search-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -101,12 +101,12 @@
           class="substance-search-input" 
           placeholder="Search substance name, street nickname, or keyword (e.g., Molly, K-Hole, GBL)..." 
           data-i18n-placeholder="searchPlaceholder"
-          aria-label="Search psychoactive substances">
+          aria-label="Search psychoactive substances" data-i18n-aria="ariaSearchInput">
         <button type="button" id="search-clear" class="search-clear-btn" aria-label="Clear search input">×</button>
       </div>
 
       <!-- Quick Filter Chips -->
-      <div class="category-chips" role="group" aria-label="Filter by Substance Classification">
+      <div class="category-chips" role="group" aria-label="Filter by Substance Classification" data-i18n-aria="ariaFilterClass">
         <button type="button" class="filter-chip active" data-category="all" data-i18n="filterAll">All Substances</button>
         <button type="button" class="filter-chip" data-category="empathogen" data-i18n="filterEmpathogen">Empathogens</button>
         <button type="button" class="filter-chip" data-category="dissociative" data-i18n="filterDissociative">Dissociatives</button>
@@ -122,12 +122,12 @@
   <main id="main-content" class="wiki-main-section">
     <div class="container">
       <div class="section-headline">
-        <h2 class="section-title">Wiki Index</h2>
+        <h2 class="section-title" data-i18n="wikiIndex">Wiki Index</h2>
         <span id="results-count" class="results-count" aria-live="polite">Loading substances...</span>
       </div>
 
       <!-- Grid populated by JS -->
-      <section id="substances-grid" class="substances-grid" aria-label="Substance Profiles">
+      <section id="substances-grid" class="substances-grid" aria-label="Substance Profiles" data-i18n-aria="ariaProfiles">
         <!-- Rendered dynamically by app.js -->
       </section>
     </div>
@@ -196,18 +196,18 @@
         </div>
 
         <div class="footer-navigation">
-          <h3>ÆRIEL Ecosystem</h3>
+          <h3 data-i18n="ecosystemTitle">ÆRIEL Ecosystem</h3>
           <ul class="sources-list">
-            <li><a href="/">ÆRIEL Platform Home ↗</a></li>
-            <li><a href="/#writing-subsite">Writing & Essays ↗</a></li>
-            <li><a href="/#ae000x-subsite">Æ000.X Parties ↗</a></li>
+            <li><a href="/" data-i18n="homeLink">ÆRIEL Platform Home ↗</a></li>
+            <li><a href="/#writing-subsite" data-i18n="writingLink">Writing & Essays ↗</a></li>
+            <li><a href="/#ae000x-subsite" data-i18n="partiesLink">Æ000.X Parties ↗</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
         <span data-i18n="copyrightNotice">ÆRIEL // Wikidrogas — Safety, care, and sovereignty in electronic nightlife.</span>
-        <span>Version 1.0.0 • Peer-Reviewed Harm Reduction</span>
+        <span data-i18n="versionLine">Version 1.0.0 • Peer-Reviewed Harm Reduction</span>
       </div>
     </div>
   </footer>
