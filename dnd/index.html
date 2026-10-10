@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Machiavell: player guide</title>
+<meta name="description" content="An interactive guide to Machiavell, a Wood Elf Bard of the College of Lore: track slots and HP, roll with the right bonuses, and learn what every spell does.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B1D1A">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ÆRIEL">
+<meta property="og:title" content="Machiavell: player guide">
+<meta property="og:description" content="Interactive D&D guide for a Wood Elf Bard: spells, slots, dice and a first-turn walkthrough.">
+<meta property="og:url" content="https://aeriel.net/dnd">
+<link rel="canonical" href="https://aeriel.net/dnd">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230B1D1A'/><text y='72' x='50' font-size='64' text-anchor='middle' fill='%23EEE7D3' font-family='Georgia,serif' font-style='italic'>M</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B1D1A; --panel:#12302A; --panel2:#194039; --ink:#EEE7D3; --dim:#B2AB94; --line:rgba(238,231,211,.15);
+  --sage:#8CC2A8; --violet:#AB9CF4; --brass:#D8AC4F; --ledger:#EE7B64; --focus:#F6DC8E;
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --sans:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --nav-h:62px;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 24px)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;margin:0}
+p{margin:0 0 .7em;max-width:66ch}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- status header ---------- */
+.status{padding:12px 0 14px}
+.mini{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--panel);border-bottom:1px solid var(--line);display:none;padding-top:env(safe-area-inset-top)}
+.mini.on{display:block}
+.mini button{display:flex;width:100%;max-width:860px;margin:0 auto;background:none;border:0;padding:8px 16px;gap:16px;align-items:center;justify-content:space-between;min-height:46px;text-align:left}
+.mini b{font-family:var(--serif);font-size:20px;white-space:nowrap}
+.mini span{font-size:14px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.id-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.name{font-size:30px;font-style:italic;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:14px;margin-top:2px}
+.hpbtn{background:var(--panel);border:1px solid var(--line);border-radius:3px 12px 3px 12px;padding:6px 14px 8px;text-align:right;min-width:128px}
+.hpbtn .lbl{display:block;font-size:12px;color:var(--dim)}
+.hpbtn .num{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.hpbtn .num small{font-size:16px;color:var(--dim);font-weight:400}
+.hpbar{height:4px;background:rgba(238,231,211,.12);margin-top:6px;border-radius:2px;overflow:hidden}
+.hpbar i{display:block;height:100%;background:var(--sage)}
+.hpbar.low i{background:var(--ledger)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;margin-top:10px;overflow:hidden}
+.stats div{background:var(--bg);padding:5px 6px}
+.stats b{display:block;font-family:var(--serif);font-size:20px;line-height:1.1}
+.stats span{font-size:12px;color:var(--dim)}
+.res{display:flex;flex-wrap:wrap;gap:2px 16px;margin-top:10px;align-items:center}
+.pool{display:flex;align-items:center;gap:6px}
+.pool .t{font-size:13px;color:var(--dim);margin-right:2px}
+.pip{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;background:currentColor;padding:0;position:relative}
+.pip.off{background:transparent;border-style:dashed;opacity:.5}
+.pip[data-c=slot]{color:var(--ink)} .pip[data-c=bi]{color:var(--brass)} .pip[data-c=free]{color:var(--violet)}
+.pip::after{content:"";position:absolute;inset:-9px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border-radius:999px;border:1px solid var(--line);background:var(--panel);padding:2px 12px;font-size:14px;display:inline-flex;gap:8px;align-items:center}
+.chip.conc{border-color:var(--violet);color:var(--violet)}
+.chip.warn{border-color:var(--ledger);color:var(--ledger)}
+.chip button{background:none;border:0;padding:0 2px;text-decoration:underline;font-size:13px}
+
+/* ---------- nav ---------- */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--panel);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs button{background:none;border:0;height:var(--nav-h);font-size:14px;color:var(--dim);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;border-top:3px solid transparent}
+nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav.tabs button[aria-current=page]{color:var(--ink);border-top-color:var(--ink)}
+@media(min-width:760px){
+  nav.tabs{position:static;bottom:auto;grid-template-columns:repeat(5,auto);justify-content:start;gap:4px;background:none;border:0;padding:0}
+  nav.tabs button{flex-direction:row;gap:8px;height:46px;padding:0 18px;border-top:0;border-bottom:3px solid transparent;font-size:16px}
+  nav.tabs button[aria-current=page]{border-bottom-color:var(--ink)}
+  body{padding-bottom:40px}
+  .navbar{border-bottom:1px solid var(--line);margin-bottom:18px}
+}
+.navbar{}
+
+/* ---------- generic ---------- */
+main{padding-top:6px}
+.sect{margin:26px 0 12px}
+.sect h2{font-size:26px}
+.sect p.lead{color:var(--dim);margin:6px 0 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:3px 12px 3px 12px;padding:14px 16px;margin:10px 0}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:10px 20px;font-weight:700;min-height:44px}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn.sm{padding:6px 14px;min-height:36px;font-size:15px}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.danger{background:var(--ledger);color:#2a0d07}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{background:none;border:0;padding:8px 16px;min-height:40px;color:var(--dim)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);font-weight:700}
+.muted{color:var(--dim)}
+.tag{display:inline-block;border-radius:999px;font-size:13px;padding:1px 10px;border:1px solid currentColor;white-space:nowrap}
+.tag.none{color:var(--sage)} .tag.free{color:var(--violet)} .tag.bi{color:var(--brass)} .tag.slot{color:var(--ink)}
+
+/* ---------- turn bar (the signature) ---------- */
+.bar{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;border:2px solid var(--ink);border-radius:2px;margin:12px 0 6px;background:var(--bg)}
+.beat{background:none;border:0;border-right:2px solid var(--ink);padding:12px 8px 10px;text-align:left;position:relative;min-height:84px;display:flex;flex-direction:column;justify-content:space-between}
+.beat:last-child{border-right:0}
+.beat b{font-family:var(--serif);font-size:20px;line-height:1.1;font-weight:600}
+.beat small{font-size:13px;color:var(--dim);display:block;margin-top:2px}
+.beat .st{font-size:13px;font-weight:700;color:var(--sage)}
+.beat[aria-pressed=true]{background:repeating-linear-gradient(135deg,transparent 0 7px,rgba(238,231,211,.13) 7px 9px);color:var(--dim)}
+.beat[aria-pressed=true] b{text-decoration:line-through;text-decoration-thickness:2px}
+.beat[aria-pressed=true] .st{color:var(--dim)}
+.barnote{font-size:14px;color:var(--dim);margin:0 0 10px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.switch{display:flex;align-items:center;gap:10px}
+.switch button{width:46px;height:28px;border-radius:999px;border:2px solid var(--ink);background:transparent;position:relative;padding:0}
+.switch button::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--ink);transition:transform .15s}
+.switch button[aria-pressed=true]{background:var(--ink)}
+.switch button[aria-pressed=true]::after{transform:translateX(18px);background:var(--bg)}
+
+/* ---------- intents ---------- */
+.intents{display:flex;flex-wrap:wrap;gap:8px}
+.intents button{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:9px 16px;min-height:44px}
+.intents button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:700}
+.sug{display:flex;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:10px 0}
+.sug:first-child{border-top:0}
+.sug .tx b{font-family:var(--serif);font-size:19px;font-weight:600}
+.sug .tx p{margin:2px 0 0;color:var(--dim);font-size:15px}
+
+/* ---------- power cards ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--dim);margin:8px 0 4px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--ink);border-radius:3px 10px 10px 3px;margin:10px 0;overflow:hidden}
+.card[data-k=none]{border-left-color:var(--sage)} .card[data-k=free]{border-left-color:var(--violet)} .card[data-k=bi]{border-left-color:var(--brass)} .card[data-k=slot]{border-left-color:var(--ink)}
+.card .top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;padding:14px 16px 8px}
+.card h3{font-size:23px}
+.card .one{margin:4px 0 0;color:var(--ink);font-size:16px}
+.facts{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:4px 22px;padding:0 16px 10px;margin:0}
+.facts div{min-width:0}
+.facts dt{font-size:12px;color:var(--dim)}
+.facts dd{margin:0;font-size:15px;font-weight:700}
+@media(max-width:520px){.facts{grid-template-columns:repeat(2,1fr)}}
+.card details{border-top:1px solid var(--line)}
+.card summary{padding:10px 16px;cursor:pointer;color:var(--dim);list-style:none;min-height:44px;display:flex;align-items:center}
+.card summary::-webkit-details-marker{display:none}
+.card summary::before{content:"+";font-family:var(--serif);font-size:22px;width:22px;color:var(--ink)}
+.card details[open] summary::before{content:"\2212"}
+.card .body{padding:2px 16px 14px}
+.card .body h4{font-family:var(--serif);font-size:17px;margin:12px 0 4px;font-weight:600}
+.card .body ul{margin:0;padding-left:20px}
+.card .body li{margin:3px 0;max-width:64ch}
+.card.blocked{opacity:.78}
+.note-s{font-size:14px;color:var(--ledger);margin-top:4px}
+
+/* ---------- rolls ---------- */
+.result{background:var(--panel2);border:2px solid var(--ink);border-radius:3px 14px 3px 14px;padding:14px 18px;margin:12px 0;min-height:110px}
+.result .big{font-family:var(--serif);font-size:56px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.result .why{color:var(--dim);margin:2px 0 0}
+.result.crit{border-color:var(--sage)} .result.fumble{border-color:var(--ledger)}
+.result .badge{font-weight:700;margin-left:10px;font-size:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+.rbtn{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:3px 10px 3px 10px;padding:9px 14px;min-height:54px}
+.rbtn:hover{background:var(--panel2)}
+.rbtn .l b{display:block;font-weight:700}
+.rbtn .l span{font-size:13px;color:var(--dim);display:block}
+.rbtn .m{font-family:var(--serif);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.rbtn.star{border-color:var(--ink)}
+.dice{display:flex;flex-wrap:wrap;gap:8px}
+.dice button{background:var(--panel);border:1px solid var(--line);border-radius:3px 10px 3px 10px;min-width:62px;min-height:48px;font-weight:700}
+.log{margin:6px 0 0;padding:0;list-style:none}
+.log li{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:6px 0;font-size:15px}
+.log li span:last-child{font-family:var(--serif);font-size:20px;font-weight:600}
+
+/* ---------- learn ---------- */
+details.lesson{background:var(--panel);border:1px solid var(--line);border-radius:3px 12px 3px 12px;margin:10px 0}
+details.lesson>summary{padding:14px 16px;cursor:pointer;font-family:var(--serif);font-size:21px;font-weight:600;list-style:none;min-height:48px;display:flex;gap:10px;align-items:center}
+details.lesson>summary::-webkit-details-marker{display:none}
+details.lesson>summary::before{content:"+";width:20px;font-size:24px}
+details.lesson[open]>summary::before{content:"\2212"}
+details.lesson .in{padding:0 16px 14px}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+ol.steps li:first-child{border-top:0}
+ol.steps li::before{content:counter(s);font-family:var(--serif);font-size:26px;font-weight:600;color:var(--brass);line-height:1}
+ol.steps b{font-family:var(--serif);font-size:18px}
+ol.steps p{margin:2px 0 0;color:var(--dim)}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+table.tbl th,table.tbl td{text-align:left;padding:8px 10px 8px 0;border-top:1px solid var(--line);vertical-align:top}
+table.tbl th{font-weight:700;color:var(--dim);font-size:14px;border-top:0}
+.gl{width:100%;background:var(--bg);border:1.5px solid var(--line);color:var(--ink);border-radius:999px;padding:10px 18px;min-height:46px;font:inherit}
+.gloss dt{font-family:var(--serif);font-size:19px;font-weight:600;margin-top:12px}
+.gloss dd{margin:2px 0 0;color:var(--dim);max-width:66ch}
+.hello{border:2px solid var(--brass);background:var(--panel);border-radius:3px 14px 3px 14px;padding:14px 16px;margin:12px 0}
+.hello h2{font-size:22px;margin-bottom:4px}
+
+/* ---------- dialogs & toast ---------- */
+dialog{background:var(--panel);color:var(--ink);border:1.5px solid var(--ink);border-radius:14px 14px 3px 3px;padding:0;width:min(560px,100vw);max-height:92vh;margin:auto auto 0}
+@media(min-width:760px){dialog{margin:auto;border-radius:3px 16px 3px 16px}}
+dialog::backdrop{background:rgba(3,10,9,.72)}
+.dlg{padding:18px 18px 16px}
+.dlg h2{font-size:26px;margin-bottom:6px}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:3px 10px 3px 10px;padding:10px 12px;margin:8px 0;cursor:pointer}
+.opt input{margin-top:5px;width:20px;height:20px;accent-color:#EEE7D3}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.opt:has(input:checked){border-color:var(--ink);background:var(--panel2)}
+.opt b{display:block} .opt span{font-size:14px;color:var(--dim)}
+.alert{border-left:4px solid var(--ledger);background:rgba(238,123,100,.1);padding:8px 12px;margin:10px 0;font-size:15px;border-radius:0 6px 6px 0}
+.alert.info{border-left-color:var(--violet);background:rgba(171,156,244,.1)}
+.dlg .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.dlg input[type=number],.dlg input[type=text],textarea{width:100%;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;min-height:46px}
+textarea{min-height:130px}
+.steps-s{margin:6px 0 0;padding-left:20px}
+.steps-s li{margin:4px 0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);z-index:60;background:var(--ink);color:var(--bg);
+  border-radius:12px 3px 12px 3px;padding:10px 18px;max-width:92vw;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.5);display:none}
+.toast.on{display:block}
+@media(min-width:760px){.toast{bottom:24px}}
+.death{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0}
+.death .pool .pip{color:var(--sage)} .death .f .pip{color:var(--ledger)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="status" aria-label="Machiavell status">
+  <div class="wrap">
+    <div class="id-row">
+      <div>
+        <h1 class="name">Machiavell</h1>
+        <div class="sub">Wood Elf Bard, College of Lore, level 3</div>
+      </div>
+      <button class="hpbtn" id="hpbtn" data-a="hp" aria-label="Open hit points"></button>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="res" id="res"></div>
+    <div class="chips" id="chips"></div>
+  </div>
+</header>
+
+<div class="mini" id="mini"><button data-a="hp" aria-label="Open hit points"></button></div>
+<div class="navbar"><div class="wrap">
+<nav class="tabs" id="tabs" aria-label="Sections"></nav>
+</div></div>
+
+<main class="wrap" id="main" tabindex="-1"></main>
+
+<dialog id="dlg" aria-labelledby="dlgt"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* =========================================================
+   DATA: everything below comes from the character sheet
+   ========================================================= */
+var PB = 2;
+var ABIL = {str:-1, dex:2, con:2, int:1, wis:0, cha:3};
+var DC = 13, ATK = 5, INIT = 3, AC = 13, SPEED = 35;
+var MAXHP = 24, HITDICE = 3;
+
+var SKILLS = [
+ {id:'acrobatics', n:'Acrobatics', a:'dex', p:'jat', d:'Keep your balance, tumble, escape a grapple by wriggling.'},
+ {id:'animal', n:'Animal Handling', a:'wis', p:'jat', d:'Calm or read an animal.'},
+ {id:'arcana', n:'Arcana', a:'int', p:'exp', d:'Know about magic, wards, spells and magical creatures.'},
+ {id:'athletics', n:'Athletics', a:'str', p:'jat', d:'Climb, jump, swim, shove.'},
+ {id:'deception', n:'Deception', a:'cha', p:'pro', d:'Lie convincingly, bluff, disguise your intent.'},
+ {id:'history', n:'History', a:'int', p:'pro', d:'Recall facts about people, places and events.'},
+ {id:'insight', n:'Insight', a:'wis', p:'pro', d:'Tell whether someone is lying or what they want.'},
+ {id:'intimidation', n:'Intimidation', a:'cha', p:'jat', d:'Pressure someone with threats or presence.'},
+ {id:'investigation', n:'Investigation', a:'int', p:'jat', d:'Search for clues, find hidden things by reasoning.'},
+ {id:'medicine', n:'Medicine', a:'wis', p:'jat', d:'Stabilize a dying creature, diagnose an illness.'},
+ {id:'nature', n:'Nature', a:'int', p:'jat', d:'Know plants, animals, weather and terrain.'},
+ {id:'perception', n:'Perception', a:'wis', p:'pro', d:'Notice things with your senses: guards, traps, sounds.'},
+ {id:'performance', n:'Performance', a:'cha', p:'pro', d:'Sing, play, act, entertain a crowd.'},
+ {id:'persuasion', n:'Persuasion', a:'cha', p:'exp', d:'Convince someone honestly or politely. Your best skill.'},
+ {id:'religion', n:'Religion', a:'int', p:'jat', d:'Know gods, rites and holy symbols.'},
+ {id:'sleight', n:'Sleight of Hand', a:'dex', p:'pro', d:'Pick a pocket, palm an object, plant something.'},
+ {id:'stealth', n:'Stealth', a:'dex', p:'pro', d:'Move quietly, stay hidden.'},
+ {id:'survival', n:'Survival', a:'wis', p:'jat', d:'Track, forage, find your way.'}
+];
+var SAVES = [
+ {id:'str', n:'Strength', p:false},{id:'dex', n:'Dexterity', p:true},{id:'con', n:'Constitution', p:false},
+ {id:'int', n:'Intelligence', p:false},{id:'wis', n:'Wisdom', p:false},{id:'cha', n:'Charisma', p:true}
+];
+var SAVE_NOTE = {str:'Resist being pushed or crushed.',dex:'Dodge a fireball, a trap or a falling rock.',con:'Hold concentration, resist poison and exhaustion.',
+  int:'Resist some mind-bending magic.',wis:'Resist being charmed, frightened or controlled.',cha:'Resist being banished or possessed.'};
+
+function skillBonus(s){
+  var m = ABIL[s.a];
+  if(s.p==='exp') return m + 2*PB;
+  if(s.p==='pro') return m + PB;
+  return m + Math.floor(PB/2);
+}
+function saveBonus(s){ return ABIL[s.id] + (s.p?PB:0); }
+function skillById(id){ for(var i=0;i<SKILLS.length;i++) if(SKILLS[i].id===id) return SKILLS[i]; }
+function fm(n){ return (n>=0?'+':'−')+Math.abs(n); }
+
+/* cost kinds: none (cantrip), free (free cast then slots), bi (Bardic Inspiration use), slot */
+var P = {};
+function add(o){ P[o.id]=o; }
+
+add({id:'viciousMockery', n:'Vicious Mockery', lvl:0, kind:'none', time:'Action', range:'60 ft', comp:'V', dur:'Instant', V:true, conc:false,
+ one:'Insult an enemy. It takes psychic damage and its next attack is weaker.',
+ does:'You pick one creature you can see or hear within 60 ft. It makes a Wisdom saving throw against your DC 13. If it fails, it takes 1d6 psychic damage and has disadvantage on the next attack roll it makes before the end of its next turn. If it succeeds, nothing happens.',
+ rules:['Costs nothing. Use it every round if you like.','Damage grows to 2d6 at Bard level 5.','Needs your voice, so it does not work inside a Silence zone.'],
+ how:['Choose a creature within 60 ft that you can see or hear.','The DM rolls its Wisdom save against DC 13.','If it fails: roll the damage and tell the DM it has disadvantage on its next attack.'],
+ tip:'Aim it at the enemy about to attack you or a friend. Disadvantage means it rolls two dice and keeps the lower one.',
+ roll:function(){return {expr:'1d6',what:'psychic damage if the save fails'};}});
+
+add({id:'message', n:'Message', lvl:0, kind:'none', time:'Action', range:'120 ft', comp:'S, M', dur:'1 round', V:false, conc:false,
+ one:'Whisper to one creature. Only they hear it, and they can whisper back.',
+ does:'You point at a creature within 120 ft and whisper a message. Only that creature hears it, and it can reply in a whisper that only you hear. It works through solid objects if you know the target is behind them.',
+ rules:['Blocked by magical Silence, 1 ft of stone, metal or wood, or a thin sheet of lead.','One cast carries one message and one reply.','The copper wire is covered by your viol or voice as a focus.'],
+ how:['Point at the creature and say the message to the DM.','The creature may whisper a reply.'],
+ tip:'Private talk with your crew during the Aurora Dice job. Do not stand inside your own Silence to use it.',
+ roll:null});
+
+add({id:'mageHand', n:'Mage Hand', lvl:0, kind:'none', time:'Action', range:'30 ft', comp:'V, S', dur:'1 minute', V:true, conc:false,
+ one:'A floating hand that opens doors, fetches objects and pours vials.',
+ does:'A spectral floating hand appears within 30 ft. When you cast it you can use it to manipulate an object, open an unlocked door or container, put an item in or take it out of an open container, or pour out a vial. On later turns, use your Magic action to control it again and move it up to 30 ft.',
+ rules:['It cannot attack, activate magic items or carry more than 10 pounds.','It vanishes if it is ever more than 30 ft from you, or if you cast Mage Hand again.','Ask your DM before using it on something another creature is holding or wearing.'],
+ how:['Say what the hand does (lift a key, press a lever).','On later turns, spend your Action to move it again.'],
+ tip:'Lift a key off a hook or press a lever without crossing the room.',
+ roll:null});
+
+add({id:'minorIllusion', n:'Minor Illusion', lvl:0, kind:'none', time:'Action', range:'30 ft', comp:'S, M', dur:'1 minute', V:false, conc:false,
+ one:'Create a sound or the image of an object.',
+ does:'You create either a sound or an image. A sound can be anything from a whisper to a scream, continuous or in bursts. An image is one object that fits in a 5-foot cube, with no sound, light or smell, and anything that touches it passes through. A creature that takes the Study action can make an Intelligence (Investigation) check against DC 13 to see through it.',
+ rules:['Casting it again ends the previous illusion.','Once someone sees through it, it looks faint to them.'],
+ how:['Choose a sound or an image and say exactly what it is.','Place it within 30 ft.'],
+ tip:'A noise from the wrong corridor, or a fake crate to hide behind. Pair it with Deception.',
+ roll:null});
+
+add({id:'druidcraft', n:'Druidcraft', lvl:0, kind:'none', time:'Action', range:'30 ft', comp:'V, S', dur:'Instant', V:true, conc:false,
+ one:'Small nature tricks, including lighting or snuffing a torch.',
+ does:'Pick one harmless effect: a tiny sign that predicts the weather at your location for the next 24 hours; make a flower bloom or a seed pod or leaf bud open; create a sensory effect in a 5-foot cube (falling leaves, a breeze, an animal sound, a faint skunk smell); or light or snuff out a candle, torch or campfire.',
+ rules:['None of it deals damage.'],
+ how:['Pick one of the four effects.'],
+ tip:'Snuffing a torch from 30 ft is a quiet way to make a dark spot. Your Darkvision means the dark does not bother you.',
+ roll:null});
+
+add({id:'longstrider', n:'Longstrider', lvl:1, kind:'free', fid:'longstrider', time:'Action', range:'Touch', comp:'V, S, M', dur:'1 hour', V:true, conc:false,
+ one:'Touch a creature: it moves 10 ft faster for an hour.',
+ does:'You touch a creature and its Speed increases by 10 feet until the spell ends. On you, that turns 35 ft into 45 ft. It does not need Concentration.',
+ rules:['One free cast per Long Rest (from being a Wood Elf). After that it costs a spell slot.','With a higher slot you can touch one more creature per slot level above 1st.'],
+ how:['Touch the creature (yourself is fine).','Its Speed is +10 ft for one hour.'],
+ tip:'Cast it before the crew moves in. It lasts an hour, so it covers the approach and an escape.',
+ up:'+1 target per slot level above 1st', roll:null});
+
+add({id:'disguiseSelf', n:'Disguise Self', lvl:1, kind:'free', fid:'disguiseSelf', time:'Action', range:'Self', comp:'V, S', dur:'1 hour', V:true, conc:false,
+ one:'Change how you look: clothes, gear, height, build.',
+ does:'Your appearance, including clothing, armor, weapons and belongings, changes for an hour. You can look about 1 foot taller or shorter, heavier or lighter, but you keep the same basic arrangement of limbs. Touching the illusion gives it away, and a creature that takes the Study action can see through it with an Intelligence (Investigation) check against DC 13.',
+ rules:['One free cast per Long Rest (from Magic Initiate). After that it costs a spell slot.','No Concentration needed.'],
+ how:['Describe your new look to the DM.','Avoid being touched or closely examined.'],
+ tip:'Your infiltration spell. Combine it with Deception +5 and Persuasion +7.',
+ roll:null});
+
+add({id:'bardicInspiration', n:'Bardic Inspiration', lvl:0, kind:'bi', time:'Bonus Action', range:'60 ft', comp:'None', dur:'1 hour', V:false, conc:false, isFeature:true,
+ one:'Give an ally a d6 they can add to a failed roll.',
+ does:'You give another creature who can see or hear you a d6 Bardic Inspiration die. Within the next hour, when it fails an attack roll, saving throw or ability check, it can roll the die and add the result, which can turn the failure into a success. The die is used up when rolled.',
+ rules:['You have 3 uses per Long Rest, shared with Cutting Words.','A creature can hold only one die at a time.','You cannot give it to yourself.'],
+ how:['Choose an ally within 60 ft.','Tell them they hold a d6 for the next hour.','When they fail a roll, they may roll it and add it.'],
+ tip:'Hand it out early to whoever will make the riskiest roll, such as the lockpick or the face. It stays for an hour.',
+ roll:null});
+
+add({id:'cuttingWords', n:'Cutting Words', lvl:0, kind:'bi', time:'Reaction', range:'60 ft', comp:'None', dur:'Instant', V:false, conc:false, isFeature:true,
+ one:'Spend a die to lower an enemy’s successful roll.',
+ does:'When a creature you can see within 60 ft makes a damage roll or succeeds on an ability check or attack roll, you roll your Bardic Inspiration die (d6) and subtract the number from its roll. That can turn a hit into a miss, a success into a failure, or shrink the damage.',
+ rules:['Costs one Bardic Inspiration use.','You decide after you see the result.','It does not work on saving throws.','One Reaction per round; it comes back when your next turn starts.'],
+ how:['Wait for the DM to say a creature succeeded or is rolling damage.','Say you use Cutting Words and roll the d6.','The DM subtracts it from the result.'],
+ tip:'Strong against guards: when one succeeds on a Perception check to spot you, subtract a d6.',
+ roll:function(){return {expr:'1d6',what:'subtract this from the enemy’s roll'};}});
+
+add({id:'healingWord', n:'Healing Word', lvl:1, kind:'slot', time:'Bonus Action', range:'60 ft', comp:'V', dur:'Instant', V:true, conc:false,
+ one:'Heal a friend you can see, even from across the room.',
+ does:'A creature you can see within 60 ft regains hit points equal to 2d4 plus your Charisma modifier (+3). A creature at 0 HP who is healed wakes up.',
+ rules:['Costs a spell slot (1st level or higher).','With a higher slot, add 2d4 healing per level above 1st.','It is a Bonus Action, so you can still cast a cantrip with your Action that turn, but no other leveled spell.'],
+ how:['Choose a friend you can see within 60 ft.','Roll 2d4 and add 3.','They regain that many hit points.'],
+ tip:'You are the party’s healer. Keep at least one slot in reserve for it.',
+ up:'+2d4 per slot level above 1st',
+ roll:function(l){return {expr:(2+2*(l-1))+'d4+3',what:'hit points restored'};}});
+
+add({id:'detectMagic', n:'Detect Magic', lvl:1, kind:'slot', ritual:true, time:'Action or Ritual', range:'Self (30 ft)', comp:'V, S', dur:'Concentration, 10 min', V:true, conc:true,
+ one:'Sense magic nearby and learn what school it belongs to.',
+ does:'For 10 minutes you sense magical effects within 30 feet. As a Magic action you can then see a faint aura around any visible creature or object that carries magic, and if the magic is a spell you learn its school of magic.',
+ rules:['Needs Concentration.','Blocked by 1 foot of stone, dirt or wood, 1 inch of metal, or a thin sheet of lead.','Cast it as a ritual (10 extra minutes, outside a fight) and it costs no slot.'],
+ how:['Cast it and look around.','Spend a Magic action to see the aura on one thing and learn its school.','Roll Arcana to work out what it actually does.'],
+ tip:'Your ward-reading spell for the Aurora Dice, and it can be cast for free beforehand as a ritual.',
+ roll:null});
+
+add({id:'dissonantWhispers', n:'Dissonant Whispers', lvl:1, kind:'slot', time:'Action', range:'60 ft', comp:'V', dur:'Instant', V:true, conc:false,
+ one:'A song only the target hears hurts it and makes it run from you.',
+ does:'You pick one creature you can see within 60 ft. It hears a discordant melody in its mind and makes a Wisdom saving throw against DC 13. On a failure it takes 3d6 psychic damage and must immediately use its Reaction, if it has one, to move as far from you as it can, by the safest route. On a success it takes half damage and does not have to move.',
+ rules:['Costs a spell slot (1st level or higher).','With a higher slot, add 1d6 damage per level above 1st.','It spends the target’s Reaction, so it cannot make an opportunity attack or cast a Reaction spell until its next turn.','No Concentration needed, so you can cast it while keeping Detect Magic, Silence or Suggestion going.'],
+ how:['Choose one creature within 60 ft that you can see.','The DM rolls its Wisdom save against DC 13.','Roll the damage. If it failed, it runs away using its Reaction.'],
+ tip:'Your ranged damage and escape button. Use it to pull a melee enemy off a friend. Only the target hears it, so it suits a quiet job.',
+ up:'+1d6 per slot level above 1st',
+ roll:function(l){return {expr:(3+(l-1))+'d6',what:'psychic damage if the save fails (half if it succeeds)'};}});
+
+add({id:'invisibility', n:'Invisibility', lvl:2, kind:'slot', time:'Action', range:'Touch', comp:'V, S, M', dur:'Concentration, 1 hour', V:true, conc:true,
+ one:'Make a creature you touch invisible until it attacks or casts.',
+ does:'A creature you touch has the Invisible condition until the spell ends. The spell ends for that creature early if it makes an attack roll, deals damage or casts a spell.',
+ rules:['Needs Concentration.','Hides you from sight only: noise and tracks can still give you away.','With a higher slot, one extra target per level above 2nd. You only have 2nd-level slots, so it is a single target.'],
+ how:['Touch the creature.','It becomes invisible for up to an hour.'],
+ tip:'Best on a thief who will not fight. If you cast a spell while invisible yourself, you become visible.',
+ roll:null});
+
+add({id:'silence', n:'Silence', lvl:2, kind:'slot', ritual:true, time:'Action or Ritual', range:'120 ft', comp:'V, S', dur:'Concentration, 10 min', V:true, conc:true,
+ one:'A sphere where no sound exists. Nobody inside can cast verbal spells.',
+ does:'Choose a point within 120 ft. For 10 minutes no sound can be created within or pass through a 20-foot-radius sphere centered there. Creatures and objects fully inside are immune to thunder damage, creatures fully inside are Deafened, and casting a spell with a Verbal component is impossible there.',
+ rules:['Needs Concentration.','That includes you: your own Healing Word, Vicious Mockery and Suggestion fail if you stand inside. Message is blocked too.','Cast it as a ritual in advance and it costs no slot.'],
+ how:['Choose the point at the center of the sphere.','Stay outside the edge if you still need to speak or cast.'],
+ tip:'Silence a guard post, an alarm bell or a conversation. It also stops enemy casters.',
+ roll:null});
+
+add({id:'suggestion', n:'Suggestion', lvl:2, kind:'slot', time:'Action', range:'30 ft', comp:'V, M', dur:'Concentration, 8 hours', V:true, conc:true,
+ one:'Plant a short suggestion in someone’s mind.',
+ does:'Pick a creature you can see that can hear and understand you, and suggest a course of action in 25 words or fewer that sounds reasonable and is not obviously harmful to it or its allies. It makes a Wisdom saving throw against DC 13. On a failure it is Charmed and pursues the suggestion as well as it can, until you or your allies damage it.',
+ rules:['Needs Concentration, which can last up to 8 hours.','If the task is finished early, the spell ends for that creature.','It cannot make someone do something plainly dangerous to themselves.'],
+ how:['Choose a creature that can hear and understand you.','Say the suggestion out loud in 25 words or fewer.','The DM rolls its Wisdom save against DC 13.'],
+ tip:'Word it so it sounds like their own idea: “Take your break at the east stairwell and leave the door unwatched.”',
+ roll:null});
+
+var ORDER = {
+ unlimited:['viciousMockery','message','mageHand','minorIllusion','druidcraft'],
+ free:['longstrider','disguiseSelf'],
+ pool:['bardicInspiration','cuttingWords'],
+ s1:['healingWord','detectMagic','dissonantWhispers'],
+ s2:['invisibility','silence','suggestion']
+};
+var TRAITS = [
+ ['Expertise','Double proficiency in Arcana (+5) and Persuasion (+7).'],
+ ['Jack of All Trades','+1 to ability checks you are not proficient in, including Initiative.'],
+ ['Bonus Proficiencies','Proficient in Stealth, Sleight of Hand and Insight.'],
+ ['Darkvision (60 ft)','Dim light counts as bright, and darkness as dim.'],
+ ['Fey Ancestry','Advantage on saving throws to avoid or end the Charmed condition.'],
+ ['Trance','Magic cannot put you to sleep, and a Long Rest takes only 4 hours.'],
+ ['Keen Senses','Proficiency in Perception.']
+];
+
+/* the things you can always do on your turn (2024 names) */
+var ACTIONS = [
+ {n:'Attack', d:'Make one attack with your dagger or crossbow. Roll on the Roll tab.', r:null},
+ {n:'Magic', d:'Cast a spell that takes an Action, or use a magic item.', r:null},
+ {n:'Dash', d:'Double your speed for this turn. With 35 ft, that is 70 ft in total.', r:null},
+ {n:'Disengage', d:'Your movement this turn does not provoke opportunity attacks.', r:null},
+ {n:'Dodge', d:'Until your next turn, attacks against you have disadvantage if you can see the attacker.', r:null},
+ {n:'Help', d:'Give an ally advantage on their next check or attack against something you are distracting.', r:null},
+ {n:'Hide', d:'Try to hide. Make a Stealth check; you need cover or heavy obscurement.', r:'stealth'},
+ {n:'Influence', d:'Sway a creature with words: Persuasion, Deception, Intimidation or Performance.', r:'persuasion'},
+ {n:'Search', d:'Look or listen for something: Perception, Insight, Medicine, Survival or Investigation.', r:'perception'},
+ {n:'Study', d:'Recall or examine something: Arcana, History, Investigation, Nature or Religion.', r:'arcana'},
+ {n:'Ready', d:'Pick a trigger and an action. When the trigger happens, you use your Reaction to do it.', r:null},
+ {n:'Utilize', d:'Use a non-magical object, such as a lever or a lock.', r:null}
+];
+
+var INTENTS = [
+ {id:'hurt', n:'Hurt someone', items:[
+   ['p','dissonantWhispers','3d6 damage, and the target runs away from you.'],
+   ['p','viciousMockery','Free. 1d6 damage and its next attack is weaker.'],
+   ['atk','dagger','Close range, d4+2.'],['atk','crossbow','Range 80 ft, d8+2.']]},
+ {id:'protect', n:'Protect a friend', items:[
+   ['p','viciousMockery','Its next attack has disadvantage.'],
+   ['p','cuttingWords','Reaction: subtract a d6 from a hit.'],
+   ['p','bardicInspiration','Give an ally a d6 for a failed roll.'],
+   ['p','dissonantWhispers','Makes a melee enemy run from you.']]},
+ {id:'heal', n:'Heal someone', items:[
+   ['p','healingWord','2d4+3 from 60 ft away. Bonus Action.'],
+   ['n','Help a friend at 0 HP','Healing Word wakes them up. Otherwise use the Help action or Medicine to stabilize them.']]},
+ {id:'sneak', n:'Sneak in', items:[
+   ['p','invisibility','Make a thief invisible until it attacks or casts.'],
+   ['p','silence','Stop all sound in a 20 ft sphere.'],
+   ['p','disguiseSelf','Look like someone who belongs there.'],
+   ['s','stealth','Move quietly.'],
+   ['p','minorIllusion','A noise or object to distract guards.']]},
+ {id:'talk', n:'Talk or trick', items:[
+   ['s','persuasion','Your best skill. Ask politely and reasonably.'],
+   ['s','deception','Lie, bluff, mislead.'],
+   ['p','suggestion','Plant a 25-word suggestion.'],
+   ['p','message','A private whisper to anyone within 120 ft.']]},
+ {id:'look', n:'Investigate', items:[
+   ['p','detectMagic','Sense magic and ward schools within 30 ft.'],
+   ['s','arcana','Know what a ward or magic item does.'],
+   ['s','perception','Spot guards, traps and sounds.'],
+   ['s','insight','Read whether someone is lying.'],
+   ['p','mageHand','Reach something from 30 ft.']]},
+ {id:'run', n:'Get away', items:[
+   ['p','longstrider','45 ft of speed instead of 35.'],
+   ['p','dissonantWhispers','The target uses its Reaction to run away from you.'],
+   ['p','invisibility','Vanish, then keep out of sight.'],
+   ['n','Dash or Disengage','Dash doubles your speed. Disengage stops opportunity attacks. Both use your Action.']]}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+var KEY = 'aeriel-dnd-machiavell-v1';
+function fresh(){ return {
+  hp:MAXHP, temp:0, slots:{1:4,2:2}, bi:3, free:{longstrider:true,disguiseSelf:true}, hd:HITDICE,
+  conc:null, silenced:false, combat:false, round:1,
+  turn:{move:false,action:false,bonus:false,reaction:false,bonusSpell:false,leveledAction:false},
+  death:{s:0,f:0}, days:28, notes:'', rolls:[], adv:'n', seenIntro:false, tab:'turn', filter:'all', intent:'hurt'
+};}
+var S = fresh();
+try{
+  var raw = localStorage.getItem(KEY);
+  if(raw){ var o = JSON.parse(raw); S = Object.assign(fresh(), o); S.turn = Object.assign(fresh().turn, o.turn||{}); S.slots = Object.assign({1:4,2:2}, o.slots||{}); S.free = Object.assign({longstrider:true,disguiseSelf:true}, o.free||{}); S.death = Object.assign({s:0,f:0}, o.death||{}); }
+}catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* =========================================================
+   DICE
+   ========================================================= */
+function rnd(n){
+  if(window.crypto && crypto.getRandomValues){
+    var a = new Uint32Array(1), lim = Math.floor(4294967296/n)*n, x;
+    do{ crypto.getRandomValues(a); x=a[0]; }while(x>=lim);
+    return (x % n) + 1;
+  }
+  return Math.floor(Math.random()*n)+1;
+}
+function rollExpr(expr){
+  var m = /^(\d+)d(\d+)([+-]\d+)?$/.exec(expr);
+  if(!m) return null;
+  var c = +m[1], d = +m[2], bonus = m[3]? +m[3] : 0, parts = [], sum = 0;
+  for(var i=0;i<c;i++){ var r=rnd(d); parts.push(r); sum+=r; }
+  return {parts:parts, bonus:bonus, total:sum+bonus, expr:expr};
+}
+function d20(adv){
+  var a = rnd(20);
+  if(adv==='n') return {all:[a], used:a};
+  var b = rnd(20);
+  return {all:[a,b], used: adv==='a'? Math.max(a,b) : Math.min(a,b)};
+}
+function pushLog(label, text, total){
+  S.rolls.unshift({l:label, t:text, v:total});
+  if(S.rolls.length>14) S.rolls.length=14;
+}
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+var toastT;
+function toast(msg){
+  var t=$('toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toastT); toastT=setTimeout(function(){t.classList.remove('on');},4200);
+}
+function tagFor(sp){
+  if(sp.kind==='none') return '<span class="tag none">'+(sp.isFeature?'Unlimited':'Unlimited cantrip')+'</span>';
+  if(sp.kind==='free') return '<span class="tag free">Free once per Long Rest</span>';
+  if(sp.kind==='bi') return '<span class="tag bi">Uses Bardic Inspiration</span>';
+  return '<span class="tag slot">'+(sp.lvl===1?'1st-level slot':'2nd-level slot')+(sp.ritual?', or ritual':'')+'</span>';
+}
+function ordinal(l){ return l===1?'1st':l===2?'2nd':l+'th'; }
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+function renderHeader(){
+  var low = S.hp <= Math.ceil(MAXHP/3);
+  $('hpbtn').innerHTML = '<span class="lbl">Hit points'+(S.temp?' (+'+S.temp+' temp)':'')+'</span><span class="num">'+S.hp+' <small>/ '+MAXHP+'</small></span>'+
+    '<div class="hpbar'+(low?' low':'')+'"><i style="width:'+Math.round(100*S.hp/MAXHP)+'%"></i></div>';
+  $('mini').firstElementChild.innerHTML='<b>HP '+S.hp+' / '+MAXHP+'</b><span>1st '+S.slots[1]+'  \u00b7  2nd '+S.slots[2]+'  \u00b7  Inspiration '+S.bi+(S.conc?'  \u00b7  Concentrating':'')+'</span>';
+  $('stats').innerHTML = [['Armor',AC],['Speed',SPEED+' ft'],['Spell DC',DC],['Spell attack',fm(ATK)],['Initiative',fm(INIT)]]
+    .map(function(x){return '<div><b>'+x[1]+'</b><span>'+x[0]+'</span></div>';}).join('');
+  function pool(label,cat,key,n,max){
+    var h='<div class="pool"><span class="t">'+label+'</span>';
+    for(var i=0;i<max;i++){
+      var on = i<n;
+      h+='<button class="pip'+(on?'':' off')+'" data-c="'+cat+'" data-a="pip" data-k="'+key+'" data-i="'+i+'" aria-pressed="'+on+'" aria-label="'+label+' '+(i+1)+': '+(on?'available, tap to mark spent':'spent, tap to restore')+'"></button>';
+    }
+    return h+'</div>';
+  }
+  $('res').innerHTML = pool('1st slots','slot','s1',S.slots[1],4)+pool('2nd slots','slot','s2',S.slots[2],2)+
+    pool('Inspiration','bi','bi',S.bi,3)+
+    pool('Longstrider','free','f:longstrider',S.free.longstrider?1:0,1)+pool('Disguise Self','free','f:disguiseSelf',S.free.disguiseSelf?1:0,1);
+  var ch='';
+  if(S.conc) ch+='<span class="chip conc">Concentrating on '+esc(P[S.conc].n)+' <button data-a="endconc">End it</button></span>';
+  if(S.silenced) ch+='<span class="chip warn">You are inside a Silence zone <button data-a="silence">Leave</button></span>';
+  if(S.hp===0) ch+='<span class="chip warn">You are at 0 HP</span>';
+  $('chips').innerHTML = ch;
+}
+
+/* =========================================================
+   TABS
+   ========================================================= */
+var TABS = [
+ ['turn','Turn','<svg viewBox="0 0 24 24"><path d="M4 6v12M20 6v12M4 12h16M9 8l-3 4 3 4"/></svg>'],
+ ['powers','Powers','<svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.6L20 9l-4.2 3.9L17 19l-5-3-5 3 1.2-6.1L4 9l5.6-.4z"/></svg>'],
+ ['roll','Roll','<svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 3v18M4 7.5l8 4.5 8-4.5"/></svg>'],
+ ['learn','Learn','<svg viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7"/><path d="M20 5v12h-7"/></svg>'],
+ ['me','Me','<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>']
+];
+function renderTabs(){
+  $('tabs').innerHTML = TABS.map(function(t){
+    return '<button data-a="tab" data-v="'+t[0]+'"'+(S.tab===t[0]?' aria-current="page"':'')+'>'+t[2]+'<span>'+t[1]+'</span></button>';
+  }).join('');
+}
+
+/* =========================================================
+   TURN TAB
+   ========================================================= */
+function viewTurn(){
+  var t = S.turn, h='';
+  if(!S.seenIntro){
+    h+='<section class="hello"><h2>New to D&amp;D? Start here.</h2><p>This guide is built around Machiavell. The <b>Learn</b> tab explains a turn in six steps, <b>Powers</b> explains every spell, and the tracker above keeps count of what you have left.</p>'+
+      '<div class="row"><button class="btn sm" data-a="tab" data-v="learn">Read the six steps</button><button class="btn sm alt" data-a="hideintro">Got it, hide this</button></div></section>';
+  }
+  h+='<div class="sect"><h2>Your turn</h2><p class="lead">Tap a beat when you use it. <b>Start my turn</b> gives them all back.</p></div>';
+  function beat(k,name,sub){
+    var on = t[k];
+    return '<button class="beat" data-a="beat" data-v="'+k+'" aria-pressed="'+on+'"><span><b>'+name+'</b><small>'+sub+'</small></span><span class="st">'+(on?'Spent':'Ready')+'</span></button>';
+  }
+  h+='<div class="bar" role="group" aria-label="Turn beats">'+beat('move','Move','up to 35 ft')+beat('action','Action','one per turn')+beat('bonus','Bonus','only if a power says so')+beat('reaction','Reaction','once per round')+'</div>';
+  h+='<p class="barnote">You can split your movement before and after your Action. The Reaction is yours to use on anyone’s turn.</p>';
+  h+='<div class="row"><button class="btn" data-a="newturn">Start my turn</button>'+
+     '<div class="switch"><button data-a="combat" aria-pressed="'+S.combat+'" aria-label="In a fight"></button><span>In a fight'+(S.combat?' (round '+S.round+')':'')+'</span></div></div>';
+  if(S.combat) h+='<p class="barnote" style="margin-top:8px">While this is on, casting a spell taps its beat for you and warns you about the rules that stop two spells in one turn.</p>';
+
+  h+='<div class="sect"><h2>What do you want to do?</h2><p class="lead">Pick a goal and see which of your powers fit.</p></div>';
+  h+='<div class="intents" role="group" aria-label="Goals">'+INTENTS.map(function(i){
+    return '<button data-a="intent" data-v="'+i.id+'" aria-pressed="'+(S.intent===i.id)+'">'+i.n+'</button>';
+  }).join('')+'</div>';
+  var cur = INTENTS.filter(function(i){return i.id===S.intent;})[0]||INTENTS[0];
+  h+='<div class="panel">'+cur.items.map(function(it){
+    if(it[0]==='p'){
+      var sp=P[it[1]];
+      return '<div class="sug"><div class="tx"><b>'+sp.n+'</b> '+tagFor(sp)+'<p>'+esc(it[2])+'</p></div><button class="btn sm" data-a="use" data-v="'+sp.id+'">Use</button></div>';
+    }
+    if(it[0]==='s'){
+      var s=skillById(it[1]), b=skillBonus(s);
+      return '<div class="sug"><div class="tx"><b>'+s.n+' check</b> <span class="tag slot">Skill</span><p>'+esc(it[2])+'</p></div><button class="btn sm" data-a="rollskill" data-v="'+s.id+'">Roll '+fm(b)+'</button></div>';
+    }
+    if(it[0]==='atk'){
+      var w = WEAPONS[it[1]];
+      return '<div class="sug"><div class="tx"><b>'+w.n+'</b> <span class="tag slot">Attack action</span><p>'+esc(it[2])+'</p></div><button class="btn sm" data-a="attack" data-v="'+it[1]+'">Attack '+fm(w.hit)+'</button></div>';
+    }
+    return '<div class="sug"><div class="tx"><b>'+it[1]+'</b><p>'+esc(it[2])+'</p></div></div>';
+  }).join('')+'</div>';
+
+  h+='<div class="sect"><h2>Things anyone can do</h2><p class="lead">These cost no slots. Most use your Action.</p></div><div class="panel">'+
+    ACTIONS.map(function(a){
+      var btn = a.r? '<button class="btn sm alt" data-a="rollskill" data-v="'+a.r+'">Roll '+skillById(a.r).n+' '+fm(skillBonus(skillById(a.r)))+'</button>' : '';
+      return '<div class="sug"><div class="tx"><b>'+a.n+'</b><p>'+a.d+'</p></div>'+btn+'</div>';
+    }).join('')+'</div>';
+  return h;
+}
+
+/* =========================================================
+   POWERS TAB
+   ========================================================= */
+function blockedReason(sp){
+  if(S.silenced && sp.V) return 'Needs your voice. You are inside a Silence zone.';
+  return '';
+}
+function card(sp){
+  var br = blockedReason(sp);
+  var h='<article class="card'+(br?' blocked':'')+'" data-k="'+sp.kind+'"><div class="top"><div><h3>'+sp.n+'</h3><p class="one">'+esc(sp.one)+'</p></div>'+
+    '<button class="btn sm" data-a="use" data-v="'+sp.id+'">Use</button></div>'+
+    '<div class="top" style="padding-top:0;padding-bottom:8px">'+tagFor(sp)+(sp.conc?' <span class="tag" style="color:var(--violet)">Concentration</span>':'')+'</div>'+
+    '<dl class="facts"><div><dt>Takes</dt><dd>'+sp.time+'</dd></div><div><dt>Range</dt><dd>'+sp.range+'</dd></div><div><dt>Needs</dt><dd>'+sp.comp+'</dd></div><div><dt>Lasts</dt><dd>'+sp.dur+'</dd></div></dl>';
+  if(br) h+='<div style="padding:0 16px 8px"><div class="note-s">'+br+'</div></div>';
+  h+='<details><summary>How it works</summary><div class="body"><h4>What it does</h4><p>'+esc(sp.does)+'</p><h4>Rules</h4><ul>'+sp.rules.map(function(r){return '<li>'+esc(r)+'</li>';}).join('')+'</ul>'+
+    '<h4>At the table</h4><ul>'+sp.how.map(function(r){return '<li>'+esc(r)+'</li>';}).join('')+'</ul><h4>Tip</h4><p>'+esc(sp.tip)+'</p></div></details></article>';
+  return h;
+}
+function viewPowers(){
+  var f=S.filter, h='';
+  h+='<div class="sect"><h2>Your powers</h2><p class="lead">Unlimited first, limited after. Tap Use to cast and spend what it costs.</p></div>';
+  h+='<div class="seg" role="group" aria-label="Filter">'+[['all','All'],['unl','Unlimited'],['lim','Limited']].map(function(x){
+    return '<button data-a="filter" data-v="'+x[0]+'" aria-pressed="'+(f===x[0])+'">'+x[1]+'</button>';}).join('')+'</div>';
+  h+='<div class="legend"><span><i style="background:var(--sage)"></i>Unlimited</span><span><i style="background:var(--violet)"></i>Free once per Long Rest</span><span><i style="background:var(--brass)"></i>Bardic Inspiration</span><span><i style="background:var(--ink)"></i>Spell slot</span></div>';
+  h+='<div class="switch" style="margin:10px 0 0"><button data-a="silence" aria-pressed="'+S.silenced+'" aria-label="I am inside a Silence zone"></button><span>I am inside a Silence zone</span></div>';
+  if(f!=='lim'){
+    h+='<div class="sect"><h2>Unlimited</h2><p class="lead">Cantrips and traits. They cost nothing and never run out.</p></div>';
+    h+=ORDER.unlimited.map(function(id){return card(P[id]);}).join('');
+    h+='<div class="panel"><b style="font-family:var(--serif);font-size:19px">Always on</b><table class="tbl" style="margin-top:6px"><tbody>'+TRAITS.map(function(t){return '<tr><td style="width:36%"><b>'+t[0]+'</b></td><td>'+t[1]+'</td></tr>';}).join('')+'</tbody></table></div>';
+  }
+  if(f!=='unl'){
+    h+='<div class="sect"><h2>Limited</h2><p class="lead">These run out. They come back after a Long Rest.</p></div>';
+    h+='<h3 style="margin:18px 0 0;font-size:20px">Free once per Long Rest</h3>'+ORDER.free.map(function(id){return card(P[id]);}).join('');
+    h+='<h3 style="margin:22px 0 0;font-size:20px">Bardic Inspiration (3 uses, shared)</h3>'+ORDER.pool.map(function(id){return card(P[id]);}).join('');
+    h+='<h3 style="margin:22px 0 0;font-size:20px">1st-level slots (4)</h3>'+ORDER.s1.map(function(id){return card(P[id]);}).join('');
+    h+='<h3 style="margin:22px 0 0;font-size:20px">2nd-level slots (2)</h3>'+ORDER.s2.map(function(id){return card(P[id]);}).join('');
+    h+='<p class="muted" style="margin-top:16px">Swapped out before play: Sleep was replaced by Dissonant Whispers.</p>';
+  }
+  return h;
+}
+
+/* =========================================================
+   ROLL TAB
+   ========================================================= */
+var WEAPONS = {
+  dagger:{n:'Dagger', hit:4, dmg:'1d4', add:2, note:'piercing'},
+  crossbow:{n:'Light crossbow', hit:4, dmg:'1d8', add:2, note:'piercing'}
+};
+var lastRoll = null;
+function viewRoll(){
+  var h='<div class="sect"><h2>Roll dice</h2><p class="lead">The app adds your bonuses. Choose how you roll, then tap what you are doing.</p></div>';
+  h+='<div class="seg" role="group" aria-label="How to roll">'+[['n','Normal'],['a','Advantage'],['d','Disadvantage']].map(function(x){
+    return '<button data-a="adv" data-v="'+x[0]+'" aria-pressed="'+(S.adv===x[0])+'">'+x[1]+'</button>';}).join('')+'</div>';
+  h+='<div id="lastroll">'+resultHtml()+'</div>';
+  h+='<h3 style="margin-top:20px;font-size:21px">Fight</h3><div class="grid2">'+
+    '<button class="rbtn star" data-a="rollinit"><span class="l"><b>Initiative</b><span>Who goes first</span></span><span class="m">'+fm(INIT)+'</span></button>'+
+    Object.keys(WEAPONS).map(function(k){var w=WEAPONS[k];return '<button class="rbtn star" data-a="attack" data-v="'+k+'"><span class="l"><b>'+w.n+' attack</b><span>Damage '+w.dmg+fm(w.add)+'</span></span><span class="m">'+fm(w.hit)+'</span></button>';}).join('')+'</div>';
+  h+='<h3 style="margin-top:22px;font-size:21px">Your strengths</h3><div class="grid2">'+
+    SKILLS.filter(function(s){return s.p==='exp'||s.p==='pro';}).sort(function(a,b){return skillBonus(b)-skillBonus(a)||a.n.localeCompare(b.n);}).map(skillBtn).join('')+'</div>';
+  h+='<h3 style="margin-top:22px;font-size:21px">Everything else</h3><div class="grid2">'+
+    SKILLS.filter(function(s){return s.p==='jat';}).map(skillBtn).join('')+'</div>';
+  h+='<h3 style="margin-top:22px;font-size:21px">Saving throws</h3><p class="muted">Rolled when something tries to affect you. The DM tells you when.</p><div class="grid2">'+
+    SAVES.map(function(s){var b=saveBonus(s);return '<button class="rbtn'+(s.p?' star':'')+'" data-a="rollsave" data-v="'+s.id+'"><span class="l"><b>'+s.n+(s.p?' (proficient)':'')+'</b><span>'+SAVE_NOTE[s.id]+'</span></span><span class="m">'+fm(b)+'</span></button>';}).join('')+'</div>';
+  h+='<h3 style="margin-top:22px;font-size:21px">Any die</h3><div class="dice">'+[4,6,8,10,12,20,100].map(function(n){return '<button data-a="die" data-v="'+n+'">d'+n+'</button>';}).join('')+'</div>';
+  h+='<h3 style="margin-top:22px;font-size:21px">Recent rolls</h3><ul class="log" id="log">'+logHtml()+'</ul>';
+  return h;
+}
+function skillBtn(s){
+  var mark = s.p==='exp'?'Expertise':s.p==='pro'?'Proficient':'Half bonus';
+  return '<button class="rbtn'+(s.p==='exp'?' star':'')+'" data-a="rollskill" data-v="'+s.id+'"><span class="l"><b>'+s.n+'</b><span>'+mark+'. '+s.d+'</span></span><span class="m">'+fm(skillBonus(s))+'</span></button>';
+}
+function logHtml(){
+  if(!S.rolls.length) return '<li class="muted"><span>Nothing rolled yet. Tap any button above.</span><span></span></li>';
+  return S.rolls.map(function(r){return '<li><span>'+esc(r.l)+' <span class="muted">'+esc(r.t)+'</span></span><span>'+r.v+'</span></li>';}).join('');
+}
+function resultHtml(){
+  if(!lastRoll) return '<div class="result"><div class="why">Your roll shows here. A 20 is a critical success and a 1 is a critical failure.</div></div>';
+  var r=lastRoll;
+  var cls = r.crit==='20'?' crit': r.crit==='1'?' fumble':'';
+  var badge = r.crit==='20'?'<span class="badge" style="color:var(--sage)">Natural 20</span>': r.crit==='1'?'<span class="badge" style="color:var(--ledger)">Natural 1</span>':'';
+  var h='<div class="result'+cls+'" aria-live="polite"><div class="why"><b style="color:var(--ink)">'+esc(r.label)+'</b>'+badge+'</div><div class="big">'+r.total+'</div><div class="why">'+esc(r.detail)+'</div>';
+  if(r.follow) h+='<div style="margin-top:10px">'+r.follow+'</div>';
+  return h+'</div>';
+}
+function showRoll(r){
+  lastRoll=r; pushLog(r.label, r.detail, r.total); save();
+  if(S.tab==='roll'){ $('lastroll').innerHTML=resultHtml(); $('log').innerHTML=logHtml(); }
+  else toast(r.label+': '+r.total);
+}
+function doCheck(label, mod, extraNote){
+  var d=d20(S.adv);
+  var detail = (S.adv==='n'?'d20 '+d.used:(S.adv==='a'?'Advantage: ':'Disadvantage: ')+d.all.join(' and ')+' (kept '+d.used+')')+' '+fm(mod)+' = '+(d.used+mod);
+  showRoll({label:label,total:d.used+mod,detail:detail+(extraNote?'. '+extraNote:''),crit:d.used===20?'20':d.used===1?'1':null});
+}
+function doAttack(k){
+  var w=WEAPONS[k], d=d20(S.adv);
+  var total=d.used+w.hit;
+  var crit=d.used===20, fumble=d.used===1;
+  var detail=(S.adv==='n'?'d20 '+d.used:(S.adv==='a'?'Advantage: ':'Disadvantage: ')+d.all.join(' and ')+' (kept '+d.used+')')+' '+fm(w.hit)+' = '+total+'. The DM compares this to the target’s Armor Class.';
+  var follow = fumble? '' : '<button class="btn sm" data-a="dmg" data-v="'+k+'" data-c="'+(crit?1:0)+'">Roll damage'+(crit?' (critical: dice doubled)':'')+'</button>';
+  showRoll({label:w.n+' attack',total:total,detail:detail,crit:crit?'20':fumble?'1':null,follow:follow});
+}
+function doDamage(k,crit){
+  var w=WEAPONS[k], m=/^(\d+)d(\d+)$/.exec(w.dmg), n=(+m[1])*(crit?2:1);
+  var r=rollExpr(n+'d'+m[2]+'+'+w.add);
+  showRoll({label:w.n+' damage',total:r.total,detail:r.parts.join(' + ')+' '+fm(w.add)+' = '+r.total+' '+w.note+(crit?' (critical hit)':''),crit:null});
+}
+
+/* =========================================================
+   LEARN TAB
+   ========================================================= */
+var GLOSS = [
+ ['Action','The main thing you do on your turn: attack, cast a spell, dash, hide, and so on. You get one per turn.'],
+ ['Advantage','Roll two d20 and keep the higher one. Disadvantage: keep the lower one. If you have both, they cancel out.'],
+ ['Armor Class (AC)','How hard you are to hit. An attack hits if its roll meets or beats your AC. Yours is 13.'],
+ ['Bonus Action','A small extra action, once per turn, and only if one of your powers uses it. Healing Word and Bardic Inspiration do.'],
+ ['Cantrip','A spell you can cast as often as you like, with no spell slot.'],
+ ['Charmed','You cannot attack the charmer or target it with harmful effects, and it has advantage on social checks against you.'],
+ ['Concentration','Some spells stay active only while you focus on them. You can focus on one at a time. Casting another concentration spell, being knocked out, or failing a Constitution save after taking damage ends it.'],
+ ['Critical hit','An attack roll of a natural 20 always hits. Roll the damage dice twice and add your bonus once.'],
+ ['DC (Difficulty Class)','The number a roll must meet or beat. Your Spell Save DC is 13: enemies must roll 13 or more on their save to resist your spell.'],
+ ['Deafened','You cannot hear, and you fail any check that depends on hearing.'],
+ ['Expertise','You double your proficiency bonus for a skill. You have it in Arcana and Persuasion.'],
+ ['Hit Dice','Dice you can spend during a Short Rest to heal. You have three d8s, and each heals the roll plus your Constitution modifier (+2).'],
+ ['Incapacitated','You cannot take Actions, Bonus Actions or Reactions, and your Concentration ends.'],
+ ['Invisible','Nobody can see you unless they have a special sense. Attacks against you are harder and yours are easier, as long as they cannot see you.'],
+ ['Long Rest','At least 8 hours of rest (4 for you, thanks to Trance). You regain all hit points, all spell slots, Bardic Inspiration and free casts, and half your Hit Dice.'],
+ ['Opportunity attack','When an enemy you can see leaves your reach, you can use your Reaction to make one melee attack against it.'],
+ ['Proficiency bonus','A number added to rolls you are trained in. Yours is +2.'],
+ ['Reaction','One special move you can make on anyone’s turn, such as Cutting Words. It resets when your own turn starts.'],
+ ['Ritual','A spell with the ritual tag can be cast without a slot if you spend 10 extra minutes. Detect Magic and Silence are rituals.'],
+ ['Saving throw','A roll to resist something happening to you, or the roll an enemy makes against your spell. Spells that say "Wisdom save" make the target roll Wisdom.'],
+ ['Short Rest','An hour of rest. You can spend Hit Dice to heal. Your spell slots do not come back.'],
+ ['Spell slot','A charge of magic that powers a leveled spell. You have four 1st-level and two 2nd-level slots. A spell cast with a higher slot can be stronger.'],
+ ['Temporary hit points','A buffer that absorbs damage first. It is not healed back and does not stack.'],
+ ['Unconscious','Out cold: you cannot act, move or speak, and attacks against you have advantage.']
+];
+function viewLearn(){
+  var h='<div class="sect"><h2>Learn the game</h2><p class="lead">Short lessons for a first session. Open one at a time.</p></div>';
+  h+='<details class="lesson" open><summary>Your turn in six steps</summary><div class="in"><ol class="steps">'+
+   '<li><div><b>Move</b><p>Walk up to 35 ft. You can move before your action, after it, or split it.</p></div></li>'+
+   '<li><div><b>Take one Action</b><p>Attack, cast a spell, Dash, Hide, Help, or any other action from the Turn tab. You get one.</p></div></li>'+
+   '<li><div><b>Maybe a Bonus Action</b><p>Only if a power uses one. For you that is Healing Word and Bardic Inspiration. No power, no bonus action.</p></div></li>'+
+   '<li><div><b>Interact with one object</b><p>Draw your dagger, open a door or pick something up, for free.</p></div></li>'+
+   '<li><div><b>Reaction, off turn</b><p>Once per round, on anyone’s turn. Yours is Cutting Words or an opportunity attack. It comes back when your next turn starts.</p></div></li>'+
+   '<li><div><b>Say “I’m done”</b><p>The next creature in the initiative order goes.</p></div></li></ol></div></details>';
+  h+='<details class="lesson"><summary>How rolling works</summary><div class="in"><p>Nearly everything is a <b>d20 roll</b>: roll a twenty-sided die, add a bonus, and compare it to a target number.</p>'+
+   '<p><b>Attack rolls</b> compare to the enemy’s Armor Class. <b>Skill checks</b> compare to a Difficulty Class (DC) the DM sets. <b>Saving throws</b> are rolled to resist something, and for your spells the <i>enemy</i> rolls against your DC of 13.</p>'+
+   '<p>A natural 20 is a critical success on an attack, and a natural 1 always misses. With <b>advantage</b> you roll two dice and keep the higher.</p>'+
+   '<p>Use the Roll tab: it adds the right bonus for you.</p></div></details>';
+  h+='<details class="lesson"><summary>Spells for a World of Warcraft player</summary><div class="in"><table class="tbl"><thead><tr><th>In WoW</th><th>In D&amp;D</th></tr></thead><tbody>'+
+   '<tr><td>Abilities with no cooldown and no mana cost</td><td>Cantrips. Unlimited.</td></tr>'+
+   '<tr><td>Mana pool</td><td>Spell slots: six charges instead of a bar.</td></tr>'+
+   '<tr><td>Cooldown that resets at the inn</td><td>“Once per Long Rest” powers.</td></tr>'+
+   '<tr><td>Eating and resting to full</td><td>Long Rest.</td></tr>'+
+   '<tr><td>Global cooldown</td><td>One Action per turn.</td></tr>'+
+   '<tr><td>Buffs</td><td>Bardic Inspiration, Longstrider.</td></tr>'+
+   '<tr><td>Crowd control</td><td>Suggestion, Silence, Invisibility.</td></tr>'+
+   '<tr><td>Interrupt</td><td>Cutting Words, which lowers a roll that is already made.</td></tr>'+
+   '<tr><td>Threat and aggro</td><td>None. The DM decides who enemies attack.</td></tr>'+
+   '</tbody></table></div></details>';
+  h+='<details class="lesson"><summary>Concentration, plainly</summary><div class="in"><p>Four of your spells need Concentration: Detect Magic, Invisibility, Silence and Suggestion. You can concentrate on <b>one spell at a time</b>. Casting a second one ends the first.</p>'+
+   '<p>When you take damage while concentrating, roll a <b>Constitution saving throw</b> (+2 for you). The DC is 10 or half the damage, whichever is higher. Fail and the spell ends. The app does this for you when you take damage in the hit points box.</p></div></details>';
+  h+='<details class="lesson"><summary>Falling at 0 hit points</summary><div class="in"><p>At 0 HP you fall unconscious. You do not die right away. At the start of each of your turns, roll a <b>death saving throw</b>: a plain d20.</p><ul>'+
+   '<li>10 or higher is a success. Under 10 is a failure.</li><li>A natural 20 gets you back up with 1 hit point. A natural 1 counts as two failures.</li>'+
+   '<li>Three successes and you are stable. Three failures and you die.</li><li>Any healing wakes you. Taking damage at 0 HP is a failure.</li></ul><p>Healing Word from a friend is the quickest way back up.</p></div></details>';
+  h+='<details class="lesson"><summary>Ways your powers work together</summary><div class="in"><ul>'+
+   '<li><b>Silence + Invisibility.</b> Only one at a time, since both need Concentration. Pick the one the job needs.</li>'+
+   '<li><b>Detect Magic as a ritual, then Arcana.</b> Cast it for free before the job, then roll Arcana to understand the wards.</li>'+
+   '<li><b>Dissonant Whispers on a melee enemy.</b> It runs away, so your friend is free.</li>'+
+   '<li><b>Vicious Mockery before an enemy attack.</b> The next attack has disadvantage.</li>'+
+   '<li><b>Cutting Words on a guard’s Perception check.</b> Subtract a d6 and stay hidden.</li>'+
+   '<li><b>Stay outside your own Silence.</b> Inside it you cannot speak or cast verbal spells.</li></ul></div></details>';
+  h+='<div class="sect"><h2>Glossary</h2></div><label class="sr" for="gq">Search the glossary</label><input class="gl" id="gq" type="search" placeholder="Search a word, like advantage" autocomplete="off"><dl class="gloss" id="gloss">'+glossHtml('')+'</dl>';
+  return h;
+}
+function glossHtml(q){
+  q=q.toLowerCase();
+  var list=GLOSS.filter(function(g){return !q||g[0].toLowerCase().indexOf(q)>-1||g[1].toLowerCase().indexOf(q)>-1;});
+  if(!list.length) return '<dd>No match. Try another word.</dd>';
+  return list.map(function(g){return '<dt>'+g[0]+'</dt><dd>'+g[1]+'</dd>';}).join('');
+}
+
+/* =========================================================
+   ME TAB
+   ========================================================= */
+function viewMe(){
+  var h='<div class="sect"><h2>Machiavell</h2><p class="lead">Wood Elf, Bard 3 of the College of Lore. Sage background, Magic Initiate (Wizard).</p></div>';
+  h+='<div class="panel"><table class="tbl"><thead><tr><th>Ability</th><th>Score</th><th>Modifier</th><th>Saving throw</th></tr></thead><tbody>'+
+   [['Strength','str',8],['Dexterity','dex',14],['Constitution','con',15],['Intelligence','int',13],['Wisdom','wis',10],['Charisma','cha',16]].map(function(a){
+     var sv=SAVES.filter(function(s){return s.id===a[1];})[0];
+     return '<tr><td><b>'+a[0]+'</b></td><td>'+a[2]+'</td><td>'+fm(ABIL[a[1]])+'</td><td>'+fm(saveBonus(sv))+(sv.p?' (proficient)':'')+'</td></tr>';}).join('')+'</tbody></table></div>';
+  h+='<div class="sect"><h2>Rest</h2></div><div class="panel"><div class="row"><button class="btn" data-a="longrest">Long Rest</button><button class="btn alt" data-a="shortrest">Short Rest</button></div>'+
+     '<p class="muted" style="margin-top:10px">Hit Dice left: <b>'+S.hd+' / '+HITDICE+'</b> (d8, heal the roll +2 each during a Short Rest).</p></div>';
+  h+='<div class="sect"><h2>The ledger</h2><p class="lead">The Concord wants twelve thousand sovereigns before the next moon change.</p></div>'+
+     '<div class="panel"><div class="row" style="justify-content:space-between"><div><b style="font-family:var(--serif);font-size:34px">'+S.days+'</b> <span class="muted">days left</span></div>'+
+     '<div class="row"><button class="btn sm alt" data-a="days" data-v="-1" aria-label="One day less">− 1 day</button><button class="btn sm alt" data-a="days" data-v="1" aria-label="One day more">+ 1 day</button></div></div></div>';
+  h+='<div class="sect"><h2>Gear</h2></div><div class="panel"><ul style="margin:0;padding-left:20px"><li>Leather armor under a midnight-green velvet frock coat</li><li>Two daggers, one in the boot and one in the waistcoat</li><li>Collapsible light crossbow with 20 bolts</li><li>Viol, your spellcasting focus</li><li>Calligrapher’s Supplies, parchment and a book on the history of wards</li><li>Orsolo’s letters in the document case</li></ul></div>';
+  h+='<div class="sect"><h2>Session notes</h2></div><label class="sr" for="notes">Notes</label><textarea id="notes" placeholder="Names, clues, what the DM said. Saved on this device.">'+esc(S.notes)+'</textarea>';
+  h+='<div class="sect"><h2>Reset</h2></div><button class="btn alt" data-a="reset">Reset everything on this device</button>';
+  return h;
+}
+
+/* =========================================================
+   VIEW SWITCH
+   ========================================================= */
+function render(keepScroll){
+  var y = window.scrollY;
+  renderHeader(); renderTabs();
+  var v = S.tab==='turn'?viewTurn():S.tab==='powers'?viewPowers():S.tab==='roll'?viewRoll():S.tab==='learn'?viewLearn():viewMe();
+  var openIds = [];
+  if(keepScroll){ var ds=document.querySelectorAll('#main details[open]'); for(var i=0;i<ds.length;i++){ var s=ds[i].querySelector('summary'); if(s) openIds.push(s.textContent+'|'+(ds[i].parentNode.querySelector('h3')||{}).textContent); } }
+  $('main').innerHTML = v;
+  if(keepScroll){
+    var ds2=document.querySelectorAll('#main details');
+    for(var j=0;j<ds2.length;j++){ var s2=ds2[j].querySelector('summary'); var key=s2?(s2.textContent+'|'+(ds2[j].parentNode.querySelector('h3')||{}).textContent):''; if(openIds.indexOf(key)>-1) ds2[j].open=true; }
+    window.scrollTo(0,y);
+  }
+}
+function go(tab){ S.tab=tab; save(); render(false); window.scrollTo(0,0); }
+
+/* =========================================================
+   HP DIALOG
+   ========================================================= */
+var dlg = $('dlg');
+function openDialog(html){ dlg.innerHTML=html; if(!dlg.open) dlg.showModal(); }
+function closeDialog(){ if(dlg.open) dlg.close(); }
+function openHP(){
+  var h='<div class="dlg"><h2 id="dlgt">Hit points</h2><p class="muted">Now '+S.hp+' of '+MAXHP+(S.temp?', plus '+S.temp+' temporary':'')+'. Type a number, then choose what it is.</p>'+
+   '<label class="sr" for="hpn">Amount</label><input id="hpn" type="number" min="0" inputmode="numeric" placeholder="Amount">'+
+   '<div class="acts" style="justify-content:flex-start"><button class="btn danger" data-a="hpapply" data-v="damage">Damage</button><button class="btn" data-a="hpapply" data-v="heal">Heal</button><button class="btn alt" data-a="hpapply" data-v="temp">Temp HP</button></div>';
+  if(S.hp===0){
+    h+='<h3 style="margin-top:16px;font-size:20px">Death saving throws</h3><p class="muted">Roll one at the start of each of your turns. 10 or more is a success.</p>'+
+      '<div class="death"><div class="pool"><span class="t">Successes</span>'+[0,1,2].map(function(i){return '<span class="pip'+(i<S.death.s?'':' off')+'" style="display:inline-block"></span>';}).join('')+'</div>'+
+      '<div class="pool f"><span class="t">Failures</span>'+[0,1,2].map(function(i){return '<span class="pip'+(i<S.death.f?'':' off')+'" style="display:inline-block"></span>';}).join('')+'</div></div>'+
+      '<div class="row"><button class="btn sm" data-a="deathroll">Roll death save</button><button class="btn sm alt" data-a="deathfail">Add a failure (hit at 0 HP)</button></div>';
+  }
+  h+='<div class="acts"><button class="btn alt" data-a="close">Close</button></div></div>';
+  openDialog(h);
+}
+function applyHP(kind){
+  var n = parseInt(($('hpn')||{}).value,10);
+  if(!(n>0)){ toast('Type an amount first.'); return; }
+  if(kind==='damage'){
+    var wasConc=S.conc, absorbed=Math.min(S.temp,n); S.temp-=absorbed; var rest=n-absorbed;
+    var before=S.hp; S.hp=Math.max(0,S.hp-rest);
+    if(before===0 && rest>0){ S.death.f=Math.min(3,S.death.f+1); }
+    save(); closeDialog(); render(true);
+    var msg = 'Took '+n+' damage. '+S.hp+' hit points left.';
+    if(S.hp===0 && before>0) { msg+=' You fall unconscious.'; S.death={s:0,f:0}; save(); }
+    if(wasConc && rest>0 && S.hp>0){ concCheck(Math.max(10,Math.floor(rest/2))); }
+    else { toast(msg); if(S.hp===0 && wasConc){ S.conc=null; save(); render(true);} }
+  } else if(kind==='heal'){
+    var was=S.hp; S.hp=Math.min(MAXHP,S.hp+n); if(was===0){ S.death={s:0,f:0}; }
+    save(); closeDialog(); render(true); toast('Healed. '+S.hp+' hit points.');
+  } else {
+    S.temp=Math.max(S.temp,n); save(); closeDialog(); render(true); toast('Temporary hit points: '+S.temp+'.');
+  }
+}
+function concCheck(dc){
+  openDialog('<div class="dlg"><h2 id="dlgt">Concentration check</h2><p>You are concentrating on <b>'+esc(P[S.conc].n)+'</b> and took damage. Roll a Constitution saving throw (+2). You need <b>'+dc+'</b> or more to keep it.</p><div id="ccres"></div>'+
+   '<div class="acts"><button class="btn alt" data-a="close">Close</button><button class="btn" data-a="ccroll" data-v="'+dc+'">Roll Constitution save</button></div></div>');
+}
+
+/* =========================================================
+   CASTING
+   ========================================================= */
+var ctx=null;
+function options(sp){
+  var o=[];
+  if(sp.kind==='none') o.push({k:'none',label:sp.isFeature?'No cost':'Cantrip: no cost',sub:'Unlimited'});
+  if(sp.kind==='bi') o.push({k:'bi',label:'Spend 1 Bardic Inspiration use',sub:S.bi+' of 3 left',dis:S.bi<1,lvl:0});
+  if(sp.kind==='free'){
+    o.push({k:'free',label:'Free cast (once per Long Rest)',sub:S.free[sp.fid]?'Available':'Already used',dis:!S.free[sp.fid],lvl:sp.lvl});
+  }
+  if(sp.kind==='slot'||sp.kind==='free'){
+    if(sp.ritual) o.push({k:'ritual',label:'Cast as a ritual',sub:'No slot, but it takes 10 extra minutes. Not for use in a fight.',lvl:sp.lvl});
+    for(var l=sp.lvl;l<=2;l++){
+      o.push({k:'s'+l,label:ordinal(l)+'-level slot'+(l>sp.lvl?' (stronger)':''),sub:S.slots[l]+' of '+(l===1?4:2)+' left'+(l>sp.lvl&&sp.up?'. '+sp.up:''),dis:S.slots[l]<1,lvl:l});
+    }
+  }
+  return o;
+}
+function openCast(id){
+  var sp=P[id]; ctx={id:id,opt:null,done:false};
+  var os=options(sp), pick=null;
+  if(sp.ritual && !S.combat){ pick=os.filter(function(x){return x.k==='ritual';})[0]; }
+  if(!pick) pick=os.filter(function(x){return !x.dis;})[0];
+  ctx.opt = pick? pick.k : null;
+  drawCast();
+}
+function warnings(sp, opt){
+  var w=[], t=S.turn;
+  if(S.silenced && sp.V) w.push(['','You are inside a Silence zone. '+sp.n+' needs your voice, so it will not work until you step out.',true]);
+  if(opt && opt.k!=='ritual' && S.combat){
+    if(sp.time==='Action' && t.action) w.push(['','You already used your Action this turn.']);
+    if(sp.time==='Bonus Action' && t.bonus) w.push(['','You already used your Bonus Action this turn.']);
+    if(sp.time==='Reaction' && t.reaction) w.push(['','You already used your Reaction this round.']);
+    if(sp.time==='Bonus Action' && sp.lvl>0 && t.leveledAction) w.push(['','Rule: you cast a leveled spell with your Action this turn, so you cannot also cast a spell with a Bonus Action.']);
+    if(sp.time==='Action' && sp.lvl>0 && t.bonusSpell) w.push(['','Rule: you cast a spell with your Bonus Action this turn, so only a cantrip is allowed with your Action.']);
+  }
+  if(sp.conc && S.conc && S.conc!==sp.id && !(opt&&opt.k==='ritual'&&false)) w.push(['info','This ends your Concentration on '+P[S.conc].n+'.']);
+  if(sp.conc && S.conc===sp.id) w.push(['info','You are already concentrating on this. Casting it again just restarts it.']);
+  return w;
+}
+function drawCast(){
+  var sp=P[ctx.id], os=options(sp), cur=os.filter(function(x){return x.k===ctx.opt;})[0];
+  var h='<div class="dlg"><h2 id="dlgt">'+sp.n+'</h2><p class="muted" style="margin-bottom:4px">'+sp.one+'</p>';
+  if(!ctx.done){
+    h+='<fieldset style="border:0;padding:0;margin:8px 0 0"><legend class="sr">What to spend</legend>'+os.map(function(x){
+      return '<label class="opt'+(x.dis?' dis':'')+'"><input type="radio" name="cost" value="'+x.k+'"'+(x.k===ctx.opt?' checked':'')+(x.dis?' disabled':'')+'><span><b>'+x.label+'</b><span>'+x.sub+'</span></span></label>';
+    }).join('')+'</fieldset>';
+    var ws=warnings(sp,cur);
+    h+=ws.map(function(w){return '<div class="alert'+(w[0]==='info'?' info':'')+'">'+w[1]+'</div>';}).join('');
+    var blocked = S.silenced && sp.V;
+    h+='<div class="acts"><button class="btn alt" data-a="close">Cancel</button><button class="btn" data-a="castgo"'+((!cur||blocked)?' disabled':'')+'>Cast '+sp.n+'</button></div>';
+  } else {
+    h+='<div class="alert info" style="border-left-color:var(--sage);background:rgba(140,194,168,.12)"><b>Done.</b> '+ctx.summary+'</div><h3 style="font-size:19px;margin-top:12px">Now at the table</h3><ol class="steps-s">'+sp.how.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>';
+    if(sp.roll){
+      var r=sp.roll(ctx.level||sp.lvl||1);
+      h+='<div class="result" style="min-height:0;margin:14px 0 0" id="castres"><div class="why">'+r.what+'</div><div class="row" style="margin-top:6px"><button class="btn sm" data-a="castroll" data-v="'+r.expr+'" data-w="'+esc(r.what)+'">Roll '+r.expr.replace('+',' + ')+'</button></div></div>';
+    }
+    h+='<div class="acts"><button class="btn" data-a="close">Close</button></div>';
+  }
+  openDialog(h+'</div>');
+}
+function castGo(){
+  var sp=P[ctx.id], os=options(sp), cur=os.filter(function(x){return x.k===ctx.opt;})[0];
+  if(!cur||cur.dis) return;
+  var t=S.turn, lvl=cur.lvl!=null?cur.lvl:sp.lvl, sum='';
+  if(cur.k==='s1'){S.slots[1]--; sum='Used a 1st-level slot.';}
+  else if(cur.k==='s2'){S.slots[2]--; sum='Used a 2nd-level slot.';}
+  else if(cur.k==='free'){S.free[sp.fid]=false; sum='Used your free cast. It returns after a Long Rest.';}
+  else if(cur.k==='bi'){S.bi--; sum='Spent a Bardic Inspiration use ('+S.bi+' left).';}
+  else if(cur.k==='ritual'){sum='Cast as a ritual: no slot used. It takes 10 extra minutes.';}
+  else sum='No cost.';
+  if(S.combat && cur.k!=='ritual'){
+    if(sp.time==='Action') { t.action=true; if(sp.lvl>0) t.leveledAction=true; }
+    if(sp.time==='Bonus Action'){ t.bonus=true; if(sp.lvl>0) t.bonusSpell=true; }
+    if(sp.time==='Reaction') t.reaction=true;
+    sum+=' Your '+(sp.time==='Bonus Action'?'Bonus Action':sp.time)+' is marked as spent.';
+  }
+  if(sp.conc){ var prev=S.conc && S.conc!==sp.id ? P[S.conc].n : null; S.conc=sp.id; if(prev) sum+=' Concentration on '+prev+' ended.'; else sum+=' You are now concentrating.'; }
+  ctx.done=true; ctx.summary=sum; ctx.level=lvl||sp.lvl;
+  pushLog('Cast '+sp.n, cur.k==='ritual'?'ritual':cur.k==='none'?'cantrip':cur.k, '');
+  save(); render(true); drawCast();
+}
+
+/* =========================================================
+   RESTS
+   ========================================================= */
+function confirmDlg(title,body,action,label){
+  openDialog('<div class="dlg"><h2 id="dlgt">'+title+'</h2><p>'+body+'</p><div class="acts"><button class="btn alt" data-a="close">Cancel</button><button class="btn" data-a="'+action+'">'+label+'</button></div></div>');
+}
+function longRest(){
+  S.hp=MAXHP; S.temp=0; S.slots={1:4,2:2}; S.bi=3; S.free={longstrider:true,disguiseSelf:true}; S.conc=null; S.death={s:0,f:0};
+  S.hd=Math.min(HITDICE,S.hd+Math.max(1,Math.floor(HITDICE/2)));
+  S.turn=fresh().turn; S.combat=false; S.round=1; S.silenced=false;
+  save(); closeDialog(); render(true); toast('Long Rest done. Everything is back.');
+}
+function shortRestDlg(){
+  var h='<div class="dlg"><h2 id="dlgt">Short Rest</h2><p>An hour of rest. Spend Hit Dice to heal: each one heals a d8 plus 2. Your spell slots do not come back.</p>'+
+   '<p>Hit Dice left: <b>'+S.hd+'</b>. Hit points: <b>'+S.hp+' / '+MAXHP+'</b>.</p><div id="srres"></div>'+
+   '<div class="acts"><button class="btn alt" data-a="close">Done</button><button class="btn" data-a="spendhd"'+((S.hd<1||S.hp>=MAXHP)?' disabled':'')+'>Spend a Hit Die</button></div></div>';
+  openDialog(h);
+}
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+document.addEventListener('click', function(e){
+  var b=e.target.closest('[data-a]'); if(!b) return;
+  var a=b.dataset.a, v=b.dataset.v;
+  switch(a){
+   case 'tab': go(v); break;
+   case 'hideintro': S.seenIntro=true; save(); render(true); break;
+   case 'hp': openHP(); break;
+   case 'close': closeDialog(); break;
+   case 'pip': {
+     var k=b.dataset.k, i=+b.dataset.i;
+     if(k==='s1') S.slots[1]= Math.max(0,Math.min(4,S.slots[1]+(i<S.slots[1]?-1:1)));
+     else if(k==='s2') S.slots[2]= Math.max(0,Math.min(2,S.slots[2]+(i<S.slots[2]?-1:1)));
+     else if(k==='bi') S.bi= Math.max(0,Math.min(3,S.bi+(i<S.bi?-1:1)));
+     else if(k.indexOf('f:')===0){ var id=k.slice(2); S.free[id]=!S.free[id]; }
+     save(); render(true); break; }
+   case 'endconc': S.conc=null; save(); render(true); toast('Concentration ended.'); break;
+   case 'silence': S.silenced=!S.silenced; save(); render(true); break;
+   case 'beat': S.turn[v]=!S.turn[v]; save(); render(true); break;
+   case 'newturn': S.turn=fresh().turn; if(S.combat) S.round++; save(); render(true); toast('New turn. All beats are ready.'); break;
+   case 'combat': S.combat=!S.combat; if(S.combat){S.round=1;} S.turn=fresh().turn; save(); render(true); break;
+   case 'intent': S.intent=v; save(); render(true); break;
+   case 'filter': S.filter=v; save(); render(true); break;
+   case 'use': openCast(v); break;
+   case 'castgo': castGo(); break;
+   case 'castroll': {
+     var r=rollExpr(v); if(!r) break;
+     var el=$('castres'); el.innerHTML='<div class="why">'+esc(b.dataset.w)+'</div><div class="big" style="font-size:44px">'+r.total+'</div><div class="why">'+r.parts.join(' + ')+(r.bonus?' '+fm(r.bonus):'')+' = '+r.total+'</div>';
+     pushLog('Spell roll '+v, r.parts.join('+'), r.total); save(); break; }
+   case 'adv': S.adv=v; save(); render(true); break;
+   case 'rollinit': doCheck('Initiative', INIT, 'Highest total goes first.'); break;
+   case 'rollskill': { var s=skillById(v); doCheck(s.n, skillBonus(s)); break; }
+   case 'rollsave': { var sv=SAVES.filter(function(x){return x.id===v;})[0]; doCheck(sv.n+' save', saveBonus(sv)); break; }
+   case 'attack': doAttack(v); break;
+   case 'dmg': doDamage(v, b.dataset.c==='1'); break;
+   case 'die': { var n=+v, r2=rnd(n); showRoll({label:'d'+n,total:r2,detail:'One d'+n,crit:null}); break; }
+   case 'hpapply': applyHP(v); break;
+   case 'ccroll': {
+     var dc=+v, rr=rnd(20), tot=rr+ABIL.con;
+     var ok = tot>=dc;
+     if(!ok){ S.conc=null; }
+     save(); $('ccres').innerHTML='<div class="alert'+(ok?' info':'')+'"><b>'+rr+' '+fm(ABIL.con)+' = '+tot+'.</b> '+(ok?'You keep your concentration.':'You lose your concentration.')+'</div>';
+     b.disabled=true; render(true); break; }
+   case 'deathroll': {
+     var dr=rnd(20), msg;
+     if(dr===20){ S.hp=1; S.death={s:0,f:0}; msg='Natural 20. You get back up with 1 hit point.'; }
+     else if(dr===1){ S.death.f=Math.min(3,S.death.f+2); msg='Natural 1. Two failures.'; }
+     else if(dr>=10){ S.death.s++; msg=dr+': a success.'; }
+     else { S.death.f++; msg=dr+': a failure.'; }
+     if(S.death.s>=3){ msg+=' Three successes: you are stable.'; }
+     if(S.death.f>=3){ msg+=' Three failures. Tell your DM.'; }
+     save(); render(true); toast(msg); openHP(); break; }
+   case 'deathfail': S.death.f=Math.min(3,S.death.f+1); save(); render(true); openHP(); break;
+   case 'longrest': confirmDlg('Long Rest','This restores all hit points, spell slots, Bardic Inspiration and free casts, and ends your Concentration.','dolong','Take a Long Rest'); break;
+   case 'dolong': longRest(); break;
+   case 'shortrest': shortRestDlg(); break;
+   case 'spendhd': {
+     if(S.hd<1||S.hp>=MAXHP) break;
+     var h1=rnd(8), heal=h1+ABIL.con; S.hd--; S.hp=Math.min(MAXHP,S.hp+heal); save(); render(true);
+     shortRestDlg(); $('srres').innerHTML='<div class="alert info">Rolled '+h1+' + 2: healed '+heal+'.</div>'; break; }
+   case 'days': S.days=Math.max(0,S.days+(+v)); save(); render(true); break;
+   case 'reset': confirmDlg('Reset everything','This clears hit points, slots, notes and rolls on this device and starts fresh.','doreset','Reset'); break;
+   case 'doreset': S=fresh(); try{localStorage.removeItem(KEY);}catch(x){} closeDialog(); render(false); toast('Reset.'); break;
+  }
+});
+document.addEventListener('change', function(e){
+  if(e.target.name==='cost' && ctx){ ctx.opt=e.target.value; drawCast(); var chk=dlg.querySelector('input[name=cost]:checked'); if(chk) chk.focus(); }
+});
+document.addEventListener('input', function(e){
+  if(e.target.id==='notes'){ S.notes=e.target.value; save(); }
+  if(e.target.id==='gq'){ $('gloss').innerHTML=glossHtml(e.target.value); }
+});
+dlg.addEventListener('click', function(e){ if(e.target===dlg) closeDialog(); });
+
+render(false);
+if('IntersectionObserver' in window){ new IntersectionObserver(function(en){ $('mini').classList.toggle('on', !en[0].isIntersecting); },{threshold:0}).observe(document.querySelector('.status')); }
+})();
+</script>
+</body>
+</html>
