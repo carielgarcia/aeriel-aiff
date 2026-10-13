@@ -42,47 +42,24 @@
   <!-- Google Fonts: JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800;800&amp;display=swap" rel="stylesheet">
 
   <!-- Linking Main Brutalist Stylesheet -->
   <link rel="stylesheet" href="/style.css?v=20.6">
 
   <style>
-    body { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-mono); padding: 0; margin: 0; }
-    @media (max-width: 600px) { body { padding-bottom: calc(var(--tab-h, 56px) + env(safe-area-inset-bottom, 0px)) !important; } }
-    .bk-main { flex: 1; width: 100%; max-width: 880px; margin: 0 auto; padding: 36px var(--spacing-md) 60px; box-sizing: border-box; }
-    .bk-hero { border: var(--border-thick); background: var(--bg-secondary); padding: 24px 28px; margin-bottom: 28px; box-sizing: border-box; }
-    .bk-tag { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 8px; }
-    .bk-title { font-family: 'Helvetica Neue', Arial, sans-serif !important; font-size: 1.85rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 10px; text-transform: uppercase !important; }
-    .bk-meta { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
-    .bk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: var(--border-thick); background: var(--bg-secondary); }
-    .bk-card { display: flex; flex-direction: column; border-right: var(--border-thin); min-width: 0; }
-    .bk-card:last-child { border-right: none; }
-    .bk-thumb { display: block; padding: 12px; border-bottom: var(--border-thin); }
-    .bk-thumb img { display: block; width: 100%; height: auto; aspect-ratio: 400 / 567; object-fit: cover; border: var(--border-thin); }
-    .bk-card-body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .bk-card-code { margin: 0; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; color: var(--text-muted); }
-    .bk-card-name { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif !important; font-size: 1.15rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase !important; }
-    .bk-card-meta { margin: 0 0 8px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
-    .bk-actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
-    .bk-btn { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; border: var(--border-thin); color: var(--text-primary); background: transparent; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; border-radius: 0 !important; transition: none; text-align: center; }
-    .bk-btn:hover, .bk-btn:focus-visible { background: var(--text-primary); color: var(--bg-primary); outline: none; }
-    .bk-contact { margin-top: 28px; border: var(--border-thick); background: var(--bg-secondary); padding: 20px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
-    .bk-contact p { margin: 0; }
-    .bk-contact-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px !important; }
-    .bk-contact-mail { font-size: 1.05rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-primary); text-decoration: underline; }
-    .bk-footer { border-top: var(--border-thick); padding: 24px 0 0; margin-top: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted); }
-    .bk-footer a { color: var(--text-primary); text-decoration: underline; font-weight: 700; }
-    @media (max-width: 768px) {
-      .bk-main { padding: 20px var(--spacing-sm) 48px; }
-      .bk-hero { padding: 18px 16px; margin-bottom: 20px; }
-      .bk-title { font-size: 1.35rem; }
-      .bk-grid { grid-template-columns: 1fr; }
-      .bk-card { border-right: none; border-bottom: var(--border-thin); flex-direction: row; }
-      .bk-card:last-child { border-bottom: none; }
-      .bk-thumb { width: 38%; flex: none; border-bottom: none; border-right: var(--border-thin); }
-      .bk-footer { flex-direction: column; align-items: flex-start; }
-    }
+    body { min-height: 100vh; display: flex; flex-direction: column; background: #0A0A0A; color: var(--text-primary); font-family: var(--font-mono); padding: 0; margin: 0; }
+    @media (max-width: 600px) { body { padding-bottom: calc(var(--tab-h, 56px) + 2px + env(safe-area-inset-bottom, 0px)) !important; } }
+    .pk-main { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px 12px 96px; }
+    .pk-slot { display: none; position: relative; flex: none; border: 1px solid #2A2A2A; overflow: hidden; }
+    html[lang="en"] .pk-en, html[lang="es"] .pk-es, html[lang="pt"] .pk-pt { display: block; }
+    .pk-page { width: 794px; height: 1123px; transform-origin: 0 0; position: absolute; top: 0; left: 0; }
+    .pk-dl { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 900; display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 10px 18px; background: #FFFFFF; color: #0A0A0A; border: 2px solid #FFFFFF; font-family: var(--font-mono); font-size: 0.82rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; border-radius: 0 !important; transition: none; }
+    .pk-dl:hover, .pk-dl:focus-visible { background: #0A0A0A; color: #FFFFFF; outline: none; }
+    @media (max-width: 600px) { .pk-dl { bottom: calc(var(--tab-h, 56px) + 14px + env(safe-area-inset-bottom, 0px)); right: 12px; } }
+    .pk-page * { text-transform: none; letter-spacing: normal; font-family: inherit; }
+    /* Presskit artboards (scoped per page) */
+.pk-en-1 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-en-1 .pg *{box-sizing:border-box;border-radius:0}.pk-en-1 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-en-1 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-en-1 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-en-1 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-en-1 .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212)}.pk-en-1 .grid4>div{padding:12px 14px;border-right:2px solid var(--ln,#FFFFFF)}.pk-en-1 .grid4>div:last-child{border-right:none}.pk-en-1 .lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 4px}.pk-en-1 .val{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.5;margin:0}.pk-en-2 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:14px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-en-2 .pg *{box-sizing:border-box;border-radius:0}.pk-en-2 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-en-2 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-en-2 .sec{display:flex;flex-direction:column;gap:10px}.pk-en-2 .cell{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:14px 18px}.pk-en-2 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-en-2 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-en-2 .lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0}.pk-en-2 .tx{margin:0 0 8px;font-size:13px;line-height:1.55}.pk-en-2 .tx:last-child{margin:0}.pk-en-3 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-en-3 .pg *{box-sizing:border-box;border-radius:0}.pk-en-3 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-en-3 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-en-3 .blk{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:14px 18px}.pk-en-3 .hd{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 10px}.pk-en-3 .k{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 2px}.pk-en-3 .t{font-size:13px;line-height:1.55;margin:0 0 12px}.pk-en-3 .t:last-child{margin-bottom:0}.pk-en-3 .g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:2px solid var(--ln,#FFFFFF)}.pk-en-3 .g3>div{padding:10px 12px;border-right:2px solid var(--ln,#FFFFFF)}.pk-en-3 .g3>div:last-child{border-right:none}.pk-en-3 .g3 .n{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;font-size:30px;line-height:1;letter-spacing:-0.05em;margin:0 0 4px}.pk-en-3 .g3 .k{margin:0}.pk-en-3 .one{margin-top:auto}.pk-en-3 .one .val{column-count:2;column-gap:24px}.pk-en-3 .val{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.7;margin:0}.pk-en-4 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-en-4 .pg *{box-sizing:border-box;border-radius:0}.pk-en-4 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-en-4 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-en-4 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-en-4 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-en-4 .cap{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5;margin:6px 0 0;color:var(--mu,#9E9E9E)}.pk-en-4 .cred{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.6}.pk-es-1 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-es-1 .pg *{box-sizing:border-box;border-radius:0}.pk-es-1 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-es-1 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-es-1 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-es-1 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-es-1 .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212)}.pk-es-1 .grid4>div{padding:12px 14px;border-right:2px solid var(--ln,#FFFFFF)}.pk-es-1 .grid4>div:last-child{border-right:none}.pk-es-1 .lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 4px}.pk-es-1 .val{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.5;margin:0}.pk-es-2 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:14px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-es-2 .pg *{box-sizing:border-box;border-radius:0}.pk-es-2 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-es-2 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-es-2 .sec{display:flex;flex-direction:column;gap:10px}.pk-es-2 .cell{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:14px 18px}.pk-es-2 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-es-2 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-es-2 .lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0}.pk-es-2 .tx{margin:0 0 8px;font-size:13px;line-height:1.55}.pk-es-2 .tx:last-child{margin:0}.pk-es-3 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-es-3 .pg *{box-sizing:border-box;border-radius:0}.pk-es-3 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-es-3 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-es-3 .blk{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:14px 18px}.pk-es-3 .hd{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 10px}.pk-es-3 .k{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 2px}.pk-es-3 .t{font-size:13px;line-height:1.55;margin:0 0 12px}.pk-es-3 .t:last-child{margin-bottom:0}.pk-es-3 .g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:2px solid var(--ln,#FFFFFF)}.pk-es-3 .g3>div{padding:10px 12px;border-right:2px solid var(--ln,#FFFFFF)}.pk-es-3 .g3>div:last-child{border-right:none}.pk-es-3 .g3 .n{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;font-size:30px;line-height:1;letter-spacing:-0.05em;margin:0 0 4px}.pk-es-3 .g3 .k{margin:0}.pk-es-3 .one{margin-top:auto}.pk-es-3 .one .val{column-count:2;column-gap:24px}.pk-es-3 .val{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.7;margin:0}.pk-es-4 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-es-4 .pg *{box-sizing:border-box;border-radius:0}.pk-es-4 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-es-4 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-es-4 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-es-4 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-es-4 .cap{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5;margin:6px 0 0;color:var(--mu,#9E9E9E)}.pk-es-4 .cred{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.6}.pk-pt-1 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-pt-1 .pg *{box-sizing:border-box;border-radius:0}.pk-pt-1 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-pt-1 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-pt-1 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-pt-1 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-pt-1 .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212)}.pk-pt-1 .grid4>div{padding:12px 14px;border-right:2px solid var(--ln,#FFFFFF)}.pk-pt-1 .grid4>div:last-child{border-right:none}.pk-pt-1 .lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 4px}.pk-pt-1 .val{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.5;margin:0}.pk-pt-2 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:14px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-pt-2 .pg *{box-sizing:border-box;border-radius:0}.pk-pt-2 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-pt-2 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-pt-2 .sec{display:flex;flex-direction:column;gap:10px}.pk-pt-2 .cell{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:14px 18px}.pk-pt-2 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-pt-2 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-pt-2 .lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0}.pk-pt-2 .tx{margin:0 0 8px;font-size:13px;line-height:1.55}.pk-pt-2 .tx:last-child{margin:0}.pk-pt-3 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-pt-3 .pg *{box-sizing:border-box;border-radius:0}.pk-pt-3 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-pt-3 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-pt-3 .blk{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:14px 18px}.pk-pt-3 .hd{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 10px}.pk-pt-3 .k{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu,#9E9E9E);line-height:1.5;margin:0 0 2px}.pk-pt-3 .t{font-size:13px;line-height:1.55;margin:0 0 12px}.pk-pt-3 .t:last-child{margin-bottom:0}.pk-pt-3 .g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:2px solid var(--ln,#FFFFFF)}.pk-pt-3 .g3>div{padding:10px 12px;border-right:2px solid var(--ln,#FFFFFF)}.pk-pt-3 .g3>div:last-child{border-right:none}.pk-pt-3 .g3 .n{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;font-size:30px;line-height:1;letter-spacing:-0.05em;margin:0 0 4px}.pk-pt-3 .g3 .k{margin:0}.pk-pt-3 .one{margin-top:auto}.pk-pt-3 .one .val{column-count:2;column-gap:24px}.pk-pt-3 .val{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.7;margin:0}.pk-pt-4 .pg{width:794px;height:1123px;box-sizing:border-box;padding:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;background:var(--bg,#0A0A0A);color:var(--fg,#FFFFFF);font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:16px;line-height:1.65}.pk-pt-4 .pg *{box-sizing:border-box;border-radius:0}.pk-pt-4 .bar{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--ln,#FFFFFF);padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5}.pk-pt-4 .disp{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:.95;margin:0}.pk-pt-4 .fr{position:relative;border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);overflow:hidden}.pk-pt-4 .fr img{position:absolute;top:8px;left:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;display:block}.pk-pt-4 .cap{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.5;margin:6px 0 0;color:var(--mu,#9E9E9E)}.pk-pt-4 .cred{border:2px solid var(--ln,#FFFFFF);background:var(--bg2,#121212);padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.6}
   </style>
 </head>
 <body>
@@ -121,127 +98,221 @@
     </div>
   </header>
 
-  <main class="bk-main" id="main-content">
-    <div class="bk-hero">
-      <p class="bk-tag">[ BOOKING // PRESSKIT 2026 ]</p>
-      <h1 class="bk-title">
-        <span lang="en">PRESSKIT &amp; BOOKING</span>
-        <span lang="es">PRESSKIT Y BOOKING</span>
-        <span lang="pt">PRESSKIT E BOOKING</span>
-      </h1>
-      <p class="bk-meta">
-        <span lang="en">[ BIO, TECHNICAL RIDER &amp; BOOKING REQUIREMENTS ]</span>
-        <span lang="es">[ BIO, RIDER TÉCNICO Y REQUISITOS DE BOOKING ]</span>
-        <span lang="pt">[ BIO, RIDER TÉCNICO E REQUISITOS DE BOOKING ]</span>
-      </p>
-    </div>
-
-    <section class="bk-grid" aria-label="Presskit downloads" data-aria-en="Presskit downloads">
-      <article class="bk-card" data-card="en">
-        <a class="bk-thumb" href="/booking/aeriel-presskit-2026-en.pdf" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <img src="/public/images/press/presskit-2026-cover-en.jpg" width="400" height="567" loading="lazy" decoding="async" alt="ÆRIEL presskit cover, English edition" data-alt-en="ÆRIEL presskit cover, English edition" data-alt-es="Portada del presskit de ÆRIEL, edición en español" data-alt-pt="Capa do presskit de ÆRIEL, edição em português">
-        </a>
-        <div class="bk-card-body">
-          <p class="bk-card-code">[ EN ]</p>
-          <h2 class="bk-card-name">ENGLISH</h2>
-          <p class="bk-card-meta">
-            <span lang="en">PDF // 4 PAGES // A4 // 1.4 MB</span>
-            <span lang="es">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
-            <span lang="pt">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
-          </p>
-          <div class="bk-actions">
-            <a class="bk-btn" href="/booking/aeriel-presskit-2026-en.pdf" download="AERIEL_Presskit_2026_EN.pdf">
-              <span lang="en">[ DOWNLOAD PDF ↓ ]</span>
-              <span lang="es">[ DESCARGAR PDF ↓ ]</span>
-              <span lang="pt">[ BAIXAR PDF ↓ ]</span>
-            </a>
-            <a class="bk-btn" href="/booking/aeriel-presskit-2026-en.pdf" target="_blank" rel="noopener">
-              <span lang="en">[ OPEN ↗ ]</span>
-              <span lang="es">[ ABRIR ↗ ]</span>
-              <span lang="pt">[ ABRIR ↗ ]</span>
-            </a>
-          </div>
+  <main class="pk-main" id="main-content">
+<div class="pk-slot pk-en" data-lang="en"><div class="pk-page pk-en-1"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>[ PRESSKIT // 2026 ]</span><span>SANTIAGO, CL</span></div>
+  <h1 class="disp" style="font-size:200px;white-space:nowrap;margin-left:-6px">ÆRIEL</h1>
+  <div class="fr" style="flex:1;min-height:0"><img decoding="async" src="/public/images/press/presskit/img_6893_2-bw.jpg" alt="ÆRIEL, black and white portrait" style="object-position:50% 35%"></div>
+  <div class="grid4">
+    <div><p class="lbl">Artist</p><p class="val">ÆRIEL</p></div>
+    <div><p class="lbl">Base</p><p class="val">Santiago, Chile</p></div>
+    <div><p class="lbl">Contact</p><p class="val">dj@aeriel.net</p></div>
+    <div><p class="lbl">Web</p><p class="val">aeriel.net</p></div>
+  </div>
+</div></div></div>
+<div class="pk-slot pk-en" data-lang="en"><div class="pk-page pk-en-2"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>02 / 04</span></div>
+  <div style="display:flex;gap:16px;flex:1;min-height:0">
+    <div style="width:276px;flex:none;display:flex;flex-direction:column;gap:14px;min-height:0">
+      <div class="sec">
+        <h2 class="disp" style="font-size:40px">Intent</h2>
+        <div class="cell">
+          <p class="tx">The dancefloor is an ephemeral sanctuary built on sweat, friction and desire. On a dancefloor, individual sovereignty and collective freedom can coexist; safer spaces can be built and sustained. It is a space where we can reclaim, even if briefly, our body and desire. I reject the idea of joy as resistance, but dancefloors have shown that other ways of organising and living together are possible. As a DJ, I am honoured to help build and look after them.</p>
+          <p class="tx" style="font-weight:700">— ÆRIEL</p>
         </div>
-      </article>
-      <article class="bk-card" data-card="es">
-        <a class="bk-thumb" href="/booking/aeriel-presskit-2026-es.pdf" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <img src="/public/images/press/presskit-2026-cover-es.jpg" width="400" height="567" loading="lazy" decoding="async" alt="ÆRIEL presskit cover, English edition" data-alt-en="ÆRIEL presskit cover, English edition" data-alt-es="Portada del presskit de ÆRIEL, edición en español" data-alt-pt="Capa do presskit de ÆRIEL, edição em português">
-        </a>
-        <div class="bk-card-body">
-          <p class="bk-card-code">[ ES ]</p>
-          <h2 class="bk-card-name">ESPAÑOL</h2>
-          <p class="bk-card-meta">
-            <span lang="en">PDF // 4 PAGES // A4 // 1.4 MB</span>
-            <span lang="es">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
-            <span lang="pt">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
-          </p>
-          <div class="bk-actions">
-            <a class="bk-btn" href="/booking/aeriel-presskit-2026-es.pdf" download="AERIEL_Presskit_2026_ES.pdf">
-              <span lang="en">[ DOWNLOAD PDF ↓ ]</span>
-              <span lang="es">[ DESCARGAR PDF ↓ ]</span>
-              <span lang="pt">[ BAIXAR PDF ↓ ]</span>
-            </a>
-            <a class="bk-btn" href="/booking/aeriel-presskit-2026-es.pdf" target="_blank" rel="noopener">
-              <span lang="en">[ OPEN ↗ ]</span>
-              <span lang="es">[ ABRIR ↗ ]</span>
-              <span lang="pt">[ ABRIR ↗ ]</span>
-            </a>
-          </div>
-        </div>
-      </article>
-      <article class="bk-card" data-card="pt">
-        <a class="bk-thumb" href="/booking/aeriel-presskit-2026-pt.pdf" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <img src="/public/images/press/presskit-2026-cover-pt.jpg" width="400" height="567" loading="lazy" decoding="async" alt="ÆRIEL presskit cover, English edition" data-alt-en="ÆRIEL presskit cover, English edition" data-alt-es="Portada del presskit de ÆRIEL, edición en español" data-alt-pt="Capa do presskit de ÆRIEL, edição em português">
-        </a>
-        <div class="bk-card-body">
-          <p class="bk-card-code">[ PT ]</p>
-          <h2 class="bk-card-name">PORTUGUÊS</h2>
-          <p class="bk-card-meta">
-            <span lang="en">PDF // 4 PAGES // A4 // 1.4 MB</span>
-            <span lang="es">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
-            <span lang="pt">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
-          </p>
-          <div class="bk-actions">
-            <a class="bk-btn" href="/booking/aeriel-presskit-2026-pt.pdf" download="AERIEL_Presskit_2026_PT.pdf">
-              <span lang="en">[ DOWNLOAD PDF ↓ ]</span>
-              <span lang="es">[ DESCARGAR PDF ↓ ]</span>
-              <span lang="pt">[ BAIXAR PDF ↓ ]</span>
-            </a>
-            <a class="bk-btn" href="/booking/aeriel-presskit-2026-pt.pdf" target="_blank" rel="noopener">
-              <span lang="en">[ OPEN ↗ ]</span>
-              <span lang="es">[ ABRIR ↗ ]</span>
-              <span lang="pt">[ ABRIR ↗ ]</span>
-            </a>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <div class="bk-contact">
-      <div>
-        <p class="bk-contact-label">
-          <span lang="en">[ BOOKING CONTACT ]</span>
-          <span lang="es">[ CONTACTO DE BOOKING ]</span>
-          <span lang="pt">[ CONTATO DE BOOKING ]</span>
-        </p>
-        <p><a class="bk-contact-mail" href="mailto:dj@aeriel.net">dj@aeriel.net</a></p>
       </div>
-      <a class="bk-btn" href="/message">
-        <span lang="en">[ SEND A MESSAGE → ]</span>
-        <span lang="es">[ ENVIAR UN MENSAJE → ]</span>
-        <span lang="pt">[ ENVIAR UMA MENSAGEM → ]</span>
-      </a>
+      <div class="fr" style="flex:1;min-height:0"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_7324_2.jpg" alt="ÆRIEL performing live, motion blur" style="object-position:50% 40%"></div>
     </div>
-
-    <footer class="bk-footer">
-      <span>ÆRIEL &copy; 2026</span>
-      <a href="/">
-        <span lang="en">← BACK TO ÆRIEL</span>
-        <span lang="es">← VOLVER A ÆRIEL</span>
-        <span lang="pt">← VOLTAR PARA ÆRIEL</span>
-      </a>
-    </footer>
+    <div class="sec" style="flex:1;min-width:0">
+      <h2 class="disp" style="font-size:40px">Bio</h2>
+      <div class="cell" style="flex:1">
+        <p class="tx">ÆRIEL (They/Them – He/Him) is a non-binary, queer selector based in Santiago de Chile. Their sets cross techno, trance, EBM, house and Italo disco, changing tempo and temperature over the course of a night.</p>
+        <p class="tx">ÆRIEL lived in Paris and has spent long stretches in São Paulo and Buenos Aires, where friends, lovers and family keep pulling them back. Each city has shaped how they approach the night. Paris showed them that counterculture can be elegant, and that spontaneity and genuine creation are worth pursuing. São Paulo's vast queer underground proved that artistic excellence, eroticism and political conviction share the dancefloor and make for bombastic nights. Buenos Aires added irreverence: a punk, bohemian hunger for breaking with whatever has become the norm. ÆRIEL brings all three back to Santiago and wherever they go.</p>
+        <p class="tx">In April 2026, ÆRIEL founded Æ000.X, an invitation-only party in Santiago where they serve as conceptual lead. Æ000.X builds an intentional community around music, counterculture and desire. It is a direct response to the gentrification and commodification of techno, run on principle, care and experimentation. Each edition is curated as a whole, from the guest list to the music, and the party is the clearest picture of how ÆRIEL thinks a night should be held.</p>
+        <p class="tx">Away from the decks, they write essays, photograph nightlife on 35mm film and Polaroid, and have a boring day job.</p>
+      </div>
+    </div>
+  </div>
+  <p class="lbl">Santiago de Chile</p>
+</div></div></div>
+<div class="pk-slot pk-en" data-lang="en"><div class="pk-page pk-en-3"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>03 / 04</span></div>
+  <h2 class="disp" style="font-size:40px">Technical rider &amp; booking</h2>
+  <div class="blk"><p class="hd">[ Technical rider ]</p>
+    <p class="k">Preferred setup</p><p class="t">2× Pioneer DJ CDJ-3000 and a Pioneer DJ mixer.</p>
+    <p class="k">Minimum</p><p class="t">Any equipment that runs Rekordbox, with a Pioneer DJ DDJ-FLX4 as the minimum. If the controller needs a computer, a MacBook with an M-series chip is preferred.</p>
+    <p class="k">Sound system</p><p class="t">Hi-fi sound is always appreciated.</p>
+    <p class="k">Sound check</p><p class="t">ÆRIEL pays special attention to volume, clipping and bass saturation. If possible, a sound check in advance keeps the sound crisp, clear and unclipped, and keeps it from hurting the ears of those in attendance.</p>
+  </div>
+  <div class="blk"><p class="hd">[ Booking requirements ]</p>
+    <p class="k">Hospitality</p><p class="t">ÆRIEL does not drink alcohol. Requested: 2× Red Bull (sugar-free or Zero), 1× isotonic drink and 1× Coca-Cola Zero.</p>
+    <p class="k">Stage and access</p><p class="t">ÆRIEL prefers no VIP areas. If people dance behind the decks, access is equal for all partygoers and nobody touches the equipment. If the DJ stage is VIP regardless, ÆRIEL requires zero contact and no photographs with the people around them.</p>
+    <p class="k" style="margin-bottom:6px">Guest list</p>
+    <div class="g3"><div><p class="n">+0</p><p class="k">Small independent events</p></div><div><p class="n">+1</p><p class="k">Mid-sized events</p></div><div><p class="n">+3</p><p class="k">Festivals</p></div></div>
+  </div>
+  <div class="blk one"><p class="hd">[ Booking contact ]</p><p class="val">dj@aeriel.net<br>aeriel.net<br>Instagram // @aeriel.aiff<br>SoundCloud // aeriel-aiff<br>Bandcamp // aeriel_aiff<br>YouTube // @aeriel-aiff<br>Languages // ES · EN · PT · FR</p></div>
+</div></div></div>
+<div class="pk-slot pk-en" data-lang="en"><div class="pk-page pk-en-4"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>04 / 04</span></div>
+  <h2 class="disp" style="font-size:56px">Visual archive</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_6893_2.jpg" alt="ÆRIEL, black and white portrait" style="object-position:50% 35%"></div><p class="cap">[ 01 ] Portrait // ÆRIEL</p></div>
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/20240831_camilo_in_red.jpg" alt="ÆRIEL, Polaroid portrait" style="object-position:50% 40%"></div><p class="cap">[ 02 ] Polaroid // ÆRIEL</p></div>
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_3293.jpg" alt="ÆRIEL, street portrait at dusk" style="object-position:50% 70%"></div><p class="cap">[ 03 ] DIGITAL // ÆRIEL</p></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_4108.jpg" alt="ÆRIEL performing live" style="object-position:50% 40%"></div><p class="cap">[ 04 ] DIGITAL // ÆRIEL</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_7324_2.jpg" alt="ÆRIEL performing live, motion blur" style="object-position:50% 45%"></div><p class="cap">[ 05 ] DIGITAL // ÆRIEL</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_8049.jpg" alt="Polaroid from the archive" style="object-position:50% 50%"></div><p class="cap">[ 06 ] ÆRIEL B2B BUTH NINJA</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/000026_2.jpg" alt="ÆRIEL, 35mm film photograph" style="object-position:50% 30%"></div><p class="cap">[ 07 ] 35mm // ÆRIEL</p></div>
+  </div>
+  <div class="cred">High-resolution files on request</div>
+</div></div></div>
+<div class="pk-slot pk-es" data-lang="es"><div class="pk-page pk-es-1"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>[ PRESSKIT // 2026 ]</span><span>SANTIAGO, CL</span></div>
+  <h1 class="disp" style="font-size:200px;white-space:nowrap;margin-left:-6px">ÆRIEL</h1>
+  <div class="fr" style="flex:1;min-height:0"><img decoding="async" src="/public/images/press/presskit/img_6893_2-bw.jpg" alt="ÆRIEL, retrato en blanco y negro" style="object-position:50% 35%"></div>
+  <div class="grid4">
+    <div><p class="lbl">Artista</p><p class="val">ÆRIEL</p></div>
+    <div><p class="lbl">Base</p><p class="val">Santiago, Chile</p></div>
+    <div><p class="lbl">Contacto</p><p class="val">dj@aeriel.net</p></div>
+    <div><p class="lbl">Web</p><p class="val">aeriel.net</p></div>
+  </div>
+</div></div></div>
+<div class="pk-slot pk-es" data-lang="es"><div class="pk-page pk-es-2"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>02 / 04</span></div>
+  <div style="display:flex;gap:16px;flex:1;min-height:0">
+    <div style="width:276px;flex:none;display:flex;flex-direction:column;gap:14px;min-height:0">
+      <div class="sec">
+        <h2 class="disp" style="font-size:40px">Intención</h2>
+        <div class="cell">
+          <p class="tx">La pista de baile es un santuario efímero hecho de sudor, fricción y deseo. En ella pueden coexistir la soberanía individual y la libertad colectiva, y es posible construir y sostener espacios más seguros. Es un lugar donde podemos recuperar, aunque sea por un momento, nuestro cuerpo y nuestro deseo. Rechazo la idea del goce como resistencia, pero las pistas de baile han demostrado que existen otras formas de organizarnos y de convivir. Como DJ, me honra ayudar a construirlas y cuidarlas.</p>
+          <p class="tx" style="font-weight:700">— ÆRIEL</p>
+        </div>
+      </div>
+      <div class="fr" style="flex:1;min-height:0"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_7324_2.jpg" alt="ÆRIEL en vivo, imagen en movimiento" style="object-position:50% 40%"></div>
+    </div>
+    <div class="sec" style="flex:1;min-width:0">
+      <h2 class="disp" style="font-size:40px">Bio</h2>
+      <div class="cell" style="flex:1">
+        <p class="tx">ÆRIEL (Elle – Él) es un selector queer no binario con base en Santiago de Chile. Sus sets recorren techno, trance, EBM, house e Italo disco, y cambian de tempo y de temperatura a lo largo de la noche.</p>
+        <p class="tx">ÆRIEL vivió en París y ha pasado largas temporadas en São Paulo y Buenos Aires, donde amistades, amantes y familia siguen haciéndole volver. Cada ciudad ha marcado su forma de entender la noche. París le enseñó que la contracultura puede ser elegante y que vale la pena buscar la espontaneidad y la creación genuina. El vasto underground queer de São Paulo demostró que la excelencia artística, el erotismo y la convicción política pueden compartir la pista y producir noches explosivas. Buenos Aires sumó irreverencia: un hambre punk y bohemia de romper con lo que se ha convertido en norma. ÆRIEL trae las tres consigo de vuelta a Santiago y adonde vaya.</p>
+        <p class="tx">En abril de 2026, ÆRIEL fundó Æ000.X, una fiesta en Santiago solo con invitación, de la cual es líder conceptual. Æ000.X construye una comunidad intencional en torno a la música, la contracultura y el deseo. Responde de forma directa a la gentrificación y la mercantilización del techno, y se sostiene sobre principios, cuidado y experimentación. Cada edición se cura como un todo, desde la lista de invitadxs hasta la música, y la fiesta es la imagen más clara de cómo ÆRIEL cree que debe sostenerse una noche.</p>
+        <p class="tx">Fuera de la cabina, escribe ensayos, fotografía la noche en película de 35 mm y Polaroid, y tiene un trabajo diurno aburrido.</p>
+      </div>
+    </div>
+  </div>
+  <p class="lbl">Santiago de Chile</p>
+</div></div></div>
+<div class="pk-slot pk-es" data-lang="es"><div class="pk-page pk-es-3"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>03 / 04</span></div>
+  <h2 class="disp" style="font-size:40px">Rider técnico y booking</h2>
+  <div class="blk"><p class="hd">[ Rider técnico ]</p>
+    <p class="k">Equipamiento ideal</p><p class="t">Dos CDJ-3000 y una mezcladora Pioneer DJ.</p>
+    <p class="k">Mínimo</p><p class="t">Cualquier equipo compatible con Rekordbox y, como mínimo, un Pioneer DJ DDJ-FLX4. Si el controlador requiere computador, se prefiere un MacBook con chip M.</p>
+    <p class="k">Sistema de sonido</p><p class="t">Se agradece siempre un sonido hi-fi.</p>
+    <p class="k">Prueba de sonido</p><p class="t">ÆRIEL presta especial atención al volumen, al clipping y a la saturación de graves. Si es posible, una prueba de sonido previa permite lograr un sonido nítido, claro y sin clipping, que no dañe los oídos de quienes asisten.</p>
+  </div>
+  <div class="blk"><p class="hd">[ Requisitos de booking ]</p>
+    <p class="k">Hospitalidad</p><p class="t">ÆRIEL no consume alcohol. Se solicita: 2 Red Bull (sin azúcar o Zero), 1 bebida isotónica y 1 Coca-Cola Zero.</p>
+    <p class="k">Escenario y acceso</p><p class="t">ÆRIEL prefiere que no haya áreas VIP. Si hay gente bailando detrás de la cabina, el acceso es igual para todas las personas y nadie toca el equipo. Si el escenario es VIP de todos modos, ÆRIEL exige cero contacto y ninguna fotografía con quienes lo rodeen.</p>
+    <p class="k" style="margin-bottom:6px">Lista de invitadxs</p>
+    <div class="g3"><div><p class="n">+0</p><p class="k">Eventos independientes pequeños</p></div><div><p class="n">+1</p><p class="k">Eventos medianos</p></div><div><p class="n">+3</p><p class="k">Festivales</p></div></div>
+  </div>
+  <div class="blk one"><p class="hd">[ Contacto de booking ]</p><p class="val">dj@aeriel.net<br>aeriel.net<br>Instagram // @aeriel.aiff<br>SoundCloud // aeriel-aiff<br>Bandcamp // aeriel_aiff<br>YouTube // @aeriel-aiff<br>Idiomas // ES · EN · PT · FR</p></div>
+</div></div></div>
+<div class="pk-slot pk-es" data-lang="es"><div class="pk-page pk-es-4"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>04 / 04</span></div>
+  <h2 class="disp" style="font-size:56px">Archivo visual</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_6893_2.jpg" alt="ÆRIEL, retrato en blanco y negro" style="object-position:50% 35%"></div><p class="cap">[ 01 ] Retrato // ÆRIEL</p></div>
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/20240831_camilo_in_red.jpg" alt="ÆRIEL, retrato en Polaroid" style="object-position:50% 40%"></div><p class="cap">[ 02 ] Polaroid // ÆRIEL</p></div>
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_3293.jpg" alt="ÆRIEL, retrato en la calle al atardecer" style="object-position:50% 70%"></div><p class="cap">[ 03 ] DIGITAL // ÆRIEL</p></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_4108.jpg" alt="ÆRIEL en vivo" style="object-position:50% 40%"></div><p class="cap">[ 04 ] DIGITAL // ÆRIEL</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_7324_2.jpg" alt="ÆRIEL en vivo, imagen en movimiento" style="object-position:50% 45%"></div><p class="cap">[ 05 ] DIGITAL // ÆRIEL</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_8049.jpg" alt="Polaroid del archivo" style="object-position:50% 50%"></div><p class="cap">[ 06 ] ÆRIEL B2B BUTH NINJA</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/000026_2.jpg" alt="ÆRIEL, fotografía en película de 35 mm" style="object-position:50% 30%"></div><p class="cap">[ 07 ] 35 mm // ÆRIEL</p></div>
+  </div>
+  <div class="cred">Archivos en alta resolución a solicitud</div>
+</div></div></div>
+<div class="pk-slot pk-pt" data-lang="pt"><div class="pk-page pk-pt-1"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>[ PRESSKIT // 2026 ]</span><span>SANTIAGO, CL</span></div>
+  <h1 class="disp" style="font-size:200px;white-space:nowrap;margin-left:-6px">ÆRIEL</h1>
+  <div class="fr" style="flex:1;min-height:0"><img decoding="async" src="/public/images/press/presskit/img_6893_2-bw.jpg" alt="ÆRIEL, retrato em preto e branco" style="object-position:50% 35%"></div>
+  <div class="grid4">
+    <div><p class="lbl">Artista</p><p class="val">ÆRIEL</p></div>
+    <div><p class="lbl">Base</p><p class="val">Santiago, Chile</p></div>
+    <div><p class="lbl">Contato</p><p class="val">dj@aeriel.net</p></div>
+    <div><p class="lbl">Web</p><p class="val">aeriel.net</p></div>
+  </div>
+</div></div></div>
+<div class="pk-slot pk-pt" data-lang="pt"><div class="pk-page pk-pt-2"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>02 / 04</span></div>
+  <div style="display:flex;gap:16px;flex:1;min-height:0">
+    <div style="width:276px;flex:none;display:flex;flex-direction:column;gap:14px;min-height:0">
+      <div class="sec">
+        <h2 class="disp" style="font-size:40px">Intenção</h2>
+        <div class="cell">
+          <p class="tx">A pista de dança é um santuário efêmero construído sobre suor, fricção e desejo. Numa pista de dança, a soberania individual e a liberdade coletiva podem coexistir; é possível construir e manter espaços mais seguros. É um espaço onde podemos reivindicar, ainda que por pouco tempo, nosso corpo e nosso desejo. Rejeito a ideia de alegria como resistência, mas as pistas de dança mostraram que outras formas de organização e de convivência são possíveis. Como DJ, é uma honra para mim ajudar a construí-las e cuidar delas.</p>
+          <p class="tx" style="font-weight:700">— ÆRIEL</p>
+        </div>
+      </div>
+      <div class="fr" style="flex:1;min-height:0"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_7324_2.jpg" alt="ÆRIEL ao vivo, imagem em movimento" style="object-position:50% 40%"></div>
+    </div>
+    <div class="sec" style="flex:1;min-width:0">
+      <h2 class="disp" style="font-size:40px">Bio</h2>
+      <div class="cell" style="flex:1">
+        <p class="tx">ÆRIEL (Elu – Ele) é um seletor queer não binário com base em Santiago do Chile. Seus sets cruzam techno, trance, EBM, house e Italo disco, mudando de tempo e de temperatura ao longo da noite.</p>
+        <p class="tx">ÆRIEL viveu em Paris e passou longas temporadas em São Paulo e Buenos Aires, onde amizades, amantes e família sempre dão um jeito de trazer ÆRIEL de volta. Cada cidade moldou a forma como aborda a noite. Paris mostrou que a contracultura pode ser elegante e que vale a pena buscar a espontaneidade e a criação genuína. O vasto underground queer de São Paulo provou que excelência artística, erotismo e convicção política dividem a pista e resultam em noites explosivas. Buenos Aires acrescentou irreverência: uma fome punk e boêmia de romper com tudo o que virou norma. ÆRIEL traz as três de volta a Santiago e a onde quer que vá.</p>
+        <p class="tx">Em abril de 2026, ÆRIEL fundou o Æ000.X, uma festa em Santiago apenas por convite, na qual atua como líder conceitual. O Æ000.X constrói uma comunidade intencional em torno da música, da contracultura e do desejo. É uma resposta direta à gentrificação e à mercantilização do techno, conduzida com princípios, cuidado e experimentação. Cada edição é curada como um todo, da lista de convidadxs à música, e a festa é o retrato mais claro de como ÆRIEL acredita que uma noite deve ser conduzida.</p>
+        <p class="tx">Longe da cabine, escreve ensaios, fotografa a vida noturna em filme 35 mm e Polaroid, e tem um emprego diurno chato.</p>
+      </div>
+    </div>
+  </div>
+  <p class="lbl">Santiago do Chile</p>
+</div></div></div>
+<div class="pk-slot pk-pt" data-lang="pt"><div class="pk-page pk-pt-3"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>03 / 04</span></div>
+  <h2 class="disp" style="font-size:40px">Rider técnico e booking</h2>
+  <div class="blk"><p class="hd">[ Rider técnico ]</p>
+    <p class="k">Equipamento ideal</p><p class="t">2 CDJ-3000 Pioneer DJ e um mixer Pioneer DJ.</p>
+    <p class="k">Mínimo</p><p class="t">Qualquer equipamento que rode Rekordbox, com um Pioneer DJ DDJ-FLX4 como mínimo. Se o controlador precisar de computador, prefere-se um MacBook com chip M.</p>
+    <p class="k">Sistema de som</p><p class="t">Som hi-fi é sempre bem-vindo.</p>
+    <p class="k">Teste de som</p><p class="t">ÆRIEL presta atenção especial ao volume, ao clipping e à saturação dos graves. Se possível, um teste de som prévio garante um som nítido, claro e sem clipping, que não machuque os ouvidos das pessoas presentes.</p>
+  </div>
+  <div class="blk"><p class="hd">[ Requisitos de booking ]</p>
+    <p class="k">Hospitalidade</p><p class="t">ÆRIEL não consome álcool. Solicita-se: 2 Red Bull (sem açúcar ou Zero), 1 bebida isotônica e 1 Coca-Cola Zero.</p>
+    <p class="k">Palco e acesso</p><p class="t">ÆRIEL prefere que não haja áreas VIP. Se houver pessoas dançando atrás da cabine, o acesso é igual para todas as pessoas presentes e ninguém toca no equipamento. Se o palco for VIP de qualquer forma, ÆRIEL exige zero contato e nenhuma fotografia com as pessoas ao redor.</p>
+    <p class="k" style="margin-bottom:6px">Lista de convidadxs</p>
+    <div class="g3"><div><p class="n">+0</p><p class="k">Eventos independentes pequenos</p></div><div><p class="n">+1</p><p class="k">Eventos médios</p></div><div><p class="n">+3</p><p class="k">Festivais</p></div></div>
+  </div>
+  <div class="blk one"><p class="hd">[ Contato de booking ]</p><p class="val">dj@aeriel.net<br>aeriel.net<br>Instagram // @aeriel.aiff<br>SoundCloud // aeriel-aiff<br>Bandcamp // aeriel_aiff<br>YouTube // @aeriel-aiff<br>Idiomas // ES · EN · PT · FR</p></div>
+</div></div></div>
+<div class="pk-slot pk-pt" data-lang="pt"><div class="pk-page pk-pt-4"><div class="pg" style="--bg:#0A0A0A;--bg2:#121212;--fg:#FFFFFF;--mu:#9E9E9E;--ln:#FFFFFF">
+  <div class="bar"><span>ÆRIEL // PRESSKIT 2026</span><span>04 / 04</span></div>
+  <h2 class="disp" style="font-size:56px">Arquivo visual</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_6893_2.jpg" alt="ÆRIEL, retrato em preto e branco" style="object-position:50% 35%"></div><p class="cap">[ 01 ] Retrato // ÆRIEL</p></div>
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/20240831_camilo_in_red.jpg" alt="ÆRIEL, retrato em Polaroid" style="object-position:50% 40%"></div><p class="cap">[ 02 ] Polaroid // ÆRIEL</p></div>
+    <div><div class="fr" style="height:380px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_3293.jpg" alt="ÆRIEL, retrato na rua ao entardecer" style="object-position:50% 70%"></div><p class="cap">[ 03 ] DIGITAL // ÆRIEL</p></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_4108.jpg" alt="ÆRIEL ao vivo" style="object-position:50% 40%"></div><p class="cap">[ 04 ] DIGITAL // ÆRIEL</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_7324_2.jpg" alt="ÆRIEL ao vivo, imagem em movimento" style="object-position:50% 45%"></div><p class="cap">[ 05 ] DIGITAL // ÆRIEL</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/img_8049.jpg" alt="Polaroid do arquivo" style="object-position:50% 50%"></div><p class="cap">[ 06 ] ÆRIEL B2B BUTH NINJA</p></div>
+    <div><div class="fr" style="height:300px"><img loading="lazy" decoding="async" src="/public/images/press/presskit/000026_2.jpg" alt="ÆRIEL, fotografia em filme 35 mm" style="object-position:50% 30%"></div><p class="cap">[ 07 ] 35 mm // ÆRIEL</p></div>
+  </div>
+  <div class="cred">Arquivos em alta resolução sob solicitação</div>
+</div></div></div>
   </main>
+
+  <a class="pk-dl" id="pk-download" href="/booking/aeriel-presskit-2026-en.pdf" download="AERIEL_Presskit_2026_EN.pdf" aria-label="Download presskit PDF">
+    <span lang="en">[ DOWNLOAD PDF ↓ ]</span>
+    <span lang="es">[ DESCARGAR PDF ↓ ]</span>
+    <span lang="pt">[ BAIXAR PDF ↓ ]</span>
+  </a>
 
   <nav class="tab-bar" id="tab-bar" aria-label="Primary">
     <a href="/" class="tab-link" data-tab="home">ÆRIEL</a>
@@ -275,7 +346,7 @@
         'Site destinations': { es: 'Destinos del sitio', pt: 'Destinos do site' },
         'Language Selector': { es: 'Selector de idioma', pt: 'Seletor de idioma' },
         'Primary': { es: 'Principal', pt: 'Principal' },
-        'Presskit downloads': { es: 'Descargas del presskit', pt: 'Downloads do presskit' }
+        'Download presskit PDF': { es: 'Descargar presskit en PDF', pt: 'Baixar presskit em PDF' }
       };
       document.querySelectorAll('[aria-label]').forEach(function(el) {
         var en = el.getAttribute('data-aria-en') || el.getAttribute('aria-label');
@@ -296,8 +367,9 @@
         pt: 'Presskit, rider técnico e requisitos de booking de ÆRIEL, seletor queer não binário com base em Santiago do Chile. Baixe em inglês, espanhol ou português. Booking: dj@aeriel.net.'
       };
 
-      document.querySelectorAll('.bk-card').forEach(function(c) { c.classList.toggle('is-current', c.getAttribute('data-card') === lang); });
-      document.querySelectorAll('img[data-alt-en]').forEach(function(im) { im.alt = im.getAttribute('data-alt-' + lang) || im.getAttribute('data-alt-en'); });
+      var dl = document.getElementById('pk-download');
+      if (dl) { dl.setAttribute('href', '/booking/aeriel-presskit-2026-' + lang + '.pdf'); dl.setAttribute('download', 'AERIEL_Presskit_2026_' + lang.toUpperCase() + '.pdf'); }
+      fitPages();
 
       document.title = titles[lang] || titles.en;
       var metaDesc = document.querySelector('meta[name="description"]');
@@ -336,6 +408,36 @@
         }
       } catch (e) {}
     });
+
+    // Scale the fixed 794x1123 artboards to the viewport width
+    function fitPages() {
+      var avail = Math.min(794, document.documentElement.clientWidth - 24);
+      var k = avail / 794;
+      document.querySelectorAll('.pk-slot').forEach(function(slot) {
+        var pg = slot.firstElementChild;
+        pg.style.transform = 'scale(' + k + ')';
+        slot.style.width = (794 * k) + 'px';
+        slot.style.height = (1123 * k) + 'px';
+      });
+    }
+    window.addEventListener('resize', fitPages);
+    window.addEventListener('load', fitPages);
+    document.addEventListener('DOMContentLoaded', fitPages);
+
+    // Scale the fixed 794x1123 artboards to the viewport width
+    function fitPages() {
+      var avail = Math.min(794, document.documentElement.clientWidth - 24);
+      var k = avail / 794;
+      document.querySelectorAll('.pk-slot').forEach(function(slot) {
+        var pg = slot.firstElementChild;
+        pg.style.transform = 'scale(' + k + ')';
+        slot.style.width = (794 * k) + 'px';
+        slot.style.height = (1123 * k) + 'px';
+      });
+    }
+    window.addEventListener('resize', fitPages);
+    window.addEventListener('load', fitPages);
+    document.addEventListener('DOMContentLoaded', fitPages);
   </script>
 </body>
 </html>
