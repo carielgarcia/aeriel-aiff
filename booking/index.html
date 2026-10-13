@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ÆRIEL">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/public/icons/icon-180.png">
+  <title>BOOKING // PRESSKIT 2026 — ÆRIEL</title>
+  <meta name="description" content="Press kit, technical rider and booking requirements for ÆRIEL, a non-binary queer selector based in Santiago de Chile. Download in English, Spanish or Portuguese. Booking: dj@aeriel.net.">
+  <meta name="author" content="ÆRIEL">
+
+  <!-- Open Graph / WhatsApp / Facebook / Instagram -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ÆRIEL">
+  <meta property="og:title" content="BOOKING // PRESSKIT 2026 — ÆRIEL">
+  <meta property="og:description" content="Press kit, technical rider and booking requirements for ÆRIEL, a non-binary queer selector based in Santiago de Chile. Download in English, Spanish or Portuguese. Booking: dj@aeriel.net.">
+  <meta property="og:url" content="https://aeriel.net/booking">
+  <meta property="og:image" content="https://aeriel.net/og-image.jpg">
+  <meta property="og:image:secure_url" content="https://aeriel.net/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BOOKING // PRESSKIT 2026 — ÆRIEL">
+  <meta name="twitter:description" content="Press kit, technical rider and booking requirements for ÆRIEL, a non-binary queer selector based in Santiago de Chile. Download in English, Spanish or Portuguese. Booking: dj@aeriel.net.">
+  <meta name="twitter:image" content="https://aeriel.net/og-image.jpg">
+
+  <!-- Canonical & Icons -->
+  <link rel="canonical" href="https://aeriel.net/booking">
+  <link rel="image_src" href="https://aeriel.net/og-image.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
+
+  <!-- Google Fonts: JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Linking Main Brutalist Stylesheet -->
+  <link rel="stylesheet" href="/style.css?v=20.6">
+
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-mono); padding: 0; margin: 0; }
+    @media (max-width: 600px) { body { padding-bottom: calc(var(--tab-h, 56px) + env(safe-area-inset-bottom, 0px)) !important; } }
+    .bk-main { flex: 1; width: 100%; max-width: 880px; margin: 0 auto; padding: 36px var(--spacing-md) 60px; box-sizing: border-box; }
+    .bk-hero { border: var(--border-thick); background: var(--bg-secondary); padding: 24px 28px; margin-bottom: 28px; box-sizing: border-box; }
+    .bk-tag { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 8px; }
+    .bk-title { font-family: 'Helvetica Neue', Arial, sans-serif !important; font-size: 1.85rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 10px; text-transform: uppercase !important; }
+    .bk-meta { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
+    .bk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: var(--border-thick); background: var(--bg-secondary); }
+    .bk-card { display: flex; flex-direction: column; border-right: var(--border-thin); min-width: 0; }
+    .bk-card:last-child { border-right: none; }
+    .bk-thumb { display: block; padding: 12px; border-bottom: var(--border-thin); }
+    .bk-thumb img { display: block; width: 100%; height: auto; aspect-ratio: 400 / 567; object-fit: cover; border: var(--border-thin); }
+    .bk-card-body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .bk-card-code { margin: 0; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; color: var(--text-muted); }
+    .bk-card-name { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif !important; font-size: 1.15rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase !important; }
+    .bk-card-meta { margin: 0 0 8px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
+    .bk-actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+    .bk-btn { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; border: var(--border-thin); color: var(--text-primary); background: transparent; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; border-radius: 0 !important; transition: none; text-align: center; }
+    .bk-btn:hover, .bk-btn:focus-visible { background: var(--text-primary); color: var(--bg-primary); outline: none; }
+    .bk-contact { margin-top: 28px; border: var(--border-thick); background: var(--bg-secondary); padding: 20px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+    .bk-contact p { margin: 0; }
+    .bk-contact-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px !important; }
+    .bk-contact-mail { font-size: 1.05rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-primary); text-decoration: underline; }
+    .bk-footer { border-top: var(--border-thick); padding: 24px 0 0; margin-top: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted); }
+    .bk-footer a { color: var(--text-primary); text-decoration: underline; font-weight: 700; }
+    @media (max-width: 768px) {
+      .bk-main { padding: 20px var(--spacing-sm) 48px; }
+      .bk-hero { padding: 18px 16px; margin-bottom: 20px; }
+      .bk-title { font-size: 1.35rem; }
+      .bk-grid { grid-template-columns: 1fr; }
+      .bk-card { border-right: none; border-bottom: var(--border-thin); flex-direction: row; }
+      .bk-card:last-child { border-bottom: none; }
+      .bk-thumb { width: 38%; flex: none; border-bottom: none; border-right: var(--border-thin); }
+      .bk-footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header-wrapper" id="site-header">
+    <div class="container header-container">
+      <!-- Logo Block -->
+      <div class="logo-block">
+        <a href="/" class="logo-link" aria-label="ÆRIEL Home Page">ÆRIEL</a>
+        <span class="header-crumb"><span class="header-crumb-sep" aria-hidden="true">/</span><span class="header-crumb-label">BOOKING</span></span>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav id="main-navigation" class="nav-links" aria-label="Site destinations">
+        <a href="/booking" class="nav-link" id="nav-booking" data-nav-view="booking" aria-current="page">BOOKING</a>
+        <a href="/ae000x" class="nav-link" id="nav-brand" data-nav-view="ae000x">Æ000.X</a>
+        <a href="/writing" class="nav-link" id="nav-writing" data-nav-view="writing">
+          <span lang="en">ESSAYS</span>
+          <span lang="es">ENSAYOS</span>
+          <span lang="pt">ENSAIOS</span>
+        </a>
+        <a href="/message" class="nav-link" id="nav-message" data-nav-view="message">
+          <span lang="en">MESSAGE</span>
+          <span lang="es">MENSAJE</span>
+          <span lang="pt">MENSAGEM</span>
+        </a>
+      </nav>
+
+      <!-- Language & System Controls -->
+      <div class="header-actions">
+        <div class="lang-selector" aria-label="Language Selector">
+          <button type="button" onclick="setLanguage('en')" class="lang-btn active" id="btn-lang-en" aria-label="English">EN</button>
+          <button type="button" onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
+          <button type="button" onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="bk-main" id="main-content">
+    <div class="bk-hero">
+      <p class="bk-tag">[ BOOKING // PRESSKIT 2026 ]</p>
+      <h1 class="bk-title">
+        <span lang="en">PRESSKIT &amp; BOOKING</span>
+        <span lang="es">PRESSKIT Y BOOKING</span>
+        <span lang="pt">PRESSKIT E BOOKING</span>
+      </h1>
+      <p class="bk-meta">
+        <span lang="en">[ BIO, TECHNICAL RIDER &amp; BOOKING REQUIREMENTS ]</span>
+        <span lang="es">[ BIO, RIDER TÉCNICO Y REQUISITOS DE BOOKING ]</span>
+        <span lang="pt">[ BIO, RIDER TÉCNICO E REQUISITOS DE BOOKING ]</span>
+      </p>
+    </div>
+
+    <section class="bk-grid" aria-label="Presskit downloads" data-aria-en="Presskit downloads">
+      <article class="bk-card" data-card="en">
+        <a class="bk-thumb" href="/booking/aeriel-presskit-2026-en.pdf" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+          <img src="/public/images/press/presskit-2026-cover-en.jpg" width="400" height="567" loading="lazy" decoding="async" alt="ÆRIEL presskit cover, English edition" data-alt-en="ÆRIEL presskit cover, English edition" data-alt-es="Portada del presskit de ÆRIEL, edición en español" data-alt-pt="Capa do presskit de ÆRIEL, edição em português">
+        </a>
+        <div class="bk-card-body">
+          <p class="bk-card-code">[ EN ]</p>
+          <h2 class="bk-card-name">ENGLISH</h2>
+          <p class="bk-card-meta">
+            <span lang="en">PDF // 4 PAGES // A4 // 1.4 MB</span>
+            <span lang="es">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
+            <span lang="pt">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
+          </p>
+          <div class="bk-actions">
+            <a class="bk-btn" href="/booking/aeriel-presskit-2026-en.pdf" download="AERIEL_Presskit_2026_EN.pdf">
+              <span lang="en">[ DOWNLOAD PDF ↓ ]</span>
+              <span lang="es">[ DESCARGAR PDF ↓ ]</span>
+              <span lang="pt">[ BAIXAR PDF ↓ ]</span>
+            </a>
+            <a class="bk-btn" href="/booking/aeriel-presskit-2026-en.pdf" target="_blank" rel="noopener">
+              <span lang="en">[ OPEN ↗ ]</span>
+              <span lang="es">[ ABRIR ↗ ]</span>
+              <span lang="pt">[ ABRIR ↗ ]</span>
+            </a>
+          </div>
+        </div>
+      </article>
+      <article class="bk-card" data-card="es">
+        <a class="bk-thumb" href="/booking/aeriel-presskit-2026-es.pdf" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+          <img src="/public/images/press/presskit-2026-cover-es.jpg" width="400" height="567" loading="lazy" decoding="async" alt="ÆRIEL presskit cover, English edition" data-alt-en="ÆRIEL presskit cover, English edition" data-alt-es="Portada del presskit de ÆRIEL, edición en español" data-alt-pt="Capa do presskit de ÆRIEL, edição em português">
+        </a>
+        <div class="bk-card-body">
+          <p class="bk-card-code">[ ES ]</p>
+          <h2 class="bk-card-name">ESPAÑOL</h2>
+          <p class="bk-card-meta">
+            <span lang="en">PDF // 4 PAGES // A4 // 1.4 MB</span>
+            <span lang="es">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
+            <span lang="pt">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
+          </p>
+          <div class="bk-actions">
+            <a class="bk-btn" href="/booking/aeriel-presskit-2026-es.pdf" download="AERIEL_Presskit_2026_ES.pdf">
+              <span lang="en">[ DOWNLOAD PDF ↓ ]</span>
+              <span lang="es">[ DESCARGAR PDF ↓ ]</span>
+              <span lang="pt">[ BAIXAR PDF ↓ ]</span>
+            </a>
+            <a class="bk-btn" href="/booking/aeriel-presskit-2026-es.pdf" target="_blank" rel="noopener">
+              <span lang="en">[ OPEN ↗ ]</span>
+              <span lang="es">[ ABRIR ↗ ]</span>
+              <span lang="pt">[ ABRIR ↗ ]</span>
+            </a>
+          </div>
+        </div>
+      </article>
+      <article class="bk-card" data-card="pt">
+        <a class="bk-thumb" href="/booking/aeriel-presskit-2026-pt.pdf" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+          <img src="/public/images/press/presskit-2026-cover-pt.jpg" width="400" height="567" loading="lazy" decoding="async" alt="ÆRIEL presskit cover, English edition" data-alt-en="ÆRIEL presskit cover, English edition" data-alt-es="Portada del presskit de ÆRIEL, edición en español" data-alt-pt="Capa do presskit de ÆRIEL, edição em português">
+        </a>
+        <div class="bk-card-body">
+          <p class="bk-card-code">[ PT ]</p>
+          <h2 class="bk-card-name">PORTUGUÊS</h2>
+          <p class="bk-card-meta">
+            <span lang="en">PDF // 4 PAGES // A4 // 1.4 MB</span>
+            <span lang="es">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
+            <span lang="pt">PDF // 4 PÁGINAS // A4 // 1,4 MB</span>
+          </p>
+          <div class="bk-actions">
+            <a class="bk-btn" href="/booking/aeriel-presskit-2026-pt.pdf" download="AERIEL_Presskit_2026_PT.pdf">
+              <span lang="en">[ DOWNLOAD PDF ↓ ]</span>
+              <span lang="es">[ DESCARGAR PDF ↓ ]</span>
+              <span lang="pt">[ BAIXAR PDF ↓ ]</span>
+            </a>
+            <a class="bk-btn" href="/booking/aeriel-presskit-2026-pt.pdf" target="_blank" rel="noopener">
+              <span lang="en">[ OPEN ↗ ]</span>
+              <span lang="es">[ ABRIR ↗ ]</span>
+              <span lang="pt">[ ABRIR ↗ ]</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="bk-contact">
+      <div>
+        <p class="bk-contact-label">
+          <span lang="en">[ BOOKING CONTACT ]</span>
+          <span lang="es">[ CONTACTO DE BOOKING ]</span>
+          <span lang="pt">[ CONTATO DE BOOKING ]</span>
+        </p>
+        <p><a class="bk-contact-mail" href="mailto:dj@aeriel.net">dj@aeriel.net</a></p>
+      </div>
+      <a class="bk-btn" href="/message">
+        <span lang="en">[ SEND A MESSAGE → ]</span>
+        <span lang="es">[ ENVIAR UN MENSAJE → ]</span>
+        <span lang="pt">[ ENVIAR UMA MENSAGEM → ]</span>
+      </a>
+    </div>
+
+    <footer class="bk-footer">
+      <span>ÆRIEL &copy; 2026</span>
+      <a href="/">
+        <span lang="en">← BACK TO ÆRIEL</span>
+        <span lang="es">← VOLVER A ÆRIEL</span>
+        <span lang="pt">← VOLTAR PARA ÆRIEL</span>
+      </a>
+    </footer>
+  </main>
+
+  <nav class="tab-bar" id="tab-bar" aria-label="Primary">
+    <a href="/" class="tab-link" data-tab="home">ÆRIEL</a>
+    <a href="/booking" class="tab-link active" data-tab="booking" aria-current="page">BOOKING</a>
+    <a href="/ae000x" class="tab-link" data-tab="ae000x">Æ000.X</a>
+    <a href="/writing" class="tab-link" data-tab="writing">
+      <span lang="en">ESSAYS</span><span lang="es">ENSAYOS</span><span lang="pt">ENSAIOS</span>
+    </a>
+    <a href="/message" class="tab-link" data-tab="message">
+      <span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span>
+    </a>
+  </nav>
+
+  <script>
+    // Dynamic Trilingual Controller
+    function setLanguage(lang) {
+      if (!['en', 'es', 'pt'].includes(lang)) lang = 'en';
+      var html = document.documentElement;
+      html.setAttribute('lang', lang);
+      try {
+        localStorage.setItem('preferred-lang', lang);
+      } catch (e) {}
+
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.id === 'btn-lang-' + lang);
+      });
+
+      // Accessibility labels follow the language (English text in markup is the source of truth)
+      var ariaDict = {
+        'ÆRIEL Home Page': { es: 'Página de inicio de ÆRIEL', pt: 'Página inicial da ÆRIEL' },
+        'Site destinations': { es: 'Destinos del sitio', pt: 'Destinos do site' },
+        'Language Selector': { es: 'Selector de idioma', pt: 'Seletor de idioma' },
+        'Primary': { es: 'Principal', pt: 'Principal' },
+        'Presskit downloads': { es: 'Descargas del presskit', pt: 'Downloads do presskit' }
+      };
+      document.querySelectorAll('[aria-label]').forEach(function(el) {
+        var en = el.getAttribute('data-aria-en') || el.getAttribute('aria-label');
+        if (!ariaDict[en]) return;
+        el.setAttribute('data-aria-en', en);
+        el.setAttribute('aria-label', lang === 'en' ? en : ariaDict[en][lang]);
+      });
+
+      var titles = {
+        en: 'BOOKING // PRESSKIT 2026 — ÆRIEL',
+        es: 'BOOKING // PRESSKIT 2026 — ÆRIEL',
+        pt: 'BOOKING // PRESSKIT 2026 — ÆRIEL'
+      };
+
+      var descriptions = {
+        en: 'Press kit, technical rider and booking requirements for ÆRIEL, a non-binary queer selector based in Santiago de Chile. Download in English, Spanish or Portuguese. Booking: dj@aeriel.net.',
+        es: 'Presskit, rider técnico y requisitos de booking de ÆRIEL, selector queer no binario con base en Santiago de Chile. Descárgalo en inglés, español o portugués. Booking: dj@aeriel.net.',
+        pt: 'Presskit, rider técnico e requisitos de booking de ÆRIEL, seletor queer não binário com base em Santiago do Chile. Baixe em inglês, espanhol ou português. Booking: dj@aeriel.net.'
+      };
+
+      document.querySelectorAll('.bk-card').forEach(function(c) { c.classList.toggle('is-current', c.getAttribute('data-card') === lang); });
+      document.querySelectorAll('img[data-alt-en]').forEach(function(im) { im.alt = im.getAttribute('data-alt-' + lang) || im.getAttribute('data-alt-en'); });
+
+      document.title = titles[lang] || titles.en;
+      var metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', descriptions[lang] || descriptions.en);
+    }
+
+    // Initial Language & Theme Detection
+    function detectInitialLanguage() {
+      var params = new URLSearchParams(window.location.search);
+      var urlLang = params.get('lang');
+      if (urlLang && ['en', 'es', 'pt'].includes(urlLang)) return urlLang;
+
+      try {
+        var saved = localStorage.getItem('preferred-lang');
+        if (saved && ['en', 'es', 'pt'].includes(saved)) return saved;
+      } catch (e) {}
+
+      var browserLangs = navigator.languages || [navigator.language || 'en'];
+      for (var i = 0; i < browserLangs.length; i++) {
+        var code = browserLangs[i].slice(0, 2).toLowerCase();
+        if (code === 'es') return 'es';
+        if (code === 'pt') return 'pt';
+        if (code === 'en') return 'en';
+      }
+      return 'en';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var lang = detectInitialLanguage();
+      setLanguage(lang);
+
+      try {
+        var savedTheme = localStorage.getItem('theme-mode');
+        if (savedTheme && savedTheme !== 'default') {
+          document.documentElement.classList.add(savedTheme + '-mode');
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>

@@ -7,6 +7,10 @@
 /MESSAGE/        /message          301
 /MENSAJE         /mensaje          301
 /MENSAJE/        /mensaje          301
+/BOOKING         /booking          301
+/BOOKING/        /booking/         301
+/Booking         /booking          301
+/Booking/        /booking/         301
 /AE000X           /ae000x           301
 /AE000X/          /ae000x/          301
 /AE000X/FAQ       /ae000x/faq       301
