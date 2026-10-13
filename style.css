@@ -4553,3 +4553,8 @@ body[data-view="writing"].reading .reader-progress { display: block; }
     padding: 3px 8px;
   }
 }
+
+/* Active destination stays legible in genre modes (label color must contrast with the inverted cell) */
+html.trance-mode #main-navigation .nav-link[aria-current="page"] { color: #040814 !important; }
+html.house-mode #main-navigation .nav-link[aria-current="page"] { color: #12080A !important; }
+html.disco-mode #main-navigation .nav-link[aria-current="page"] { color: #170421 !important; }
