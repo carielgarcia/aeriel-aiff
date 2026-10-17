@@ -10,10 +10,10 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font); font-s
 [hidden] { display: none !important; }
 button, label, .label, h1, h2, h3, .kicker { text-transform: uppercase; letter-spacing: 1px; }
 button { font-family: var(--font); font-size: 13px; background: var(--bg); color: var(--fg); border: 1px solid var(--fg); padding: 8px 12px; min-height: 44px; cursor: pointer; }
-button:hover, button:focus-visible, button.on, button.sel { background: var(--fg); color: var(--bg); outline: none; }
+button:focus-visible, button.on, button.sel { background: var(--fg); color: var(--bg); outline: none; }
 button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 button.primary { background: var(--fg); color: var(--bg); }
-button.primary:hover, button.primary:focus-visible { background: var(--bg); color: var(--fg); }
+button.primary:focus-visible { background: var(--bg); color: var(--fg); }
 input[type=text] { font-family: var(--font); font-size: 16px; background: var(--panel); color: var(--fg); border: 1px solid var(--fg); padding: 10px 12px; width: 100%; text-transform: uppercase; letter-spacing: 1px; }
 input[type=text]:focus { outline: 2px solid var(--fg); outline-offset: 2px; }
 
@@ -166,8 +166,8 @@ input[type=text]:focus { outline: 2px solid var(--fg); outline-offset: 2px; }
 .kicker { color: var(--cyn); }
 .sub { color: var(--amb); }
 button.primary { background: var(--mag); color: #0A0A0A; border-color: var(--mag); }
-button.primary:hover, button.primary:focus-visible { background: #0A0A0A; color: var(--mag); }
-button:hover, button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A0A0A; border-color: var(--yel); }
+button.primary:focus-visible { background: #0A0A0A; color: var(--mag); }
+button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A0A0A; border-color: var(--yel); }
 .how { border-color: var(--cyn); }
 .how h2 { color: var(--lim); }
 .notice { color: #B8B8C8; }
@@ -225,7 +225,7 @@ button:hover, button:focus-visible, button.on, button.sel { background: var(--ye
 .pad button { background: #0E0E14; }
 
 .homelink { color: var(--fg); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; display: inline-block; padding: 12px 0; min-height: 44px; }
-.homelink:hover, .homelink:focus-visible { background: #FFFFFF; color: #0A0A0A; transition: none; }
+.homelink:focus-visible { background: #FFFFFF; color: #0A0A0A; transition: none; }
 .mfill.m-hp { background: var(--red); } .mfill.m-fun { background: var(--blu); } .mfill.m-weird { background: var(--grn); } .mfill.m-soc { background: var(--yel); }
 
 /* the morning after: phone thread */
@@ -329,3 +329,18 @@ button:hover, button:focus-visible, button.on, button.sel { background: var(--ye
 .pdc.ok { border-color: var(--lim); color: var(--lim); }
 .pdc.bad { border-color: var(--red); color: var(--red); }
 .pdhint { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+/* hover only where a pointer can really hover. On touch screens :hover sticks to the last tapped button,
+   which left it painted in the hover colours (tone tags unreadable on yellow) until another button was tapped. */
+@media (hover: hover) and (pointer: fine) {
+  button:hover { background: var(--yel); color: #0A0A0A; border-color: var(--yel); }
+  button.primary:hover { background: #0A0A0A; color: var(--mag); border-color: var(--mag); }
+  .choice:hover .tone, .choice:hover .num { color: #0A0A0A; }
+  .homelink:hover { background: #FFFFFF; color: #0A0A0A; transition: none; }
+}
+/* touch: instant press feedback that cannot stick */
+@media (hover: none), (pointer: coarse) {
+  button:active { background: var(--yel); color: #0A0A0A; border-color: var(--yel); }
+  button.primary:active { background: #0A0A0A; color: var(--mag); border-color: var(--mag); }
+  .choice:active .tone, .choice:active .num { color: #0A0A0A; }
+}

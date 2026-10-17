@@ -15,6 +15,8 @@
   function npc(zone, d) { d.reach = d.reach || 16; d.dir = d.dir || 'd'; Z[zone].npc(d); }
 
   /* ------------------------------------------------ no door, no guard: the rave has neither Dragan nor Ofelia */
+  /* ...and the front door is simply open (it opens on the bouncer's say-so, and there is no bouncer) */
+  Z.doors.ents.forEach(function (e) { if (e.id === 'door_in') { const w = e.when; e.when = function (s) { return RV(s) || (w ? w(s) : true); }; } });
   Z.doors.ents.forEach(function (e) { if (e.id === 'dragan') e.when = function (s) { return !RV(s) && !s.flags.bouncer_ok; }; });
   Z.courtyard.ents.forEach(function (e) { if (e.id === 'ofelia') e.when = function (s) { return !RV(s); }; });
 
