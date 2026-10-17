@@ -60,6 +60,18 @@
     });
   };
 
+  /* safety net: any text that reaches the page with an old friend name (plain strings, future copy) is renamed on the spot */
+  EM.watchNames = function (root) {
+    if (!window.MutationObserver || !root) return;
+    const fix = function (n) {
+      if (n.nodeType === 3) { const v = n.nodeValue; if (v && /tato|dani/i.test(v)) { const r = EM.rename(v); if (r !== v) n.nodeValue = r; } return; }
+      if (n.nodeType === 1 && n.tagName !== 'SCRIPT' && n.tagName !== 'STYLE' && n.tagName !== 'INPUT' && n.tagName !== 'TEXTAREA') for (let c = n.firstChild; c; c = c.nextSibling) fix(c);
+    };
+    new MutationObserver(function (ms) { ms.forEach(function (m) { if (m.type === 'characterData') fix(m.target); else m.addedNodes.forEach(fix); }); }).observe(root, { subtree: true, childList: true, characterData: true });
+    fix(root);
+  };
+  document.addEventListener('DOMContentLoaded', function () { EM.watchNames(document.body); });
+
   EM.tr = function (v) {
     if (v == null) return '';
     const s = typeof v === 'string' ? v : (v[EM.lang] || v.en || '');
