@@ -322,8 +322,7 @@
   };
 
   /* ============================================================ THE PICKPOCKET: 1 in 150 encounters */
-  EM.PICK_ODDS = 150;
-  const FRIENDS = ['dani', 'tato', 'maru'];
+    const FRIENDS = ['dani', 'tato', 'maru'];
   D.pickpocket = {
     who: 'dani', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), forced: true, start: 'a', nodes: {
       a: {
@@ -362,11 +361,17 @@
     return s && s.flags.friends_stick ? Math.min(0.95, p + 0.1) : p;
   };
 
+  /* only after the first mission (finding your friends), only once you have actually met people, and rare:
+     the odds apply to conversations with characters, never to pressing Z in the crowd */
+  EM.PICK_ODDS = 1500;
+  EM.pickEncounters = 0;
   function maybePick() {
     const s = EM.state;
-    if (!s || s.venue !== 'rave' || s.flags.pickpocketed || s.ended || s.attempt === undefined) return false;
-    if (Math.random() >= 1 / EM.PICK_ODDS) return false;
-    return true;
+    if (!s || s.venue !== 'rave' || s.flags.pickpocketed || s.ended || s.quests.q1 !== 'done') return false;
+    const met = Object.keys(s.res || {}).filter(function (k) { return k.indexOf('talked_') === 0; }).length;
+    if (met < 8) return false;
+    EM.pickEncounters++;
+    return Math.random() < 1 / EM.PICK_ODDS;
   }
   const sd0 = U.startDialogue;
   U.startDialogue = function (id, opts) {
@@ -377,15 +382,6 @@
     }
     sd0(id, opts);
   };
-  const ex0 = EM.engine && EM.engine.excuse;
-  if (EM.engine && ex0) {
-    EM.engine.excuse = function () {
-      const was = EM.engine.excuseCool > 0;
-      ex0.apply(this, arguments);
-      if (!was && maybePick()) U.startDialogue('pickpocket', { npc: 'dani' });
-    };
-  }
-
   /* ============================================================ MORNING */
   if (story.morningRefs) {
     const R = story.morningRefs;

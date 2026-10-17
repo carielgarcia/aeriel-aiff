@@ -189,7 +189,7 @@ The Night Report lists your people and how they are, the ten most important mome
 - **Cruising** (`story_v12.js`): Diego, Marco, Elias, Ingrid, Nadia and Leila in the dark room. Four rolls (approach .88, eyes .84, touch .80, direct .90, all shifted by `L.makeoutChance`), a verbal-consent branch (+5 HEALTH/SOCIAL), and a rotating pool of three courteous refusals. Success HEALTH +25, SOCIAL +25, FUN +8; failure HEALTH −6, FUN −8. Morning texts from Dani (win) and Tato (miss).
 - **The rave** (`story_v13.js`): no door and no guards, so everything is politics. Maya's clipboard starts two storylines. THE PETITION needs three of five signatures (Bea, Klaus, Madison, Juniper's committee, Sub). THE RAID resolves at minute 270: two preparations out of rights cards (Bea), power cut (Sub), lookout (Pip) and calm assembly (Juniper) averts it, and the petition counts as one more. The committee, Klaus and Madison carry the SJW and Berlin/Brooklyn jokes, each of whom signs or helps in the end.
 - **Dealers**: four new rave dealers (Mambo, Spoke, Pixi, Doc) share Tico's menu and pill picker.
-- **Pickpocket**: `EM.PICK_ODDS = 150`. Hooks `U.startDialogue` (NPC encounters) and `EM.engine.excuse`. Effects in `S.pp_apply`; friends are locked into the party by wrapping `L.leave`, and `L.makeoutChance` gets +0.10.
+- **Pickpocket**: `EM.PICK_ODDS = 1500`. Hooks `U.startDialogue` (NPC encounters only). Effects in `S.pp_apply`; friends are locked into the party by wrapping `L.leave`, and `L.makeoutChance` gets +0.10.
 
 ## Pending
 - **More political missions at the rave**: neighbours (noise complaint and a mediated truce), the owner (a phone call or visit before the sale), and a mutual-aid table (food and water collection) tied to the petition.
@@ -202,3 +202,5 @@ The Night Report lists your people and how they are, the ten most important mome
 - **Feña and the dark room**: very excited on entering; 50% of nights he stays in the dark room (found in a tasteful, implied threesome with two guys; thumbs up, wait for him, or call him out) and comes back by himself after 75 min. He only kisses men; his ex Mateo is a man.
 - **Benjamin the capybara**: once per game hour, 25% chance (never during the pill/drop/regroup chapters, never after a pickpocket) he wanders off to meet people and returns 2 hours later, or when found, with a story where he explains he is a capybara and gets along with everyone.
 - **Rave door code**: "el amanecer es un abrazo", asked by a voice through a slot; the right answer is always among four choices, the other three are jokes (nine in rotation, three rounds).
+
+- **Pickpocket odds revised**: 1 in 1500 per conversation with a character (no crowd presses), only after `q1` is done and 8+ characters met. About 4% for a thorough night, so most people never see it.
