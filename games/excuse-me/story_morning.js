@@ -88,6 +88,7 @@
     }
   };
   const IDX = { maru: 0, dani: 1, tato: 2 };
+  story.morningFate = FATE; story.morningReply = REPLY;
 
   /* messages that react to what you did, in priority order */
   const REF = [
@@ -100,7 +101,7 @@
     } },
     { id: 'tato_check', who: 'tato', ok: function (s) { return s.flags.tato_checked; }, t: T('Also: thanks for asking at the start if I was okay. Nobody asks. I thought about it all night.', 'Además: gracias por preguntarme al principio si estaba bien. Nadie pregunta. Lo pensé toda la noche.', 'Ah, e: valeu por perguntar no começo se eu tava bem. Ninguém pergunta. Pensei nisso a noite toda.') },
     { id: 'cat', who: 'dani', ok: function (s) { return s.flags.pet_cat; }, t: T('The cat on the stairs has a name. Bassline. A man told me. It is on the staff list.', 'El gato de las escaleras tiene nombre. Bassline. Me lo dijo un señor. Está en la lista del personal.', 'O gato da escada tem nome. Bassline. Um moço me contou. Tá na lista dos funcionários.') },
-    { id: 'pillgood', who: 'maru', ok: function (s) { return s.pill.tested && s.flags.pill_taken && !s.flags.pill_fake; }, t: T('Honest question: should checking be a tradition? Nuri was an angel. I want her to have a medal.', 'Pregunta honesta: ¿el chequeo debería ser una tradición? Nuri fue un ángel. Quiero que le den una medalla.', 'Pergunta sincera: a checagem devia virar tradição? A Nuri foi um anjo. Quero que ela ganhe uma medalha.') },
+    { id: 'pillgood', who: 'maru', ok: function (s) { return s.pill.tested && s.flags.pill_taken && !s.flags.pill_fake; }, t: T('Honest question: should checking be a tradition? Isi was an angel. I want her to have a medal.', 'Pregunta honesta: ¿el chequeo debería ser una tradición? Isi fue un ángel. Quiero que le den una medalla.', 'Pergunta sincera: a checagem devia virar tradição? A Isi foi um anjo. Quero que ela ganhe uma medalha.') },
     { id: 'pillnothing', who: 'maru', ok: function (s) { return s.flags.pill_nothing; }, t: T('Remember the mint? Fully a mint. I am keeping the wrapper.', '¿Te acuerdas de la menta? Era 100% una menta. Me quedo con el envoltorio.', 'Lembra da bala de menta? Era 100% uma bala de menta. Vou ficar com a embalagem.') },
     { id: 'pillfaint', who: 'tato', ok: function (s) { return s.flags.pill_faint; }, t: T('I am still shaking about the faint. Next time we test first. Promise me.', 'Todavía estoy temblando por el desmayo. La próxima probamos primero. Prométemelo.', 'Ainda tô tremendo por causa do desmaio. Da próxima a gente testa antes. Me promete.') },
     { id: 'pillskip', who: 'dani', ok: function (s) { return s.flags.pill_binned || s.flags.pill_skipped; }, t: T('Thank you for not taking the thing you did not trust. That sentence is a lot but you understand.', 'Gracias por no tomar lo que no te daba confianza. La frase es mucho, pero entiendes.', 'Valeu por não tomar aquilo em que você não confiava. A frase é demais, mas você entende.') },
@@ -145,7 +146,7 @@
     const msgs = [];
     const seed = (s.seed || 1) + (s.attempt || 1) * 13;
     ['maru', 'dani', 'tato'].forEach(function (f) {
-      const r = EM.hash2(seed, IDX[f], 77), v = Math.floor(EM.hash2(seed, IDX[f], 78) * 2);
+      const r = EM.hash2(seed, IDX[f], 77), v = Math.floor(EM.hash2(seed, IDX[f], 78) * 97);
       const withYou = s.party.indexOf(f) !== -1;
       const W = { dani: [0.5, 0.3], maru: [0.2, 0.4], tato: [0.1, 0.4] }[f];
       let fate = r < W[0] ? 'home' : (r < W[0] + W[1] ? 'thanks' : 'safe');
@@ -162,7 +163,7 @@
         const others = Object.keys(IDX).filter(function (k) { return k !== m0.who && (s.bond[k] || 0) >= 0; });
         if (others.length) {
           const rf = others[Math.floor(EM.hash2(seed, 2, 304) * others.length)];
-          const nm = EM.CAST[m0.who].name, tpl = REPLY[rf][m0.fate];
+          const nm = EM.CAST[m0.who].name, pool = [].concat(REPLY[rf][m0.fate]), tpl = pool[Math.floor(EM.hash2(seed, 6, 307) * pool.length) % pool.length];
           msgs.splice(msgs.indexOf(m0) + 1, 0, { who: rf, t: T(tpl.en.replace('$', nm), tpl.es.replace('$', nm), tpl.pt.replace('$', nm)), fate: 'reply' });
         }
       }

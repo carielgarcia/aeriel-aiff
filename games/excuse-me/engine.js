@@ -117,7 +117,7 @@
         const ha = EM.hash2(x * 5 + k * 3, y * 9 + k, 91);
         /* most people yield when you ask; some do not move; a few get nasty */
         const rp = EM.clamp(S.rep || 0, -4, 8); /* how the crowd has come to see you */
-        const att = ha < 0.8 - 0.012 * rp ? 'yield' : (ha < 0.92 - 0.02 * rp ? 'stubborn' : 'hostile');
+        const att = ha < 0.9 - 0.008 * rp ? 'yield' : (ha < 0.97 - 0.012 * rp ? 'stubborn' : 'hostile');
         R.dancers.push({ x: x * TS + 3 + hx * 10, y: y * TS + 9 + hy * 7, look: p[Math.floor(hl * p.length)], ph: hx, tx: x, ty: y, att: att, id: 'hd_' + Z.id + '_' + x + '_' + y + '_' + k });
       }
     }
@@ -267,7 +267,9 @@
   function react(d, icon) { E.reacts.push({ x: d.x, y: d.y, t: 1.4, icon: icon }); }
   function triggerHostile(d) {
     if (E.hostileCool > 0 || S.res[d.id]) return;
-    E.hostileCool = 12;
+    /* most of the time a glare is all you get */
+    if (Math.random() > 0.55) { E.hostileCool = 10; return; }
+    E.hostileCool = 45;
     S.hostile = { id: d.id, look: d.look, kind: Math.floor(EM.hash2(d.tx, d.ty, 5) * 4) };
     setTimeout(function () { if (!E.paused && !EM.state.ended) EM.hooks.script('hostile_dancer', S.hostile); }, 420);
   }
@@ -288,7 +290,7 @@
         react(d, 'hand'); held = true;
         /* nagging someone who already said no turns them */
         d.asked = (d.asked || 0) + 1;
-        if (d.asked >= 3) { d.att = 'hostile'; react(d, 'anger'); L.stat('weird', 1); L.rep(0.5); if (dist < 30 && !hostile) hostile = d; }
+        if (d.asked >= 4) { d.att = 'hostile'; react(d, 'anger'); L.stat('weird', 1); L.rep(0.5); if (dist < 30 && !hostile) hostile = d; }
       }
       else if (d.att === 'hostile') { react(d, 'anger'); if (dist < 30 && !hostile) hostile = d; }
     });

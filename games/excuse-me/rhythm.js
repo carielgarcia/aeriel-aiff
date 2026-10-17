@@ -1,4 +1,4 @@
-/* EXCUSE ME — arrow-key rhythm: dance gates (watch & repeat), freestyle dancing, breathing, reagent test.
+/* EXCUSE ME — arrow-key rhythm: dance gates and groups (follow the arrows), freestyle dancing, breathing, reagent test.
    All timing comes from the beat grid in EM.audio (performance.now domain). */
 'use strict';
 (function () {
@@ -14,6 +14,7 @@
   function begin(spec) {
     U.mode = 'rhythm'; E.paused = true; E.input.x = E.input.y = 0; U.keys = {};
     R = spec;
+    A.hold = true;
     E.overlay = drawOverlay;
     E.dancing = !!spec.dancing;
     U.rhythmKey = onKey;
@@ -25,7 +26,7 @@
     const cb = R && R.cb;
     const spec = R;
     setTimeout(function () {
-      E.overlay = null; E.dancing = false; U.rhythmKey = null; U.rhythmCancel = null; R = null;
+      E.overlay = null; E.dancing = false; U.rhythmKey = null; U.rhythmCancel = null; R = null; A.hold = false;
       if (U.mode === 'rhythm') { U.mode = 'play'; E.paused = false; E.gateCool = 1.0; }
       if (cb) cb(result, spec);
       U.hint();
@@ -41,40 +42,8 @@
   function drawOverlay(g) {
     if (!R) return;
     const b = A.beatPos();
-    if (R.kind === 'simon') drawSimon(g, b);
-    else if (R.kind === 'follow') drawFollow(g, b);
+    if (R.kind === 'follow') drawFollow(g, b);
     else if (R.kind === 'reagent') drawReagent(g);
-  }
-
-  function drawSimon(g, b) {
-    const n = R.seq.length, w = Math.max(96, n * 18 + 20), x = Math.round((256 - w) / 2), y = 92;
-    box(g, x, y, w, 40);
-    const bx = x + Math.round((w - n * 18) / 2) + 3;
-    const phase = R.phase;
-    for (let i = 0; i < n; i++) {
-      let col = 'G';
-      if (phase === 'watch' && Math.floor(b - R.B0) === i) col = 'W';
-      if (phase === 'play') {
-        if (R.res[i] === 'hit') col = 'W'; else if (R.res[i] === 'miss') col = 'D';
-        else if (i === R.cur) col = 'G';
-      }
-      if (phase === 'result') col = R.res[i] === 'hit' ? 'W' : 'D';
-      const ax = bx + i * 18, ay = y + 8;
-      const wi = Math.floor(b - R.B0);
-      if ((phase === 'watch' && i <= wi) || phase === 'result' || R.res[i] || (phase === 'play' && R.revealAll)) g.drawImage(EM.arrow(R.seq[i], phase === 'watch' && i < wi ? 'G' : col), ax, ay);
-      else g.drawImage(EM.icon('question', 'G'), ax + 1, ay + 1);
-      if (phase === 'play' && i === R.cur && !R.noRhythm) {
-        const frac = (R.P0 + i) - b;
-        const r = Math.max(0, Math.min(1, frac)) * 9;
-        g.fillStyle = C.W;
-        g.fillRect(ax - 2 - r, ay - 2 - r, 15 + 2 * r, 1); g.fillRect(ax - 2 - r, ay + 12 + r, 15 + 2 * r, 1);
-        g.fillRect(ax - 2 - r, ay - 2 - r, 1, 15 + 2 * r); g.fillRect(ax + 12 + r, ay - 2 - r, 1, 15 + 2 * r);
-      }
-    }
-    /* beat pips */
-    for (let k = 0; k < 4; k++) { g.fillStyle = (Math.floor(b) & 3) === k ? C.W : C.G; g.fillRect(x + 6 + k * 5, y + 30, 3, 3); }
-    g.fillStyle = C.G; g.fillRect(x + w - 6 - R.attempts * 6, y + 30, 3, 3);
-    for (let a = 0; a < R.attempts; a++) { g.fillStyle = a < R.attempt ? C.W : C.G; g.fillRect(x + w - 8 - a * 6, y + 30, 4, 3); }
   }
 
   function drawFollow(g, b) {
@@ -116,62 +85,28 @@
     g.fillStyle = C.W; for (let i = 0; i <= st; i++) g.fillRect(x + 8 + i * 6, y + h - 8, 4, 3);
   }
 
-  /* ------------------------------------------------------------ simon: dance gate */
-  /* spec: { seq:'LLRLL', attempts:3, bpm?, intro:T } -> cb('win'|'partial'|'fail'|'bail') */
+  /* ------------------------------------------------------------ dance gates and groups */
+  /* One rule for all dancing: the arrows scroll in on the beat and you press the matching one. No memory.
+     spec: { seq:'LLRLL', attempts:3 } -> cb('win'|'partial'|'fail'|'bail') */
   U.danceGate = function (spec, cb) {
     const seq = spec.seq.split('');
-    const n = seq.length;
-    begin({ kind: 'simon', seq: seq, attempts: spec.attempts || 3, attempt: 1, cb: cb, res: [], phase: 'intro', cur: 0, noRhythm: EM.settings.noRhythm, cancel: function () { R.over = true; finishBail(); }, dancing: true });
-    function finishBail() { finish('bail', 100); }
-    startAttempt();
-    function startAttempt() {
-      if (!R || R.over) return;
-      R.res = []; R.cur = 0; R.hits = 0; R.mistakes = 0;
-      R.phase = 'watch';
-      R.B0 = Math.ceil(A.beatPos()) + 2;
-      R.P0 = R.B0 + n + 2;
-      R.revealAll = false;
-      setHint(T('WATCH THE GROUP. Repeat it on the beat with the arrows.', 'MIRA AL GRUPO. Repítelo al ritmo con las flechas.', 'OLHE O GRUPO. Repita no ritmo com as setas.'));
-      const tWatchEnd = (R.P0 - 0.6 - A.beatPos()) * A.beatDur() * 1000;
-      setTimeout(function () {
-        if (!R || R.over) return;
-        R.phase = 'play';
-        setHint(T('YOUR TURN.', 'TU TURNO.', 'SUA VEZ.'));
-      }, Math.max(100, tWatchEnd));
-      const tEnd = (R.P0 + n + 0.6 - A.beatPos()) * A.beatDur() * 1000;
-      R.endTimer = setTimeout(judgeEnd, Math.max(500, tEnd));
+    const attempts = spec.attempts || 2;
+    let attempt = 1;
+    function run() {
+      U.followRhythm({ seq: seq, step: 1, window: 0.55, dancing: true, title: T('FOLLOW THE ARROWS ON THE BEAT.', 'SIGUE LAS FLECHAS AL RITMO.', 'SIGA AS SETAS NO RITMO.') }, function (res) {
+        if (res.bailed) { cb('bail'); return; }
+        const ratio = res.hits / seq.length;
+        const grade = ratio >= 0.65 ? 'win' : (ratio >= 0.35 ? 'partial' : 'fail');
+        if (grade === 'fail' && attempt < attempts) {
+          attempt++;
+          U.toast({ text: T('They shake it off. Again.', 'Lo sacuden. Otra vez.', 'Eles sacodem. De novo.'), kind: 'info', ms: 1800, nolog: true });
+          setTimeout(run, 250);
+          return;
+        }
+        cb(grade);
+      });
     }
-    function judgeEnd() {
-      if (!R || R.over) return;
-      for (let i = 0; i < n; i++) if (!R.res[i]) { R.res[i] = 'miss'; }
-      const hits = R.res.filter(function (x) { return x === 'hit'; }).length;
-      R.phase = 'result';
-      const ratio = hits / n;
-      const result = ratio >= 0.8 ? 'win' : (ratio >= 0.5 ? 'partial' : 'fail');
-      EM.audio.blip(result === 'fail' ? 'bad' : 'good');
-      if (result === 'fail' && R.attempt < R.attempts) {
-        setHint(T('They shake it off. Again.', 'Lo sacuden. Otra vez.', 'Eles sacodem. De novo.'));
-        R.attempt++;
-        setTimeout(startAttempt, 1400);
-        return;
-      }
-      setHint(result === 'win' ? T('THEY LOVE IT.', 'LES ENCANTA.', 'ELES ADORAM.') : (result === 'partial' ? T('Good enough.', 'Suficiente.', 'Bom o bastante.') : T('Out of sync.', 'Sin ritmo.', 'Sem ritmo.')));
-      finish(result, 1300);
-    }
-    R.judge = function (d) {
-      if (R.phase !== 'play' || R.over) return;
-      if (R.noRhythm) {
-        if (d === seq[R.cur]) { R.res[R.cur] = 'hit'; R.cur++; EM.audio.blip('select'); } else { R.mistakes++; EM.audio.blip('bad'); if (R.mistakes >= 3) { for (let i = R.cur; i < n; i++) R.res[i] = 'miss'; R.cur = n; } }
-        if (R.cur >= n) { clearTimeout(R.endTimer); judgeEnd(); }
-        return;
-      }
-      const b = A.beatPos();
-      const idx = Math.round(b - R.P0);
-      if (idx < 0 || idx >= n || R.res[idx]) return;
-      if (Math.abs(b - (R.P0 + idx)) > 0.4) return;
-      if (d === seq[idx]) { R.res[idx] = 'hit'; EM.audio.blip('select'); } else { R.res[idx] = 'miss'; EM.audio.blip('bad'); }
-      R.cur = idx + 1;
-    };
+    run();
   };
 
   /* ------------------------------------------------------------ follow: freestyle + breathing */
@@ -208,7 +143,7 @@
     const r = EM.mulberry32((Math.random() * 1e9) | 0);
     const dirs = ['L', 'R', 'U', 'D'];
     const seq = []; for (let i = 0; i < 16; i++) seq.push(dirs[Math.floor(r() * 4)]);
-    U.followRhythm({ seq: seq, step: 1, window: 0.4, dancing: true, title: T('FREESTYLE: follow the arrows on the beat. [X] stops.', 'FREESTYLE: sigue las flechas al ritmo. [X] para.', 'FREESTYLE: siga as setas no ritmo. [X] para.') }, function (res) {
+    U.followRhythm({ seq: seq, step: 1, window: 0.5, dancing: true, title: T('FREESTYLE: follow the arrows on the beat. [X] stops.', 'FREESTYLE: sigue las flechas al ritmo. [X] para.', 'FREESTYLE: siga as setas no ritmo. [X] para.') }, function (res) {
       let fun = Math.round(res.hits * 1.5 + res.best * 0.5);
       if (s.party.length >= 2) fun += 3;
       if (s.fx.mdma) fun += 5;
@@ -235,8 +170,8 @@
     const t0 = performance.now();
     const msgs = [
       T('A scraping from the pill. A drop of liquid. The room holds its breath.', 'Se raspa un poco de la pastilla. Una gota de líquido. El cuarto contiene el aire.', 'Raspa-se um pouco do comprimido. Uma gota de líquido. A sala segura o ar.'),
-      T('It changes. Nuri watches it like a bank teller counting.', 'Cambia. Nuri lo mira como una cajera contando billetes.', 'Muda. A Nuri olha como uma caixa contando notas.'),
-      T('It settles. Nuri checks the card twice.', 'Se asienta. Nuri revisa la tarjeta dos veces.', 'Assenta. A Nuri confere o cartão duas vezes.')
+      T('It changes. Isi watches it like a bank teller counting.', 'Cambia. Isi lo mira como una cajera contando billetes.', 'Muda. A Isi olha como uma caixa contando notas.'),
+      T('It settles. Isi checks the card twice.', 'Se asienta. Isi revisa la tarjeta dos veces.', 'Assenta. A Isi confere o cartão duas vezes.')
     ];
     setHint(msgs[0]);
     const iv = setInterval(function () {

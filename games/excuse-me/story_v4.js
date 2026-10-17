@@ -9,10 +9,14 @@
   /* ============================================================ THE WHITE POWDERS */
   /* Two white powders look the same in the dark. Whatever you were told, about one time in five it is the other one. */
   function takePowder(told) {
-    const s = EM.state;
     const swap = Math.random() < 0.2;
-    const real = swap ? (told === 'coke' ? 'ket' : 'coke') : told;
     L.dealerHeat();
+    story.applyPowder(swap ? (told === 'coke' ? 'ket' : 'coke') : told, told);
+  }
+  /* what actually happens: used by dealers and by things you bought and carried */
+  story.applyPowder = function (real, told) {
+    const s = EM.state;
+    const swap = real !== told;
     s.flags['told_' + told] = true;
     if (swap) s.flags.powder_mixup = true;
     s.impaired = s.impaired || real === 'ket';
@@ -31,7 +35,7 @@
     if (swap) setTimeout(function () {
       U.toast({ icon: 'question', text: T('…that was not what you were told it was. Two white powders look exactly alike in the dark.', '…eso no era lo que te dijeron que era. Dos polvos blancos se ven exactamente iguales en la oscuridad.', '…isso não era o que te disseram que era. Dois pós brancos são exatamente iguais no escuro.'), kind: 'info', ms: 6500 });
     }, 2500);
-  }
+  };
   S.powder_coke = function () { takePowder('coke'); };
   S.powder_ket = function () { takePowder('ket'); };
 

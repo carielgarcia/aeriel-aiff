@@ -49,6 +49,7 @@
     const rounds = [[pick()], [pick()], [pick(), pick()], [pick(), pick(), pick()]].map(function (r) { return r.slice(); });
     P = { who: who, pers: pers, rounds: rounds, ri: 0, pos: 0, shown: 0, hits: 0, total: 0, perfect: 0, miss: 0, cb: cb, timers: [], locked: true, seq: '' };
     EM.DIALOGUES.pd_run = { who: who, role: t('DANCING WITH YOU', 'BAILANDO CONTIGO', 'DANÇANDO COM VOCÊ'), forced: true, start: 'a', nodes: { a: { pd: true, text: '' } } };
+    EM.audio.hold = true;
     U.startDialogue('pd_run', { npc: who });
   };
   U.pdActive = function () { return !!(P && U.D && U.D.id === 'pd_run'); };
@@ -80,7 +81,7 @@
     if (EM.settings.noRhythm) P.timers.push(setTimeout(function () { reveal(0); }, 1100));
     else for (let i = 0; i < P.seq.length; i++) P.timers.push(setTimeout(function () { reveal(i); }, 1100 + i * tempo()));
   }
-  function tempo() { return P.pers.tempo * (1 - P.ri * 0.07) * (EM.settings.calm ? 1.25 : 1); }
+  function tempo() { return P.pers.tempo * 1.1 * (1 - P.ri * 0.06) * (EM.settings.calm ? 1.25 : 1); }
   function reveal(i) {
     if (!P || !P.pc[i]) return;
     P.locked = false;
@@ -88,7 +89,7 @@
     EM.audio.blip('move');
     P.note.textContent = EM.tr(LBL.hint);
     P.shown = Math.max(P.shown, i + 1);
-    if (!EM.settings.noRhythm) P.timers.push(setTimeout(function () { if (P && P.pos === i) { resolve(i, null); } }, tempo() + 380));
+    if (!EM.settings.noRhythm) P.timers.push(setTimeout(function () { if (P && P.pos === i) { resolve(i, null); } }, tempo() + 450));
   }
   function mark(i, ok, d) { P.yc[i].classList.add(ok ? 'ok' : 'bad'); P.yc[i].textContent = d ? ARROW[d] : '×'; }
   function resolve(i, d) {
@@ -119,7 +120,7 @@
     const res = { who: P.who, hits: P.hits, total: P.total || 1, perfect: P.perfect, rounds: P.rounds.length, bailed: !!bailed };
     const ratio = res.hits / Math.max(1, res.total);
     res.grade = bailed ? 'bail' : (ratio >= 0.85 && res.perfect >= 3 ? 'win' : (ratio >= 0.5 ? 'partial' : 'fail'));
-    const cb = P.cb, pers = P.pers; P = null;
+    const cb = P.cb, pers = P.pers; P = null; EM.audio.hold = false;
     if (U.D && U.D.id === 'pd_run') { U.D.def.forced = false; U.endDialogue(true); }
     EM.audio.blip(res.grade === 'win' ? 'good' : (res.grade === 'fail' ? 'bad' : 'select'));
     U.toast({ icon: res.grade === 'win' ? 'star' : 'note', text: res.grade === 'win' ? pers.win : (res.grade === 'bail' ? t(`You step out of the dance with a little bow.`, `Sales del baile con una pequeña reverencia.`, `Você sai da dança com uma pequena reverência.`) : pers.lose), kind: res.grade === 'win' ? 'good' : 'info', ms: 6500 });

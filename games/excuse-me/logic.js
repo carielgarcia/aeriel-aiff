@@ -59,11 +59,11 @@
   L.rave = function () { return EM.state.venue === 'rave'; };
   /* club security stands in these rooms and notices strange people */
   const GUARDED = { doors: 1, foyer: 1, main: 1, courtyard: 1 };
-  L.guarded = function () { const s = EM.state; return s.venue !== 'rave' && !!GUARDED[s.zone]; };
+  L.guarded = function () { const s = EM.state; return s.venue !== 'rave' && !!GUARDED[s.zone] && !s.flags.rosa_lanyard; };
   /* buying from a dealer: free at a rave, risky at a club */
   L.dealerHeat = function () {
     const s = EM.state;
-    if (L.rave()) return;
+    if (L.rave() || s.flags.isi_wristband) return;
     L.stat('weird', 5);
     if (L.guarded() && Math.random() < 0.5) {
       s.flags.sec_noted = true;

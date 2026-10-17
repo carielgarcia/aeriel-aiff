@@ -628,6 +628,7 @@
       if (s.drinks >= 1) fx.push(EM.tr(EM.FXNAME.drunk));
       box.appendChild(el('p', 'mnote', EM.tr(UI.effects) + ': ' + (fx.length ? fx.join(' · ') : EM.tr(UI.fxNone))));
       box.appendChild(el('p', 'mnote', EM.tr(UI.items) + ': ' + EM.tr(UI.water) + ' ×' + (s.items.water || 0)));
+      (EM.menuExtras || []).forEach(function (f) { f(box, s); });
       box.appendChild(el('p', 'mnote', EM.tr(UI.time) + ': ' + EM.clockStr(s.time)));
       box.appendChild(el('p', 'mnote dim', EM.tr(UI.keysHelp)));
     } else if (menuTab === 'quests') {
@@ -638,7 +639,8 @@
         const r = el('div', 'qrow ' + s.quests[id]);
         r.appendChild(el('span', 'qs', '[' + EM.tr(s.quests[id] === 'done' ? UI.done : UI.active) + ']'));
         r.appendChild(el('strong', '', ' ' + EM.tr(q.title)));
-        r.appendChild(el('div', 'qd', EM.tr(s.quests[id] === 'done' && q.doneText ? q.doneText : q.desc)));
+        const qd = s.quests[id] === 'done' && q.doneText ? q.doneText : q.desc;
+        r.appendChild(el('div', 'qd', EM.tr(typeof qd === 'function' ? qd(s) : qd)));
         box.appendChild(r);
       });
     } else if (menuTab === 'settings') {

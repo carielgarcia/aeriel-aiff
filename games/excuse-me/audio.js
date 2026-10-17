@@ -14,12 +14,25 @@
     techno:  { bpm: 132, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [4, 12], rim: [7, 15], bass: [null, null, 0, null, null, null, 0, null, null, null, 0, null, null, null, 0, null], root: 41, pad: 0.0 },
     hard:    { bpm: 142, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14, 1, 5, 9, 13], clap: [4, 12], rim: [3, 11], bass: [null, null, 0, 0, null, null, 0, 0, null, null, 0, 0, null, null, 0, 7], root: 38, pad: 0.0 },
     closing: { bpm: 124, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [], rim: [], bass: [0, null, null, null, null, null, 7, null, 5, null, null, null, 3, null, null, null], root: 43, pad: 1.0 },
-    chill:   { bpm: 100, kick: [], hat: [], clap: [], rim: [], bass: [], root: 45, pad: 1.0 }
+    chill:   { bpm: 100, kick: [], hat: [], clap: [], rim: [], bass: [], root: 45, pad: 1.0 },
+    /* variants: the DJ moves between these inside the same part of the night */
+    house:   { bpm: 124, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [4, 12], rim: [7, 13], bass: [null, null, 0, null, null, null, null, 0, null, null, 3, null, null, null, 0, null], root: 45, pad: 0.6 },
+    disco:   { bpm: 118, kick: [0, 4, 8, 12], hat: [2, 3, 6, 7, 10, 11, 14, 15], clap: [4, 12], rim: [], bass: [0, 12, 0, 12, 0, 12, 0, 12, 3, 15, 3, 15, 5, 17, 5, 17], root: 45, pad: 0.5 },
+    trance:  { bpm: 138, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [4, 12], rim: [], bass: [null, 0, 0, 0, null, 0, 0, 0, null, 0, 0, 0, null, 0, 0, 0], root: 40, pad: 1.0 },
+    acid:    { bpm: 128, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [4, 12], rim: [], bass: [0, null, 0, 12, null, 0, 3, null, 0, null, 7, null, 5, null, 3, 12], root: 38, pad: 0.0, sweep: true },
+    minimal: { bpm: 126, kick: [0, 4, 8, 12], hat: [3, 7, 11, 15], clap: [], rim: [2, 6, 10, 13, 14], bass: [null, null, null, 0, null, null, null, null, null, null, 0, null, null, 5, null, null], root: 43, pad: 0.2 },
+    dub:     { bpm: 140, kick: [0, 10], hat: [2, 6, 10, 14], clap: [8], rim: [], bass: [0, null, null, null, null, null, null, null, 0, null, null, null, 5, null, null, null], root: 34, pad: 0.0, wobble: true }
+  };
+  /* the pool of variants for each part of the night */
+  const POOLS = {
+    warm: ['warm', 'house', 'disco', 'house'], techno: ['techno', 'acid', 'minimal', 'techno'],
+    hard: ['hard', 'trance', 'techno', 'hard', 'dub'], closing: ['closing'], chill: ['chill'],
+    attic: ['trance', 'house', 'acid', 'disco']
   };
   EM.STYLES = STYLES;
 
   const A = EM.audio = {
-    ctx: null, ready: false, style: 'warm', lp: 18000, wet: 0.05, vol: 1.0,
+    ctx: null, ready: false, style: 'warm', cat: 'warm', hold: false, lp: 18000, wet: 0.05, vol: 1.0,
     /* beat grid (performance.now seconds) */
     bpm: 120, anchorT: 0, anchorB: 0
   };
@@ -121,10 +134,29 @@
     bus.revSend.gain.setTargetAtTime(wet, t, 0.2);
   };
   A.setStyle = function (name) {
-    const s = STYLES[name] || STYLES.warm;
-    A.style = name;
-    if (s.bpm !== A.bpm) A.setBpm(s.bpm);
+    const cat = POOLS[name] ? name : 'warm';
+    if (cat === A.cat && STYLES[A.style]) return;
+    A.cat = cat;
+    useVariant(POOLS[cat][0]);
   };
+  function useVariant(v) {
+    A.style = v;
+    const s = STYLES[v] || STYLES.warm;
+    if (s.bpm !== A.bpm) A.setBpm(s.bpm);
+    if (v === 'dub' && EM.hooks && EM.hooks.toast) EM.hooks.toast({ icon: 'note', text: EM.T('A wobble bass cuts through the room. Somewhere in the quiet room, ISI whispers: "FINALLY."', 'Un bajo wobble corta la sala. En algún lugar de la sala tranquila, ISI susurra: «POR FIN».', 'Um baixo wobble corta a sala. Em algum lugar da sala de calma, a ISI sussurra: «ATÉ QUE ENFIM».'), kind: 'good', ms: 5000 });
+  }
+  /* every few phrases the DJ moves to another record from the same part of the night (never while you are dancing) */
+  let phrasesSince = 0;
+  function maybeSwitch(phrase) {
+    if (A.hold || lite) return;
+    phrasesSince++;
+    if (phrasesSince < 4 + Math.floor(EM.hash2(phrase, 3, 17) * 4)) return;
+    const pool = POOLS[A.cat] || POOLS.warm;
+    if (pool.length < 2) return;
+    const next = pool.filter(function (v) { return v !== A.style; });
+    useVariant(next[Math.floor(EM.hash2(phrase, 9, 23) * next.length) % next.length]);
+    phrasesSince = 0;
+  }
 
   /* ------------------------------------------------------------ voices */
   function tAt(perfT) { return A.ctx.currentTime + (perfT - now()); }
@@ -209,19 +241,49 @@
     }
   }
 
+  /* arrangement: 8-bar phrases that breathe (a break with a riser, a fill, a crash) so the room never loops flat */
+  function phraseKind(phrase) {
+    const r = EM.hash2(phrase, 11, 3);
+    return r < 0.2 ? 'break' : (r < 0.34 ? 'groove' : 'full');
+  }
+  const ROOT_SHIFT = [0, 0, 3, 5, -2, 7, 0, 2];
   function schedule(step, t) {
     const st = STYLES[A.style] || STYLES.warm;
     const s16 = step % 16;
+    const bar = Math.floor((step % 128) / 16);
+    const phrase = Math.floor(step / 128);
+    const kind = st.kick.length ? phraseKind(phrase) : 'full';
+    const prevBreak = st.kick.length && step >= 128 && phraseKind(phrase - 1) === 'break';
     const lvl = lite ? 0.6 : 1;
-    if (st.kick.indexOf(s16) !== -1) kick(t, 0.9);
-    if (st.hat.indexOf(s16) !== -1) noiseHit(t, 0.16 * lvl, 0.045, bus.hat, (s16 * 0.031) % 0.7);
-    if (st.clap.indexOf(s16) !== -1) noiseHit(t, 0.28 * lvl, 0.11, bus.clap, 0.1);
-    if (st.rim.indexOf(s16) !== -1) noiseHit(t, 0.12 * lvl, 0.03, bus.clap, 0.4);
-    const bn = st.bass[s16];
-    if (bn !== null && bn !== undefined && !lite) bass(t, mtof(st.root + bn), 60 / A.bpm / 4 * 1.7, 0.35);
+    const inBreak = kind === 'break' && bar >= 4;
+    const quiet = kind === 'groove' && bar < 2;
+    if (step % 128 === 0 && step > 0) maybeSwitch(phrase);
+    if (step % 128 === 0 && prevBreak && !lite) noiseHit(t, 0.3, 0.9, bus.hat, 0.05); /* crash after a break */
+    if (!inBreak && st.kick.indexOf(s16) !== -1) kick(t, 0.9);
+    if (st.hat.indexOf(s16) !== -1 && !quiet && !(inBreak && (s16 & 1))) noiseHit(t, 0.16 * lvl, 0.045, bus.hat, (s16 * 0.031) % 0.7);
+    if (st.clap.indexOf(s16) !== -1 && !inBreak && !quiet) noiseHit(t, 0.28 * lvl, 0.11, bus.clap, 0.1);
+    if (st.rim.indexOf(s16) !== -1 && !inBreak) noiseHit(t, 0.12 * lvl, 0.03, bus.clap, 0.4);
+    /* the fill: a roll into the next phrase */
+    if (bar === 7 && s16 >= 8 && st.kick.length) noiseHit(t, (0.05 + (s16 - 8) * 0.025) * lvl, 0.05, bus.clap, 0.2);
+    if (!inBreak && !lite) {
+      let bn = st.bass[s16];
+      if (bn !== null && bn !== undefined && (phrase & 1) && (s16 === 12 || s16 === 14)) bn += s16 === 12 ? 5 : 7; /* alternate phrases answer back */
+      if (bn !== null && bn !== undefined) {
+        const root = st.root + ROOT_SHIFT[Math.floor(step / 256) % ROOT_SHIFT.length];
+        const len = 60 / A.bpm / 4 * (st.wobble ? 3.4 : 1.7);
+        if (st.wobble) { for (let k = 0; k < 6; k++) bus.bass.frequency.setValueAtTime(k % 2 ? 160 : 900, t + k * len / 6); bass(t, mtof(root + bn), len, 0.42); }
+        else bass(t, mtof(root + bn), len, 0.35);
+      }
+    }
+    if (st.sweep && s16 === 0) bus.bass.frequency.setTargetAtTime(260 + 900 * (0.5 + 0.5 * Math.sin(step / 96)), t, 0.4);
     if (st.pad && s16 === 0 && (step % 64) === 0) {
+      const root = st.root + ROOT_SHIFT[Math.floor(step / 256) % ROOT_SHIFT.length];
       const prog = [[0, 3, 7], [-2, 2, 5], [-4, 0, 3], [-5, -1, 2]][Math.floor(step / 64) % 4];
-      pad(t, prog.map(function (n) { return mtof(st.root + 24 + n); }), 60 / A.bpm * 16, 0.05);
+      pad(t, prog.map(function (n) { return mtof(root + 24 + n); }), 60 / A.bpm * 16, 0.05 * (inBreak ? 1.6 : 1) * (st.pad > 0.5 ? 1 : 0.7));
+    } else if (inBreak && s16 === 0 && !st.pad) {
+      /* a breakdown with no pad of its own borrows one */
+      const root = st.root + 24;
+      pad(t, [mtof(root), mtof(root + 7), mtof(root + 10)], 60 / A.bpm * 4, 0.04);
     }
   }
 

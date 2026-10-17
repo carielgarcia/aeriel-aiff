@@ -58,7 +58,7 @@ Minutes since 22:00. 0.4 game-minutes per real second while you walk; conversati
 | **Dark room** | Dario's rules (ask first), a couple on a sofa, a trio, a nervous first-timer. Consent is the whole game here |
 | **Tunnel** | Dark, lamp-lit. Juno (a bad trip), an alcove, Rico, Ximena painting the wall |
 | **Smoking area** | Benches, fire barrels, a cat, German tourists, Pili, Dante, Sol, Ofelia (security) |
-| **Quiet room** | **Nuri** and the checking table, **Teo** the medic, mattresses. SOCIAL and HEALTH recharge faster here |
+| **Quiet room** | **Isi** and the checking table, **Teo** the medic, mattresses. SOCIAL and HEALTH recharge faster here |
 | **Sala 2 (attic)** | Harder, denser room: Hazel the purist, a trance-dance ring, Oz holding ice |
 | **Backstage** | Beatriz the manager, **the Resident** (closing DJ), a water crate |
 | **Roof** | Sunrise. The closing set. The ending |
@@ -70,7 +70,7 @@ Minutes since 22:00. 0.4 game-minutes per real second while you walk; conversati
 4. **Toilets, one stall.** Convince the host: honesty, charm, a lie, a favour, or split up.
 5. **The stall.** Dani reveals a pill. Tato spirals (breathing). A knock.
 6. **Rosa.** Explain yourselves. She is the moral centre of the night.
-7. **The pill.** Take it to the quiet room's checking table. Nuri tests it. See below.
+7. **The pill.** Take it to the quiet room's checking table. Isi tests it. See below.
 8. **The drop (03:40).** Three nested dance gates. The best writing in the game.
 9. **Nobody left behind.** The group scatters. Where Dani and Tato end up depends on the pill and on how you treated them. Search the venue.
 10. **The closing set.** Everyone on the roof. Sunrise. Ending.
@@ -85,7 +85,7 @@ You decide for yourself. Dani decides for himself. Your choice also changes wher
 Alcohol (bar, Kiki's shots, Clara's birthday) is a separate stack: fun and boldness up, health and weirdness up, vomiting at about six drinks.
 
 ## 7. The cast
-Friends: **Maru** (organiser), **Dani** (hug-first), **Tato** (anxious, kind). They follow you, bark one-liners, and have needs. Everyone else is a person with a want: Broh and Sofi, Tobi, Tristan, Hugo, Nico, Luca, Fernet, Rico, Kiki, Bruno, Mika, Marga, Ezra, Rosa, Dario, Juno, Ximena, Jonas and Ida, Pili, Dante, Sol, Ofelia, Mateo (Tato's ex), Nuri, Teo, Hazel, Oz, Beatriz, the Resident. Many of them come back later: Bruno, Sofi, Broh, Kiki, Tobi, Tristan.
+Friends: **Maru** (organiser), **Dani** (hug-first), **Tato** (anxious, kind). They follow you, bark one-liners, and have needs. Everyone else is a person with a want: Broh and Sofi, Tobi, Tristan, Hugo, Nico, Luca, Fernet, Rico, Kiki, Bruno, Mika, Marga, Ezra, Rosa, Dario, Juno, Ximena, Jonas and Ida, Pili, Dante, Sol, Ofelia, Mateo (Tato's ex), Isi, Teo, Hazel, Oz, Beatriz, the Resident. Many of them come back later: Bruno, Sofi, Broh, Kiki, Tobi, Tristan.
 
 ## 8. Endings (eleven)
 Forced by a bar: **The Long Walk to the Door** (weirdness full), **The Second Time** (passed out twice), **The Stall Hermit** (social zero), **The Early Uber** (bored too long), **House Lights** (08:00 without sunrise), **The Walk to the Taxi** (you leave on purpose).
@@ -170,3 +170,15 @@ The Night Report lists your people and how they are, the ten most important mome
 - **Being pushy**: after a flop the person stays for a while. Asking again within 45 game-minutes gets a firm no: reputation +1.5, FUN -5, WEIRDNESS +4, SOCIAL -2, a bad-decision point, and they leave. Two flops with the same person ends it. A kiss that works also ends the conversation.
 
 - **A dance win is permission**: winning a partner dance with a flirt raises the kiss chance to 0.82 (0.68 after other warming up, 0.4 cold).
+
+
+## v0.9 changes
+- **Crowd**: 90% of dancers yield, 7% are stubborn, 3% hostile. Only about half of hostile glares escalate to a dialogue, and no more than one per 45 seconds. Nagging a stubborn dancer turns them after four asks.
+- **One dance rule**: every dance, solo, group or partner, now works the same way: arrows come to you on the beat (or one by one in a partner's dialogue) and you press the matching one. The watch-then-repeat memory gates are gone (`U.danceGate` is a thin wrapper over the follow mechanic, window 0.55 beat; win at 65% of arrows, partial at 35%). Partner dances are 10% slower with a wider window.
+- **Music**: 10 variants in four pools (warm: warm/house/disco; techno: techno/acid/minimal; hard: hard/trance/techno/dub; attic: trance/house/acid/disco). Eight-bar phrases breathe (full, groove, break with a pad and a fill, crash after a break), the root moves every 32 bars, and every 4 to 7 phrases the DJ moves to another variant (never while you dance). A rare dub phrase makes ISI whisper "FINALLY". Offline renders: peaks -2.2 to -2.4 dBFS, no clipping.
+- **Isi** (was Nuri) runs the checking table: kind, loves seafood and tattoos, thinks the DJ does not play enough dubstep (a complaint that escalates across nights). She draws a temporary octopus (Gerard).
+- **The queue has a dealer** (Tico): MDMA, meth, cocaine, ketamine. A purchase goes into your pockets (MENU > STATUS > TAKE IT) and its real contents are hidden: MDMA is 70% MDMA / 15% mixed with a stimulant / 15% not what it says; meth 85/15; coke and ketamine swap 20%. Isi tests each kind for free (reagent animation), tells you what it looks like, and offers the bin.
+- **Errand web** (`story_v9.js`): ROSA'S LIST (an unwell person via Teo, the closet key via Luca, a bucket from the quiet room) ends with a lanyard (guards ignore you) and the staff corridor; BISCUIT'S PHONE (courtyard to Luca, which also unlocks the key); THE NAPKIN (Cleo to ÆRIEL, needs the staff corridor); KAI'S BATTERY (Bruce or Mina); THE HEADLAMP (Dani's crush: the gel is backstage); SIA'S LAST LINE (three words from Ruth, a voice in the dark and Gus); ISI'S SNACK RUN (the vending machine and Ines, ends with a TESTED OK wristband that removes dealer risk). The menu LOG shows live checklists.
+- **Rosa tightened**: confrontation outcomes are now real branches. Ally or ok gets the list, cold gets a one-task probation, angry is cold until you have looked after three people (about 90 minutes). Rosa reports back, rewards by how many errands you did, and offers coffee afterward.
+- **Dark room**: seven more people: Pau (consent-first massage, with a slow fade if you ask for more), the blindfold guessing game, Lyra reading (tender, funny, and the one you need water after), a couple looking for a third (rules first, 85% lovely and 15% an elbow problem), a slow dancer who wants to be led, the confession corner, and grapes by hand. Seven new sound cues. Adult, warm and never crass; every step is asked and a no is complete.
+- **More copy**: four voices per friend per kind of text (home, safe, thanks, lost, cool), more answers between friends, and four closing paragraphs per ending chosen by the night's seed.

@@ -279,7 +279,7 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 - **Copy**: Spanish is Latin American (no voseo, no Rioplatense regionalisms); Portuguese is Brazilian. Trilingual parity applies to every string, gendered form (`{m|f|x}`) and aria-label.
 - **The DJ is always ÆRIEL** and the club jokes about Æ000.X's access dynamics lightly; the tone is self-aware, never earnest.
 - **Rules**: no short nights; catastrophes (ban, ambulance, fed-up friends) end the night with BEGIN AGAIN (same player, same seed, lessons carried); a single faint is survivable. Weirdness decays slowly, faster when behaving, and always accumulates.
-- **Crowd**: roughly 80% of dancers yield to "excuse me", a stubborn minority does not, and a smaller minority turns hostile. Keep those proportions when editing `engine.js`.
+- **Crowd**: roughly 90% of dancers yield to "excuse me", about 7% do not, and about 3% turn hostile (and only about half of those escalate to a dialogue, at most one every 45 seconds). Keep those proportions when editing `engine.js`.
 - **Bars**: HEALTH red, FUN blue, WEIRDNESS green, SOCIAL yellow.
 - **Drugs**: MDMA boosts dialogue and raises weirdness fast; MDMA plus a stimulant raises it less and makes dancing cost health; cocaine costs health when dancing and only keeps the lessons a sober character would keep (never a reward); ketamine is a 50% faint or a social/fun boost and raises weirdness like MDMA; a told-cocaine or told-ketamine powder is the other one about 1 time in 5. Drinking or taking those drugs means the night's lesson is forgotten on BEGIN AGAIN. Keep all of this in `logic.js` and `story_v4.js`.
 - **Venue**: the player picks ESTABLISHED CLUB or ILLEGAL RAVE at the start (`s.venue`). Club: guards notice weirdness near them, dealers carry consequences. Rave: no security, drugs weigh less on weirdness, dealers are free, dancing gives extra fun and a little health; full weirdness is the `frozenout` ending.
@@ -291,4 +291,7 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 - **Dancing with a person**: `dance.js`. Named four-arrow combos; the partner's arrows appear one by one in the dialogue and the player copies them. Keep the tutorial's dancing card in sync.
 - **Pushing**: asking again right after a flop is a firm no with a reputation cost; never reward it. Update `tutorial.js` whenever controls or dance rules change, in EN/ES/PT.
 - **Consequences come back**: kisses are remembered (friend reactions, the person returns, numbers), and small kindnesses pay off later the same night, in the morning, or both (`story_v7.js`).
+- **Dancing**: one rule everywhere: arrows come to you and you press the matching one. No memory challenges.
+- **Drugs bought in the queue**: carried in `s.stash`, true contents hidden until Isi's table tests them. Rosa's lanyard removes guard heat; Isi's wristband removes dealer heat.
+- **Errands** (`story_v9.js`): quests should interlock (Rosa, Luca, Biscuit's phone, Isi, Kai, Sia, Cleo, the headlamp). New ones should pay out in something another one needs.
 - **Dark room**: played blind; keep the subtle cues (sound, embers, curtain thread) and the reach mechanic.
