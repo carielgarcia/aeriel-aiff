@@ -21,13 +21,18 @@
     trance:  { bpm: 138, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [4, 12], rim: [], bass: [null, 0, 0, 0, null, 0, 0, 0, null, 0, 0, 0, null, 0, 0, 0], root: 40, pad: 1.0 },
     acid:    { bpm: 128, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [4, 12], rim: [], bass: [0, null, 0, 12, null, 0, 3, null, 0, null, 7, null, 5, null, 3, 12], root: 38, pad: 0.0, sweep: true },
     minimal: { bpm: 126, kick: [0, 4, 8, 12], hat: [3, 7, 11, 15], clap: [], rim: [2, 6, 10, 13, 14], bass: [null, null, null, 0, null, null, null, null, null, null, 0, null, null, 5, null, null], root: 43, pad: 0.2 },
+    /* 8-bit peak-time records: hardgroove (rolling, shuffled) and trance (arps over a gated pad). `lead` = pulse-wave voice, semitones above the root + 2 octaves. */
+    hg1:     { bpm: 148, kick: [0, 4, 8, 12], hat: [2, 3, 6, 10, 11, 14], clap: [4, 12], rim: [7, 10, 15], bass: [null, 0, 0, null, null, 0, 0, null, null, 0, 0, null, null, 0, 3, 5], root: 36, pad: 0.0, lead: [null, null, 12, null, null, null, 12, 15, null, null, 12, null, null, 10, null, 12], leadLen: 1.2 },
+    hg2:     { bpm: 152, kick: [0, 4, 8, 12, 15], hat: [1, 3, 5, 7, 9, 11, 13, 15], clap: [4, 12], rim: [2, 6, 10, 14], bass: [0, null, 0, 0, null, 0, null, 0, 0, null, 0, 0, null, 0, 5, null], root: 37, pad: 0.0, lead: [12, null, null, 15, null, null, 12, null, 17, null, null, 15, null, 12, null, null], leadLen: 1.5, sweep: true },
+    tr1:     { bpm: 138, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14], clap: [4, 12], rim: [], bass: [null, 0, 0, 0, null, 0, 0, 0, null, 0, 0, 0, null, 0, 0, 0], root: 40, pad: 1.0, lead: [0, 7, 12, 7, 0, 7, 12, 7, 3, 10, 15, 10, 3, 10, 15, 10], leadLen: 0.9 },
+    tr2:     { bpm: 142, kick: [0, 4, 8, 12], hat: [2, 6, 10, 14, 15], clap: [4, 12], rim: [], bass: [null, 0, 0, null, null, 0, 0, null, null, 0, 0, null, null, 0, 0, null], root: 38, pad: 1.0, lead: [12, null, 15, null, 19, null, 15, null, 17, null, 14, null, 12, null, 10, null], leadLen: 2.2 },
     dub:     { bpm: 140, kick: [0, 10], hat: [2, 6, 10, 14], clap: [8], rim: [], bass: [0, null, null, null, null, null, null, null, 0, null, null, null, 5, null, null, null], root: 34, pad: 0.0, wobble: true }
   };
   /* the pool of variants for each part of the night */
   const POOLS = {
     warm: ['warm', 'house', 'disco', 'house'], techno: ['techno', 'acid', 'minimal', 'techno'],
-    hard: ['hard', 'trance', 'techno', 'hard', 'dub'], closing: ['closing'], chill: ['chill'],
-    attic: ['trance', 'house', 'acid', 'disco']
+    hard: ['hard', 'hg1', 'tr1', 'trance', 'hg2', 'tr2', 'techno', 'dub'], closing: ['closing'], chill: ['chill'],
+    attic: ['trance', 'tr2', 'house', 'hg2', 'acid', 'disco']
   };
   EM.STYLES = STYLES;
 
@@ -99,12 +104,13 @@
     const hatBus = ctx.createBiquadFilter(); hatBus.type = 'highpass'; hatBus.frequency.value = 7000; hatBus.connect(mix);
     const clapBus = ctx.createBiquadFilter(); clapBus.type = 'bandpass'; clapBus.frequency.value = 1500; clapBus.Q.value = 0.8; clapBus.connect(mix);
     const bassBus = ctx.createBiquadFilter(); bassBus.type = 'lowpass'; bassBus.frequency.value = 420; bassBus.Q.value = 3; bassBus.connect(mix);
+    const leadBus = ctx.createBiquadFilter(); leadBus.type = 'lowpass'; leadBus.frequency.value = 4600; leadBus.Q.value = 0.6; leadBus.connect(mix);
     const padBus = ctx.createBiquadFilter(); padBus.type = 'lowpass'; padBus.frequency.value = 1800; padBus.connect(mix);
     /* persistent chain for spatial cues (the dark room): band-pass -> panner -> master */
     const cueBP = ctx.createBiquadFilter(); cueBP.type = 'bandpass'; cueBP.frequency.value = 520; cueBP.Q.value = 2.2;
     const cuePan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
     if (cuePan) { cueBP.connect(cuePan); cuePan.connect(master); } else cueBP.connect(master);
-    bus = { cueBP: cueBP, cuePan: cuePan, master: master, zoneLP: zoneLP, mix: mix, revSend: revSend, hat: hatBus, clap: clapBus, bass: bassBus, pad: padBus, limiter: limiter };
+    bus = { cueBP: cueBP, cuePan: cuePan, master: master, zoneLP: zoneLP, mix: mix, revSend: revSend, hat: hatBus, clap: clapBus, bass: bassBus, pad: padBus, lead: leadBus, limiter: limiter };
 
   }
 
@@ -181,6 +187,14 @@
     o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t);
     e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(g, t + 0.01); e.gain.exponentialRampToValueAtTime(0.0001, t + len);
     o.connect(e); e.connect(bus.bass); o.start(t); o.stop(t + len + 0.02);
+  }
+  /* the 8-bit lead: a native square wave (band-limited), a quick pluck envelope */
+  function lead(t, f, len, g) {
+    const c = A.ctx;
+    const o = c.createOscillator(), e = c.createGain();
+    o.type = 'square'; o.frequency.setValueAtTime(f, t);
+    e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(g, t + 0.005); e.gain.exponentialRampToValueAtTime(0.0001, t + len);
+    o.connect(e); e.connect(bus.lead); o.start(t); o.stop(t + len + 0.02);
   }
   function pad(t, freqs, len, g) {
     const c = A.ctx;
@@ -273,6 +287,13 @@
         const len = 60 / A.bpm / 4 * (st.wobble ? 3.4 : 1.7);
         if (st.wobble) { for (let k = 0; k < 6; k++) bus.bass.frequency.setValueAtTime(k % 2 ? 160 : 900, t + k * len / 6); bass(t, mtof(root + bn), len, 0.42); }
         else bass(t, mtof(root + bn), len, 0.35);
+      }
+    }
+    if (st.lead && !lite) {
+      const ln = st.lead[s16];
+      if (ln !== null && ln !== undefined && !quiet) {
+        const lroot = st.root + ROOT_SHIFT[Math.floor(step / 256) % ROOT_SHIFT.length] + 24;
+        lead(t, mtof(lroot + ln), 60 / A.bpm / 4 * st.leadLen, inBreak ? 0.075 : 0.05);
       }
     }
     if (st.sweep && s16 === 0) bus.bass.frequency.setTargetAtTime(260 + 900 * (0.5 + 0.5 * Math.sin(step / 96)), t, 0.4);

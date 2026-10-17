@@ -88,6 +88,7 @@
           <span id="hud-water" class="water" data-aria="water" title="Water bottle"></span>
           <button id="btn-drink" type="button"></button>
           <button id="btn-items" type="button"></button>
+          <button id="btn-pause" type="button"></button>
           <button id="btn-mute" type="button"></button>
           <button id="btn-menu" type="button"></button>
         </span>
@@ -100,7 +101,8 @@
       </div>
     </div>
 
-<aside id="logbox" aria-labelledby="log-h"><div id="log-inner"><h3 id="log-h"></h3><ol id="log-list" role="log" aria-live="off"></ol></div></aside>
+<div id="goal" role="status" aria-live="polite"><b id="goal-l"></b><span id="goal-t"></span></div>
+<aside id="logbox" aria-labelledby="log-h"><div id="log-inner"><h3 id="log-h"></h3><ol id="log-list" role="log" aria-live="off"></ol></div><button id="log-expand" type="button"></button></aside>
     <div id="stage">
       <canvas id="screen" data-aria="screen" aria-label="Game view" role="img"></canvas>
       <div id="toasts" aria-live="polite"></div>
@@ -108,6 +110,7 @@
         <div id="menu-tabs">
           <button type="button" data-tab="status"></button>
           <button type="button" data-tab="items"></button>
+          <button type="button" data-tab="nightlog"></button>
           <button type="button" data-tab="quests"></button>
           <button type="button" data-tab="settings"></button>
           <button id="menu-close" type="button">X</button>
@@ -120,6 +123,7 @@
         <div id="dlg-choices"></div>
       </div>
       <div id="tut" hidden></div>
+      <div id="pause" hidden><div class="pbox"><h2></h2><p></p><button type="button" class="primary"></button></div></div>
     </div>
   </div>
 
@@ -167,6 +171,7 @@
 <script src="engine.js?v=3"></script>
 <script src="ui.js?v=3"></script>
 <script src="items.js?v=3"></script>
+<script src="hud2.js?v=3"></script>
 <script src="rhythm.js?v=3"></script>
 <script src="story_a.js?v=3"></script>
 <script src="story_main.js?v=3"></script>
@@ -194,6 +199,7 @@
 <script src="story_v14.js?v=3"></script>
 <script src="story_v15.js?v=3"></script>
 <script src="story_v16.js?v=3"></script>
+<script src="story_v17.js?v=3"></script>
 <script src="screens.js?v=3"></script>
 </body>
 </html>

@@ -12,15 +12,15 @@
     fun: T('FUN', 'DIVERSIÓN', 'DIVERSÃO'), soc: T('SOCIAL', 'SOCIAL', 'SOCIAL'), hp: T('HEALTH', 'SALUD', 'SAÚDE'), weird: T('WEIRD', 'RARITO', 'ESTRANHO'),
     funL: T('FUN', 'DIVERSIÓN', 'DIVERSÃO'), socL: T('SOCIAL BATTERY', 'BATERÍA SOCIAL', 'BATERIA SOCIAL'), hpL: T('HEALTH', 'SALUD', 'SAÚDE'), weirdL: T('WEIRDNESS', 'RAREZA', 'ESTRANHEZA'),
     menu: T('MENU', 'MENÚ', 'MENU'), mute: T('SOUND', 'SONIDO', 'SOM'), close: T('CLOSE', 'CERRAR', 'FECHAR'),
-    status: T('STATUS', 'ESTADO', 'ESTADO'), quests: T('LOG', 'DIARIO', 'DIÁRIO'), settings: T('SETTINGS', 'AJUSTES', 'AJUSTES'),
+    status: T('STATUS', 'ESTADO', 'ESTADO'), quests: T('MISSIONS', 'MISIONES', 'MISSÕES'), settings: T('SETTINGS', 'AJUSTES', 'AJUSTES'),
     save: T('SAVE', 'GUARDAR', 'SALVAR'), saved: T('SAVED', 'GUARDADO', 'SALVO'), title: T('TITLE SCREEN', 'PANTALLA DE INICIO', 'TELA INICIAL'),
     calm: T('CALM MODE: no sway or screen shake', 'MODO CALMO: sin vaivén ni temblor', 'MODO CALMO: sem balanço nem tremor'),
     norhythm: T('NO-RHYTHM MODE: dance moves ignore timing', 'MODO SIN RITMO: los pasos ignoran el tiempo', 'MODO SEM RITMO: os passos ignoram o tempo'),
     soundOn: T('SOUND', 'SONIDO', 'SOM'),
     on: T('ON', 'SÍ', 'LIGADO'), off: T('OFF', 'NO', 'DESLIGADO'),
-    items: T('ITEMS', 'OBJETOS', 'ITENS'), water: T('WATER BOTTLE', 'BOTELLA DE AGUA', 'GARRAFA DE ÁGUA'),
+    items: T('ITEMS', 'OBJETOS', 'ITENS'), nightlog: T('NIGHT LOG', 'REGISTRO', 'REGISTRO'), water: T('WATER BOTTLE', 'BOTELLA DE AGUA', 'GARRAFA DE ÁGUA'),
     fxNone: T('NOTHING IN YOUR SYSTEM BUT THE MUSIC', 'NADA EN TU CUERPO SALVO LA MÚSICA', 'NADA NO CORPO ALÉM DA MÚSICA'),
-    effects: T('RIGHT NOW', 'AHORA MISMO', 'AGORA'), keysHelp: T('ARROWS move // Z talk / confirm // X leave // C drink // I items // P menu // Z in a crowd = EXCUSE ME', 'FLECHAS mover // Z hablar / confirmar // X salir // C beber // I objetos // P menú // Z en la multitud = CON PERMISO', 'SETAS mover // Z falar / confirmar // X sair // C beber // I itens // P menu // Z na multidão = COM LICENÇA'),
+    effects: T('RIGHT NOW', 'AHORA MISMO', 'AGORA'), keysHelp: T('ARROWS move // Z talk / confirm // X leave // C drink // I items // O pause // P menu // Z in a crowd = EXCUSE ME', 'FLECHAS mover // Z hablar / confirmar // X salir // C beber // I objetos // O pausa // P menú // Z en la multitud = CON PERMISO', 'SETAS mover // Z falar / confirmar // X sair // C beber // I itens // O pausa // P menu // Z na multidão = COM LICENÇA'),
     leave: T('[X] WALK AWAY', '[X] ALEJARSE', '[X] SE AFASTAR'), more: T('Z ▼', 'Z ▼', 'Z ▼'), drained: T('TOO DRAINED', 'SIN BATERÍA', 'SEM BATERIA'),
     silent: T('Say nothing. Back away.', 'No decir nada. Retroceder.', 'Não dizer nada. Recuar.'),
     time: T('TIME', 'HORA', 'HORA'), night: T('NIGHT', 'NOCHE', 'NOITE'), none: T('nothing yet', 'nada todavía', 'nada ainda'),
@@ -145,7 +145,7 @@
       } else p = '[Z] ' + EM.tr(UI.excuse);
       h.textContent = p;
     }
-    if (EM.story && EM.story.objective) o.textContent = EM.tr(UI.objective) + ': ' + EM.tr(EM.story.objective(s));
+    if (EM.story && EM.story.objective) { const txt = EM.tr(EM.story.objective(s)); o.textContent = ''; if (EM.onObjective) EM.onObjective(txt); }
   };
 
   /* ------------------------------------------------------------ input */
@@ -621,6 +621,7 @@
     });
     box.textContent = '';
     if (menuTab === 'status') {
+      if (EM.story && EM.story.objective) box.appendChild(el('p', 'mnote goalline', EM.tr(UI.objective) + ': ' + EM.tr(EM.story.objective(s))));
       [['funL', 'fun'], ['socL', 'soc'], ['hpL', 'hp'], ['weirdL', 'weird']].forEach(function (p) {
         const r = el('div', 'mrow'); r.appendChild(el('span', 'k', EM.tr(UI[p[0]])));
         const bar = el('span', 'mbar'); const f = el('span', 'mfill'); f.style.width = Math.round(s.stats[p[1]]) + '%'; bar.appendChild(f); r.appendChild(bar);
@@ -633,6 +634,16 @@
       (EM.menuExtras || []).forEach(function (f) { f(box, s); });
       box.appendChild(el('p', 'mnote', EM.tr(UI.time) + ': ' + EM.clockStr(s.time)));
       box.appendChild(el('p', 'mnote dim', EM.tr(UI.keysHelp)));
+    } else if (menuTab === 'nightlog') {
+      box.appendChild(el('p', 'mnote dim', EM.tr(T('THE GAME IS PAUSED. Scroll to read the whole night, newest first.', 'EL JUEGO ESTÁ EN PAUSA. Desplázate para leer toda la noche, lo más nuevo primero.', 'O JOGO ESTÁ EM PAUSA. Role para ler a noite toda, o mais novo primeiro.'))));
+      const ol = el('ol', ''); ol.id = 'log-full';
+      const log = s.log || [];
+      if (!log.length) ol.appendChild(el('li', '', EM.tr(LOGEMPTY)));
+      for (let i = log.length - 1; i >= 0; i--) {
+        const e = log[i], li = el('li', e.k);
+        li.appendChild(el('span', 'lt', EM.clockStr(e.t))); li.appendChild(document.createTextNode(EM.tr(e.text))); ol.appendChild(li);
+      }
+      box.appendChild(ol);
     } else if (menuTab === 'items') {
       (EM.menuItems || []).forEach(function (f) { f(box, s); });
       box.appendChild(el('p', 'mnote dim', EM.tr(UI.keysHelp)));

@@ -566,7 +566,17 @@
     /* y-sorted things */
     const items = [];
     const list = npcs();
-    list.forEach(function (e) { npcDraw(e, null, items); });
+    list.forEach(function (e) {
+      npcDraw(e, null, items);
+      if (e.def.smoker) { /* a lit cigarette over their head, and a thread of smoke */
+        const sp = npcPos(e), sx = Math.round(sp.x * TS), sfy = Math.round(sp.y * TS + 6);
+        items.push({ y: sfy + 1, fn: function () {
+          const k = Math.floor(E.time * 4);
+          g.drawImage(EM.icon('cig', N.org), sx - 4, sfy - 44);
+          g.fillStyle = '#9A9AA8'; g.fillRect(sx + ((k + 1) % 3) - 1, sfy - 47 - (k % 3), 1, 1); g.fillRect(sx + (k % 3) - 1, sfy - 50 - (k % 2), 1, 1);
+        } });
+      }
+    });
 
     /* followers */
     S.party.forEach(function (f, i) {
