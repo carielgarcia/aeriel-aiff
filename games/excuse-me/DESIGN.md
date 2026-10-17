@@ -146,3 +146,12 @@ The Night Report lists your people and how they are, the ten most important mome
 - **Cocaine** is no longer a reward: it keeps the same lessons a sober character would keep, nothing more (no recap). It still costs health when dancing.
 - **Morning thread**: about a third of mornings, one friend answers another's message.
 - Ketamine is unchanged.
+
+
+## v0.6 changes
+- **Layout**: HUD and the stage (560px canvas) on the left, a persistent NIGHT LOG on the right (below 900px it sits under the stage). The dialogue panel is compact (max 232px, scrolls). With a dialogue open the page is about 720px tall.
+- **Night log** (`U.logAdd` / `U.renderLog`, stored in `s.log`, 160 entries, newest first, saved with the run): every toast (consequences such as the bitter drip, status changes, guard sightings), the narrative reaction after each choice, and one line of stat/bond deltas per choice. Self-barks are not logged.
+- **Making out** (`makeout` tone, effect `makeout:{p,time}`, `L.makeOut`): always after asking, and an honest "no" is free. Success: FUN +10 to +14, SOCIAL +3, WEIRDNESS -1. Failure: FUN -7 to -10, and 50% of the time WEIRDNESS +8. Chance = base (0.68 after warming up, 0.4 cold) adjusted by MDMA/ketamine (+), a drink or two (+), three or more drinks (-), WEIRDNESS >= 60 (-), SOCIAL < 25 (-), FUN >= 70 (+), being fresh (mint, mirror, glitter) (+), Dani as wingman (+).
+- **New people** (`story_v5.js`): Kai (busker), Paula (lighter loan), Pia and Moe (a missing-friend chain), Bruce (guard, club only), Gus (air DJ), Ana-Lu (line dance), Wen and Zhao, Lupe, Otto, Yui (rock paper scissors), Sia (poems), Ruth (quiet room tea), Cleo (a note for ÆRIEL), and six flirts: Vera, Ines, Rafa, Mina, Nox (the dark room, consent by words and taps) and Ludo (the roof).
+- **Things** (`story_v6.js`): photo booth, vending machine, lost phone, long mirror, the DJ's tracklist. Five **moments your friends bring you** (a dare, a selfie, a quiet minute, a crush, a pastry, a water toast), and twelve more ambient events.
+- **Morning thread**: sixteen more reference messages; the night's seed picks which are shown (up to five).

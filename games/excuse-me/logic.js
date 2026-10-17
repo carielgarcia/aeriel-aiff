@@ -71,6 +71,55 @@
       L.stat('weird', 12); L.addBad(1);
     }
   };
+  /* ------------------------------------------------------------ MAKING OUT */
+  /* Always after asking. It works out (FUN up) or it does not (FUN down, and half the time WEIRDNESS up). */
+  L.makeoutChance = function (base) {
+    const s = EM.state; let p = base === undefined ? 0.6 : base;
+    if (s.fx.mdma || s.fx.ket) p += 0.12;
+    if (s.drinks >= 3) p -= 0.18; else if (s.drinks >= 1) p += 0.06;
+    if (s.stats.weird >= 60) p -= 0.15;
+    if (s.stats.soc < 25) p -= 0.15;
+    if (s.stats.fun >= 70) p += 0.06;
+    if ((s.freshUntil || 0) > s.time) p += 0.1;
+    if (L.hasFriend('dani') && s.flags.dani_wingman) p += 0.1;
+    return clamp(p, 0.12, 0.9);
+  };
+  const MO_WIN = [
+    T('It works. Teeth stay where they belong, noses find the correct side, and for a minute the bass is somebody else\'s problem.', 'Funciona. Los dientes se quedan donde corresponde, las narices encuentran el lado correcto, y por un minuto el bajo es problema de otra persona.', 'Funciona. Os dentes ficam onde devem, os narizes acham o lado certo, e por um minuto o grave é problema de outra pessoa.'),
+    T('A long, slow, very good kiss. When you come up for air somebody nearby actually applauds.', 'Un beso largo, lento y muy bueno. Cuando sales a respirar alguien cerca aplaude de verdad.', 'Um beijo longo, lento e muito bom. Quando você vem pegar ar, alguém por perto aplaude de verdade.'),
+    T('Chemistry, plus a very good song at exactly the right moment. You both laugh into it. Ten out of ten.', 'Química, más una canción buenísima justo en el momento correcto. Los dos se ríen dentro del beso. Diez de diez.', 'Química, mais uma música ótima exatamente na hora certa. Vocês dois riem dentro do beijo. Dez de dez.'),
+    T('Soft, funny, a little sweaty, entirely mutual. You walk away with the walk of someone who has been seen.', 'Suave, divertido, un poco sudado, totalmente mutuo. Te alejas con el paso de alguien que fue visto.', 'Suave, engraçado, um pouco suado, totalmente mútuo. Você sai com o andar de quem foi visto.')
+  ];
+  const MO_LOSE = [
+    T('Glasses clash. Then teeth. Then a very long second where you both consider moving to a different country.', 'Chocan los lentes. Luego los dientes. Luego un segundo larguísimo en el que los dos piensan en mudarse de país.', 'Os óculos batem. Depois os dentes. Depois um segundo longuíssimo em que vocês dois pensam em se mudar de país.'),
+    T('Mid-kiss, you both realise it is not happening. Nobody is wrong. It is simply two people with no chemistry and a lot of eye contact.', 'En pleno beso, los dos se dan cuenta de que no va a pasar. Nadie hace nada mal. Son dos personas sin química y con demasiado contacto visual.', 'No meio do beijo, vocês dois percebem que não vai rolar. Ninguém errou. São só duas pessoas sem química e com muito contato visual.'),
+    T('Your timing is off by exactly one beat. They pull back, polite and amused. "…Cute. No." You nod like a person who is totally fine.', 'Tu timing se desfasa exactamente un tiempo. Se echan atrás, educados y divertidos. «…Lindo. No». Asientes como alguien que está perfectamente bien.', 'Seu timing atrasa exatamente um tempo. A pessoa recua, educada e se divertindo. «…Fofo. Não». Você assente como quem está totalmente bem.'),
+    T('A sneeze. Theirs. At the worst possible moment. You are both laughing too hard to continue, and it is somehow more humiliating than a no.', 'Un estornudo. Suyo. En el peor momento posible. Los dos se ríen demasiado para seguir, y de algún modo es más humillante que un no.', 'Um espirro. Dele. Na pior hora possível. Vocês dois riem demais pra continuar, e de algum jeito isso é mais humilhante que um não.')
+  ];
+  const MO_WEIRD = T('And the way you laughed afterwards will be discussed in at least two bathrooms.', 'Y la forma en que te reíste después se va a comentar en al menos dos baños.', 'E o jeito como você riu depois vai ser comentado em pelo menos dois banheiros.');
+  L.makeOut = function (o) {
+    o = o || {};
+    const s = EM.state;
+    const p = L.makeoutChance(o.p);
+    const ok = Math.random() < p;
+    s.makeouts = (s.makeouts || 0) + 1;
+    L.addTime(o.time || 6);
+    if (ok) {
+      s.flags.made_out = true; s.makeoutsOk = (s.makeoutsOk || 0) + 1;
+      L.stat('fun', 10 + Math.floor(Math.random() * 5)); L.stat('soc', 3); L.stat('weird', -1);
+      EM.hooks.sfx('care');
+      EM.hooks.toast({ icon: 'heart', text: o.win || MO_WIN[Math.floor(Math.random() * MO_WIN.length)], kind: 'good', ms: 6000 });
+    } else {
+      s.flags.makeout_fail = true;
+      L.stat('fun', -(7 + Math.floor(Math.random() * 4)));
+      const weird = Math.random() < 0.5;
+      if (weird) L.stat('weird', 8);
+      EM.hooks.sfx('warn');
+      EM.hooks.toast({ icon: 'sweat', text: o.lose || MO_LOSE[Math.floor(Math.random() * MO_LOSE.length)], kind: 'bad', ms: 6000 });
+      if (weird) EM.hooks.toast({ icon: 'eyes', text: MO_WEIRD, kind: 'bad', ms: 4500 });
+    }
+    return ok;
+  };
   L.isDrunk = function () { return EM.state.drinks >= 3; };
 
   L.socMult = function () {
@@ -288,6 +337,8 @@
     if (e.weird) L.stat('weird', e.weird);
     if (e.bad) L.addBad(e.bad);
     if (e.rep) L.rep(e.rep);
+    if (e.makeout) L.makeOut(e.makeout);
+    if (e.fresh) s.freshUntil = s.time + e.fresh;
     if (e.pb) for (const k in e.pb) if (L.hasFriend(k)) s.bond[k] = (s.bond[k] || 0) + e.pb[k];
     if (e.gag) [].concat(e.gag).forEach(function (k) { s.gags = s.gags || {}; s.gags[k] = (s.gags[k] || 0) + 1; });
     if (e.care) {

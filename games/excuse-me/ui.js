@@ -30,14 +30,14 @@
   U.t = function (k) { return EM.tr(UI[k]); };
 
   const TONE = {
-    chill: T('CHILL', 'TRANQUI', 'TRANQUILO'), smooth: T('SMOOTH', 'ENCANTO', 'CHARME'), blunt: T('BLUNT', 'DIRECTO', 'DIRETO'),
+    makeout: T('MAKE OUT', 'BESARSE', 'BEIJAR'), chill: T('CHILL', 'TRANQUI', 'TRANQUILO'), smooth: T('SMOOTH', 'ENCANTO', 'CHARME'), blunt: T('BLUNT', 'DIRECTO', 'DIRETO'),
     hug: T('HUG', 'ABRAZO', 'ABRAÇO'), lie: T('LIE', 'MENTIRA', 'MENTIRA'), honest: T('HONEST', 'SINCERO', 'SINCERO'), joke: T('JOKE', 'BROMA', 'PIADA'),
     push: T('PUSH', 'EMPUJAR', 'EMPURRAR'), silent: T('SILENT', 'SILENCIO', 'SILÊNCIO'), care: T('CARE', 'CUIDAR', 'CUIDAR'), bold: T('BOLD', 'ATREVIDO', 'OUSADO'),
     rant: T('RANT', 'DESAHOGO', 'DESABAFO'), sober: T('CLEAR', 'LÚCIDO', 'LÚCIDO'), go: T('GO', 'IR', 'IR'), stay: T('STAY', 'QUEDARSE', 'FICAR'), dance: T('DANCE', 'BAILAR', 'DANÇAR'),
     ask: T('ASK', 'PREGUNTAR', 'PERGUNTAR'), yes: T('YES', 'SÍ', 'SIM'), no: T('NO', 'NO', 'NÃO'), flirt: T('FLIRT', 'COQUETEO', 'PAQUERA'), water: T('WATER', 'AGUA', 'ÁGUA'),
     pay: T('PAY', 'PAGAR', 'PAGAR'), sorry: T('SORRY', 'PERDÓN', 'DESCULPA'), fight: T('FIGHT', 'PELEA', 'BRIGA'), plan: T('PLAN', 'PLAN', 'PLANO')
   };
-  const SOCIAL_TONES = { chill: 1, smooth: 1, joke: 1, hug: 1, flirt: 1, bold: 1, care: 1 };
+  const SOCIAL_TONES = { chill: 1, smooth: 1, joke: 1, hug: 1, flirt: 1, bold: 1, care: 1, makeout: 1 };
 
   /* ------------------------------------------------------------ small helpers */
   function el(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; }
@@ -58,7 +58,34 @@
   U.postHeight = postHeight;
 
   /* ------------------------------------------------------------ toasts */
+  /* ---------------------------------------------------------- the night log (persistent) */
+  const LOGKIND = { good: 'good', bad: 'bad', bark: 'bark', info: 'info', fx: 'fx', react: 'react', cue: 'info' };
+  const LOGH = T('NIGHT LOG', 'REGISTRO DE LA NOCHE', 'REGISTRO DA NOITE');
+  const LOGEMPTY = T('Everything you do and everything it costs shows up here.', 'Todo lo que haces y lo que te cuesta aparece aquí.', 'Tudo o que você faz e o que isso custa aparece aqui.');
+  U.logAdd = function (text, kind) {
+    const s = EM.state; if (!s || !text) return;
+    s.log = s.log || [];
+    s.log.push({ t: s.time, text: text, k: LOGKIND[kind] || 'info' });
+    if (s.log.length > 160) s.log.shift();
+    U.renderLog();
+  };
+  U.renderLog = function () {
+    const s = EM.state, ul = $('#log-list'); if (!ul) return;
+    $('#log-h').textContent = EM.tr(LOGH);
+    ul.textContent = '';
+    const log = (s && s.log) || [];
+    if (!log.length) { const li = el('li', '', EM.tr(LOGEMPTY)); li.id = 'log-empty'; ul.appendChild(li); return; }
+    for (let i = log.length - 1; i >= 0; i--) {
+      const e = log[i];
+      const li = el('li', e.k);
+      li.appendChild(el('span', 'lt', EM.clockStr(e.t)));
+      li.appendChild(document.createTextNode(EM.tr(e.text)));
+      ul.appendChild(li);
+    }
+    ul.scrollTop = 0;
+  };
   U.toast = function (spec) {
+    if (spec.text && !spec.nolog) U.logAdd(spec.text, spec.kind);
     const box = $('#toasts'); if (!box) return;
     const t = el('div', 'toast ' + (spec.kind || 'info'));
     if (spec.icon && EM.hasIcon(spec.icon)) { const c = EM.mkCanvas(8, 8); c.getContext('2d').drawImage(EM.icon(spec.icon), 0, 0); c.className = 'ico'; t.appendChild(c); }
@@ -68,7 +95,7 @@
     setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, spec.ms || 3400);
   };
   EM.hooks.toast = U.toast;
-  EM.hooks.bark = function (txt, kind) { U.toast({ text: txt, kind: kind === 'bad' ? 'bad' : 'bark', ms: 2200 }); };
+  EM.hooks.bark = function (txt, kind) { U.toast({ text: txt, kind: kind === 'bad' ? 'bad' : 'bark', ms: 2200, nolog: kind !== 'bad' }); };
   EM.hooks.sfx = function (k) { EM.audio.blip(k); };
   EM.hooks.stat = function (name, d) {
     if (Math.abs(d) < 0.5) return;
@@ -322,9 +349,23 @@
     markSel();
   }
 
+  /* what your choice just cost or paid, in one line */
+  function logDeltas(snap) {
+    const s = EM.state, parts = [];
+    [['fun', 'funL'], ['soc', 'socL'], ['hp', 'hpL'], ['weird', 'weirdL']].forEach(function (p) {
+      const d = Math.round(s.stats[p[0]] - snap.st[p[0]]);
+      if (d) parts.push(EM.tr(UI[p[1]]) + ' ' + (d > 0 ? '+' : '−') + Math.abs(d));
+    });
+    ['maru', 'dani', 'tato'].forEach(function (f) {
+      const d = (s.bond[f] || 0) - (snap.bond[f] || 0);
+      if (d) parts.push(EM.CAST[f].name + ' ' + (d > 0 ? '♥+' : '♥−') + Math.abs(d));
+    });
+    if (parts.length) U.logAdd(parts.join(' · '), 'fx');
+  }
+
   function markSel() {
     const D = U.D; if (!D) return;
-    $$('#dlg-choices .choice').forEach(function (b, i) { b.classList.toggle('sel', i === D.sel); });
+    $$('#dlg-choices .choice').forEach(function (b, i) { b.classList.toggle('sel', i === D.sel); if (i === D.sel && b.scrollIntoView) b.scrollIntoView({ block: 'nearest' }); });
   }
 
   U.dlgMove = function (d, horizontal) {
@@ -353,6 +394,7 @@
     }
     if (D.state !== 'choices') return;
     const o = D.choices[D.sel]; if (!o) return;
+    const snap = { st: Object.assign({}, EM.state.stats), bond: Object.assign({}, EM.state.bond) };
     if (o.disabled) { U.toast({ text: UI.drained, kind: 'bad', ms: 1500 }); return; }
     let c = o.c;
     /* bad signal: sometimes you say something else entirely */
@@ -365,6 +407,7 @@
     if (c.bad) { L.addBad(1); L.rep(1); }
     else if (c.tone === 'care' || c.tone === 'sorry' || c.tone === 'hug') L.rep(-0.4);
     if (c.do) applyDo(c.do);
+    logDeltas(snap);
     if (EM.state.ended && !D.def.endingScene) { U.D = null; return; }
     D.lastChoice = c;
     const next = c.next === undefined ? null : c.next;
@@ -373,6 +416,7 @@
     if (c.react) {
       D.state = 'react';
       D.react = EM.tr(c.react);
+      U.logAdd(c.react, 'react');
       D.pendingNext = next;
       D.pendingCall = next === null ? runCall : null;
       $('#dlg-text').textContent = D.react;

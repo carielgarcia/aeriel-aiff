@@ -241,3 +241,50 @@ button:hover, button:focus-visible, button.on, button.sel { background: var(--ye
 .bubble.from-tato .bh strong { color: var(--lim); }
 .bubble.from-x .bh strong { color: var(--amb); }
 .bubble .bt { margin-top: 3px; line-height: 1.45; }
+
+/* ===== compact game layout: HUD + stage on the left, a persistent NIGHT LOG on the right ===== */
+#app { padding: 8px; }
+#play { display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); gap: 8px; align-items: stretch; }
+#main-col { min-width: 0; }
+#hud { padding: 4px 8px; }
+.hud-top { gap: 4px 12px; font-size: 11px; }
+.clock { font-size: 15px; }
+.fxline { flex: 1 1 auto; order: 0; min-height: 0; font-size: 11px; }
+.bars { margin-top: 4px; gap: 6px; }
+.bar { padding: 1px 3px; font-size: 10px; }
+.bar .track { height: 8px; }
+#stage { margin-top: 6px; }
+#logbox { position: relative; border: 2px solid var(--fg); background: var(--panel); min-height: 120px; }
+#log-inner { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 6px 8px; }
+#log-h { font-size: 11px; color: var(--yel); margin-bottom: 4px; flex: none; }
+#log-list { list-style: none; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
+#log-list li { border-left: 3px solid #6A6A7C; padding: 2px 0 2px 6px; margin-bottom: 4px; font-size: 12px; line-height: 1.35; }
+#log-list li .lt { color: var(--muted); font-size: 10px; letter-spacing: 1px; margin-right: 4px; }
+#log-list li.good { border-left-color: var(--grn); }
+#log-list li.bad { border-left-color: var(--red); }
+#log-list li.info { border-left-color: var(--cyn); }
+#log-list li.fx { border-left-color: var(--yel); color: var(--yel); }
+#log-list li.react { border-left-color: var(--mag); color: #C9C9D6; font-style: italic; }
+#log-list li.bark { color: var(--muted); }
+#log-empty { color: var(--muted); font-size: 12px; }
+#panel { min-height: 0; margin-top: 6px; }
+#dialog { max-height: 300px; overflow-y: auto; padding: 8px 10px; }
+#dlg-text { font-size: 14px; margin-bottom: 8px; }
+.choice { padding: 6px 10px; min-height: 36px; }
+@media (max-width: 900px) {
+  #play { grid-template-columns: minmax(0, 1fr); }
+  #logbox { height: 130px; }
+}
+.choice .t-makeout { color: var(--mag); }
+.choice.sel .t-makeout { color: var(--bg); }
+/* tighter still: fit a 720px-tall window with a dialogue open */
+#play { grid-template-columns: minmax(0, 560px) minmax(0, 1fr); }
+#hint { padding: 3px 10px; }
+#dialog { max-height: 232px; padding: 6px 10px; }
+#dialog .who { margin-bottom: 4px; gap: 8px; }
+#portrait { width: 32px; height: 36px; }
+#dlg-name { font-size: 13px; }
+#dlg-text { font-size: 13.5px; line-height: 1.4; margin-bottom: 6px; min-height: 2.6em; }
+.choice { font-size: 13px; padding: 4px 10px; min-height: 30px; line-height: 1.3; }
+#dlg-choices { gap: 3px; }
+@media (max-width: 900px) { #play { grid-template-columns: minmax(0, 1fr); } }

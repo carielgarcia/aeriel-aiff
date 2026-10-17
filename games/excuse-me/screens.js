@@ -186,6 +186,7 @@
     EM.state = EM.newState(player, carry);
     EM.story.init(EM.state);
     U.screen('game'); U.mode = 'play';
+    U.renderLog();
     E.paused = true; show('dialog', false); show('menu', false);
     E.enter('doors', 3, 8, 'r');
     E.fade = 1; E.fadeIn();
@@ -205,6 +206,7 @@
     const s = EM.load(); if (!s) return;
     EM.state = s;
     U.screen('game'); U.mode = 'play';
+    U.renderLog();
     show('dialog', false); show('menu', false);
     const x = s.x, y = s.y;
     E.enter(s.zone, Math.floor(x / 16), Math.floor((y - 12) / 16), s.dir);
@@ -359,6 +361,7 @@
     EM.onLang = function () {
       applyAria();
       renderTitle();
+      if (U.renderLog) U.renderLog();
       if (U.mode === 'creator') buildCreator();
       if (U.mode === 'dialog' && U.D) { /* re-render current page */ }
     };
