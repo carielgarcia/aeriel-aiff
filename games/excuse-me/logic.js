@@ -67,7 +67,7 @@
     L.stat('weird', 5);
     if (L.guarded() && Math.random() < 0.5) {
       s.flags.sec_noted = true;
-      EM.hooks.toast({ icon: 'eyes', text: T('A GUARD SAW THE HAND-OFF. Nothing is said. Everything is noted.', 'UN GUARDIA VIO EL INTERCAMBIO. No dice nada. Lo anota todo.', 'UM SEGURANÇA VIU A TROCA. Ninguém diz nada. Tudo é anotado.'), kind: 'bad', ms: 6500 });
+      EM.hooks.toast({ icon: 'eyes', text: T('A GUARD SAW THE HAND-OFF. He says nothing and writes it down anyway.', 'UN GUARDIA VIO EL INTERCAMBIO. No dice nada y lo anota igual.', 'UM SEGURANÇA VIU A TROCA. Não diz nada e anota mesmo assim.'), kind: 'bad', ms: 6500 });
       L.stat('weird', 12); L.addBad(1);
     }
   };
@@ -88,7 +88,7 @@
     T('It works. Teeth stay where they belong, noses find the correct side, and for a minute the bass is somebody else\'s problem.', 'Funciona. Los dientes se quedan donde corresponde, las narices encuentran el lado correcto, y por un minuto el bajo es problema de otra persona.', 'Funciona. Os dentes ficam onde devem, os narizes acham o lado certo, e por um minuto o grave é problema de outra pessoa.'),
     T('A long, slow, very good kiss. When you come up for air somebody nearby actually applauds.', 'Un beso largo, lento y muy bueno. Cuando sales a respirar alguien cerca aplaude de verdad.', 'Um beijo longo, lento e muito bom. Quando você vem pegar ar, alguém por perto aplaude de verdade.'),
     T('Chemistry, plus a very good song at exactly the right moment. You both laugh into it. Ten out of ten.', 'Química, más una canción buenísima justo en el momento correcto. Los dos se ríen dentro del beso. Diez de diez.', 'Química, mais uma música ótima exatamente na hora certa. Vocês dois riem dentro do beijo. Dez de dez.'),
-    T('Soft, funny, a little sweaty, entirely mutual. You walk away with the walk of someone who has been seen.', 'Suave, divertido, un poco sudado, totalmente mutuo. Te alejas con el paso de alguien que fue visto.', 'Suave, engraçado, um pouco suado, totalmente mútuo. Você sai com o andar de quem foi visto.')
+    T('Soft, funny, a little sweaty, entirely mutual. You walk away like someone who just got a yes.', 'Suave, divertido, un poco sudado, totalmente mutuo. Te alejas como quien acaba de recibir un sí.', 'Suave, engraçado, um pouco suado, totalmente mútuo. Você sai como quem acabou de ouvir um sim.')
   ];
   const MO_LOSE = [
     T('Glasses clash. Then teeth. Then a very long second where you both consider moving to a different country.', 'Chocan los lentes. Luego los dientes. Luego un segundo larguísimo en el que los dos piensan en mudarse de país.', 'Os óculos batem. Depois os dentes. Depois um segundo longuíssimo em que vocês dois pensam em se mudar de país.'),
@@ -221,7 +221,7 @@
       }
     });
     if (st.fun <= 0.01) s.boredFor = (s.boredFor || 0) + 1; else s.boredFor = 0;
-    if (s.pendingFaint && s.time >= s.pendingFaint) { s.pendingFaint = 0; const kind = s.pendingFaintKind; s.pendingFaintKind = null; L.passOut(kind === 'ket' ? T('The floor offers to hold you. You accept.', 'El piso se ofrece a sostenerte. Aceptas.', 'O chão se oferece pra te segurar. Você aceita.') : T('The edges of the room come loose. Your knees file their resignation.', 'Los bordes del cuarto se sueltan. Tus rodillas presentan su renuncia.', 'As bordas da sala se soltam. Seus joelhos entregam a demissão.'), { fake: kind !== 'ket', ket: kind === 'ket' }); return; }
+    if (s.pendingFaint && s.time >= s.pendingFaint) { s.pendingFaint = 0; const kind = s.pendingFaintKind; s.pendingFaintKind = null; L.passOut(kind === 'ket' ? T('The floor offers to hold you. You accept.', 'El piso se ofrece a sostenerte. Aceptas.', 'O chão se oferece pra te segurar. Você aceita.') : T('The edges of the room come loose. Your knees stop cooperating.', 'Los bordes del cuarto se sueltan. Tus rodillas dejan de colaborar.', 'As bordas da sala se soltam. Seus joelhos param de colaborar.'), { fake: kind !== 'ket', ket: kind === 'ket' }); return; }
     if (s.time >= 450 && !s.flags.roof_open) { s.flags.roof_open = true; if (!s.quests.q9) L.setQuest('q9', 'active'); EM.hooks.toast({ icon: 'star', text: T('THE ROOF IS OPEN. The closing set is about to start.', 'EL TECHO ESTÁ ABIERTO. El set de cierre está por empezar.', 'O TERRAÇO ESTÁ ABERTO. O set de encerramento vai começar.'), kind: 'good', ms: 6000 }); }
     if (s.thirst === 121) EM.hooks.toast({ text: T('Your mouth is a desert. Find water.', 'Tienes la boca seca como un desierto. Busca agua.', 'Sua boca é um deserto. Procure água.'), kind: 'bad' });
     L.check();
@@ -271,7 +271,7 @@
     }
     if (s.rep <= -2 && !s.flags.rep_good) {
       s.flags.rep_good = true;
-      EM.hooks.toast({ icon: 'heart', text: T('The floor is warming to you. People shuffle over a little before you even ask.', 'La pista te toma cariño. La gente se corre un poco antes de que pidas.', 'A pista está te pegando carinho. As pessoas se afastam um pouco antes mesmo de você pedir.'), kind: 'good', ms: 6000 });
+      EM.hooks.toast({ icon: 'heart', text: T('The floor is getting used to you. People shuffle over a little before you even ask.', 'La pista se está acostumbrando a ti. La gente se corre un poco antes de que pidas.', 'A pista está se acostumando com você. As pessoas se afastam um pouco antes mesmo de você pedir.'), kind: 'good', ms: 6000 });
     }
   };
 

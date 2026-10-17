@@ -17,7 +17,7 @@
         choices: [
           { tone: 'chill', t: T('"Sorry I\'m late. Bus 14 is a liar."', '«Perdón por llegar tarde. El bus 14 es un mentiroso».', '«Desculpa o atraso. O ônibus 14 é um mentiroso».'), do: { fun: 2, soc: 2, bond: { maru: 1 } }, next: 'b' },
           { tone: 'hug', t: T('"Group hug. Right now."', '«Abrazo grupal. Ahora mismo».', '«Abraço coletivo. Agora mesmo».'), do: { fun: 3, soc: 4, bond: { maru: 1, dani: 1, tato: 1 } }, next: 'b' },
-          { tone: 'care', t: T('(To Tato) "You okay? You look pale."', '(A Tato) «¿Estás bien? Estás pálido».', '(Pro Tato) «Você tá bem? Tá pálido».'), do: { care: 1, bond: { tato: 2 }, flag: 'tato_checked' }, next: 'b', react: T('Tato\'s whole face lets go of something. "…A bit. Thank you for asking. Nobody ever asks."', 'Toda la cara de Tato suelta algo. «…Un poco. Gracias por preguntar. Nadie nunca pregunta».', 'O rosto inteiro do Tato solta alguma coisa. «…Um pouco. Valeu por perguntar. Ninguém nunca pergunta».') },
+          { tone: 'care', t: T('(To Tato) "You okay? You look pale."', '(A Tato) «¿Estás bien? Estás pálido».', '(Pro Tato) «Você tá bem? Tá pálido».'), do: { care: 1, bond: { tato: 2 }, flag: 'tato_checked' }, next: 'b', react: T('Tato\'s face relaxes. "…A bit. Thank you for asking. Nobody ever asks."', 'La cara de Tato se relaja. «…Un poco. Gracias por preguntar. Nadie nunca pregunta».', 'O rosto do Tato relaxa. «…Um pouco. Valeu por perguntar. Ninguém nunca pergunta».') },
           { tone: 'joke', t: T('"A search party? Where\'s the flyer?"', '«¿Una búsqueda? ¿Dónde está el afiche?»', '«Uma busca? Cadê o cartaz?»'), do: { fun: 3, bond: { dani: 1 } }, next: 'b' }
         ]
       },

@@ -39,7 +39,7 @@
         ]
       },
       b: {
-        text: T('"Gossip, since you were kind. Rosa — the cleaning lady — has been here since 2009. She knows every door in this building and has opinions about all of them. And she has a thing about the third stall. Do NOT make the third stall weird."', '«Chisme, ya que fuiste amable. Rosa, la señora de la limpieza, está aquí desde 2009. Se sabe todas las puertas de este edificio y tiene opiniones sobre cada una. Y tiene algo con la tercera cabina. NO hagas rara la tercera cabina».', '«Fofoca, já que você foi gentil. A Rosa — a faxineira — tá aqui desde 2009. Ela conhece todas as portas deste prédio e tem opinião sobre cada uma. E tem uma coisa com a terceira cabine. NÃO deixe a terceira cabine esquisita».'),
+        text: T('"Gossip, since you were kind. Rosa, the cleaning lady, has been here since 2009. She knows every door in this building and has opinions about all of them. And she has a thing about the third stall. Do NOT make the third stall weird."', '«Chisme, ya que fuiste amable. Rosa, la señora de la limpieza, está aquí desde 2009. Se sabe todas las puertas de este edificio y tiene opiniones sobre cada una. Y tiene algo con la tercera cabina. NO hagas rara la tercera cabina».', '«Fofoca, já que você foi gentil. A Rosa, a faxineira, tá aqui desde 2009. Ela conhece todas as portas deste prédio e tem opinião sobre cada uma. E tem uma coisa com a terceira cabine. NÃO deixe a terceira cabine esquisita».'),
         do: { flag: 'ezra_tip' }
       }
     }
@@ -331,7 +331,7 @@
         do: { fun: 1, soc: 2 }
       },
       angry: {
-        text: T('Rosa does not look at you. She says only: "Floor\'s wet." It is the loudest sentence in the building.', 'Rosa no te mira. Dice solo: «Piso mojado». Es la frase más fuerte del edificio.', 'A Rosa não te olha. Diz só: «Piso molhado». É a frase mais alta do prédio.'),
+        text: T('Rosa does not look at you. She says only: "Floor\'s wet."', 'Rosa no te mira. Dice solo: «Piso mojado».', 'A Rosa não te olha. Diz só: «Piso molhado».'),
         do: { soc: -1 }
       },
       neutral: {
@@ -363,11 +363,11 @@
       },
       honest: {
         text: [
-          T('Something in Rosa\'s shoulders drops a centimetre. "Fine. Fine. That, I understand."', 'Algo en los hombros de Rosa baja un centímetro. «Bien. Bien. Eso lo entiendo».', 'Algo nos ombros da Rosa desce um centímetro. «Tá. Tá. Isso eu entendo».'),
-          T('"Here\'s what I need. Leave it clean. Tell me if anybody is sick. And never lock a door on someone who is not okay. It is not the number of people. It is the mess, and whether anyone is dying in my stall."', '«Esto es lo que necesito. Déjenlo limpio. Avísenme si alguien se siente mal. Y nunca le echen traba a una puerta con alguien que no está bien. No es la cantidad de gente. Es el desorden, y si alguien se está muriendo en mi cabina».', '«O que eu preciso é isso. Deixem limpo. Me avisem se alguém passar mal. E nunca tranquem uma porta com alguém que não está bem. Não é a quantidade de gente. É a bagunça, e se alguém tá morrendo na minha cabine».')
+          T('Rosa\'s shoulders drop a centimetre. "Fine. Fine. That, I understand."', 'Los hombros de Rosa bajan un centímetro. «Bien. Bien. Eso lo entiendo».', 'Os ombros da Rosa descem um centímetro. «Tá. Tá. Isso eu entendo».'),
+          T('"Here\'s what I need. Leave it clean. Tell me if anybody is sick. And never lock a door on someone who is not okay. I don\'t care how many of you there are. I care about the mess, and whether anyone is dying in my stall."', '«Esto es lo que necesito. Déjenlo limpio. Avísenme si alguien se siente mal. Y nunca le echen traba a una puerta con alguien que no está bien. No me importa cuántos sean. Me importa el desorden, y si alguien se está muriendo en mi cabina».', '«O que eu preciso é isso. Deixem limpo. Me avisem se alguém passar mal. E nunca tranquem uma porta com alguém que não está bem. Não me importa quantos vocês são. Me importa a bagunça, e se alguém tá morrendo na minha cabine».')
         ],
         choices: [
-          { tone: 'honest', t: T('"Understood. And — one of us has a pill we\'re going to get checked. We haven\'t taken anything."', '«Entendido. Y — uno de nosotros tiene una pastilla que vamos a hacer chequear. No tomamos nada».', '«Entendido. E — um de nós tem um comprimido que vamos mandar checar. A gente não tomou nada».'), req: { flag: 'plan_test' }, do: { soc: -1, flag: ['rosa_honest', 'rosa_ally'] }, next: 'ally' },
+          { tone: 'honest', t: T('"Understood. And one of us has a pill we\'re going to get checked. We haven\'t taken anything."', '«Entendido. Y uno de nosotros tiene una pastilla que vamos a hacer chequear. No tomamos nada».', '«Entendido. E um de nós tem um comprimido que vamos mandar checar. A gente não tomou nada».'), req: { flag: 'plan_test' }, do: { soc: -1, flag: ['rosa_honest', 'rosa_ally'] }, next: 'ally' },
           { tone: 'honest', t: T('"Understood. Thank you for not throwing us out."', '«Entendido. Gracias por no echarnos».', '«Entendido. {Obrigado|Obrigada|Valeu} por não nos expulsar».'), do: { flag: 'rosa_ok' }, next: 'ok' },
           { tone: 'ask', t: T('"Was it okay? Anything you want us to do?"', '«¿Estuvo bien? ¿Algo que quieras que hagamos?»', '«Tudo bem? Quer que a gente faça alguma coisa?»'), do: { care: 1 }, next: 'warm' }
         ]
@@ -378,7 +378,7 @@
         next: 'ally'
       },
       ally: {
-        text: T('She nods at a grey door beside the sinks marked STAFF ONLY. "That goes behind the stage. Ask me nicely, and I leave it open for you. If the night gets too big, it is the only quiet corridor in the building. And — if anyone is carrying anything: Isi, in the quiet room. A table, a notebook, no names."', 'Hace un gesto hacia una puerta gris junto a los lavamanos con el cartel STAFF ONLY. «Esa va detrás del escenario. Pídemelo bien y te la dejo abierta. Si la noche se pone muy grande, es el único pasillo tranquilo del edificio. Y — si alguien lleva algo: Isi, en la sala tranquila. Una mesa, un cuaderno, sin nombres».', 'Ela acena pra uma porta cinza ao lado das pias com a placa STAFF ONLY. «Essa vai pra trás do palco. Peça com educação e eu deixo aberta. Se a noite ficar grande demais, é o único corredor calmo do prédio. E — se alguém tiver trazendo alguma coisa: Isi, na sala de calma. Uma mesa, um caderno, sem nomes».'),
+        text: T('She nods at a grey door beside the sinks marked STAFF ONLY. "That goes behind the stage. Ask me nicely, and I leave it open for you. If the night gets too big, it is the only quiet corridor in the building. And if anyone is carrying anything: Isi, in the quiet room. A table, a notebook, no names."', 'Hace un gesto hacia una puerta gris junto a los lavamanos con el cartel STAFF ONLY. «Esa va detrás del escenario. Pídemelo bien y te la dejo abierta. Si la noche se pone muy grande, es el único pasillo tranquilo del edificio. Y si alguien lleva algo: Isi, en la sala tranquila. Una mesa, un cuaderno, sin nombres».', 'Ela acena pra uma porta cinza ao lado das pias com a placa STAFF ONLY. «Essa vai pra trás do palco. Peça com educação e eu deixo aberta. Se a noite ficar grande demais, é o único corredor calmo do prédio. E se alguém tiver trazendo alguma coisa: Isi, na sala de calma. Uma mesa, um caderno, sem nomes».'),
         do: { flag: ['rosa_ally', 'quiet_known'], quest: { q4: 'done', q5: 'active' }, at: 215 }
       },
       ok: {
@@ -405,7 +405,7 @@
       },
       angry: {
         text: [
-          T('Rosa does not raise her voice. That is how you know. She lifts one hand and a radio crackles on her hip. "Ofelia. Third stall. Troublemaker. No, I will say it nicely: a person who needs to leave."', 'Rosa no levanta la voz. Así sabes que es grave. Levanta una mano y una radio crepita en su cadera. «Ofelia. Tercera cabina. Problemático. No, lo voy a decir bien: una persona que necesita irse».', 'A Rosa não levanta a voz. É assim que você sabe. Ela ergue uma mão e um rádio chia no quadril. «Ofelia. Terceira cabine. Encrenqueiro. Não, vou dizer com educação: uma pessoa que precisa sair».'),
+          T('Rosa does not raise her voice. She lifts one hand and a radio crackles on her hip. "Ofelia. Third stall. Troublemaker. No, I will say it nicely: a person who needs to leave."', 'Rosa no levanta la voz. Levanta una mano y una radio crepita en su cadera. «Ofelia. Tercera cabina. Problemático. No, lo voy a decir bien: una persona que necesita irse».', 'A Rosa não levanta a voz. Ela ergue uma mão e um rádio chia no quadril. «Ofelia. Terceira cabine. Encrenqueiro. Não, vou dizer com educação: uma pessoa que precisa sair».'),
           T('Ofelia arrives with a walk that ends conversations. She does not touch you. She only stands very close to where you are about to go. You are escorted out of the toilets, with your people behind you, to the main floor. Your name has been written in a very small book.', 'Ofelia llega con un andar que termina conversaciones. No te toca. Solo se pone muy cerca del lugar adonde vas a ir. Te acompañan fuera de los baños, con tu gente detrás, hasta la pista principal. Tu nombre quedó escrito en un libro muy pequeño.', 'A Ofelia chega com um andar que encerra conversas. Não te toca. Só fica muito perto do lugar pra onde você vai. Você é acompanhado pra fora dos banheiros, com sua galera atrás, até a pista principal. Seu nome foi escrito num livro muito pequeno.')
         ],
         do: { quest: { q4: 'done', q5: 'active' }, at: 212, goto: { zone: 'main', x: 42, y: 26, dir: 'l' } }

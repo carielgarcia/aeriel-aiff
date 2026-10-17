@@ -37,7 +37,7 @@
     },
     tato: {
       ok: [
-        t(`TATO (quietly, a little stunned): "…You just did that? In front of people? I'm so proud of you I could lie down."`, `TATO (bajito, un poco atónito): «…¿Acabas de hacer eso? ¿Delante de gente? Estoy tan orgulloso que podría acostarme».`, `TATO (baixinho, meio atônito): «…Você acabou de fazer isso? Na frente de gente? Tô tão orgulhoso que podia deitar no chão».`),
+        t(`TATO (low, a little stunned): "…You just did that? In front of people? I'm so proud of you I could lie down."`, `TATO (en voz baja, un poco atónito): «…¿Acabas de hacer eso? ¿Delante de gente? Estoy tan orgulloso que podría acostarme».`, `TATO (em voz baixa, meio atônito): «…Você acabou de fazer isso? Na frente de gente? Tô tão orgulhoso que podia deitar no chão».`),
         t(`TATO gives you a small, serious thumbs-up from the wall he's leaning on.`, `TATO te hace un pulgar arriba chico y serio desde la pared donde se apoya.`, `O TATO te faz um joinha pequeno e sério da parede em que está encostado.`),
         t(`TATO: "I'd never be able to. I mean it as a compliment. I mean it as the highest compliment."`, `TATO: «Yo jamás podría. Lo digo como un cumplido. Lo digo como el cumplido más alto».`, `TATO: «Eu nunca conseguiria. Falo isso como elogio. Falo como o maior elogio».`)
       ],
@@ -94,7 +94,7 @@
         a: {
           text: flopText,
           choices: [
-            K('joke', t(`"So. Teeth."`, `«Entonces. Dientes».`, `«Então. Dentes».`), { do: { fun: 4, weird: -2, flag: ret }, next: null, react: t(`You both laugh until it hurts. It is the best part of the evening. It was worth the teeth.`, `Los dos se ríen hasta que duele. Es la mejor parte de la noche. Valieron la pena los dientes.`, `Vocês dois riem até doer. É a melhor parte da noite. Valeram os dentes.`) }),
+            K('joke', t(`"So. Teeth."`, `«Entonces. Dientes».`, `«Então. Dentes».`), { do: { fun: 4, weird: -2, flag: ret }, next: null, react: t(`You both laugh until it hurts. It was worth the teeth.`, `Los dos se ríen hasta que duele. Valieron la pena los dientes.`, `Vocês dois riem até doer. Valeram os dentes.`) }),
             K('makeout', t(`Ask: "One more go? Only if you want to."`, `Preguntar: «¿Un intento más? Solo si quieres».`, `Perguntar: «Mais uma tentativa? Só se você quiser».`), { do: { makeout: { p: 0.35, time: 6, who: id }, flag: ret }, next: null }),
             K('sorry', t(`"I'm sorry about before. No hard feelings?"`, `«Perdón por lo de antes. ¿Sin resentimientos?»`, `«Desculpa pelo que rolou. Sem ressentimentos?»`), { do: { soc: 2, weird: -1, flag: ret }, next: null }),
             K('hug', t(`"Friends? Numbers?"`, `«¿Amigos? ¿Números?»`, `«Amigos? Números?»`), { do: { fun: 2, soc: 2, flag: ['number_' + id, ret] }, next: null })

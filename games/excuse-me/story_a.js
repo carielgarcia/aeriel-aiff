@@ -161,7 +161,7 @@
         do: { flag: 'luca_tips' }
       },
       c: {
-        text: T('"Left door, there. Mattresses, water, and Isi — Isi runs the checking table. Free, no judgement, nobody takes names. People bring things to be looked at. It is not a guarantee, it is a conversation. Go, if you need to."', '«Puerta de la izquierda, ahí. Colchones, agua y Isi: Isi lleva la mesa de chequeo. Gratis, sin juicios, nadie anota nombres. La gente trae cosas para que las miren. No es una garantía, es una conversación. Ve, si lo necesitas».', '«Porta da esquerda, ali. Colchões, água e a Isi — a Isi toca a mesa de checagem. De graça, sem julgamento, ninguém anota nome. As pessoas trazem coisas pra serem olhadas. Não é garantia, é uma conversa. Vá, se precisar».'),
+        text: T('"Left door, there. Mattresses, water, and Isi. Isi runs the checking table. Free, no judgement, nobody takes names. People bring things to be looked at. No guarantees, just a conversation. Go if you need to."', '«Puerta de la izquierda, ahí. Colchones, agua e Isi: Isi lleva la mesa de chequeo. Gratis, sin juicios, nadie anota nombres. La gente trae cosas para que las miren. Sin garantías, solo una conversación. Ve si lo necesitas».', '«Porta da esquerda, ali. Colchões, água e a Isi. A Isi toca a mesa de checagem. De graça, sem julgamento, ninguém anota nome. As pessoas trazem coisas pra serem olhadas. Sem garantia, só uma conversa. Vá se precisar».'),
         do: { flag: 'quiet_known' }
       }
     }
