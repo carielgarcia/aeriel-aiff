@@ -344,3 +344,35 @@ button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A
   button.primary:active { background: #0A0A0A; color: var(--mag); border-color: var(--mag); }
   .choice:active .tone, .choice:active .num { color: #0A0A0A; }
 }
+
+/* ==========================================================================
+   UI cleanup pass: phones (Safari web app) and short desktop windows.
+   ========================================================================== */
+/* touch: 44px targets everywhere a finger can land */
+@media (pointer: coarse) {
+  #menu-tabs button, #logbox #log-expand, #goal #goal-side { min-height: 44px; min-width: 44px; }
+}
+/* desktop and tablets: the game column is sized to the window height (--chrome is measured in hud2.js) so the
+   stage, dialogue and hint bar fit without scrolling. Never narrower than 560px, never wider than #app. */
+@media (min-width: 701px) {
+  #screen-game { width: min(100%, max(560px, calc((100dvh - var(--chrome, 220px) - 4px) * 16 / 9 + 4px))); margin: 0 auto; }
+  #logbox { height: 52px; }
+  #goal { min-height: 32px; }
+}
+/* phones: a compact HUD (clock, place and water on one line, one row of five buttons) and full-screen sheets
+   for the menu, tutorial and pause panels. Inside a 200px-tall stage their buttons ended up off-screen. */
+@media (max-width: 700px) {
+  #hud .hud-btns { display: contents; }
+  #hud .hud-btns .water { order: 0; flex: none; margin-left: auto; }
+  #hud .hud-top #hud-fx { order: 1; flex: 1 1 100%; }
+  #hud .hud-top .hud-btns button { order: 2; flex: 1 1 0; min-width: 0; padding: 2px 2px; font-size: 10px; letter-spacing: 0; line-height: 1.15; }
+  #hud .hud-top .hud-btns #btn-mute { flex-grow: 1.7; }
+  #logbox { height: 56px; }
+  #log-list { padding-right: 96px; }
+  #menu, #tut, #pause { position: fixed; inset: 0; height: 100dvh; z-index: 20; padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  #menu { padding-top: 0; }
+  #tut, #pause { padding-top: max(12px, env(safe-area-inset-top)); }
+  #menu-tabs { position: sticky; top: 0; z-index: 1; background: #08080C; padding: max(10px, env(safe-area-inset-top)) 0 8px; margin-bottom: 4px; }
+  #menu-tabs button { min-height: 44px; }
+  #tut .dots { letter-spacing: 1px; white-space: nowrap; }
+}

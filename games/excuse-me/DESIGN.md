@@ -205,3 +205,10 @@ The Night Report lists your people and how they are, the ten most important mome
 
 - **Pickpocket odds revised**: 1 in 1500 per conversation with a character (no crowd presses), only after `q1` is done and 8+ characters met. About 4% for a thorough night, so most people never see it.
 - **Reduciendo Daño stand** (v15): proper name in all languages; Isi in a black RD T-shirt, crew in black-and-neon RD shirts (non-interactive), Camilo O. (founder of the real foundation, Chile) with the reduciendodano.cl Instagram line, club-wide overheard lines sending people to the stand. Sprites gained `look.tee` / `look.teeC` for chest lettering; the pixel font gained Ñ.
+
+## UI cleanup pass: phones and short windows
+- **Phones (≤700px)**: the HUD is one line (clock, place, water) plus one row of five buttons; the `[C] [I] [O] [L]` key hints are dropped on touch devices (`stripKeyHints()` in `hud2.js`; keyboards still see them). HUD went from about 221px to 153px tall. Menu, tutorial and pause are full-screen `position: fixed` sheets (`100dvh`, safe-area padding, sticky menu tabs) because inside the ~200px stage their buttons ended up off-screen.
+- **Desktop and tablets (>700px)**: `fit()` in `hud2.js` measures everything around the stage into `--chrome`, and `#screen-game` is sized so the page fits `100dvh` (never narrower than 560px). At 1280x720 the page is exactly 720px tall instead of 743px and no longer scrolls.
+- **Touch targets**: FULL LOG, the SIDE QUESTS chip and the menu tabs are 44px on `pointer: coarse`.
+- **Narration** has no speaker, so the empty portrait box is hidden.
+- **Pending (needs a decision)**: on a phone the dialogue still overlays about 65% of a ~200px stage and covers the player. Options: dialogue below the stage in the same frame (page then scrolls on short iPhones unless the D-pad is hidden during plain dialogue), or leave the overlay and cap it at 45%. The engine view is a fixed 320x180, so a taller portrait stage would mean changing `VH` in `engine.js`.

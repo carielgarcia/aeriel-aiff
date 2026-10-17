@@ -316,6 +316,7 @@
     portrait(who);
     $('#dlg-name').textContent = cast ? cast.name : '';
     $('#dlg-role').textContent = D.def.role ? EM.tr(D.def.role) : '';
+    const wh = document.querySelector('#dialog .who'); if (wh) wh.hidden = !cast && !D.def.role; /* narration has no speaker: no empty portrait box */
     const body = $('#dlg-text'), box = $('#dlg-choices');
     box.textContent = '';
     box.classList.toggle('gestures', !!n.gesture);

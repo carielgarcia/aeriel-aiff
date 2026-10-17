@@ -34,16 +34,32 @@
     if (U.mode !== 'pause') return;
     $('pause').hidden = true; U.paused = false; U.mode = 'play'; E.paused = false;
   };
+  /* the [C] [I] [O] [L] key hints mean nothing on a phone: drop them there so five buttons fit one row */
+  const touchOnly = window.matchMedia ? window.matchMedia('(hover: none) and (pointer: coarse)') : { matches: false };
+  function stripKeyHints() {
+    if (!touchOnly.matches) return;
+    ['btn-drink', 'btn-items', 'btn-pause', 'log-expand'].forEach(function (id) {
+      const e = $(id); if (e) e.textContent = e.textContent.replace(/\s*\[[A-Z]\]\s*$/, '');
+    });
+    const rb = $('pause') && $('pause').querySelector('button'); if (rb) rb.textContent = rb.textContent.replace(/\s*\[[A-Z]\]\s*$/, '');
+  }
+  /* size the game column to the window height: chrome = everything above and below the stage */
+  function fit() {
+    const app = $('app'), st = $('stage'), g = $('screen-game'); if (!app || !st || !g || g.hidden) return;
+    const c = app.offsetHeight - st.offsetHeight, root = document.documentElement.style;
+    if (Math.abs(c - (parseFloat(root.getPropertyValue('--chrome')) || 0)) > 1) root.setProperty('--chrome', c + 'px');
+  }
   function labels() {
     const b = { 'btn-pause': UI.pause, 'log-expand': UI.expand };
     Object.keys(b).forEach(function (id) { const e = $(id); if (e) e.textContent = EM.tr(b[id]); });
     const gl = $('goal-l'); if (gl) gl.textContent = EM.tr(UI.goal);
     const gs = $('goal-side'), st = EM.state;
     if (gs && st) { const n = Object.keys(st.quests || {}).filter(function (k) { return /^sq_/.test(k) && st.quests[k] === 'active'; }).length; gs.hidden = !n; if (n) gs.textContent = EM.tr(UI.side) + ': ' + n; }
+    stripKeyHints();
     const p = $('pause'); if (p && !p.hidden) { p.querySelector('h2').textContent = EM.tr(UI.paused); p.querySelector('p').textContent = EM.tr(UI.pausedBody); p.querySelector('button').textContent = EM.tr(UI.resume); }
   }
   const hud0 = U.hud;
-  U.hud = function () { hud0.apply(this, arguments); labels(); };
+  U.hud = function () { hud0.apply(this, arguments); labels(); fit(); };
 
   function wire() {
     const bp = $('btn-pause'), be = $('log-expand'), pb = $('pause') && $('pause').querySelector('button');
@@ -58,7 +74,7 @@
       else if (U.mode === 'pause' && (e.code === 'Escape' || e.code === 'Space' || e.code === 'Enter')) { U.resume(); e.preventDefault(); }
       else if (e.code === 'KeyL' && U.mode === 'play') U.openMenu('nightlog');
     });
-    labels();
+    labels(); fit(); window.addEventListener('resize', fit); window.addEventListener('orientationchange', fit);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire); else wire();
 
