@@ -193,7 +193,7 @@ The Night Report lists your people and how they are, the ten most important mome
 
 ## Pending
 - **More political missions at the rave**: neighbours (noise complaint and a mediated truce), the owner (a phone call or visit before the sale), and a mutual-aid table (food and water collection) tied to the petition.
-- **A visible cue for the raid**: the music dropping and the lights changing at 03:30, not only a toast.
+- **THE RAID (switched off)**: the 03:30 police scout at the rave, with its four preparations (rights cards from Bea, power cut with Sub, lookout with Pip, calm assembly with Juniper) and averted/hit outcomes. It is disabled with `RAID = false` in `story_v13.js`, with the code and texts kept. To bring it back: flip the switch, restore Maya's two-task briefing, and give it a visible cue (the music dropping and the lights changing at 03:30, not only a toast).
 - Own music and next chapters (deferred by the user).
 - Playtest passes: ES/PT strings read in-game, audio listened to.
 
