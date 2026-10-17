@@ -105,7 +105,12 @@
     s.makeouts = (s.makeouts || 0) + 1;
     L.addTime(o.time || 6);
     s.flagAt = s.flagAt || {};
-    if (o.who) { s.flags[(ok ? 'kiss_' : 'flop_') + o.who] = true; s.flagAt[(ok ? 'kiss_' : 'flop_') + o.who] = s.time; }
+    if (o.who) {
+      s.flags[(ok ? 'kiss_' : 'flop_') + o.who] = true; s.flagAt[(ok ? 'kiss_' : 'flop_') + o.who] = s.time;
+      s.flopAt = s.flopAt || {}; s.flops = s.flops || {};
+      if (ok) s.flags[o.who + '_done'] = true;
+      else { s.flopAt[o.who] = s.time; s.flops[o.who] = (s.flops[o.who] || 0) + 1; if (s.flops[o.who] >= 2) s.flags[o.who + '_done'] = true; }
+    }
     setTimeout(function () { if (EM.story.kissReact && !s.ended) EM.story.kissReact(ok, o.who); }, 2600);
     if (ok) {
       s.flags.made_out = true; s.makeoutsOk = (s.makeoutsOk || 0) + 1;
@@ -122,6 +127,13 @@
       if (weird) EM.hooks.toast({ icon: 'eyes', text: MO_WEIRD, kind: 'bad', ms: 4500 });
     }
     return ok;
+  };
+  /* asking again right after a no is pushing: the answer is a firm no and the room notices */
+  L.pushy = function (who) {
+    const s = EM.state;
+    L.apply({ rep: 1.5, fun: -5, weird: 4, soc: -2, flag: who + '_done' });
+    L.addBad(1);
+    EM.hooks.toast({ icon: 'anger', text: T('A calm, final no. They step back, and the people nearby noticed exactly what just happened. Asking again right after a no is how a nice night gets smaller.', 'Un no tranquilo y definitivo. Se echan atrás, y la gente cerca notó exactamente lo que pasó. Insistir justo después de un no es como se achica una noche linda.', 'Um não calmo e definitivo. A pessoa recua, e quem estava por perto percebeu exatamente o que aconteceu. Insistir logo depois de um não é como uma noite boa fica menor.'), kind: 'bad', ms: 7000 });
   };
   L.isDrunk = function () { return EM.state.drinks >= 3; };
 

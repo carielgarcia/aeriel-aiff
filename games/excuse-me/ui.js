@@ -172,6 +172,10 @@
       else if (e.code === 'Escape' || e.code === 'KeyP' || e.code === 'Tab') U.openMenu();
       else if (e.code === 'KeyM') U.toggleMute();
     } else if (U.mode === 'dialog') {
+      if (U.D && U.D.def && U.D.def.nodes && U.D.node && U.D.node.pd) {
+        if (dir && !e.repeat && U.pdKey) U.pdKey(dir.toUpperCase()); else if (e.code === 'KeyX' || e.code === 'Escape') U.pdBail();
+        return;
+      }
       if (e.code === 'ArrowUp' || e.code === 'KeyW') U.dlgMove(-1);
       else if (e.code === 'ArrowDown' || e.code === 'KeyS') U.dlgMove(1);
       else if (e.code === 'ArrowLeft' || e.code === 'KeyA') U.dlgMove(-1, true);
@@ -203,9 +207,12 @@
         ev.preventDefault(); unlockAudio();
         if (U.mode === 'tutorial') { if (k === 'a') U.tutNext(); else if (k === 'b') U.tutSkip(); return; }
         if (k === 'a') { if (U.mode === 'play') E.interact(); else if (U.mode === 'dialog') U.dlgConfirm(); return; }
+        if (k === 'b' && U.mode === 'dialog' && U.D && U.D.node && U.D.node.pd) { U.pdBail(); return; }
+        if (k === 'a' && U.mode === 'dialog' && U.D && U.D.node && U.D.node.pd) return;
         if (k === 'b') { if (U.mode === 'dialog') U.dlgLeave(); else if (U.mode === 'play') U.openMenu(); else if (U.mode === 'rhythm' && U.rhythmCancel) U.rhythmCancel(); return; }
         const d = { up: 'u', down: 'd', left: 'l', right: 'r' }[k];
         if (U.mode === 'rhythm' && U.rhythmKey) { U.rhythmKey(d.toUpperCase()); return; }
+        if (U.mode === 'dialog' && U.D && U.D.node && U.D.node.pd) { U.pdKey(d.toUpperCase()); return; }
         if (U.mode === 'dialog') { U.dlgMove(d === 'u' || d === 'l' ? -1 : 1, d === 'l' || d === 'r'); return; }
         U.keys[d] = true; updateInput();
       };
@@ -314,6 +321,7 @@
     box.textContent = '';
     box.classList.toggle('gestures', !!n.gesture);
     body.classList.toggle('garbled', !!n.garble);
+    if (n.pd) { D.state = 'pd'; U.pdRender(); return; }
     if (D.page < D.pages.length) {
       D.state = 'text';
       let t = EM.tr(D.pages[D.page]);

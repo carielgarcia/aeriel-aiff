@@ -148,6 +148,19 @@
     K('chill', t(`Raise your bottle quietly.`, `Levantar la botella en silencio.`, `Levantar a garrafa em silêncio.`), { do: { fun: 3, soc: 1, bond: { maru: 1 } }, next: null })
   ], { zones: ['main', 'attic', 'courtyard', 'foyer'], need3: true });
 
+  ev('ev_dance_dani', 'dani', MOMENT, t(`DANI grabs both your hands. "COME HERE. I'll lead. No, you lead. No — we BOTH lead. Follow my moves. I have, like, six."`, `DANI te toma las dos manos. «VEN. Yo guío. No, guía tú. No — GUIAMOS los dos. Sigue mis pasos. Tengo, como, seis».`, `O DANI pega suas duas mãos. «VEM. Eu conduzo. Não, você conduz. Não — a gente CONDUZ junto. Segue meus passos. Eu tenho, tipo, seis».`), [
+    K('dance', t(`Dance with Dani. Copy his moves.`, `Bailar con Dani. Copiar sus pasos.`, `Dançar com o Dani. Copiar os passos dele.`), { call: 'pd_dani', free: true, next: null }),
+    K('chill', t(`"Later. I need a minute."`, `«Después. Necesito un minuto».`, `«Depois. Preciso de um minuto».`), { do: { soc: 1 }, next: null })
+  ], { zones: ['main', 'attic', 'courtyard'], need: 'dani' });
+  ev('ev_dance_maru', 'maru', MOMENT, t(`MARU, pulling you onto the floor by the sleeve: "Okay. I made up a move. It's called The Elevator. You go up, you go down, you look at me, I look at you. Ready?"`, `MARU, tirándote a la pista de la manga: «Bueno. Inventé un paso. Se llama El Ascensor. Subes, bajas, me miras, te miro. ¿Lista?»`, `A MARU, te puxando pra pista pela manga: «Tá. Eu inventei um passo. Chama O Elevador. Você sobe, você desce, você me olha, eu te olho. Pronto?»`), [
+    K('dance', t(`Dance with Maru. Copy her moves.`, `Bailar con Maru. Copiar sus pasos.`, `Dançar com a Maru. Copiar os passos dela.`), { call: 'pd_maru', free: true, next: null }),
+    K('chill', t(`"After this song. Promise."`, `«Después de esta canción. Prometido».`, `«Depois dessa música. Prometo».`), { do: { soc: 1 }, next: null })
+  ], { zones: ['main', 'attic', 'courtyard'], need: 'maru' });
+  ev('ev_dance_tato', 'tato', MOMENT, t(`TATO, very quietly: "Would you dance with me? Slowly? I made up a move. It's mostly swaying. It's very safe."`, `TATO, muy bajito: «¿Bailarías conmigo? ¿Lento? Inventé un paso. Es casi todo balanceo. Es muy seguro».`, `O TATO, bem baixinho: «Você dançaria comigo? Devagar? Eu inventei um passo. É quase tudo balanço. É muito seguro».`), [
+    K('dance', t(`Dance with Tato. Copy his moves.`, `Bailar con Tato. Copiar sus pasos.`, `Dançar com o Tato. Copiar os passos dele.`), { call: 'pd_tato', free: true, next: null }),
+    K('chill', t(`"Of course, later. Save me a dance."`, `«Claro, después. Resérvame un baile».`, `«Claro, depois. Guarda uma dança pra mim».`), { do: { soc: 1 }, next: null })
+  ], { zones: ['main', 'attic', 'courtyard', 'foyer'], need: 'tato' });
+
   let evT = 150;
   const prevTick = story.tick;
   story.tick = function (dt) {

@@ -29,7 +29,7 @@
       k: t('4 / 5 — DANCING', '4 / 5 — BAILAR', '4 / 5 — DANÇAR'),
       h: t('FOLLOW THE ARROWS ON THE BEAT.', 'SIGUE LAS FLECHAS AL RITMO.', 'SIGA AS SETAS NO RITMO.'),
       keys: [['m', 'Z', t('DANCE ON A FLOOR MARK', 'BAILAR EN UNA MARCA', 'DANÇAR NUMA MARCA')], ['c', '← ↑ ↓ →', t('HIT THE ARROW ON THE BEAT', 'PULSA LA FLECHA AL RITMO', 'APERTE A SETA NO RITMO')], ['l', 'X', t('STOP', 'PARAR', 'PARAR')]],
-      b: t('Stand on a glowing floor mark and press Z. Arrows come on the beat: hit the matching one to refill FUN. Some groups dance a phrase first: watch it, then repeat it. Rather skip timing? MENU → NO-RHYTHM.', 'Párate en una marca brillante del piso y presiona Z. Las flechas llegan al ritmo: pulsa la que corresponde para recargar DIVERSIÓN. Algunos grupos bailan una frase primero: míralos y repítela. ¿Prefieres sin tiempos? MENÚ → SIN RITMO.', 'Fique numa marca brilhante do chão e aperte Z. As setas chegam no ritmo: aperte a certa pra recarregar DIVERSÃO. Alguns grupos dançam uma frase primeiro: observe e repita. Prefere sem tempo? MENU → SEM RITMO.'),
+      b: t('Stand on a glowing floor mark and press Z. Arrows come on the beat: hit the matching one to refill FUN. Some groups dance a phrase first: watch it, then repeat it. Some people dance WITH you: their arrows appear one by one in the dialogue, and you copy each one. Rather skip timing? MENU → NO-RHYTHM.', 'Párate en una marca brillante del piso y presiona Z. Las flechas llegan al ritmo: pulsa la que corresponde para recargar DIVERSIÓN. Algunos grupos bailan una frase primero: míralos y repítela. Algunas personas bailan CONTIGO: sus flechas aparecen una por una en el diálogo y tú copias cada una. ¿Prefieres sin tiempos? MENÚ → SIN RITMO.', 'Fique numa marca brilhante do chão e aperte Z. As setas chegam no ritmo: aperte a certa pra recarregar DIVERSÃO. Alguns grupos dançam uma frase primeiro: observe e repita. Algumas pessoas dançam COM você: as setas delas aparecem uma a uma no diálogo e você copia cada uma. Prefere sem tempo? MENU → SEM RITMO.'),
       beat: true
     },
     {
@@ -43,9 +43,29 @@
     next: t('NEXT [Z]', 'SIGUIENTE [Z]', 'PRÓXIMO [Z]'), go: t('GO TO THE DOOR [Z]', 'IR A LA PUERTA [Z]', 'IR PRA PORTA [Z]'),
     skip: t('SKIP [X]', 'OMITIR [X]', 'PULAR [X]'), back: t('BACK', 'ATRÁS', 'VOLTAR')
   };
-  let idx = 0, done = null;
+  let idx = 0, done = null, asking = false;
+  const Q = {
+    k: t('A QUICK QUESTION', 'UNA PREGUNTA RÁPIDA', 'UMA PERGUNTA RÁPIDA'),
+    h: t('WANT THE TUTORIAL AGAIN?', '¿QUIERES EL TUTORIAL OTRA VEZ?', 'QUER O TUTORIAL DE NOVO?'),
+    b: t('A two-minute reminder of the controls, choosing words and dancing.', 'Un repaso de dos minutos de los controles, las palabras y el baile.', 'Uma revisão de dois minutos dos controles, das palavras e da dança.'),
+    yes: t('YES, SHOW ME [Z]', 'SÍ, MUÉSTRAME [Z]', 'SIM, ME MOSTRE [Z]'), no: t('NO, I KNOW [X]', 'NO, YA SÉ [X]', 'NÃO, EU SEI [X]')
+  };
 
+  function renderAsk() {
+    const box = document.getElementById('tut'); if (!box) return;
+    box.textContent = '';
+    box.appendChild(el('div', 'tk', EM.tr(Q.k)));
+    box.appendChild(el('h2', '', EM.tr(Q.h)));
+    box.appendChild(el('p', 'tb', EM.tr(Q.b)));
+    const nav = el('div', 'tnav');
+    const y = el('button', 'primary', EM.tr(Q.yes)); y.type = 'button'; y.addEventListener('click', U.tutNext);
+    const n = el('button', '', EM.tr(Q.no)); n.type = 'button'; n.addEventListener('click', U.tutSkip);
+    nav.appendChild(y); nav.appendChild(n); box.appendChild(nav);
+    y.focus && y.focus({ preventScroll: true });
+    U.postHeight();
+  }
   function render() {
+    if (asking) { renderAsk(); return; }
     const box = document.getElementById('tut'); if (!box) return;
     const c = CARDS[idx]; box.textContent = '';
     box.appendChild(el('div', 'tk', EM.tr(c.k)));
@@ -81,15 +101,15 @@
     if (cb) cb();
     U.postHeight();
   }
-  U.tutNext = function () { if (idx >= CARDS.length - 1) finish(); else { idx++; render(); } };
+  U.tutNext = function () { if (asking) { asking = false; idx = 0; render(); return; } if (idx >= CARDS.length - 1) finish(); else { idx++; render(); } };
   U.tutSkip = function () { finish(); };
   U.tutKey = function (e) {
     if (e.code === 'KeyZ' || e.code === 'Enter' || e.code === 'Space' || e.code === 'ArrowRight' || e.code === 'KeyD') { if (!e.repeat) U.tutNext(); }
-    else if (e.code === 'ArrowLeft' || e.code === 'KeyA') { if (idx > 0) { idx--; render(); } }
+    else if (e.code === 'ArrowLeft' || e.code === 'KeyA') { if (!asking && idx > 0) { idx--; render(); } }
     else if (e.code === 'KeyX' || e.code === 'Escape') U.tutSkip();
   };
-  U.tutorial = function (cb) {
-    idx = 0; done = cb || null;
+  U.tutorial = function (cb, ask) {
+    idx = 0; done = cb || null; asking = !!ask;
     U.mode = 'tutorial'; E.paused = true; E.input.x = E.input.y = 0; U.keys = {};
     const box = document.getElementById('tut'); if (!box) { finish(); return; }
     box.hidden = false; render();
@@ -98,8 +118,8 @@
 
   /* after the intro: the tutorial the first time, then the lessons of earlier nights */
   S.after_intro = function () {
-    if (!U.tutorialSeen()) U.tutorial(function () { if (S.show_lessons) S.show_lessons(); });
-    else if (S.show_lessons) S.show_lessons();
+    /* first run in this browser: the tutorial. Every later run: a pop-up question first. */
+    U.tutorial(function () { if (S.show_lessons) S.show_lessons(); }, U.tutorialSeen());
   };
   EM.DIALOGUES.intro.after = 'after_intro';
 })();

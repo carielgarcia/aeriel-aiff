@@ -287,6 +287,8 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 - **Night log**: the right-hand log in the game page records every toast, reaction and stat delta, and is persistent for the run. Anything with a consequence must reach the player through `U.toast` (or a choice `react`) so it is logged.
 - **Making out**: a `makeout` choice is always preceded by asking and an honest no costs nothing. Success raises FUN; failure lowers FUN and has a 50% chance to raise WEIRDNESS.
 - **Layout**: HUD, a slim log strip, then the stage at full width (about 70% of a 720px window). Dialogue overlays the lower part of the stage so the page stays about 720px tall. Keep it that way.
-- **Tutorial**: five short cards after the intro the first time (replay in MENU > SETTINGS). Update `tutorial.js` whenever controls or dance rules change, in EN/ES/PT.
+- **Tutorial**: five short cards after the intro the first time in a browser; every later run asks first (pop-up question). Replay anytime in MENU > SETTINGS.
+- **Dancing with a person**: `dance.js`. Named four-arrow combos; the partner's arrows appear one by one in the dialogue and the player copies them. Keep the tutorial's dancing card in sync.
+- **Pushing**: asking again right after a flop is a firm no with a reputation cost; never reward it. Update `tutorial.js` whenever controls or dance rules change, in EN/ES/PT.
 - **Consequences come back**: kisses are remembered (friend reactions, the person returns, numbers), and small kindnesses pay off later the same night, in the morning, or both (`story_v7.js`).
 - **Dark room**: played blind; keep the subtle cues (sound, embers, curtain thread) and the reach mechanic.

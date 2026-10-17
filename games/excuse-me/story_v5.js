@@ -40,13 +40,24 @@
   function flirt(id, role, c) {
     const warm = id + '_warm', done = id + '_done';
     D[id] = {
-      who: id, role: role, start: 'a', nodes: {
+      who: id, role: role, start: 's', nodes: {
+        s: { branch: [{ req: function (s) { return !!(s.flopAt && s.flopAt[id] !== undefined && s.time - s.flopAt[id] < 45); }, to: 'again' }, { req: function () { return true; }, to: 'a' }] },
+        again: {
+          text: function () {
+            const n = EM.CAST[id].name;
+            return t(`${n} gives you a kind, steady look. "We tried. It wasn't it. I'd like to keep liking you, so: not again right now. Okay?"`, `${n} te mira con calma y cariño. «Lo intentamos. No era. Quiero seguir cayéndote bien, así que: ahora no otra vez. ¿Vale?»`, `${n} te olha com calma e carinho. «A gente tentou. Não era. Quero continuar gostando de você, então: agora não de novo. Tá?»`);
+          },
+          choices: [
+            K('care', t(`"Okay. Thank you for saying it plainly."`, `«Está bien. Gracias por decirlo claro».`, `«Tá bem. Valeu por dizer com clareza».`), { free: true, do: { soc: 1 }, next: null }),
+            K('makeout', t(`Ask again anyway.`, `Preguntar otra vez igual.`, `Perguntar de novo mesmo assim.`), { call: 'push_' + id, free: true, next: null })
+          ]
+        },
         a: {
           text: c.intro,
           choices: [
             K('chill', c.talkQ, { next: 'talk' }),
             K('joke', c.jokeQ, { next: 'joke' }),
-            K('flirt', c.danceQ, { next: 'dance' }),
+            K('flirt', c.danceQ, { call: 'pd_' + id, next: null, free: true }),
             K('makeout', t(`Ask: "Would you like to kiss me?"`, `Preguntar: «¿Te gustaría besarme?»`, `Perguntar: «Você gostaria de me beijar?»`), { next: 'ask' }),
             LEAVE()
           ]
@@ -65,6 +76,7 @@
       }
     };
   }
+  ['vera', 'ines', 'rafa', 'mina', 'nox', 'ludo'].forEach(function (id) { S['push_' + id] = function () { L.pushy(id); }; });
   /* the shared lines: a "no" is always a complete answer and costs nothing */
   const R_ROLE = function (en, es, pt) { return t(en, es, pt); };
 
