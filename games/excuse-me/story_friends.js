@@ -39,6 +39,10 @@
   };
   S.q2_start = function () {
     const s = EM.state;
+    /* a visit to the toilets before the group was found must not skip the host when you come back with them */
+    delete s.res.host;
+    delete s.flags.host_alone;
+    delete s.flags.stall_alone_done;
     if (s.flags.broh_hostile && !s.flags.broh_forgiven && s.res.broh) {
       /* the return of Broh: he and a friend plug the same gap again */
       delete s.res.broh;

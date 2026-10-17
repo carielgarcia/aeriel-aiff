@@ -11,6 +11,9 @@
     if (s.quests.q2 === 'active') {
       L.apply({ quest: { q2: 'done', q3: 'active' }, at: 170 });
       U.toast({ icon: 'door', text: T('The toilets. A queue with its own weather.', 'Los baños. Una fila con clima propio.', 'Os banheiros. Uma fila com clima próprio.'), kind: 'info' });
+    } else if (s.quests.q1 === 'active' && !s.flags.wc_alone_seen) {
+      s.flags.wc_alone_seen = true;
+      U.toast({ icon: 'door', text: T('The toilets. A queue with its own weather, and nobody to hold your place in it.', 'Los baños. Una fila con clima propio, y nadie que te guarde el lugar.', 'Os banheiros. Uma fila com clima próprio, e ninguém pra guardar seu lugar.'), kind: 'info' });
     }
   };
 
@@ -144,6 +147,12 @@
   /* ------------------------------------------------------------ THE STALL */
   S.stall_scene = function () {
     const s = EM.state;
+    /* before the group is found there is only you in the stall */
+    if (s.quests.q1 === 'active') {
+      if (s.flags.stall_alone_done) U.toast({ text: T('You have had your minute. The line is not going to wait for a second one.', 'Ya tuviste tu minuto. La fila no va a esperar un segundo.', 'Você já teve seu minuto. A fila não vai esperar por um segundo.'), kind: 'info' });
+      else U.startDialogue('stall_alone', {});
+      return;
+    }
     if (s.flags.host_ok_group) U.startDialogue('stall_group', {});
     else U.startDialogue('stall_split', {});
   };
@@ -412,4 +421,83 @@
       }
     }
   };
+  /* ------------------------------------------------------------ the toilets before the group is found */
+  /* While q1 is still active the player has not met Maru, Dani and Tato, so nothing in here may talk
+     as if they were standing next to them. The group versions above stay untouched. */
+  const alone = function (s) { return s.quests.q1 === 'active'; };
+  const together = function (s) { return !alone(s); };
+  const always = function () { return true; };
+
+  (function () {
+    const mc = D.marga.nodes.a.choices;
+    const solo = Object.assign({}, mc[0], {
+      t: T('"Go ahead of me. Seriously. Go."', '«Pasa antes que yo. En serio. Ve».', '«Vai na minha frente. Sério. Vai».'),
+      req: alone
+    });
+    mc[0].req = together;
+    mc.splice(1, 0, solo);
+  })();
+
+  (function () {
+    const grp = D.queue_pair.nodes.a;
+    D.queue_pair.nodes = {
+      a: { branch: [{ req: alone, to: 'solo' }, { req: always, to: 'grp' }] },
+      grp: grp,
+      solo: {
+        text: T('"One of us pees, one of us holds the jacket. It\'s called love." The other one nods. "Pro tip, since you\'re on your own: the host loves honesty. Hates lies. Can smell lies. Is a lie-smelling man."', '«Uno hace pipí, el otro sostiene la chaqueta. Se llama amor». El otro asiente. «Dato, ya que vienes sin compañía: al encargado le encanta la honestidad. Odia las mentiras. Las huele. Es un hombre que huele mentiras».', '«Um faz xixi, o outro segura a jaqueta. Chama-se amor». O outro assente. «Dica, já que você veio sem ninguém: o responsável adora honestidade. Odeia mentira. Sente o cheiro. É um homem que fareja mentira».'),
+        do: { flag: 'queue_tip' }
+      }
+    };
+  })();
+
+  (function () {
+    const H = D.host.nodes;
+    const intro = H.a.text[0];
+    /* node 'a' stays the group version (story_extra adds party-only options to it); a_entry picks the right one */
+    H.a_entry = { branch: [{ req: alone, to: 'a_solo' }, { req: always, to: 'a' }] };
+    H.start.branch[H.start.branch.length - 1].to = 'a_entry';
+    H.snitch.choices.forEach(function (c) { if (c.next === 'a') c.next = 'a_entry'; });
+    H.a_solo = {
+      text: [
+        intro,
+        T('"One person per stall. Nobody does anything in there that I would have to explain to the owner. The line is behind you."', '«Una persona por cabina. Nadie hace ahí nada que yo tenga que explicarle al dueño. La fila está detrás de ti».', '«Uma pessoa por cabine. Ninguém faz lá dentro nada que eu tenha que explicar pro dono. A fila está atrás de você».')
+      ],
+      choices: [
+        { tone: 'honest', t: T('"Just me. I need a minute."', '«Solo yo. Necesito un minuto».', '«Só eu. Preciso de um minuto».'), next: 'solo_ok' },
+        { tone: 'smooth', t: T('"You have an impossible job and you\'re doing it beautifully. One stall, one person, ninety seconds."', '«Tienes un trabajo imposible y lo haces hermoso. Una cabina, una persona, noventa segundos».', '«Você tem um trabalho impossível e tá fazendo lindamente. Uma cabine, uma pessoa, noventa segundos».'), next: 'solo_charm' },
+        { tone: 'honest', t: T('"Radio chatter says somebody gave a guy water by the speakers. That was me."', '«Dicen por radio que alguien le dio agua a un tipo junto a los parlantes. Fui yo».', '«Dizem no rádio que alguém deu água pra um cara perto das caixas. Fui eu».'), req: { any: ['tobi_water', 'tobi_people', 'kiki_friend', 'bruno_advised'] }, next: 'solo_ok' }
+      ]
+    };
+    H.solo_charm = {
+      branch: [
+        { req: { min: { soc: 25 }, max: { weird: 55 } }, to: 'solo_ok' },
+        { req: always, to: 'solo_fail' }
+      ]
+    };
+    H.solo_ok = {
+      text: T('MIKA looks up for the first time. "Just you. Stall three. Locked, not bolted. Two minutes, and nobody gets a speech."', 'MIKA levanta la vista por primera vez. «Solo tú. Cabina tres. Con traba, sin cerrojo. Dos minutos, y nadie recibe un discurso».', 'O MIKA levanta o olhar pela primeira vez. «Só você. Cabine três. Trancada, sem ferrolho. Dois minutos, e ninguém ganha discurso».'),
+      do: { open: 'host', flag: 'host_alone', soc: 2 }
+    };
+    H.solo_fail = {
+      text: T('"Everyone in this line has somewhere to be. The line is behind you."', '«Todos en esta fila tienen algo que hacer. La fila está detrás de ti».', '«Todo mundo nessa fila tem pra onde ir. A fila está atrás de você».'),
+      choices: [
+        { tone: 'chill', t: T('"Okay. Let me rephrase."', '«Bien. Déjame reformular».', '«Tá. Deixa eu reformular».'), next: 'a_solo', do: { soc: -1 } }
+      ]
+    };
+  })();
+
+  /* the stall with nobody else in it */
+  D.stall_alone = {
+    forced: true, start: 'a', nodes: {
+      a: {
+        text: T('Stall three. One toilet, one person, and a door that actually closes. The music through the wall sounds like rain. In the next stall, somebody is rehearsing a speech to their ex.', 'Cabina tres. Un inodoro, una persona y una puerta que de verdad se cierra. La música a través de la pared suena como lluvia. En la cabina de al lado, alguien ensaya un discurso para su ex.', 'Cabine três. Um vaso, uma pessoa e uma porta que fecha de verdade. A música pela parede soa como chuva. Na cabine ao lado, alguém ensaia um discurso pro ex.'),
+        choices: [
+          { tone: 'chill', t: T('Take a minute. Breathe.', 'Tomarte un minuto. Respirar.', 'Respirar um minuto.'), do: { soc: 8, hp: 2, time: 8, flag: 'stall_alone_done' }, next: null, react: T('Your shoulders come down from your ears. Nobody needs anything from you for two whole minutes.', 'Tus hombros bajan de tus orejas. Nadie necesita nada de ti durante dos minutos enteros.', 'Seus ombros descem das orelhas. Ninguém precisa de nada de você por dois minutos inteiros.') },
+          { tone: 'joke', t: T('Check your phone.', 'Mirar el celular.', 'Olhar o celular.'), do: { soc: 2, fun: 1, time: 4, flag: 'stall_alone_done' }, next: null, react: T('Nine percent. Fourteen "where r u" from the group chat. You type "pillar, coming", delete it, and put the phone away.', 'Nueve por ciento. Catorce «dónde estás» del chat del grupo. Escribes «el pilar, voy», lo borras y guardas el celular.', 'Nove por cento. Catorze «cadê vc» do grupo. Você digita «no pilar, já vou», apaga e guarda o celular.') },
+          { tone: 'care', t: T('Splash water on your face.', 'Echarte agua en la cara.', 'Jogar água no rosto.'), do: { hp: 2, soc: 3, time: 4, flag: 'stall_alone_done' }, next: null, react: T('Cold water, a mirror, a face that looks mostly like yours. Good enough. Your people are still out on the main floor.', 'Agua fría, un espejo, una cara que se parece bastante a la tuya. Alcanza. Tu gente sigue afuera, en la pista principal.', 'Água fria, um espelho, um rosto que parece bastante com o seu. Serve. Sua galera continua lá fora, na pista principal.') }
+        ]
+      }
+    }
+  };
+
 })();
