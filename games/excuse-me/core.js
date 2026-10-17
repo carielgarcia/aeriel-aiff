@@ -52,8 +52,17 @@
   /* the entourage: the first three carry the plot, Vale and Alex come along for the night */
   EM.FRIENDS = ['maru', 'dani', 'tato', 'vale', 'alex'];
   EM.coreCount = function (s) { return ['maru', 'dani', 'tato'].filter(function (f) { return s.party.indexOf(f) !== -1; }).length; };
+  /* the harm reduction stand has a proper name in every language */
+  const STAND = [
+    [/\ba la mesa de chequeo\b/gi, 'al stand de Reduciendo Da\u00f1o'], [/\b(una) mesa de chequeo\b/gi, 'un stand de Reduciendo Da\u00f1o'],
+    [/\bla mesa de chequeo\b/gi, 'el stand de Reduciendo Da\u00f1o'], [/\bmesa de chequeo\b/gi, 'stand de Reduciendo Da\u00f1o'],
+    [/\b\u00e0 mesa de checagem\b/gi, 'ao stand da Reduciendo Da\u00f1o'], [/\buma mesa de checagem\b/gi, 'um stand da Reduciendo Da\u00f1o'],
+    [/\ba mesa de checagem\b/gi, 'o stand da Reduciendo Da\u00f1o'], [/\bmesa de checagem\b/gi, 'stand da Reduciendo Da\u00f1o'],
+    [/\b(a|the) checking table\b/gi, 'the Reduciendo Da\u00f1o stand'], [/\bchecking table\b/gi, 'Reduciendo Da\u00f1o stand']
+  ];
   EM.rename = function (s) {
     if (typeof s !== 'string') return s;
+    STAND.forEach(function (r) { s = s.replace(r[0], function (m) { const o = r[1]; return m === m.toUpperCase() ? o.toUpperCase() : o; }); });
     return s.replace(/\b(Tato|Dani)\b/gi, function (m) {
       const k = m.charAt(0).toUpperCase() + m.slice(1).toLowerCase(), n = NAMES[k][EM.lang] || NAMES[k].en;
       return m === m.toUpperCase() ? n.toUpperCase() : (m === m.toLowerCase() ? n.toLowerCase() : n);

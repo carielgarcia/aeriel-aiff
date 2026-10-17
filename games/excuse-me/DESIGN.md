@@ -204,3 +204,4 @@ The Night Report lists your people and how they are, the ten most important mome
 - **Rave door code**: "el amanecer es un abrazo", asked by a voice through a slot; the right answer is always among four choices, the other three are jokes (nine in rotation, three rounds).
 
 - **Pickpocket odds revised**: 1 in 1500 per conversation with a character (no crowd presses), only after `q1` is done and 8+ characters met. About 4% for a thorough night, so most people never see it.
+- **Reduciendo Daño stand** (v15): proper name in all languages; Isi in a black RD T-shirt, crew in black-and-neon RD shirts (non-interactive), Camilo O. (founder of the real foundation, Chile) with the reduciendodano.cl Instagram line, club-wide overheard lines sending people to the stand. Sprites gained `look.tee` / `look.teeC` for chest lettering; the pixel font gained Ñ.

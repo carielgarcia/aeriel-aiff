@@ -36,6 +36,15 @@
   /* ------------------------------------------------------------ people */
   function rectF(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); }
   function pxF(g, x, y, c) { g.fillStyle = c; g.fillRect(x, y, 1, 1); }
+  /* a 3x5 pixel emblem on the chest (the volunteers' RD T-shirts): look.tee = letters, look.teeC = colour (default white; 'neon' uses the accent) */
+  const TEE = { R: '111101111110101', D: '110101101101110', C: '011100100100011', O: '010101101101010' };
+  function emblem(g, look, K, x0, x1, tc) {
+    const t = look.tee; if (!t) return;
+    const w = t.length * 4 - 1, x = x0 + Math.floor((x1 - x0 + 1 - w) / 2), y = 17;
+    rectF(g, x0 + 1, y - 1, x1 - x0 - 1, 7, tc);
+    const c = look.teeC === 'neon' ? K.accent : (look.teeC || '#FFFFFF');
+    for (let n = 0; n < t.length; n++) { const gl = TEE[t[n]]; if (!gl) continue; for (let i = 0; i < 15; i++) if (gl[i] === '1') pxF(g, x + n * 4 + (i % 3), y + Math.floor(i / 3), c); }
+  }
 
   /* Raw canvas is 16x32; feet end at row 31. Outline adds 1px all around. */
   function drawFront(g, look, dir, frame, pose, K) {
@@ -90,6 +99,7 @@
     else if (ts === 8) { /* hi-vis vest over dark tee */ torsoBase('#1B1B1B'); rectF(g, tx0 + 1, 15, 3, 9, K.tc); rectF(g, tx1 - 3, 15, 3, 9, K.tc); rectF(g, tx0 + 1, 19, 3, 1, '#F4F4F4'); rectF(g, tx1 - 3, 19, 3, 1, '#F4F4F4'); rectF(g, tx0, 22, tx1 - tx0 + 1, 1, '#F4F4F4'); sleeveC = '#1B1B1B'; }
     else if (ts === 9) { /* leather jacket */ torsoBase(tc); rectF(g, 4, 15, 2, 5, tcL); rectF(g, 10, 15, 2, 5, tcL); rectF(g, 7, 16, 2, 8, '#1B1B1B'); rectF(g, 8, 16, 1, 8, '#B8B8C0'); rectF(g, tx0, 15, 1, 2, tcL); rectF(g, tx1, 15, 1, 2, tcD); sleeve = 'long'; }
     else { /* volunteer vest with cross */ torsoBase('#F4F4F4'); rectF(g, 7, 17, 2, 5, '#FF3B30'); rectF(g, 5, 19, 6, 2, '#FF3B30'); sleeve = 'short'; sleeveC = '#F4F4F4'; }
+    if (look.tee && !back) emblem(g, look, K, tx0, tx1, tc);
 
     /* ---- arms ---- */
     const shoulderY = 15;
@@ -237,6 +247,7 @@
     if (ts === 8) { rectF(g, 5, 15, 7, 9, '#1B1B1B'); rectF(g, 6, 15, 4, 9, tc); rectF(g, 6, 19, 4, 1, '#F4F4F4'); rectF(g, 5, 22, 7, 1, '#F4F4F4'); }
     if (ts === 9) { rectF(g, 5, 15, 7, 9, tc); rectF(g, 8, 16, 1, 8, '#B8B8C0'); rectF(g, 5, 15, 2, 4, shade(tc, 0.25)); }
     if (ts === 10) { rectF(g, 5, 15, 7, 9, '#F4F4F4'); rectF(g, 8, 18, 2, 4, '#FF3B30'); rectF(g, 7, 19, 4, 2, '#FF3B30'); }
+    if (look.tee) emblem(g, look, K, 5, 11, tc);
     /* arm (front) */
     const swing = frame === 1 ? -2 : (frame === 2 ? 2 : 0);
     const sleeve = (ts === 3 || ts === 9) ? 6 : ((ts === 0 || ts === 2 || ts === 6 || ts === 8 || ts === 10) ? 3 : 0);
@@ -328,7 +339,7 @@
   /* pose: 'stand' | 'dance' | 'lie' | 'sit'. Returns a canvas 18x34 (feet at the bottom row). */
   EM.PERSON_W = 18; EM.PERSON_H = 34;
   EM.person = function (look, dir, frame, pose) {
-    const key = [look.skin, look.hair, look.hc, look.expr, look.top, look.tc, look.bottom, look.bc, look.acc, look.accentHex || '', look.wide ? 1 : 0, look.ol || '', dir, frame, pose || ''].join(',');
+    const key = [look.skin, look.hair, look.hc, look.expr, look.top, look.tc, look.bottom, look.bc, look.acc, look.accentHex || '', look.tee || '', look.teeC || '', look.wide ? 1 : 0, look.ol || '', dir, frame, pose || ''].join(',');
     let c = cache[key];
     if (c) return c;
     const base = outline(drawRaw(look, dir === 'u' || dir === 'l' || dir === 'r' ? dir : 'd', frame, pose), look.ol);
@@ -358,7 +369,7 @@
     '0': '111101101101111', '1': '010110010010111', '2': '110001010100111', '3': '110001010001110',
     '4': '101101111001001', '5': '111100110001110', '6': '011100111101111', '7': '111001010010010',
     '8': '111101111101111', '9': '111101111001110', ':': '000010000010000', '-': '000000111000000',
-    '.': '000000000000010', '>': '100010001010100', '<': '001010100010001', '!': '010010010000010', ' ': '000000000000000'
+    'Ñ': '110101101101101', '.': '000000000000010', '>': '100010001010100', '<': '001010100010001', '!': '010010010000010', ' ': '000000000000000'
   };
   EM.textWidth = function (s) { return s.length * 4 - 1; };
   EM.drawText = function (g, s, x, y, colr) {
@@ -366,6 +377,7 @@
     for (let n = 0; n < s.length; n++) {
       const gl = FONT[s[n].toUpperCase()];
       if (!gl) continue;
+      if (s[n].toUpperCase() === 'Ñ') { g.fillRect(x + n * 4, y - 1, 1, 1); g.fillRect(x + n * 4 + 1, y - 2, 1, 1); g.fillRect(x + n * 4 + 2, y - 1, 1, 1); }
       for (let i = 0; i < 15; i++) if (gl[i] === '1') g.fillRect(x + n * 4 + (i % 3), y + Math.floor(i / 3), 1, 1);
     }
   };
