@@ -131,9 +131,18 @@ The Night Report lists your people and how they are, the ten most important mome
 - **Drugs**:
   - MDMA: dialogue pays more (SOCIAL gains x1.5, FUN x1.25, bonds x1.5); weirdness +0.12/min.
   - MDMA with a stimulant (meth, cocaine): weirdness +0.07/min (less than MDMA alone); dancing costs HEALTH.
-  - Cocaine: dancing costs HEALTH; weirdness +0.04/min; you remember everything (lessons and a recap of your mistakes survive a reset, even if you also drank or took other things).
+  - Cocaine: dancing costs HEALTH; weirdness +0.04/min; you keep the same lessons a sober character would, even if you also drank (no extra payoff).
   - Ketamine: 50% faint (a passout; the second is the ambulance) or 50% boost (+SOCIAL, +FUN, dialogue boost); weirdness +0.12/min, the same as MDMA.
   - White powders: told cocaine or told ketamine, about 1 in 5 times it is the other one. Sources: Dragan (honest label, loose labels), Rico (K) and Hugo (his tin).
 - **Lessons**: only a clear-headed night teaches. If you drank or took MDMA, meth, ketamine or a fake pill, this night's lesson is lost (earlier lessons stay). Cocaine overrides that.
 - **Running gags** escalate (`s.gags`, carried across nights): ÆRIEL, Dragan, Luca, Hugo, and the friends' déjà vu barks.
 - **The morning after**: a phone thread on the ending card for non-reset endings. Each friend takes someone home, checks in, says thanks, was lost, or needs to talk (low bond), plus up to four messages that reference your choices.
+
+
+## v0.5 changes
+- **Venue choice** (creator, carried through BEGIN AGAIN): ESTABLISHED CLUB or ILLEGAL RAVE.
+  - Club: guards in the doors, foyer, main floor and courtyard notice strangeness (WEIRDNESS >= 35 climbs there; quiet rooms are not watched); buying from a dealer costs WEIRDNESS and about half the time a guard sees it (extra WEIRDNESS and a bad-decision point); full WEIRDNESS is a ban.
+  - Rave: no security. Drug-related WEIRDNESS is x0.4, dealers carry no consequence, freestyle dancing gives +4 FUN and a small HEALTH gain (+1.5) instead of costing health. Full WEIRDNESS is the `frozenout` ending (the crowd closes up), also a reset.
+- **Cocaine** is no longer a reward: it keeps the same lessons a sober character would keep, nothing more (no recap). It still costs health when dancing.
+- **Morning thread**: about a third of mornings, one friend answers another's message.
+- Ketamine is unchanged.

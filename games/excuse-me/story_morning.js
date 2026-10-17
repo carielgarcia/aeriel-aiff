@@ -68,6 +68,25 @@
       ]
     }
   };
+
+  /* about a third of the time, one friend answers another's message */
+  const REPLY = {
+    maru: {
+      home: T('$. DETAILS. In person. With gestures. Bring a coffee first.', '$. DETALLES. En persona. Con gestos. Trae un café primero.', '$. DETALHES. Pessoalmente. Com gestos. Traz um café antes.'),
+      safe: T('Thumbs up, $. Drink water. Eat the banana.', 'Pulgar arriba, $. Toma agua. Cómete el plátano.', 'Joinha, $. Bebe água. Come a banana.'),
+      thanks: T('Aww, $. Group hug. Imaginary. Slightly sticky.', 'Ay, $. Abrazo grupal. Imaginario. Un poco pegajoso.', 'Aww, $. Abraço coletivo. Imaginário. Um pouco grudento.')
+    },
+    dani: {
+      home: T('$!!! I knew it. I knew it since the stairs. Tell me everything. EVERYTHING.', '¡¡¡$!!! Lo sabía. Lo sabía desde las escaleras. Cuéntame todo. TODO.', '$!!! Eu sabia. Eu sabia desde a escada. Me conta tudo. TUDO.'),
+      safe: T('$ you are a legend. Sleep. I will bring pastries.', '$ eres una leyenda. Duerme. Llevo pan dulce.', '$ você é uma lenda. Dorme. Eu levo uns doces.'),
+      thanks: T('Stop, I am crying on the metro too. We are on the same metro now.', 'Para, yo también estoy llorando en el metro. Ahora estamos en el mismo metro.', 'Para, eu também tô chorando no metrô. Agora a gente tá no mesmo metrô.')
+    },
+    tato: {
+      home: T('$, I am happy for you. Please text when you are home. Not because I doubt you. Because I like you.', '$, me alegro por ti. Escribe cuando llegues a casa. No porque dude de ti. Porque te quiero.', '$, fico feliz por você. Manda mensagem quando chegar em casa. Não porque eu duvide. Porque eu gosto de você.'),
+      safe: T('Glad you are safe, $. I checked the lock for you too.', 'Qué bueno que llegaste bien, $. Yo también revisé el cerrojo por ti.', 'Que bom que você chegou bem, $. Eu conferi a tranca por você também.'),
+      thanks: T('Same. All of it. The wall too.', 'Igual. Todo. La pared también.', 'Igual. Tudo. A parede também.')
+    }
+  };
   const IDX = { maru: 0, dani: 1, tato: 2 };
 
   /* messages that react to what you did, in priority order */
@@ -113,6 +132,19 @@
       const list = FATE[f][fate];
       msgs.push({ who: f, t: list[v % list.length], fate: fate });
     });
+    /* chains: about a third of mornings, one friend answers another */
+    if (EM.hash2(seed, 0, 303) < 1 / 3) {
+      const el = msgs.filter(function (x) { return REPLY.maru[x.fate]; });
+      if (el.length) {
+        const m0 = el[Math.floor(EM.hash2(seed, 1, 305) * el.length)];
+        const others = Object.keys(IDX).filter(function (k) { return k !== m0.who && (s.bond[k] || 0) >= 0; });
+        if (others.length) {
+          const rf = others[Math.floor(EM.hash2(seed, 2, 304) * others.length)];
+          const nm = EM.CAST[m0.who].name, tpl = REPLY[rf][m0.fate];
+          msgs.splice(msgs.indexOf(m0) + 1, 0, { who: rf, t: T(tpl.en.replace('$', nm), tpl.es.replace('$', nm), tpl.pt.replace('$', nm)), fate: 'reply' });
+        }
+      }
+    }
     /* what you did: up to three, never two from the same sender back to back */
     const picked = [];
     REF.forEach(function (r) {

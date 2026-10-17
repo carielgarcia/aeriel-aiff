@@ -21,6 +21,11 @@
     how3: T('Nobody dies and nothing is "game over". A bad night just becomes a different ending.', 'Nadie muere y no hay «game over». Una mala noche solo se vuelve otro final.', 'Ninguém morre e não existe «game over». Uma noite ruim só vira outro final.'),
     creatorTitle: T('WHO ARE YOU TONIGHT?', '¿QUIÉN ERES ESTA NOCHE?', 'QUEM É VOCÊ ESTA NOITE?'),
     name: T('NAME', 'NOMBRE', 'NOME'), namePh: T('Your name', 'Tu nombre', 'Seu nome'),
+    venue: T('WHERE ARE YOU TONIGHT?', '¿DÓNDE ESTÁS ESTA NOCHE?', 'ONDE VOCÊ ESTÁ HOJE?'),
+    vClub: T('ESTABLISHED CLUB', 'CLUB ESTABLECIDO', 'CLUB ESTABELECIDO'),
+    vRave: T('ILLEGAL RAVE', 'RAVE ILEGAL', 'RAVE ILEGAL'),
+    vClubNote: T('Door list, guards, rules. Guards notice strangeness near them and dealers are not free of consequences. Quiet rooms are safe.', 'Lista en la puerta, guardias, reglas. Los guardias notan la rareza cerca de ellos y los dealers no son gratis. Las salas tranquilas son seguras.', 'Lista na porta, seguranças, regras. Os seguranças notam estranheza por perto e os dealers não saem de graça. Salas calmas são seguras.'),
+    vRaveNote: T('Same building, no licence, no staff. Drugs weigh less on WEIRDNESS, dealers carry no consequence, and dancing gives extra FUN and a little HEALTH. If the crowd turns on you, the night is over.', 'El mismo edificio, sin licencia, sin personal. Las drogas pesan menos en la RAREZA, los dealers no tienen consecuencias y bailar da más DIVERSIÓN y un poco de SALUD. Si la multitud se te vuelve en contra, la noche termina.', 'O mesmo prédio, sem licença, sem equipe. As drogas pesam menos na ESTRANHEZA, os dealers não têm consequência e dançar dá mais DIVERSÃO e um pouco de SAÚDE. Se a multidão virar contra você, a noite acaba.'),
     gender: T('HOW OTHERS SPEAK TO YOU', 'CÓMO TE HABLAN LOS DEMÁS', 'COMO OS OUTROS FALAM COM VOCÊ'),
     gN: T('NEUTRAL (default)', 'NEUTRO (por defecto)', 'NEUTRO (padrão)'), gM: T('MASCULINE', 'MASCULINO', 'MASCULINO'), gF: T('FEMININE', 'FEMENINO', 'FEMININO'),
     gNote: T('Only changes the grammar people use for you. Your character stays whoever you want.', 'Solo cambia la gramática que usan contigo. Tu personaje es quien tú quieras.', 'Só muda a gramática que usam com você. Seu personagem é quem você quiser.'),
@@ -98,7 +103,7 @@
   function newLook() { return { skin: 2, hair: 2, hc: 0, expr: 1, top: 0, tc: 2, bottom: 1, bc: 1, acc: 0, ac: 1, wide: false }; }
 
   U.openCreator = function () {
-    cre = { look: newLook(), gender: 'x', name: '' };
+    cre = { look: newLook(), gender: 'x', name: '', venue: 'club' };
     U.mode = 'creator';
     U.screen('creator');
     buildCreator();
@@ -107,6 +112,14 @@
     $('#c-title').textContent = EM.tr(S.creatorTitle);
     $('#c-name-l').textContent = EM.tr(S.name);
     const inp = $('#c-name'); inp.placeholder = EM.tr(S.namePh); inp.value = cre.name;
+    $('#c-venue-l').textContent = EM.tr(S.venue);
+    const vbox = $('#c-venue'); vbox.textContent = '';
+    [['club', S.vClub], ['rave', S.vRave]].forEach(function (v) {
+      const b = el('button', 'seg' + (cre.venue === v[0] ? ' on' : ''), EM.tr(v[1])); b.type = 'button'; b.setAttribute('aria-pressed', cre.venue === v[0] ? 'true' : 'false');
+      b.addEventListener('click', function () { cre.venue = v[0]; buildCreator(); });
+      vbox.appendChild(b);
+    });
+    $('#c-vnote').textContent = EM.tr(cre.venue === 'rave' ? S.vRaveNote : S.vClubNote);
     $('#c-gender-l').textContent = EM.tr(S.gender);
     $('#c-gnote').textContent = EM.tr(S.gNote);
     const gbox = $('#c-gender'); gbox.textContent = '';
@@ -163,7 +176,7 @@
     $('#c-back').addEventListener('click', U.toTitle);
     $('#c-go').addEventListener('click', function () {
       const player = { name: cleanName($('#c-name').value), gender: cre.gender, look: Object.assign({}, cre.look) };
-      U.startNight(player);
+      U.startNight(player, { venue: cre.venue });
     });
   }
 
@@ -186,7 +199,7 @@
     const old = EM.state;
     const ed = EM.ENDINGS[old.ended];
     const mem = EM.story.memory(old, ed);
-    U.startNight(old.player, { seed: old.seed, attempt: (old.attempt || 1) + 1, lessons: mem.lessons, gags: old.gags, forgot: mem.forgot, recap: mem.recap });
+    U.startNight(old.player, { seed: old.seed, attempt: (old.attempt || 1) + 1, lessons: mem.lessons, gags: old.gags, forgot: mem.forgot, recap: mem.recap, venue: old.venue });
   };
   U.continueNight = function () {
     const s = EM.load(); if (!s) return;

@@ -12,12 +12,13 @@
     const s = EM.state;
     const swap = Math.random() < 0.2;
     const real = swap ? (told === 'coke' ? 'ket' : 'coke') : told;
+    L.dealerHeat();
     s.flags['told_' + told] = true;
     if (swap) s.flags.powder_mixup = true;
     s.impaired = s.impaired || real === 'ket';
     if (real === 'coke') {
       L.apply({ fx: 'coke', fun: 6, hp: -2, weird: 2, time: 3, flag: 'took_coke' });
-      U.toast({ icon: 'spark', text: T('A bitter drip down the back of your throat. Your teeth go numb and every thought arrives under its own spotlight. You are going to remember ALL of tonight. Dancing is going to cost you.', 'Un goteo amargo por el fondo de la garganta. Los dientes se te duermen y cada pensamiento llega con su propio reflector. Vas a recordar TODA esta noche. Bailar te va a costar.', 'Um gotejar amargo no fundo da garganta. Os dentes ficam dormentes e cada pensamento chega com seu próprio holofote. Você vai lembrar de TUDO desta noite. Dançar vai te custar.'), kind: 'info', ms: 7000 });
+      U.toast({ icon: 'spark', text: T('A bitter drip down the back of your throat. Your teeth go numb and every thought arrives under its own spotlight. Your head is clear and fast, and dancing is going to cost you.', 'Un goteo amargo por el fondo de la garganta. Los dientes se te duermen y cada pensamiento llega con su propio reflector. Tienes la cabeza clara y rápida, y bailar te va a costar.', 'Um gotejar amargo no fundo da garganta. Os dentes ficam dormentes e cada pensamento chega com seu próprio holofote. Sua cabeça fica clara e rápida, e dançar vai te custar.'), kind: 'info', ms: 7000 });
     } else if (Math.random() < 0.5) {
       L.apply({ flag: ['took_ket', 'ket_faint'], time: 3 });
       s.pendingFaint = s.time + 3 + Math.floor(Math.random() * 3);
@@ -149,33 +150,32 @@
     const pool = LINES[f]; if (pool) U.toast({ text: pool[lvl - 1], kind: 'bark', ms: 4200 });
   };
 
+
+  /* ============================================================ THE ILLEGAL RAVE */
+  (function () {
+    const n = D.intro.nodes.a, orig = [].concat(n.text);
+    const RAVE0 = T('LA GRIETA. 23:00. The licence ran out at nine and nobody told the speakers. No door, no list, no guards: a neon crack in the wall, a crowd under it, and you, an hour late. The group chat is a graveyard of "where r u".', 'LA GRIETA. 23:00. La licencia venció a las nueve y nadie se lo dijo a los parlantes. Sin puerta, sin lista, sin guardias: una grieta de neón en la pared, una multitud debajo, y tú, una hora tarde. El chat del grupo es un cementerio de «dónde estás».', 'LA GRIETA. 23:00. A licença venceu às nove e ninguém avisou as caixas de som. Sem porta, sem lista, sem seguranças: uma rachadura de neon na parede, uma multidão embaixo, e você, com uma hora de atraso. O grupo no chat é um cemitério de «cadê você».');
+    const RAVE2 = T('Four bars matter: FUN, SOCIAL BATTERY, HEALTH, and WEIRDNESS. There is no security here. Let WEIRDNESS fill up and the crowd closes around you and the night is over. In a crowd, press Z to say EXCUSE ME. It is cheap. It is also a whole philosophy.', 'Cuatro barras importan: DIVERSIÓN, BATERÍA SOCIAL, SALUD y RAREZA. Aquí no hay seguridad. Si la RAREZA se llena, la multitud se cierra a tu alrededor y la noche termina. En una multitud, presiona Z para decir CON PERMISO. Es barato. También es una filosofía entera.', 'Quatro barras importam: DIVERSÃO, BATERIA SOCIAL, SAÚDE e ESTRANHEZA. Aqui não tem segurança. Se a ESTRANHEZA encher, a multidão se fecha em volta de você e a noite acaba. Na multidão, aperte Z para dizer COM LICENÇA. É barato. Também é uma filosofia inteira.');
+    n.text = function (s) { return s.venue === 'rave' ? [RAVE0, orig[1], RAVE2] : orig; };
+  })();
+  EM.ENDINGS.frozenout = {
+    art: 'road', music: 'chill', lp: 800, reset: true,
+    title: T('THE CROWD CLOSES UP', 'LA MULTITUD SE CIERRA', 'A MULTIDÃO SE FECHA'),
+    lesson: T('Last time the crowd closed up. No guards here: your own strangeness is the only door policy.', 'La última vez la multitud se cerró. Aquí no hay guardias: tu propia rareza es la única política de puerta.', 'Da última vez a multidão se fechou. Aqui não tem segurança: a sua própria estranheza é a única política de porta.'),
+    text: [
+      T('Nobody throws you out, because nobody is in charge. It is simply that the circle around you widens by a step, and then another, and every face turns politely toward the speaker. At the edge of the warehouse a stranger hands you a cup of water without a word.', 'Nadie te echa, porque nadie manda. Es solo que el círculo a tu alrededor se ensancha un paso, y luego otro, y todas las caras se vuelven con cortesía hacia el parlante. En el borde del galpón un desconocido te da un vaso de agua sin decir nada.', 'Ninguém te expulsa, porque ninguém manda. É só que o círculo em volta de você se alarga um passo, e depois outro, e todos os rostos se voltam com educação pro alto-falante. No canto do galpão um estranho te entrega um copo d\'água sem dizer nada.'),
+      T('You walk out under the stars with your friends\' footsteps behind you. It is a very long time until morning. It is also, somehow, 22:00.', 'Sales bajo las estrellas con los pasos de tus amigos detrás. Falta muchísimo para la mañana. Y también, de algún modo, son las 22:00.', 'Você sai sob as estrelas com os passos dos seus amigos atrás. Falta muito tempo pra manhã. E também, de algum jeito, são 22:00.')
+    ]
+  };
+
   /* ============================================================ MEMORY: ONLY THE CLEAR-HEADED LEARN */
-  const RECAP = {
-    shoved_broh: T('You shoved Broh.', 'Empujaste a Broh.', 'Você empurrou o Broh.'),
-    fight_broh: T('You fought Broh.', 'Te peleaste con Broh.', 'Você brigou com o Broh.'),
-    tristan_slap: T('You slapped Tristan.', 'Le diste una cachetada a Tristan.', 'Você deu um tapa no Tristan.'),
-    consent_violation: T('You ignored somebody\'s no.', 'Ignoraste el no de alguien.', 'Você ignorou o não de alguém.'),
-    rosa_angry: T('You made Rosa angry.', 'Hiciste enojar a Rosa.', 'Você deixou a Rosa brava.'),
-    juno_ignored: T('You walked past Juno.', 'Pasaste de largo a Juno.', 'Você passou direto pela Juno.'),
-    newbie_creeped: T('You creeped out the newbie.', 'Incomodaste al novato.', 'Você deixou o novato desconfortável.'),
-    host_lied: T('You lied to the host.', 'Le mentiste a la anfitriona.', 'Você mentiu pro anfitrião.'),
-    rosa_lied: T('You lied to Rosa.', 'Le mentiste a Rosa.', 'Você mentiu pra Rosa.'),
-    shoved_dancer: T('You shoved a stranger on the floor.', 'Empujaste a un desconocido en la pista.', 'Você empurrou um estranho na pista.'),
-    hostile_rude: T('You were rude to people who were already tense.', 'Fuiste grosero con gente que ya estaba tensa.', 'Você foi grosseiro com gente que já estava tensa.')
-  };
-  story.recap = function (s) {
-    const out = [];
-    Object.keys(RECAP).forEach(function (k) { if (s.flags[k]) out.push(RECAP[k]); });
-    return out.slice(0, 4);
-  };
   /* what to carry into the next night */
   story.memory = function (old, ed) {
     const lessons = (old.lessons || []).slice();
-    const mem = { lessons: lessons, forgot: false, recap: [] };
+    const mem = { lessons: lessons, forgot: false, recap: [] }; /* a stimulant keeps your head clear: you keep the same lessons a sober person would */
     if (ed && ed.lesson) {
       if (!old.impaired || old.remembers) lessons.push(ed.lesson); else mem.forgot = true;
     }
-    if (old.remembers) mem.recap = story.recap(old);
     return mem;
   };
   S.show_lessons = function () {
@@ -183,7 +183,6 @@
     let i = 0;
     const say = function (txt, kind) { setTimeout(function () { U.toast({ icon: 'question', text: txt, kind: kind || 'info', ms: 7500 }); }, 500 + (i++) * 900); };
     (s.lessons || []).slice(-3).forEach(function (l) { say(l); });
-    (s.recap || []).forEach(function (l) { say(l, 'good'); });
     if (s.forgot) say(T('You wake up with the feeling that something went badly last time. You cannot remember what. It was warm, it was loud, and the details were poured out of you.', 'Despiertas con la sensación de que la última vez salió mal. No recuerdas qué. Fue cálido, fue ruidoso, y los detalles se te escurrieron.', 'Você acorda com a sensação de que da última vez deu errado. Não lembra o quê. Foi quente, foi barulhento, e os detalhes escorreram de você.'), 'bad');
   };
 })();

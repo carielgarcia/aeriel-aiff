@@ -212,7 +212,8 @@
       let fun = Math.round(res.hits * 1.5 + res.best * 0.5);
       if (s.party.length >= 2) fun += 3;
       if (s.fx.mdma) fun += 5;
-      L.apply({ fun: fun, hp: -1 - (res.hits > 10 ? 1 : 0), time: 12, soc: s.fx.mdma ? 3 : 1 });
+      if (L.rave()) fun += 4; /* a rave is for dancing */
+      L.apply({ fun: fun, hp: L.rave() ? 1.5 : -1 - (res.hits > 10 ? 1 : 0), time: 12, soc: s.fx.mdma ? 3 : 1 });
       if (L.danceCost(res.hits > 10 ? 3 : 2)) U.toast({ icon: 'sweat', text: T('Your heart is going a little too hard for this tempo.', 'Tu corazón va un poco demasiado fuerte para este tempo.', 'Seu coração tá indo um pouco forte demais pra esse andamento.'), kind: 'bad', ms: 3200 });
       s.thirst += 12;
       s.cool[spotId] = s.time + 45;

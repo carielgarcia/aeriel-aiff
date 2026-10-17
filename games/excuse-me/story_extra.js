@@ -200,7 +200,7 @@
     ambT -= dt;
     if (ambT > 0) return;
     ambT = 70 + Math.random() * 60;
-    const pool = AMB.filter(function (a) { return a.z.indexOf(s.zone) !== -1 && (!a.min || L.req({ min: a.min })); });
+    const pool = AMB.filter(function (a) { return a.z.indexOf(s.zone) !== -1 && (!a.min || L.req({ min: a.min })) && !(L.rave() && /Security passes|Seguridad pasa/.test(a.t.en + a.t.es)); });
     if (!pool.length) return;
     const a = EM.pick(pool);
     if (a.d) L.apply(a.d);

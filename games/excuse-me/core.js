@@ -83,6 +83,7 @@
       lessons: carry.lessons || [],
       bad: 0,
       rep: 0,
+      venue: carry.venue === 'rave' ? 'rave' : 'club',
       forgot: !!carry.forgot,
       recap: carry.recap || [],
       gags: carry.gags || {},

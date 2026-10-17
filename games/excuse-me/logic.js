@@ -45,7 +45,7 @@
     else if (f.meth) w = 0.07;
     else if (f.coke) w = 0.04;
     if (f.coke && (f.mdma || f.ket)) w += 0.02;
-    return w;
+    return w * (L.rave() ? 0.4 : 1);
   };
   /* dancing on a stimulant hurts */
   L.danceCost = function (n) {
@@ -55,6 +55,21 @@
       return true;
     }
     return false;
+  };
+  L.rave = function () { return EM.state.venue === 'rave'; };
+  /* club security stands in these rooms and notices strange people */
+  const GUARDED = { doors: 1, foyer: 1, main: 1, courtyard: 1 };
+  L.guarded = function () { const s = EM.state; return s.venue !== 'rave' && !!GUARDED[s.zone]; };
+  /* buying from a dealer: free at a rave, risky at a club */
+  L.dealerHeat = function () {
+    const s = EM.state;
+    if (L.rave()) return;
+    L.stat('weird', 5);
+    if (L.guarded() && Math.random() < 0.5) {
+      s.flags.sec_noted = true;
+      EM.hooks.toast({ icon: 'eyes', text: T('A GUARD SAW THE HAND-OFF. Nothing is said. Everything is noted.', 'UN GUARDIA VIO EL INTERCAMBIO. No dice nada. Lo anota todo.', 'UM SEGURANÇA VIU A TROCA. Ninguém diz nada. Tudo é anotado.'), kind: 'bad', ms: 6500 });
+      L.stat('weird', 12); L.addBad(1);
+    }
   };
   L.isDrunk = function () { return EM.state.drinks >= 3; };
 
@@ -119,6 +134,10 @@
     L.stat('weird', -0.03);
     if (s.time - (s.lastBadAt === undefined ? -99 : s.lastBadAt) >= 12) L.stat('weird', -0.05);
     s.drinks = Math.max(0, s.drinks - 1 / 40);
+    if (L.guarded() && st.weird >= 35) {
+      L.stat('weird', 0.05 + (st.weird - 35) / 65 * 0.15, true);
+      if (!s.flags.guard_eye) { s.flags.guard_eye = true; EM.hooks.toast({ icon: 'eyes', text: T('A guard\'s eyes find you. Strange people get looked at. Quiet rooms are not watched.', 'Los ojos de un guardia te encuentran. A la gente rara la miran. Las salas tranquilas no están vigiladas.', 'Os olhos de um segurança te encontram. Gente estranha é observada. Salas calmas não são vigiadas.'), kind: 'bad', ms: 6500 }); }
+    }
     if (s.fx.mdma) { L.stat('fun', 0.22); L.stat('hp', -0.05); L.stat('soc', 0.08); }
     if (s.fx.meth) { L.stat('fun', 0.15); L.stat('hp', -0.1); L.stat('soc', -0.03); }
     if (s.fx.glitch) { L.stat('weird', 0.05); L.stat('hp', -0.03); }
@@ -154,9 +173,11 @@
     if (st.hp > 50) delete s.flags.warn_hp;
     if (st.fun <= 12 && !s.flags.warn_fun) { s.flags.warn_fun = true; EM.hooks.toast({ icon: 'note', text: T('Your FUN is running out. Find a glowing mark on the floor and dance.', 'Tu DIVERSIÓN se agota. Busca una marca brillante en el piso y baila.', 'Sua DIVERSÃO está acabando. Procure uma marca brilhante no chão e dance.'), kind: 'bad', ms: 6000 }); }
     if (st.fun > 35) delete s.flags.warn_fun;
-    if (st.weird >= 70 && !s.flags.sec_watch) { s.flags.sec_watch = true; EM.hooks.toast({ icon: 'eyes', text: T('SECURITY HAS NOTICED YOU.', 'SEGURIDAD TE ESTÁ MIRANDO.', 'A SEGURANÇA ESTÁ DE OLHO EM VOCÊ.'), kind: 'bad' }); EM.hooks.sfx('warn'); }
-    if (st.weird >= 88 && !s.flags.sec_warned) { s.flags.sec_warned = true; EM.hooks.script('last_warning'); }
-    if (st.weird >= 100) { L.end('banned'); return; }
+    if (st.weird >= 70 && s.venue === 'rave' && !s.flags.sec_watch) { s.flags.sec_watch = true; EM.hooks.toast({ icon: 'eyes', text: T('PEOPLE ARE STEERING AROUND YOU. There is no security here; there is only the crowd.', 'LA GENTE TE ESQUIVA. Aquí no hay seguridad; solo hay multitud.', 'AS PESSOAS ESTÃO TE EVITANDO. Aqui não tem segurança; só tem a multidão.'), kind: 'bad' }); }
+    if (st.weird >= 70 && s.venue !== 'rave' && !s.flags.sec_watch) { s.flags.sec_watch = true; EM.hooks.toast({ icon: 'eyes', text: T('SECURITY HAS NOTICED YOU.', 'SEGURIDAD TE ESTÁ MIRANDO.', 'A SEGURANÇA ESTÁ DE OLHO EM VOCÊ.'), kind: 'bad' }); EM.hooks.sfx('warn'); }
+    if (st.weird >= 88 && s.venue === 'rave' && !s.flags.sec_warned) { s.flags.sec_warned = true; EM.hooks.toast({ icon: 'anger', text: T('One more strange thing and the crowd closes up around you.', 'Una cosa rara más y la multitud se cierra a tu alrededor.', 'Mais uma coisa estranha e a multidão se fecha em volta de você.'), kind: 'bad', ms: 6000 }); }
+    if (st.weird >= 88 && s.venue !== 'rave' && !s.flags.sec_warned) { s.flags.sec_warned = true; EM.hooks.script('last_warning'); }
+    if (st.weird >= 100) { L.end(s.venue === 'rave' ? 'frozenout' : 'banned'); return; }
     if (st.hp <= 0) { L.passOut(T('Your body files a complaint.', 'Tu cuerpo presenta una queja.', 'Seu corpo registra uma reclamação.')); return; }
     if (st.soc <= 0) { L.end('burnout'); return; }
     if ((s.boredFor || 0) >= 45) { L.end('bored'); return; }
@@ -260,6 +281,7 @@
       if (e.fun > 0) e = Object.assign({}, e, { fun: e.fun * 1.25 });
       if (e.bond) { const b = {}; for (const k in e.bond) b[k] = e.bond[k] > 0 ? Math.ceil(e.bond[k] * 1.5) : e.bond[k]; e = Object.assign({}, e, { bond: b }); }
     }
+    if (L.rave() && e.weird > 0 && (e.fx || [].concat(e.flag || []).some(function (f) { return /^took_|^pill_taken$/.test(f); }))) e = Object.assign({}, e, { weird: e.weird * 0.4 });
     if (e.fun) L.stat('fun', e.fun);
     if (e.soc) L.stat('soc', e.soc);
     if (e.hp) L.stat('hp', e.hp);
