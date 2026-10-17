@@ -13,8 +13,8 @@
   function L(skin, hair, hc, expr, top, bottom, acc, wide) { return { skin: SKIN_MAP[skin], hair: hair, hc: HC_MAP[hc], expr: expr, top: top, bottom: bottom, acc: acc, wide: !!wide }; }
   const CAST = EM.CAST = {
     maru:    { name: 'MARU',    look: L(1, 7, 0, 1, 9, 0, 5) },
-    dani:    { name: 'DANI',    look: L(3, 4, 0, 2, 4, 2, 1) },
-    tato:    { name: 'TATO',    look: L(0, 2, 1, 4, 3, 1, 0) },
+    dani:    { get name() { return EM.rename('DANI'); },   look: L(3, 4, 0, 2, 4, 2, 1) },
+    tato:    { get name() { return EM.rename('TATO'); },   look: L(0, 2, 1, 4, 3, 1, 0) },
     broh:    { name: 'BROH',    look: L(1, 1, 0, 3, 0, 4, 2, true) },
     sofi:    { name: 'SOFI',    look: L(2, 3, 0, 4, 7, 0, 6) },
     brohF1:  { name: 'BROH CREW', look: L(0, 1, 0, 2, 0, 4, 2, true) },

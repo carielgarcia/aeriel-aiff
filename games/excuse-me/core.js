@@ -47,10 +47,20 @@
     return s.replace(/\{name\}/g, name).replace(/\{([^{}|]*)\|([^{}|]*)\|([^{}|]*)\}/g, function (m, a, b, c) { return [a, b, c][gi]; });
   };
 
+  /* two of the three friends are renamed at display time (ids and save data stay tato / dani) */
+  const NAMES = { Tato: { en: 'Fernando', es: 'Feña', pt: 'Fernando' }, Dani: { en: 'Benjamin', es: 'Benjamin', pt: 'Benjamin' } };
+  EM.rename = function (s) {
+    if (typeof s !== 'string') return s;
+    return s.replace(/\b(Tato|Dani)\b/gi, function (m) {
+      const k = m.charAt(0).toUpperCase() + m.slice(1).toLowerCase(), n = NAMES[k][EM.lang] || NAMES[k].en;
+      return m === m.toUpperCase() ? n.toUpperCase() : (m === m.toLowerCase() ? n.toLowerCase() : n);
+    });
+  };
+
   EM.tr = function (v) {
     if (v == null) return '';
     const s = typeof v === 'string' ? v : (v[EM.lang] || v.en || '');
-    return EM.fmt(s);
+    return EM.rename(EM.fmt(s));
   };
 
   /* ---------------------------------------------------------------- util */
