@@ -2237,6 +2237,92 @@ body[data-view="games"] #games-subsite {
   display: block;
 }
 
+/* Games hub: one card per game */
+.games-hub-section {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  min-height: 300px;
+  padding: var(--spacing-md);
+  text-align: left;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: var(--border-thick);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: none;
+  border-radius: 0 !important;
+}
+
+.game-card:hover,
+.game-card:focus-visible {
+  background: #FFFFFF;
+  color: #0A0A0A;
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.game-card:hover .games-app-badge,
+.game-card:focus-visible .games-app-badge,
+.game-card:hover .game-card-tags,
+.game-card:focus-visible .game-card-tags {
+  color: #0A0A0A;
+}
+
+.game-card-title {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.game-card-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-transform: none;
+}
+
+.game-card-tags {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.game-card-cta {
+  margin-top: auto;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.games-all-btn {
+  align-self: flex-start;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+}
+
+.games-stage-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: none;
+}
+
 @media (max-width: 768px) {
   .games-title {
     font-size: 2.2rem;

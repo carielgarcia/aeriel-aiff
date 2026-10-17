@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=20.6">
+  <link rel="stylesheet" href="style.css?v=20.7">
 
   <!-- Contador de visitas sin cookies (analisis_metricas/): ver /privacy -->
   <script src="/contador.js" defer></script>
@@ -2525,21 +2525,75 @@
       </div>
     </section>
 
-    <!-- Games Showcase: Techno Variants Engine -->
-    <section class="games-app-section">
+    <!-- Games hub: one card per game. A game loads only when its card is opened. -->
+    <section class="games-hub-section" id="games-hub">
+      <div class="container">
+        <div class="games-grid">
+          <button type="button" class="game-card" data-game="excuse-me">
+            <span class="games-app-badge">
+              <span lang="en">[ 8-BIT RPG // 18+ // EN ES PT ]</span>
+              <span lang="es">[ RPG DE 8 BITS // 18+ // EN ES PT ]</span>
+              <span lang="pt">[ RPG DE 8 BITS // 18+ // EN ES PT ]</span>
+            </span>
+            <span class="game-card-title">EXCUSE ME</span>
+            <span class="game-card-desc">
+              <span lang="en">A night at the club LA GRIETA, from the door to sunrise. Cross the crowd, look after your friends, get a pill checked, don't get thrown out. Four bars, one clock, eleven endings.</span>
+              <span lang="es">Una noche en el club LA GRIETA, de la puerta al amanecer. Cruza la multitud, cuida a tus amigos, haz chequear una pastilla, que no te echen. Cuatro barras, un reloj, once finales.</span>
+              <span lang="pt">Uma noite no club LA GRIETA, da porta ao amanhecer. Atravesse a multidão, cuide dos amigos, mande checar um comprimido, não seja expulso. Quatro barras, um relógio, onze finais.</span>
+            </span>
+            <span class="game-card-tags">
+              <span lang="en">ARROW KEYS // DIALOGUE // DANCE // CONSEQUENCES</span>
+              <span lang="es">FLECHAS // DIÁLOGOS // BAILE // CONSECUENCIAS</span>
+              <span lang="pt">SETAS // DIÁLOGOS // DANÇA // CONSEQUÊNCIAS</span>
+            </span>
+            <span class="game-card-cta">
+              <span lang="en">[ OPEN ]</span><span lang="es">[ ABRIR ]</span><span lang="pt">[ ABRIR ]</span>
+            </span>
+          </button>
+          <button type="button" class="game-card" data-game="techno-variants">
+            <span class="games-app-badge">
+              <span lang="en">[ INTERACTIVE AUDIO LAB // WEB SYNTH ]</span>
+              <span lang="es">[ LABORATORIO DE AUDIO INTERACTIVO // SINTETIZADOR WEB ]</span>
+              <span lang="pt">[ LABORATÓRIO DE ÁUDIO INTERATIVO // SINTETIZADOR WEB ]</span>
+            </span>
+            <span class="game-card-title">TECHNO VARIANTS ENGINE</span>
+            <span class="game-card-desc">
+              <span lang="en">A subgenre sound lab and 16-step drum machine. Load style grooves, shape every voice, and hear how techno changes its shape.</span>
+              <span lang="es">Un laboratorio de sonido de subgéneros y una caja de ritmos de 16 pasos. Carga grooves de estilo, moldea cada voz y escucha cómo cambia de forma el techno.</span>
+              <span lang="pt">Um laboratório de som de subgêneros e uma caixa de ritmos de 16 passos. Carregue grooves de estilo, modele cada voz e ouça como o techno muda de forma.</span>
+            </span>
+            <span class="game-card-tags">
+              <span lang="en">DRUM MACHINE // SYNTH // WEB AUDIO</span>
+              <span lang="es">CAJA DE RITMOS // SINTETIZADOR // WEB AUDIO</span>
+              <span lang="pt">CAIXA DE RITMOS // SINTETIZADOR // WEB AUDIO</span>
+            </span>
+            <span class="game-card-cta">
+              <span lang="en">[ OPEN ]</span><span lang="es">[ ABRIR ]</span><span lang="pt">[ ABRIR ]</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Games stage: the active game, in one frame -->
+    <section class="games-app-section" id="games-stage" hidden>
       <div class="container">
         <div class="games-app-header">
-          <span class="games-app-badge">
-            <span lang="en">[ INTERACTIVE AUDIO LAB // WEB SYNTH ]</span>
-            <span lang="es">[ LABORATORIO DE AUDIO INTERACTIVO // SINTETIZADOR WEB ]</span>
-            <span lang="pt">[ LABORATÓRIO DE ÁUDIO INTERATIVO // SINTETIZADOR WEB ]</span>
-          </span>
-          <h2 class="games-app-subtitle">TECHNO VARIANTS ENGINE</h2>
+          <button type="button" class="btn-brutal games-all-btn" id="games-all-btn">
+            <span lang="en">← ALL GAMES</span><span lang="es">← TODOS LOS JUEGOS</span><span lang="pt">← TODOS OS JOGOS</span>
+          </button>
+          <span class="games-app-badge" id="games-stage-badge"></span>
+          <h2 class="games-app-subtitle" id="games-stage-title"></h2>
+          <p class="games-stage-note">
+            <span lang="en">Click inside the game once, then use the keyboard.</span>
+            <span lang="es">Haz clic dentro del juego una vez y luego usa el teclado.</span>
+            <span lang="pt">Clique dentro do jogo uma vez e depois use o teclado.</span>
+          </p>
         </div>
         <div class="games-app-frame-wrapper">
-          <iframe 
-            data-src="/games/techno-variants/index.html"
-            title="TECHNO VARIANTS ENGINE — Techno Subgenre Sound Lab & 16-Beat Drum Machine"
+          <iframe
+            id="games-frame"
+            title="Game"
             class="games-app-iframe"
             loading="eager"
             allow="autoplay; encrypted-media">
@@ -2671,6 +2725,63 @@
     // Localized Games routes: EN /games, ES /juegos, PT /jogos (static crawler stubs exist for all three)
     function gamesPath(lang) { return lang === 'es' ? '/juegos' : (lang === 'pt' ? '/jogos' : '/games'); }
     function isGamesPath(p) { return /^\/(games|juegos|jogos)(\/|$)/.test(p); }
+
+    /* Games hub: a game loads into the shared frame only when its card is opened, and unloads when you leave. */
+    const GAMES = {
+      'excuse-me': {
+        src: '/games/excuse-me/index.html',
+        name: 'EXCUSE ME',
+        badge: { en: '[ 8-BIT RPG // 18+ // EN ES PT ]', es: '[ RPG DE 8 BITS // 18+ // EN ES PT ]', pt: '[ RPG DE 8 BITS // 18+ // EN ES PT ]' },
+        title: {
+          en: 'EXCUSE ME — 8-bit night-out role-playing game',
+          es: 'EXCUSE ME — juego de rol de 8 bits sobre una noche de club',
+          pt: 'EXCUSE ME — RPG de 8 bits sobre uma noite de club'
+        }
+      },
+      'techno-variants': {
+        src: '/games/techno-variants/index.html',
+        name: 'TECHNO VARIANTS ENGINE',
+        badge: { en: '[ INTERACTIVE AUDIO LAB // WEB SYNTH ]', es: '[ LABORATORIO DE AUDIO INTERACTIVO // SINTETIZADOR WEB ]', pt: '[ LABORATÓRIO DE ÁUDIO INTERATIVO // SINTETIZADOR WEB ]' },
+        title: {
+          en: 'TECHNO VARIANTS ENGINE — Techno Subgenre Sound Lab & 16-Step Drum Machine',
+          es: 'TECHNO VARIANTS ENGINE — Laboratorio de sonido de subgéneros techno y caja de ritmos de 16 pasos',
+          pt: 'TECHNO VARIANTS ENGINE — Laboratório de som de subgêneros techno e caixa de ritmos de 16 passos'
+        }
+      }
+    };
+    let activeGame = null;
+
+    function syncGamesStage(lang) {
+      const hub = document.getElementById('games-hub');
+      const stage = document.getElementById('games-stage');
+      const frame = document.getElementById('games-frame');
+      if (!hub || !stage || !frame) return;
+      const g = activeGame && GAMES[activeGame];
+      hub.hidden = !!g;
+      stage.hidden = !g;
+      if (!g) return;
+      const l = lang || document.documentElement.getAttribute('lang') || 'en';
+      frame.setAttribute('title', g.title[l] || g.title.en);
+      document.getElementById('games-stage-title').textContent = g.name;
+      document.getElementById('games-stage-badge').textContent = g.badge[l] || g.badge.en;
+    }
+    function openGame(id) {
+      const g = GAMES[id];
+      const frame = document.getElementById('games-frame');
+      if (!g || !frame) return;
+      activeGame = id;
+      if (frame.getAttribute('data-game') !== id) { frame.setAttribute('data-game', id); frame.setAttribute('src', g.src); }
+      syncGamesStage();
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+    }
+    function closeGame() {
+      const frame = document.getElementById('games-frame');
+      activeGame = null;
+      if (frame) { frame.removeAttribute('data-game'); frame.removeAttribute('src'); frame.style.height = ''; }
+      syncGamesStage();
+    }
+    window.openGame = openGame;
+    window.closeGame = closeGame;
 
     function scrollBehavior() {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
@@ -3307,6 +3418,7 @@
 
     function updatePageTitle() {
       const currentView = document.body.getAttribute('data-view') || 'main';
+      if (currentView !== 'games' && activeGame) closeGame();
       syncNavigationChrome(currentView);
       const canonicalEl = document.getElementById('canonical-link');
       const origin = window.location.origin;
@@ -3404,8 +3516,6 @@
           history.replaceState(history.state, '', msgPath);
         }
       } else if (currentView === 'games') {
-        const gamesFrame = document.querySelector('.games-app-iframe');
-        if (gamesFrame && !gamesFrame.getAttribute('src')) gamesFrame.setAttribute('src', gamesFrame.getAttribute('data-src'));
         const gLang = document.documentElement.getAttribute('lang') || 'en';
         const gamesTitle = { en: 'GAMES // ÆRIEL', es: 'JUEGOS // ÆRIEL', pt: 'JOGOS // ÆRIEL' }[gLang] || 'GAMES // ÆRIEL';
         const gamesDesc = {
@@ -3413,12 +3523,7 @@
           es: 'A veces programo cosas por pura diversión, dejándome llevar. No lo tomes en serio y disfruta :D',
           pt: 'Às vezes eu só programo coisas por diversão, no embalo. Não leve isso a sério e aproveite :D'
         }[gLang] || '';
-        const gamesFrameTitle = {
-          en: 'TECHNO VARIANTS ENGINE — Techno Subgenre Sound Lab & 16-Step Drum Machine',
-          es: 'TECHNO VARIANTS ENGINE — Laboratorio de sonido de subgéneros techno y caja de ritmos de 16 pasos',
-          pt: 'TECHNO VARIANTS ENGINE — Laboratório de som de subgêneros techno e caixa de ritmos de 16 passos'
-        }[gLang];
-        if (gamesFrame && gamesFrameTitle) gamesFrame.setAttribute('title', gamesFrameTitle);
+        syncGamesStage(gLang);
         document.title = gamesTitle;
         const gPath = gamesPath(gLang);
         if (canonicalEl) canonicalEl.setAttribute('href', origin + gPath);
@@ -4263,6 +4368,9 @@
 
     window.openAe000xSubsite = openAe000xSubsite;
     window.openGamesSubsite = openGamesSubsite;
+    document.querySelectorAll('.game-card').forEach(card => card.addEventListener('click', () => openGame(card.getAttribute('data-game'))));
+    const gamesAllBtn = document.getElementById('games-all-btn');
+    if (gamesAllBtn) gamesAllBtn.addEventListener('click', closeGame);
     window.openMainPortfolio = openMainPortfolio;
 
     /* ==========================================================================
@@ -4541,7 +4649,7 @@
 
       // Listen for dynamic iframe resizing from the Techno Variants Engine web app
       window.addEventListener('message', (e) => {
-        const iframe = document.querySelector('.games-app-iframe');
+        const iframe = document.getElementById('games-frame');
         if (!iframe || e.origin !== window.location.origin || e.source !== iframe.contentWindow) return;
         if (e.data && e.data.type === 'resize-games-iframe' && Number.isFinite(e.data.height)) {
           iframe.style.height = `${Math.min(Math.max(Math.round(e.data.height), 300), 20000)}px`;
