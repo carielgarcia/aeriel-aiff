@@ -190,3 +190,9 @@ The Night Report lists your people and how they are, the ten most important mome
 - **The rave** (`story_v13.js`): no door and no guards, so everything is politics. Maya's clipboard starts two storylines. THE PETITION needs three of five signatures (Bea, Klaus, Madison, Juniper's committee, Sub). THE RAID resolves at minute 270: two preparations out of rights cards (Bea), power cut (Sub), lookout (Pip) and calm assembly (Juniper) averts it, and the petition counts as one more. The committee, Klaus and Madison carry the SJW and Berlin/Brooklyn jokes, each of whom signs or helps in the end.
 - **Dealers**: four new rave dealers (Mambo, Spoke, Pixi, Doc) share Tico's menu and pill picker.
 - **Pickpocket**: `EM.PICK_ODDS = 150`. Hooks `U.startDialogue` (NPC encounters) and `EM.engine.excuse`. Effects in `S.pp_apply`; friends are locked into the party by wrapping `L.leave`, and `L.makeoutChance` gets +0.10.
+
+## Pending
+- **More political missions at the rave**: neighbours (noise complaint and a mediated truce), the owner (a phone call or visit before the sale), and a mutual-aid table (food and water collection) tied to the petition.
+- **A visible cue for the raid**: the music dropping and the lights changing at 03:30, not only a toast.
+- Own music and next chapters (deferred by the user).
+- Playtest passes: ES/PT strings read in-game, audio listened to.
