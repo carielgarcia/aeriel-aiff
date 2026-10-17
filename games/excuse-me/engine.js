@@ -268,7 +268,7 @@
   function triggerHostile(d) {
     if (E.hostileCool > 0 || S.res[d.id]) return;
     /* most of the time a glare is all you get */
-    if (Math.random() > 0.55) { E.hostileCool = 10; return; }
+    if (Math.random() > 0.55 * (EM.hostileMul ? EM.hostileMul() : 1)) { E.hostileCool = 10; return; }
     E.hostileCool = 45;
     S.hostile = { id: d.id, look: d.look, kind: Math.floor(EM.hash2(d.tx, d.ty, 5) * 4) };
     setTimeout(function () { if (!E.paused && !EM.state.ended) EM.hooks.script('hostile_dancer', S.hostile); }, 420);
@@ -547,6 +547,8 @@
         g.drawImage(EM.icon('exclam'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 8 + Math.sin(t * 4));
       } else if (e.kind === 'smoke') {
         g.drawImage(EM.icon('cig', N.org), e.rect.x + 4, e.rect.y + 4);
+      } else if (e.kind === 'find') {
+        if (Math.floor(t * 2.5) % 3) g.drawImage(EM.icon('spark', N.yel), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 5 + Math.round(Math.sin(t * 5)));
       } else if (e.kind === 'poster') {
         g.drawImage(EM.icon('question', Z.theme.b), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
       }
@@ -581,6 +583,7 @@
     let expr = pl.expr;
     if (S.stats.hp < 25 || (S.stats.soc < 10)) expr = 4; else if (S.fx.mdma) expr = 2;
     const look = Object.assign({}, pl, { expr: expr, ol: '#FFFFFF' });
+    if (S.worn && S.worn.sunglasses) look.acc = 1;
     const pfr = personFrame(E.moving, t);
     const dancing = E.dancing;
     items.push({ y: S.y, fn: function () {
@@ -658,8 +661,9 @@
 
   let maskCanvas = null, maskData = null;
   function lighting(camx, camy) {
-    const dark = Z.id === 'darkroom' ? 0.985 : Z.dark;
-    const lights = Z.lights;
+    const shades = !!(S.worn && S.worn.sunglasses);
+    const dark = Z.id === 'darkroom' ? 0.985 : (shades ? Math.max(Z.dark, 0.96) : Z.dark);
+    const lights = shades ? [] : Z.lights;
     if (dark <= 0 && !lights.length) return;
     if (!maskCanvas) { maskCanvas = EM.mkCanvas(VW, VH); maskData = maskCanvas.getContext('2d').createImageData(VW, VH); }
     const d = maskData.data;
@@ -668,6 +672,7 @@
     const rgb = function (hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
     const L2 = lights.map(function (l) { return { x: l.x - camx, y: l.y - camy, r: l.r, c: rgb(l.c || col) }; });
     let pr = Z.id === 'tunnel' ? 40 : (Z.dark > 0.5 ? 40 : 30);
+    if (shades && Z.id !== 'darkroom') pr = 34;
     if (Z.id === 'darkroom') pr = 8 + (E.reachT > 0 ? 46 * Math.sin(Math.PI * (1 - E.reachT / 1.15)) : 0);
     const torch = { x: S.x - camx, y: S.y - 12 - camy, r: pr };
     for (let y = 0; y < VH; y++) for (let x = 0; x < VW; x++) {
