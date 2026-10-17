@@ -139,7 +139,7 @@
         choices: [
           { tone: 'chill', t: T('"Maybe check the list under both?"', '«¿Y si miran la lista con los dos?»', '«E se vocês olharem a lista com os dois?»'), do: { soc: 2, fun: 1 }, next: null, react: T('They check. Both names are there. They scream at each other with joy and then at you. You are the hero of the queue.', 'Revisan. Están los dos. Se gritan de alegría y luego te gritan a ti. Eres el héroe de la fila.', 'Eles conferem. Os dois nomes estão lá. Gritam de alegria um com o outro e depois com você. Você é o herói da fila.') },
           { tone: 'joke', t: T('"Can I join the argument? I have opinions."', '«¿Puedo unirme a la discusión? Tengo opiniones».', '«Posso entrar na discussão? Tenho opiniões».'), do: { fun: 3, soc: -1 }, next: null, react: T('You take Leo\'s side for ten seconds and Ana\'s side for ten more. Nobody wins. Everybody laughs.', 'Defiendes a Leo diez segundos y a Ana diez más. Nadie gana. Todos se ríen.', 'Você defende o Leo por dez segundos e a Ana por mais dez. Ninguém ganha. Todo mundo ri.') },
-          { tone: 'blunt', t: T('"Whatever it is, you are both blocking the sidewalk."', '«Sea lo que sea, los dos están tapando la vereda».', '«Seja o que for, vocês dois estão bloqueando a calçada».'), do: { soc: -2 }, next: null, bad: true }
+          { tone: 'blunt', t: T('"Whatever it is, you are both blocking the sidewalk."', '«Sea lo que sea, los dos están tapando la acera».', '«Seja o que for, vocês dois estão bloqueando a calçada».'), do: { soc: -2 }, next: null, bad: true }
         ]
       }
     }

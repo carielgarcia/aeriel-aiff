@@ -75,7 +75,7 @@
       bring: {
         text: [
           T('"Okay. Who\'s the owner? Put it on the table. Tell me where it came from and what you were told."', '«Bien. ¿Quién es el dueño? Ponla en la mesa. Dime de dónde vino y qué te dijeron».', '«Tá. Quem é o dono? Coloca na mesa. Me diz de onde veio e o que te disseram».'),
-          T('DANI: "A guy in the queue outside. Said MDMA. Nice jacket." Nuri nods without judgement, like a nurse. "I scrape a little off. It\'s destroyed in the test, so there\'s less. Still want it done?"', 'DANI: «Un tipo de la fila de afuera. Dijo MDMA. Linda campera». Nuri asiente sin juzgar, como una enfermera. «Raspo un poco. Se destruye en la prueba, así que queda menos. ¿Todavía quieres hacerla?»', 'DANI: «Um cara da fila lá fora. Disse MDMA. Jaqueta legal». A Nuri assente sem julgar, como uma enfermeira. «Raspo um pouco. Se destrói no teste, então sobra menos. Ainda quer fazer?»')
+          T('DANI: "A guy in the queue outside. Said MDMA. Nice jacket." Nuri nods without judgement, like a nurse. "I scrape a little off. It\'s destroyed in the test, so there\'s less. Still want it done?"', 'DANI: «Un tipo de la fila de afuera. Dijo MDMA. Linda chaqueta». Nuri asiente sin juzgar, como una enfermera. «Raspo un poco. Se destruye en la prueba, así que queda menos. ¿Todavía quieres hacerla?»', 'DANI: «Um cara da fila lá fora. Disse MDMA. Jaqueta legal». A Nuri assente sem julgar, como uma enfermeira. «Raspo um pouco. Se destrói no teste, então sobra menos. Ainda quer fazer?»')
         ],
         choices: [
           { tone: 'yes', t: T('"Do it."', '«Hazlo».', '«Faça».'), call: 'run_test', next: null, free: true },
@@ -131,7 +131,7 @@
       fake: {
         text: [
           T('"Nothing on this table looks like MDMA. Something else is in there. I can\'t tell you what."', '«Nada en esta mesa se parece al MDMA. Hay otra cosa adentro. No puedo decirte qué».', '«Nada nesta mesa se parece com MDMA. Tem outra coisa aí dentro. Não posso dizer o quê».'),
-          T('"What I can say: it isn\'t what you were sold. It might do nothing. It might do something that isn\'t what you want. The table can\'t tell me which. There\'s a bin here. No questions, no shame."', '«Lo que puedo decir: no es lo que te vendieron. Puede no hacer nada. Puede hacer algo que no quieres. La mesa no me dice cuál. Hay un tacho aquí. Sin preguntas, sin vergüenza».', '«O que posso dizer: não é o que te venderam. Pode não fazer nada. Pode fazer algo que você não quer. A mesa não me diz qual. Tem uma lixeira aqui. Sem perguntas, sem vergonha».')
+          T('"What I can say: it isn\'t what you were sold. It might do nothing. It might do something that isn\'t what you want. The table can\'t tell me which. There\'s a bin here. No questions, no shame."', '«Lo que puedo decir: no es lo que te vendieron. Puede no hacer nada. Puede hacer algo que no quieres. La mesa no me dice cuál. Hay un bote de basura aquí. Sin preguntas, sin vergüenza».', '«O que posso dizer: não é o que te venderam. Pode não fazer nada. Pode fazer algo que você não quer. A mesa não me diz qual. Tem uma lixeira aqui. Sem perguntas, sem vergonha».')
         ],
         next: 'decide_fake'
       },
@@ -172,7 +172,7 @@
       },
       binned: {
         who: 'nuri',
-        text: T('Dani\'s hand opens over the bin. It takes a long time. Nuri says "Thank you" very quietly, like you gave her something. "Water? A hug? Both are free."', 'La mano de Dani se abre sobre el tacho. Tarda mucho. Nuri dice «Gracias» muy bajito, como si le hubieras dado algo. «¿Agua? ¿Un abrazo? Ambos son gratis».', 'A mão do Dani se abre sobre a lixeira. Demora muito. A Nuri diz «Obrigada» bem baixinho, como se você tivesse dado algo a ela. «Água? Um abraço? Os dois são de graça».'),
+        text: T('Dani\'s hand opens over the bin. It takes a long time. Nuri says "Thank you" very quietly, like you gave her something. "Water? A hug? Both are free."', 'La mano de Dani se abre sobre el bote de basura. Tarda mucho. Nuri dice «Gracias» muy bajito, como si le hubieras dado algo. «¿Agua? ¿Un abrazo? Ambos son gratis».', 'A mão do Dani se abre sobre a lixeira. Demora muito. A Nuri diz «Obrigada» bem baixinho, como se você tivesse dado algo a ela. «Água? Um abraço? Os dois são de graça».'),
         do: { flag: ['pill_binned'], bond: { dani: 2, maru: 1 }, soc: 4, fun: 3, care: 1 },
         next: 'end'
       },
@@ -388,7 +388,7 @@
     who: 'tato', start: 'a', nodes: {
       a: {
         text: [
-          T('By a fire barrel at the far end of the smoking area, Tato is standing very straight in front of a man in a leather jacket. Mateo. Tato\'s ex. You know the name because Tato has said it exactly four times in two years and each time it was in a different voice.', 'Junto a un barril de fuego al fondo de la zona de fumar, Tato está muy derecho frente a un hombre con campera de cuero. Mateo. El ex de Tato. Sabes el nombre porque Tato lo dijo exactamente cuatro veces en dos años y cada vez con una voz distinta.', 'Perto de um barril de fogo no fundo da área de fumantes, o Tato tá muito empertigado diante de um homem de jaqueta de couro. Mateo. O ex do Tato. Você sabe o nome porque o Tato disse exatamente quatro vezes em dois anos e cada vez com uma voz diferente.'),
+          T('By a fire barrel at the far end of the smoking area, Tato is standing very straight in front of a man in a leather jacket. Mateo. Tato\'s ex. You know the name because Tato has said it exactly four times in two years and each time it was in a different voice.', 'Junto a un barril de fuego al fondo de la zona de fumar, Tato está muy derecho frente a un hombre con chaqueta de cuero. Mateo. El ex de Tato. Sabes el nombre porque Tato lo dijo exactamente cuatro veces en dos años y cada vez con una voz distinta.', 'Perto de um barril de fogo no fundo da área de fumantes, o Tato tá muito empertigado diante de um homem de jaqueta de couro. Mateo. O ex do Tato. Você sabe o nome porque o Tato disse exatamente quatro vezes em dois anos e cada vez com uma voz diferente.'),
           T('MATEO: "I just wanted to say hi." TATO, with the face of a man holding a very full glass: "…Hi." Neither of them has noticed you. Both of them are about to say something that will cost something.', 'MATEO: «Solo quería saludar». TATO, con la cara de alguien que sostiene un vaso muy lleno: «…Hola». Ninguno de los dos te vio. Los dos están a punto de decir algo que va a costar.', 'MATEO: «Só queria dar um oi». TATO, com a cara de quem segura um copo muito cheio: «…Oi». Nenhum dos dois te viu. Os dois estão prestes a dizer algo que vai custar.')
         ],
         choices: [

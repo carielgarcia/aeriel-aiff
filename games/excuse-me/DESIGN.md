@@ -111,3 +111,15 @@ The Night Report lists your people and how they are, the ten most important mome
 - Deep links to a single game (`/games?game=excuse-me`).
 - Gamepad support. Save slots.
 - Optional: the closing DJ as a cameo of the real ÆRIEL.
+
+
+## v0.3 changes
+- **Colour**: black-dominant world with neon trim and per-zone themes; colourful characters (6 skin tones, 9 hair styles, 10 hair colours, 11 tops, 6 bottoms, accents). Brutalist frame unchanged. Documented as an exception in AGENTS.md.
+- **Taller characters**: 16x32 sprites (18x34 with outline), with face, hair, clothes and accessories visible; the canvas is 320x180 with 16px tiles.
+- **Crowd attitude**: yielders (~80%), stubborn (~12%, hold their ground and slow you), hostile (~8%, antagonistic when you say "excuse me"; four handled dialogues).
+- **Hard reset**: ban, ambulance (second faint) and `fedup` (bad-decision counter >= 11) offer BEGIN AGAIN: IT IS 22:00 with the same player and seed; lessons are shown at the start of the next night. The first faint is a soft fail (wake in the welfare room).
+- **Dark room**: blind navigation with a Z reach (torch radius), spatial murmurs and tap cues, embers and a curtain thread; touching unseen people costs weirdness.
+- **ÆRIEL** is the resident DJ, with Æ000.X jokes on the list, the rules and the vibe.
+- **Weirdness**: decays -0.03/min always, -0.05/min extra after 12 game-minutes without misbehaving.
+- **Links**: own link per game (see AGENTS.md section 11).
+- Deferred: own music, further chapters.

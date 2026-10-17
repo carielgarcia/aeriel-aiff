@@ -9,7 +9,8 @@
 
   /* ------------------------------------------------------------ cast */
   /* look: skin 0-3, hair 0-8, hc 0-3, expr 0-5, top 0-10, bottom 0-5, acc 0-8 (8 = mop) */
-  function L(skin, hair, hc, expr, top, bottom, acc, wide) { return { skin: skin, hair: hair, hc: hc, expr: expr, top: top, bottom: bottom, acc: acc, wide: !!wide }; }
+  const SKIN_MAP = [0, 1, 3, 4], HC_MAP = [0, 5, 6, 3];
+  function L(skin, hair, hc, expr, top, bottom, acc, wide) { return { skin: SKIN_MAP[skin], hair: hair, hc: HC_MAP[hc], expr: expr, top: top, bottom: bottom, acc: acc, wide: !!wide }; }
   const CAST = EM.CAST = {
     maru:    { name: 'MARU',    look: L(1, 7, 0, 1, 9, 0, 5) },
     dani:    { name: 'DANI',    look: L(3, 4, 0, 2, 4, 2, 1) },
@@ -64,10 +65,31 @@
     hazel:   { name: 'HAZEL',   look: L(0, 5, 2, 4, 1, 1, 1) },
     oz:      { name: 'OZ',      look: L(1, 0, 0, 5, 6, 3, 6) },
     beatriz: { name: 'BEATRIZ', look: L(2, 7, 0, 0, 9, 1, 0) },
-    resident:{ name: 'THE RESIDENT', look: L(0, 1, 0, 1, 1, 1, 4) },
+    resident:{ name: 'ÆRIEL', look: L(0, 1, 2, 1, 1, 1, 4) },
     djattic: { name: 'DJ',      look: L(3, 5, 3, 0, 1, 1, 4) },
     dj:      { name: 'DJ',      look: L(1, 2, 0, 0, 1, 1, 4) }
   };
+
+  /* colours: hc hair colour 0-9, tc top colour 0-11, bc bottom colour 0-9, skin 0-5 (overrides) */
+  const STYLE = {
+    maru:    { hc: 7, tc: 9, bc: 1, skin: 1 }, dani:  { hc: 0, tc: 5, bc: 6, skin: 4 }, tato:   { hc: 2, tc: 8, bc: 1, skin: 0 },
+    broh:    { hc: 1, tc: 0, bc: 4, skin: 2 }, sofi:  { hc: 0, tc: 6, bc: 0, skin: 3 }, brohF1: { hc: 3, tc: 10, bc: 4, skin: 0 }, brohF2: { hc: 1, tc: 2, bc: 5, skin: 1 },
+    tobi:    { hc: 8, tc: 4, bc: 5, skin: 0 }, stomp1: { hc: 9, tc: 1, bc: 1, skin: 3 }, stomp2: { hc: 4, tc: 3, bc: 0, skin: 2 }, stomp3: { hc: 7, tc: 5, bc: 6, skin: 5 }, stomp4: { hc: 2, tc: 9, bc: 4, skin: 1 },
+    fernet:  { hc: 0, tc: 7, bc: 1, skin: 3 }, hugo:  { hc: 5, tc: 0, bc: 0, skin: 1 }, tristan: { hc: 3, tc: 1, bc: 1, skin: 0 }, nico: { hc: 0, tc: 1, bc: 1, skin: 4 },
+    dragan:  { hc: 0, tc: 5, bc: 1, skin: 3 }, kiki: { hc: 7, tc: 3, bc: 6, skin: 1 }, bruno: { hc: 2, tc: 0, bc: 0, skin: 0 }, ana: { hc: 1, tc: 10, bc: 0, skin: 1 }, leo: { hc: 0, tc: 8, bc: 1, skin: 0 },
+    luca:    { hc: 0, tc: 10, bc: 1, skin: 3 }, mika: { hc: 8, tc: 4, bc: 1, skin: 1 }, rosa: { hc: 5, tc: 9, bc: 1, skin: 3 }, marga: { hc: 6, tc: 2, bc: 2, skin: 0 }, ezra: { hc: 9, tc: 6, bc: 1, skin: 4 },
+    qpair1:  { hc: 2, tc: 11, bc: 0, skin: 1 }, qpair2: { hc: 3, tc: 7, bc: 8, skin: 3 }, dario: { hc: 0, tc: 1, bc: 1, skin: 1 }, sofa1: { hc: 4, tc: 6, bc: 0, skin: 0 }, sofa2: { hc: 0, tc: 3, bc: 1, skin: 4 },
+    trio1:   { hc: 7, tc: 2, bc: 1, skin: 1 }, trio2: { hc: 0, tc: 8, bc: 6, skin: 3 }, trio3: { hc: 9, tc: 5, bc: 1, skin: 5 }, newbie: { hc: 2, tc: 11, bc: 0, skin: 0 }, juno: { hc: 0, tc: 11, bc: 0, skin: 0 },
+    hk1:     { hc: 0, tc: 1, bc: 1, skin: 3 }, hk2: { hc: 4, tc: 2, bc: 3, skin: 1 }, rico: { hc: 2, tc: 1, bc: 1, skin: 3 }, ximena: { hc: 7, tc: 10, bc: 1, skin: 3 }, recog: { hc: 1, tc: 4, bc: 4, skin: 1 },
+    jonas:   { hc: 3, tc: 4, bc: 4, skin: 0 }, ida: { hc: 3, tc: 3, bc: 1, skin: 0 }, pili: { hc: 4, tc: 2, bc: 6, skin: 1 }, mateo: { hc: 0, tc: 1, bc: 1, skin: 1 }, sol: { hc: 3, tc: 5, bc: 4, skin: 3 },
+    ofelia:  { hc: 0, tc: 5, bc: 1, skin: 5 }, dante: { hc: 5, tc: 4, bc: 5, skin: 3 }, nuri: { hc: 0, tc: 7, bc: 0, skin: 1 }, teo: { hc: 0, tc: 7, bc: 0, skin: 4 }, hazel: { hc: 6, tc: 1, bc: 1, skin: 0 },
+    oz:      { hc: 0, tc: 6, bc: 8, skin: 1 }, beatriz: { hc: 0, tc: 1, bc: 1, skin: 3 }, resident: { hc: 6, tc: 1, bc: 1, skin: 0 }, djattic: { hc: 8, tc: 6, bc: 1, skin: 5 }, dj: { hc: 9, tc: 2, bc: 1, skin: 1 }
+  };
+  Object.keys(CAST).forEach(function (id) {
+    const st = STYLE[id]; const lk = CAST[id].look;
+    if (st) { lk.hc = st.hc; lk.tc = st.tc; lk.bc = st.bc; if (st.skin !== undefined) lk.skin = st.skin; }
+    else { lk.tc = lk.tc === undefined ? 3 : lk.tc; }
+  });
 
   /* ------------------------------------------------------------ zone DSL */
   const zones = EM.zones = {};
@@ -76,7 +98,7 @@
     this.tiles = new Uint8Array(w * h);
     this.crowd = new Uint8Array(w * h);
     this.name = o.name; this.audio = o.audio || { lp: 18000, wet: 0.05, style: 'auto' };
-    this.dark = o.dark || 0; this.quiet = o.quiet || 0; this.sky = !!o.sky; this.outdoor = !!o.outdoor;
+    this.theme = o.theme || { a: '#FF2D95', b: '#19D3FF' }; this.dark = o.dark || 0; this.quiet = o.quiet || 0; this.sky = !!o.sky; this.outdoor = !!o.outdoor;
     this.ents = []; this.signs = []; this.lights = []; this.friendAt = {};
     this.crowdRects = [];
     zones[id] = this;
@@ -89,7 +111,7 @@
   /* base: 0-3 crowd density at peak; rects are scaled by the time of night at runtime */
   P.crowdRect = function (x, y, w, h, base) { this.crowdRects.push({ x: x, y: y, w: w, h: h, base: base }); return this; };
   P.sign = function (x, y, text, scale) { this.signs.push({ x: x, y: y, text: text, scale: scale || 1 }); return this; };
-  P.light = function (x, y, r) { this.lights.push({ x: x * 16 + 8, y: y * 16 + 8, r: r }); return this; };
+  P.light = function (x, y, r, c) { this.lights.push({ x: x * 16 + 8, y: y * 16 + 8, r: r, c: c || null }); return this; };
   P.door = function (x, y, w, h, to, tx, ty, dir, o) {
     o = o || {};
     this.ents.push({ type: 'door', id: o.id || ('door_' + to + '_' + x + '_' + y), x: x, y: y, w: w, h: h, to: to, tx: tx, ty: ty, dir: dir || 'u', when: o.when, locked: o.locked, label: o.label });
@@ -106,7 +128,7 @@
 
   /* ============================================================ 1. OUTSIDE */
   (function () {
-    const Z = new Zone('doors', 32, 16, { name: T('OUTSIDE // LA GRIETA', 'AFUERA // LA GRIETA', 'FORA // LA GRIETA'), audio: { lp: 650, wet: 0.08, style: 'auto' }, dark: 0.18, outdoor: true });
+    const Z = new Zone('doors', 32, 16, { theme: { a: '#FF2D95', b: '#19D3FF' }, name: T('OUTSIDE // LA GRIETA', 'AFUERA // LA GRIETA', 'FORA // LA GRIETA'), audio: { lp: 650, wet: 0.08, style: 'auto' }, dark: 0.18, outdoor: true });
     Z.fill(0, 0, 32, 4, TL.WALL);
     Z.fill(0, 4, 32, 6, TL.SIDEWALK);
     Z.fill(0, 10, 32, 4, TL.ROAD);
@@ -129,7 +151,7 @@
 
   /* ============================================================ 2. FOYER */
   (function () {
-    const Z = new Zone('foyer', 28, 14, { name: T('FOYER // COAT CHECK', 'FOYER // GUARDARROPA', 'FOYER // CHAPELARIA'), audio: { lp: 900, wet: 0.12, style: 'auto' }, dark: 0.1 });
+    const Z = new Zone('foyer', 28, 14, { theme: { a: '#FFB020', b: '#FF2D95' }, name: T('FOYER // COAT CHECK', 'FOYER // GUARDARROPA', 'FOYER // CHAPELARIA'), audio: { lp: 900, wet: 0.12, style: 'auto' }, dark: 0.1 });
     Z.room(0, 0, 28, 14, TL.FLOOR);
     Z.fill(2, 2, 6, 1, TL.LOCKER); Z.fill(2, 3, 6, 1, TL.BAR);
     Z.fill(10, 9, 3, 1, TL.BENCH); Z.set(1, 11, TL.PLANT); Z.set(26, 12, TL.PLANT);
@@ -151,7 +173,7 @@
 
   /* ============================================================ 3. MAIN FLOOR */
   (function () {
-    const Z = new Zone('main', 44, 32, { name: T('MAIN FLOOR', 'PISTA PRINCIPAL', 'PISTA PRINCIPAL'), audio: { lp: 18000, wet: 0.05, style: 'auto' }, dark: 0.0 });
+    const Z = new Zone('main', 44, 32, { theme: { a: '#FF2D95', b: '#19D3FF' }, name: T('MAIN FLOOR', 'PISTA PRINCIPAL', 'PISTA PRINCIPAL'), audio: { lp: 18000, wet: 0.05, style: 'auto' }, dark: 0.0 });
     Z.room(0, 0, 44, 32, TL.FLOOR);
     Z.fill(9, 6, 26, 16, TL.DANCE);
     Z.fill(17, 2, 10, 3, TL.BOOTH); Z.fill(19, 5, 6, 1, TL.TABLE);
@@ -202,7 +224,7 @@
 
   /* ============================================================ 4. RESTROOMS */
   (function () {
-    const Z = new Zone('restrooms', 34, 22, { name: T('TOILETS', 'BAÑOS', 'BANHEIROS'), audio: { lp: 520, wet: 0.2, style: 'auto' }, dark: 0.0 });
+    const Z = new Zone('restrooms', 34, 22, { theme: { a: '#19D3FF', b: '#00C2A8' }, name: T('TOILETS', 'BAÑOS', 'BANHEIROS'), audio: { lp: 520, wet: 0.2, style: 'auto' }, dark: 0.0 });
     Z.room(0, 0, 34, 22, TL.TILE);
     Z.fill(3, 1, 8, 1, TL.MIRROR); Z.fill(3, 2, 8, 1, TL.SINK);
     Z.fill(20, 2, 1, 8, TL.WALL); Z.fill(20, 12, 1, 9, TL.WALL);
@@ -229,7 +251,7 @@
 
   /* ============================================================ 5. DARKROOM */
   (function () {
-    const Z = new Zone('darkroom', 26, 18, { name: T('DARK ROOM', 'CUARTO OSCURO', 'DARK ROOM'), audio: { lp: 420, wet: 0.25, style: 'auto' }, dark: 0.5 });
+    const Z = new Zone('darkroom', 26, 18, { theme: { a: '#FF3B30', b: '#8A5CFF' }, name: T('DARK ROOM', 'CUARTO OSCURO', 'DARK ROOM'), audio: { lp: 420, wet: 0.25, style: 'auto' }, dark: 0.5 });
     Z.room(0, 0, 26, 18, TL.RUG);
     Z.fill(2, 3, 3, 1, TL.COUCH); Z.fill(8, 11, 3, 1, TL.COUCH); Z.fill(2, 11, 3, 1, TL.COUCH);
     Z.fill(15, 3, 8, 6, TL.MATT);
@@ -247,7 +269,7 @@
 
   /* ============================================================ 6. TUNNEL */
   (function () {
-    const Z = new Zone('tunnel', 44, 10, { name: T('THE TUNNEL', 'EL TÚNEL', 'O TÚNEL'), audio: { lp: 380, wet: 0.5, style: 'auto' }, dark: 0.86 });
+    const Z = new Zone('tunnel', 44, 10, { theme: { a: '#00C2A8', b: '#2F6BFF' }, name: T('THE TUNNEL', 'EL TÚNEL', 'O TÚNEL'), audio: { lp: 380, wet: 0.5, style: 'auto' }, dark: 0.86 });
     Z.fill(0, 0, 44, 10, TL.WALL);
     Z.fill(1, 3, 42, 4, TL.CONC);
     Z.fill(10, 2, 3, 1, TL.CONC); Z.fill(22, 2, 3, 1, TL.CONC); Z.fill(33, 2, 3, 1, TL.CONC); Z.fill(16, 7, 4, 1, TL.CONC);
@@ -266,7 +288,7 @@
 
   /* ============================================================ 7. COURTYARD */
   (function () {
-    const Z = new Zone('courtyard', 40, 26, { name: T('SMOKING AREA', 'ZONA DE FUMAR', 'ÁREA DE FUMANTES'), audio: { lp: 420, wet: 0.22, style: 'auto' }, dark: 0.3, quiet: 0.04, outdoor: true });
+    const Z = new Zone('courtyard', 40, 26, { theme: { a: '#FF6A00', b: '#2ED36A' }, name: T('SMOKING AREA', 'ZONA DE FUMAR', 'ÁREA DE FUMANTES'), audio: { lp: 420, wet: 0.22, style: 'auto' }, dark: 0.3, quiet: 0.04, outdoor: true });
     Z.fill(0, 0, 40, 26, TL.VOID);
     Z.fill(1, 0, 38, 2, TL.WALL);
     Z.fill(1, 2, 38, 23, TL.GRASS);
@@ -298,7 +320,7 @@
 
   /* ============================================================ 8. WELFARE */
   (function () {
-    const Z = new Zone('welfare', 22, 14, { name: T('QUIET ROOM // WELFARE', 'SALA TRANQUILA // CUIDADO', 'SALA DE CALMA // CUIDADO'), audio: { lp: 240, wet: 0.2, style: 'chill' }, dark: 0.0, quiet: 0.28 });
+    const Z = new Zone('welfare', 22, 14, { theme: { a: '#2ED36A', b: '#19D3FF' }, name: T('QUIET ROOM // WELFARE', 'SALA TRANQUILA // CUIDADO', 'SALA DE CALMA // CUIDADO'), audio: { lp: 240, wet: 0.2, style: 'chill' }, dark: 0.0, quiet: 0.28 });
     Z.room(0, 0, 22, 14, TL.TILE);
     Z.fill(2, 8, 7, 4, TL.MATT);
     Z.fill(13, 4, 4, 1, TL.TABLE); Z.fill(18, 3, 2, 1, TL.CRATE); Z.fill(18, 4, 2, 1, TL.CRATE);
@@ -315,7 +337,7 @@
 
   /* ============================================================ 9. ATTIC */
   (function () {
-    const Z = new Zone('attic', 40, 24, { name: T('SALA 2 // THE ATTIC', 'SALA 2 // EL ÁTICO', 'SALA 2 // O SÓTÃO'), audio: { lp: 14000, wet: 0.25, style: 'attic' }, dark: 0.2 });
+    const Z = new Zone('attic', 40, 24, { theme: { a: '#8A5CFF', b: '#B6FF3B' }, name: T('SALA 2 // THE ATTIC', 'SALA 2 // EL ÁTICO', 'SALA 2 // O SÓTÃO'), audio: { lp: 14000, wet: 0.25, style: 'attic' }, dark: 0.2 });
     Z.room(0, 0, 40, 24, TL.FLOOR);
     Z.fill(6, 6, 26, 12, TL.DANCE);
     Z.fill(34, 2, 5, 3, TL.BOOTH); Z.fill(34, 5, 5, 1, TL.TABLE);
@@ -338,14 +360,14 @@
 
   /* ============================================================ 10. BACKSTAGE */
   (function () {
-    const Z = new Zone('backstage', 28, 12, { name: T('BACKSTAGE', 'BACKSTAGE', 'BACKSTAGE'), audio: { lp: 1200, wet: 0.12, style: 'auto' }, dark: 0.1, quiet: 0.1 });
+    const Z = new Zone('backstage', 28, 12, { theme: { a: '#FFB020', b: '#FF6A00' }, name: T('BACKSTAGE', 'BACKSTAGE', 'BACKSTAGE'), audio: { lp: 1200, wet: 0.12, style: 'auto' }, dark: 0.1, quiet: 0.1 });
     Z.room(0, 0, 28, 12, TL.RUG);
     Z.fill(10, 8, 3, 1, TL.COUCH); Z.fill(20, 3, 3, 1, TL.CRATE); Z.fill(16, 5, 2, 1, TL.TABLE);
     Z.set(4, 10, TL.DOORF); Z.set(0, 5, TL.DOORF); Z.set(24, 1, TL.DOORF);
     Z.sign(22, 2, 'ROOF', 1).sign(2, 9, 'STAGE', 1);
     Z.door(4, 10, 1, 1, 'main', 33, 3, 'd', { id: 'door_main4' });
     Z.door(0, 5, 1, 1, 'restrooms', 2, 6, 'r', { id: 'door_service2' });
-    Z.door(24, 1, 1, 1, 'rooftop', 14, 11, 'u', { id: 'door_roof2', when: F('roof_open'), locked: T('The roof stairs are chained. The Resident has the key.', 'La escalera al techo tiene cadena. La Resident tiene la llave.', 'A escada do terraço está acorrentada. A Resident tem a chave.') });
+    Z.door(24, 1, 1, 1, 'rooftop', 14, 11, 'u', { id: 'door_roof2', when: F('roof_open'), locked: T('The roof stairs are chained. ÆRIEL has the key.', 'La escalera al techo tiene cadena. ÆRIEL tiene la llave.', 'A escada do terraço está acorrentada. ÆRIEL tem a chave.') });
     Z.npc({ id: 'beatriz', x: 7, y: 6, dlg: 'beatriz', dir: 'r', reach: 20 });
     Z.npc({ id: 'resident', x: 11, y: 7.5, dlg: 'resident', dir: 'd', reach: 18, pose: 'sit' });
     Z.obj({ id: 'water_bs', kind: 'water', x: 20, y: 4, w: 3, h: 1, label: T('WATER CRATE', 'CAJÓN DE AGUA', 'CAIXA DE ÁGUA') });
@@ -355,7 +377,7 @@
 
   /* ============================================================ 11. ROOFTOP */
   (function () {
-    const Z = new Zone('rooftop', 30, 14, { name: T('THE ROOF', 'EL TECHO', 'O TERRAÇO'), audio: { lp: 900, wet: 0.35, style: 'closing' }, dark: 0.0, sky: true, outdoor: true, quiet: 0.1 });
+    const Z = new Zone('rooftop', 30, 14, { theme: { a: '#FF6A00', b: '#FF7AB8' }, name: T('THE ROOF', 'EL TECHO', 'O TERRAÇO'), audio: { lp: 900, wet: 0.35, style: 'closing' }, dark: 0.0, sky: true, outdoor: true, quiet: 0.1 });
     Z.fill(0, 0, 30, 14, TL.VOID);
     Z.fill(0, 0, 30, 2, TL.SKY);
     Z.fill(0, 2, 30, 1, TL.RAIL);

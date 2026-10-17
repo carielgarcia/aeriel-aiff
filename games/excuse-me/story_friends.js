@@ -23,12 +23,12 @@
       },
       b: {
         text: [
-          T('MARU: "Okay. I need to pee. Urgently. It is the kind of emergency that has a face."', 'MARU: «Bueno. Tengo que hacer pis. Urgente. Es el tipo de emergencia que tiene cara».', 'MARU: «Tá. Preciso fazer xixi. Urgente. É o tipo de emergência que tem cara».'),
+          T('MARU: "Okay. I need to pee. Urgently. It is the kind of emergency that has a face."', 'MARU: «Bueno. Tengo que hacer pipí. Urgente. Es el tipo de emergencia que tiene cara».', 'MARU: «Tá. Preciso fazer xixi. Urgente. É o tipo de emergência que tem cara».'),
           T('DANI: "I\'ll come! Moral support!" TATO: "I\'m not staying alone out here." MARU: "Then we move together. Nobody gets lost. Say it."', 'DANI: «¡Voy yo! ¡Apoyo moral!» TATO: «No me quedo solo aquí». MARU: «Entonces nos movemos juntos. Nadie se pierde. Díganlo».', 'DANI: «Eu vou! Apoio moral!» TATO: «Não fico sozinho aqui». MARU: «Então a gente se move junto. Ninguém se perde. Falem».')
         ],
         choices: [
           { tone: 'chill', t: T('"Nobody gets lost."', '«Nadie se pierde».', '«Ninguém se perde».'), do: { flag: 'promised_together', bond: { maru: 1, dani: 1, tato: 1 } }, next: 'c' },
-          { tone: 'blunt', t: T('"You\'re adults. Go pee."', '«Son adultos. Vayan a hacer pis».', '«Vocês são adultos. Vão fazer xixi».'), do: { soc: -1, bond: { maru: -1 } }, next: 'c', react: T('Maru raises an eyebrow. "We are going together. That was not a question."', 'Maru levanta una ceja. «Vamos juntos. No era una pregunta».', 'A Maru levanta uma sobrancelha. «A gente vai junto. Não era uma pergunta».') }
+          { tone: 'blunt', t: T('"You\'re adults. Go pee."', '«Son adultos. Vayan a hacer pipí».', '«Vocês são adultos. Vão fazer xixi».'), do: { soc: -1, bond: { maru: -1 } }, next: 'c', react: T('Maru raises an eyebrow. "We are going together. That was not a question."', 'Maru levanta una ceja. «Vamos juntos. No era una pregunta».', 'A Maru levanta uma sobrancelha. «A gente vai junto. Não era uma pergunta».') }
         ]
       },
       c: {
@@ -100,7 +100,7 @@
     if (barkT > 0) return;
     barkT = 26 + Math.random() * 24;
     const f = EM.pick(s.party);
-    const pool = BARKS[f];
+    const pool = BARKS[f] ? BARKS[f].concat((story.extraBarks && story.extraBarks[f]) || []) : null;
     if (pool) U.toast({ text: EM.pick(pool), kind: 'bark', ms: 3600 });
   };
 })();

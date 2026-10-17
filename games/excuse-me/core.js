@@ -74,10 +74,14 @@
 
   /* ---------------------------------------------------------------- state */
   /* Time is minutes since 22:00. The venue closes at 08:00 (minute 600). */
-  EM.newState = function (player) {
+  EM.newState = function (player, carry) {
+    carry = carry || {};
     return {
       v: 2,
-      seed: (Math.random() * 1e9) | 0,
+      seed: carry.seed !== undefined ? carry.seed : (Math.random() * 1e9) | 0,
+      attempt: carry.attempt || 1,
+      lessons: carry.lessons || [],
+      bad: 0,
       player: player,
       zone: 'doors', x: 0, y: 0, dir: 'r',
       time: 60,

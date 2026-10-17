@@ -115,6 +115,7 @@ Any modifications to HTML, CSS, or JavaScript must strictly adhere to the follow
   - Industrial Gray: `#7F7F7F` (metadata, secondary labels, timestamps)
   - *Never introduce unapproved accent colors, gradients, or soft drop shadows.*
   - **Intentional exception — Sound Pads**: In `games/techno-variants/`, the performance pads, active step pads and voice dots carry a per-voice colour so each voice stays distinguishable. Everything else in the game follows the monochrome palette, zero radius, white borders, uppercase monospace labels and binary hover rules.
+  - **Intentional exception — EXCUSE ME (`games/excuse-me/`)**: the game is in full colour. Characters, icons, neon trim, dithered coloured light and the dawn sky use colour; the environment stays black-dominant. The frame around it (white 1px/2px borders, zero radius, uppercase monospace, binary hover, no transitions, no soft shadows) follows the site rules. Everything outside the game canvas, HUD bars and dialogue tone tags remains monochrome. Do not flag or "fix" this in audits.
   - **Intentional exception — Genre Mode Easter Eggs**: The `disco-mode`, `trance-mode`, and `house-mode` themes (`html.*-mode` rules in `style.css`, including their accent colors, backgrounds, and glow `box-shadow`s) are deliberate homages to the visual identity of those genres. They are approved, must not be flagged or "fixed" in audits, and must not be removed. All other UI remains strictly monochromatic.
 - **Zero Border-Radius Invariant**:
   - Every UI element (buttons, inputs, cards, dialogs, modals, containers) must have sharp 90-degree corners: `border-radius: 0 !important;`.
@@ -270,3 +271,13 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 - **Static stubs** exist for `/message` and `/mensaje` (same pattern as `/writing`/`/ensayos`). The `/mensaje` stub passes `?lang=es`.
 - **Mobile (≤600px)**: the top-bar destinations live in the fixed 4-cell `#tab-bar` (ÆRIEL, Æ000.X, ESSAYS, MESSAGE). There is no hamburger and no mobile dropdown; the footer menu is hidden because the tab bar replaces it. The tab bar slides away while scrolling down and returns on any upward scroll, at the top, at the bottom and on focus. On sub-sites the header carries the breadcrumb chip (`ÆRIEL / ESSAYS`, `#header-crumb`); there is no breadcrumb strip. The "ON THIS PAGE" bar shows the current section (`#page-rail-current`) and is the only dropdown.
 - Any new destination needs: a top-bar link, a tab-bar cell, a footer link, a header crumb label, EN/ES/PT labels and a static stub (+ Spanish route).
+
+---
+
+## 11. EXCUSE ME Game Conventions (`games/excuse-me/`)
+- **Hub and links**: the game is a card in the Games hub (`GAMES` registry in `index.html`). Its own links are `/games/excuse-me/` (EN, the game page itself, with OG/Twitter meta and a `← GAMES` link), `/juegos/excuse-me` and `/jogos/excuse-me` (static stubs redirecting to `/games/excuse-me/?lang=es|pt`), and `/games?game=excuse-me` (opens the card in the hub). GAMES stays out of the menu, rail and sitemap.
+- **Copy**: Spanish is Latin American (no voseo, no Rioplatense regionalisms); Portuguese is Brazilian. Trilingual parity applies to every string, gendered form (`{m|f|x}`) and aria-label.
+- **The DJ is always ÆRIEL** and the club jokes about Æ000.X's access dynamics lightly; the tone is self-aware, never earnest.
+- **Rules**: no short nights; catastrophes (ban, ambulance, fed-up friends) end the night with BEGIN AGAIN (same player, same seed, lessons carried); a single faint is survivable. Weirdness decays slowly, faster when behaving, and always accumulates.
+- **Crowd**: roughly 80% of dancers yield to "excuse me", a stubborn minority does not, and a smaller minority turns hostile. Keep those proportions when editing `engine.js`.
+- **Dark room**: played blind; keep the subtle cues (sound, embers, curtain thread) and the reach mechanic.

@@ -26,6 +26,8 @@
   };
 
   const L = EM.logic = {};
+  /* acts that count toward the night collapsing */
+  const BADF = { shoved_broh: 2, fight_broh: 3, tristan_slap: 2, consent_violation: 4, rosa_angry: 2, juno_ignored: 1, newbie_creeped: 2, host_lied: 1, rosa_lied: 1 };
 
   L.high = function () {
     const s = EM.state; let h = 0;
@@ -60,6 +62,7 @@
     if (name === 'soc' && d < 0) d = -(-d * L.socMult());
     if (name === 'weird' && d > 0) d = d * L.weirdMult();
     const before = s.stats[name];
+    if (name === 'weird' && d >= 0.5) s.lastBadAt = s.time;
     s.stats[name] = clamp(before + d, 0, 100);
     EM.hooks.stat(name, s.stats[name] - before);
   };
@@ -89,7 +92,9 @@
     s.thirst += 1;
     L.stat('fun', -0.1);
     if (s.thirst > 120) L.stat('hp', -0.08);
-    if (!s.fx.mdma && !s.fx.meth && !s.fx.glitch && !s.fx.bump && s.drinks < 2) L.stat('weird', -0.04);
+    /* weirdness always accumulates; it drops very slowly, and a little faster while you behave */
+    L.stat('weird', -0.03);
+    if (s.time - (s.lastBadAt === undefined ? -99 : s.lastBadAt) >= 12) L.stat('weird', -0.05);
     s.drinks = Math.max(0, s.drinks - 1 / 40);
     if (s.fx.mdma) { L.stat('fun', 0.22); L.stat('hp', -0.05); L.stat('weird', 0.03); L.stat('soc', 0.04); }
     if (s.fx.meth) { L.stat('fun', 0.15); L.stat('hp', -0.1); L.stat('weird', 0.07); L.stat('soc', -0.03); }
@@ -131,6 +136,18 @@
     if (st.soc <= 0) { L.end('burnout'); return; }
     if ((s.boredFor || 0) >= 45) { L.end('bored'); return; }
     if (s.time >= 600) { L.end('closing'); return; }
+  };
+
+  /* an accumulation of bad decisions: friends notice, then the night collapses */
+  L.addBad = function (n) {
+    const s = EM.state;
+    if (s.ended || !n) return;
+    s.bad = (s.bad || 0) + n;
+    if (s.bad >= 6 && !s.flags.bad_warn) {
+      s.flags.bad_warn = true;
+      EM.hooks.toast({ icon: 'anger', text: T('Your friends are going quiet. You are burning goodwill faster than it comes back.', 'Tus amigos se están quedando callados. Estás gastando buena voluntad más rápido de lo que vuelve.', 'Seus amigos estão ficando calados. Você tá gastando boa vontade mais rápido do que ela volta.'), kind: 'bad', ms: 6500 });
+    }
+    if (s.bad >= 11 && !s.flags.fed_up) { s.flags.fed_up = true; EM.hooks.script('fed_up'); }
   };
 
   L.end = function (id) {
@@ -200,6 +217,7 @@
     if (e.soc) L.stat('soc', e.soc);
     if (e.hp) L.stat('hp', e.hp);
     if (e.weird) L.stat('weird', e.weird);
+    if (e.bad) L.addBad(e.bad);
     if (e.care) {
       s.care = (s.care || 0) + e.care;
       L.stat('soc', 3 * e.care); L.stat('weird', -5 * e.care); L.stat('fun', 2 * e.care);
@@ -215,7 +233,7 @@
       s.thirst = 0; L.stat('hp', 6); EM.hooks.sfx('drink');
       EM.hooks.toast({ icon: 'water', text: T('Water. Your body says thank you.', 'Agua. Tu cuerpo te lo agradece.', 'Água. Seu corpo agradece.'), kind: 'good' });
     }
-    if (e.flag) [].concat(e.flag).forEach(function (f) { s.flags[f] = true; });
+    if (e.flag) [].concat(e.flag).forEach(function (f) { if (!s.flags[f] && BADF[f]) L.addBad(BADF[f]); s.flags[f] = true; });
     if (e.unflag) [].concat(e.unflag).forEach(function (f) { delete s.flags[f]; });
     if (e.item) for (const k in e.item) s.items[k] = clamp((s.items[k] || 0) + e.item[k], 0, 3);
     if (e.bond) for (const k in e.bond) s.bond[k] = (s.bond[k] || 0) + e.bond[k];

@@ -23,7 +23,7 @@
     effects: T('RIGHT NOW', 'AHORA MISMO', 'AGORA'), keysHelp: T('ARROWS move // Z talk / confirm // X leave // P menu // Z in a crowd = EXCUSE ME', 'FLECHAS mover // Z hablar / confirmar // X salir // P menú // Z en la multitud = CON PERMISO', 'SETAS mover // Z falar / confirmar // X sair // P menu // Z na multidão = COM LICENÇA'),
     leave: T('[X] WALK AWAY', '[X] ALEJARSE', '[X] SE AFASTAR'), more: T('Z ▼', 'Z ▼', 'Z ▼'), drained: T('TOO DRAINED', 'SIN BATERÍA', 'SEM BATERIA'),
     silent: T('Say nothing. Back away.', 'No decir nada. Retroceder.', 'Não dizer nada. Recuar.'),
-    time: T('TIME', 'HORA', 'HORA'), none: T('nothing yet', 'nada todavía', 'nada ainda'),
+    time: T('TIME', 'HORA', 'HORA'), night: T('NIGHT', 'NOCHE', 'NOITE'), none: T('nothing yet', 'nada todavía', 'nada ainda'),
     done: T('DONE', 'HECHO', 'FEITO'), active: T('ACTIVE', 'ACTIVO', 'ATIVO'),
     leaveVenue: T('Leave the venue?', '¿Salir del lugar?', 'Sair do lugar?')
   };
@@ -96,7 +96,7 @@
     $('#bar-soc').classList.toggle('alert', st.soc <= 15);
     $('#bar-hp').classList.toggle('alert', st.hp <= 25);
     $('#bar-fun').classList.toggle('alert', st.fun <= 10);
-    $('#hud-clock').textContent = EM.clockStr(s.time);
+    $('#hud-clock').textContent = EM.clockStr(s.time) + (s.attempt > 1 ? '  ·  ' + EM.tr(UI.night) + ' ' + s.attempt : '');
     const z = EM.zones[s.zone]; if (z) $('#hud-place').textContent = EM.tr(z.name);
     const fx = Object.keys(s.fx).map(function (k) { return EM.tr(EM.FXNAME[k]); });
     if (s.drinks >= 1) fx.push(EM.tr(EM.FXNAME.drunk));
@@ -210,13 +210,13 @@
   function portrait(castId) {
     const c = $('#portrait'); if (!c) return;
     const g = c.getContext('2d'); g.clearRect(0, 0, c.width, c.height);
-    g.fillStyle = EM.PAL.D; g.fillRect(0, 0, c.width, c.height);
     const cast = EM.CAST[castId];
+    g.fillStyle = '#0E0E14'; g.fillRect(0, 0, c.width, c.height);
     if (!cast) return;
     const look = Object.assign({}, cast.look);
     const spr = EM.person(look, 'd', 0, 'stand');
     g.imageSmoothingEnabled = false;
-    g.drawImage(spr, 2, 1, 28, 44);
+    g.drawImage(spr, 0, 0, 18, 20, 0, 0, 54, 60);
   }
   U.portrait = portrait;
 
@@ -311,7 +311,7 @@
       else b.appendChild(el('span', 'num', (i + 1) + ''));
       let label = EM.tr(c.t);
       if (EM.state.fx.glitch && !n.gesture) label = garble(label, D.seed + i * 7);
-      if (c.tone && !EM.state.fx.glitch) { const tg = el('span', 'tone', '[' + (o.disabled ? EM.tr(UI.drained) : EM.tr(TONE[c.tone] || c.tone)) + ']'); b.appendChild(tg); }
+      if (c.tone && !EM.state.fx.glitch) { const tg = el('span', 'tone t-' + c.tone, '[' + (o.disabled ? EM.tr(UI.drained) : EM.tr(TONE[c.tone] || c.tone)) + ']'); b.appendChild(tg); }
       b.appendChild(document.createTextNode(' ' + label));
       if (o.disabled) b.setAttribute('aria-disabled', 'true');
       b.addEventListener('click', function () { D.sel = i; U.dlgConfirm(); });
@@ -362,6 +362,7 @@
     }
     EM.audio.blip('select');
     if (!c.free) { L.stat('soc', -1 - (c.bad ? 2 : 0)); L.addTime(1); }
+    if (c.bad) L.addBad(1);
     if (c.do) applyDo(c.do);
     if (EM.state.ended && !D.def.endingScene) { U.D = null; return; }
     D.lastChoice = c;

@@ -3,7 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EXCUSE ME — 8-bit Night Out RPG</title>
+  <title>EXCUSE ME — 8-bit Night Out RPG by ÆRIEL</title>
+  <meta name="description" content="One night at club LA GRIETA. Cross the crowd with your friends, say excuse me, dance, and make it to sunrise. 8-bit RPG by ÆRIEL. 18+.">
+  <meta name="author" content="ÆRIEL">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ÆRIEL">
+  <meta property="og:title" content="EXCUSE ME — 8-bit Night Out RPG by ÆRIEL">
+  <meta property="og:description" content="One night at club LA GRIETA. Cross the crowd with your friends, say excuse me, dance, and make it to sunrise. 18+.">
+  <meta property="og:url" content="https://aeriel.net/games/excuse-me/">
+  <meta property="og:image" content="https://aeriel.net/og-image.jpg">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EXCUSE ME — 8-bit Night Out RPG by ÆRIEL">
+  <meta name="twitter:description" content="One night at club LA GRIETA. Cross the crowd with your friends, say excuse me, dance, and make it to sunrise. 18+.">
+  <meta name="twitter:image" content="https://aeriel.net/og-image.jpg">
+  <link rel="canonical" href="https://aeriel.net/games/excuse-me/">
+  <link rel="alternate" hreflang="es" href="https://aeriel.net/juegos/excuse-me">
+  <link rel="alternate" hreflang="pt" href="https://aeriel.net/jogos/excuse-me">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
   <link rel="stylesheet" href="excuse.css?v=1">
 </head>
@@ -13,6 +30,7 @@
   <!-- TITLE -->
   <section id="screen-title" class="screen">
     <p class="kicker">[ ÆRIEL // GAMES ]</p>
+    <a id="t-home" class="homelink" href="/games?game=excuse-me" hidden></a>
     <h1 class="logo">EXCUSE ME</h1>
     <p id="t-sub" class="sub"></p>
     <p id="t-tag" class="tag"></p>
@@ -38,7 +56,7 @@
   <section id="screen-creator" class="screen" hidden>
     <h2 id="c-title"></h2>
     <div class="creator">
-      <div class="preview"><canvas id="c-preview" width="112" height="176"></canvas></div>
+      <div class="preview"><canvas id="c-preview" width="144" height="272"></canvas></div>
       <div class="fields">
         <label id="c-name-l" for="c-name"></label>
         <input id="c-name" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" enterkeyhint="done" spellcheck="false">
@@ -93,7 +111,7 @@
     <div id="panel">
       <div id="hint"><span id="hint-obj"></span><span id="hint-prompt"></span></div>
       <div id="dialog" hidden>
-        <div class="who"><canvas id="portrait" width="32" height="46"></canvas><div><strong id="dlg-name"></strong><span id="dlg-role"></span></div></div>
+        <div class="who"><canvas id="portrait" width="54" height="60"></canvas><div><strong id="dlg-name"></strong><span id="dlg-role"></span></div></div>
         <div id="dlg-text"></div>
         <div id="dlg-choices"></div>
       </div>
@@ -117,7 +135,7 @@
   <section id="screen-ending" class="screen" hidden>
     <p id="e-kicker" class="kicker"></p>
     <h1 id="e-title" class="etitle"></h1>
-    <canvas id="e-art" width="128" height="72"></canvas>
+    <canvas id="e-art" width="160" height="90"></canvas>
     <div id="e-text" class="etext"></div>
     <h2 id="e-rep-h"></h2>
     <div class="report">
@@ -125,7 +143,8 @@
       <div id="e-moments"></div>
       <div id="e-bars"></div>
     </div>
-    <div class="row"><button id="e-again" class="primary" type="button"></button></div>
+    <p id="e-night" class="note"></p>
+    <div class="row"><button id="e-again" class="primary" type="button"></button><button id="e-title-btn" type="button" hidden></button></div>
   </section>
 
 </div>
@@ -146,6 +165,7 @@
 <script src="story_e.js"></script>
 <script src="story_extra.js"></script>
 <script src="endings.js"></script>
+<script src="story_v3.js"></script>
 <script src="screens.js"></script>
 </body>
 </html>

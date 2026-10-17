@@ -2782,6 +2782,11 @@
     }
     window.openGame = openGame;
     window.closeGame = closeGame;
+    /* /games?game=excuse-me opens that game's card directly */
+    const deepGame = ((location.search + ' ' + location.hash).match(/[?&]game=([a-z-]+)/) || [])[1];
+    window.addEventListener('load', function () {
+      if (deepGame && GAMES[deepGame] && document.body.getAttribute('data-view') === 'games') openGame(deepGame);
+    });
 
     function scrollBehavior() {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';

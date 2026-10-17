@@ -18,7 +18,7 @@
   D.marga = {
     who: 'marga', role: T('IN LINE', 'EN LA FILA', 'NA FILA'), start: 'a', nodes: {
       a: {
-        text: T('"I am going to PEE ON THE FLOOR. I am telling you now. As a courtesy." She is bouncing from one foot to the other like a kettle about to sing.', '«Voy a HACERME PIS EN EL PISO. Te lo digo desde ahora. Como cortesía». Salta de un pie al otro como una pava a punto de silbar.', '«Vou fazer XIXI NO CHÃO. Tô avisando agora. Por cortesia». Ela pula de um pé pro outro como uma chaleira prestes a apitar.'),
+        text: T('"I am going to PEE ON THE FLOOR. I am telling you now. As a courtesy." She is bouncing from one foot to the other like a kettle about to sing.', '«Voy a HACERME PIPÍ EN EL PISO. Te lo digo desde ahora. Como cortesía». Salta de un pie al otro como una tetera a punto de silbar.', '«Vou fazer XIXI NO CHÃO. Tô avisando agora. Por cortesia». Ela pula de um pé pro outro como uma chaleira prestes a apitar.'),
         choices: [
           { tone: 'care', t: T('"Go ahead of us. Seriously. Go."', '«Pasa antes que nosotros. En serio. Ve».', '«Vai na nossa frente. Sério. Vai».'), do: { flag: ['marga_helped', 'marga_done'], care: 1, fun: 1 }, next: null, react: T('She grabs your face with both hands and kisses the air next to your cheek. "You are a SAINT." The host looks over, notes it, says nothing.', 'Te agarra la cara con las dos manos y besa el aire junto a tu mejilla. «Eres un SANTO». El encargado mira, lo anota, no dice nada.', 'Ela agarra seu rosto com as duas mãos e beija o ar ao lado da sua bochecha. «Você é uma SANTA PESSOA». O responsável olha, registra, não diz nada.') },
           { tone: 'blunt', t: T('"We\'re all waiting."', '«Todos estamos esperando».', '«Todo mundo tá esperando».'), do: { soc: -1 }, next: null },
@@ -48,7 +48,7 @@
   D.queue_pair = {
     who: 'qpair1', role: T('IN LINE', 'EN LA FILA', 'NA FILA'), start: 'a', nodes: {
       a: {
-        text: T('"One of us pees, one of us holds the jacket. It\'s called love." The other one nods. "Pro tip, since you look like a group: the host loves honesty. Hates lies. Can smell lies. Is a lie-smelling man."', '«Uno hace pis, el otro sostiene la campera. Se llama amor». El otro asiente. «Dato, ya que parecen un grupo: al encargado le encanta la honestidad. Odia las mentiras. Las huele. Es un hombre que huele mentiras».', '«Um faz xixi, o outro segura a jaqueta. Chama-se amor». O outro assente. «Dica, já que vocês parecem um grupo: o responsável adora honestidade. Odeia mentira. Sente o cheiro. É um homem que fareja mentira».'),
+        text: T('"One of us pees, one of us holds the jacket. It\'s called love." The other one nods. "Pro tip, since you look like a group: the host loves honesty. Hates lies. Can smell lies. Is a lie-smelling man."', '«Uno hace pipí, el otro sostiene la chaqueta. Se llama amor». El otro asiente. «Dato, ya que parecen un grupo: al encargado le encanta la honestidad. Odia las mentiras. Las huele. Es un hombre que huele mentiras».', '«Um faz xixi, o outro segura a jaqueta. Chama-se amor». O outro assente. «Dica, já que vocês parecem um grupo: o responsável adora honestidade. Odeia mentira. Sente o cheiro. É um homem que fareja mentira».'),
         do: { flag: 'queue_tip' }
       }
     }
@@ -172,10 +172,10 @@
       },
       ask: {
         who: 'dani',
-        text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket." Dani looks at the pill like it might answer for itself.', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una campera muy linda». Dani mira la pastilla como si pudiera responder por sí misma.', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal». O Dani olha pro comprimido como se ele pudesse responder por si.'),
+        text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket." Dani looks at the pill like it might answer for itself.', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una chaqueta muy linda». Dani mira la pastilla como si pudiera responder por sí misma.', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal». O Dani olha pro comprimido como se ele pudesse responder por si.'),
         choices: [
-          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Let\'s get it checked."', '«Una campera linda no es una lista de ingredientes. Hagámosla chequear».', '«Uma jaqueta bonita não é lista de ingredientes. Vamos mandar checar».'), do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'agree' },
-          { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la campera».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 3 }, call: 'take_pill_untested', next: null },
+          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Let\'s get it checked."', '«Una chaqueta linda no es una lista de ingredientes. Hagámosla chequear».', '«Uma jaqueta bonita não é lista de ingredientes. Vamos mandar checar».'), do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'agree' },
+          { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la chaqueta».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 3 }, call: 'take_pill_untested', next: null },
           { tone: 'no', t: T('"No. Put it away."', '«No. Guárdalo».', '«Não. Guarda isso».'), do: { bond: { dani: -1 }, flag: 'dani_insists' }, next: 'no' }
         ]
       },
@@ -220,16 +220,16 @@
       },
       ask: {
         who: 'dani',
-        text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket."', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una campera muy linda».', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal».'),
+        text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket."', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una chaqueta muy linda».', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal».'),
         choices: [
-          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Get it checked."', '«Una campera linda no es una lista de ingredientes. Hay que chequearla».', '«Jaqueta bonita não é lista de ingredientes. Tem que checar».'), do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'tato' },
-          { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la campera».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 4 }, call: 'take_pill_untested', next: 'tato' },
+          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Get it checked."', '«Una chaqueta linda no es una lista de ingredientes. Hay que chequearla».', '«Jaqueta bonita não é lista de ingredientes. Tem que checar».'), do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'tato' },
+          { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la chaqueta».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 4 }, call: 'take_pill_untested', next: 'tato' },
           { tone: 'no', t: T('"No. Put it away."', '«No. Guárdalo».', '«Não. Guarda isso».'), do: { bond: { dani: -1 }, flag: 'dani_insists' }, next: 'tato' }
         ]
       },
       tato: {
         who: 'tato',
-        text: T('In the corner by the bin, Tato has stopped breathing the way people breathe. Quick, shallow, his hand flat on his chest. "I\'m fine. I\'m fine. It\'s just— small. And loud. And I can\'t—"', 'En la esquina junto al tacho, Tato dejó de respirar como respira la gente. Rápido, corto, la mano plana en el pecho. «Estoy bien. Estoy bien. Es solo… chico. Y ruidoso. Y no puedo—»', 'No canto perto da lixeira, o Tato parou de respirar como as pessoas respiram. Rápido, curto, a mão espalmada no peito. «Tô bem. Tô bem. É só… pequeno. E barulhento. E eu não consigo—»'),
+        text: T('In the corner by the bin, Tato has stopped breathing the way people breathe. Quick, shallow, his hand flat on his chest. "I\'m fine. I\'m fine. It\'s just— small. And loud. And I can\'t—"', 'En la esquina junto al bote de basura, Tato dejó de respirar como respira la gente. Rápido, corto, la mano plana en el pecho. «Estoy bien. Estoy bien. Es solo… chico. Y ruidoso. Y no puedo—»', 'No canto perto da lixeira, o Tato parou de respirar como as pessoas respiram. Rápido, curto, a mão espalmada no peito. «Tô bem. Tô bem. É só… pequeno. E barulhento. E eu não consigo—»'),
         choices: [
           { tone: 'care', t: T('Breathe with him. In, out. Slow. "Follow me."', 'Respirar con él. Adentro, afuera. Lento. «Sígueme».', 'Respirar com ele. Entra, sai. Devagar. «Me acompanha».'), call: 'stall_breath', do: { flag: 'breath_pending' }, next: null, free: true },
           { tone: 'water', t: T('Hand him your water bottle.', 'Darle tu botella de agua.', 'Passar sua garrafa de água pra ele.'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, bond: { tato: 1 }, flag: 'tato_water' }, next: 'tato2', react: T('He drinks, holds the bottle with both hands like a warm cup. Some of the shaking leaves his shoulders.', 'Toma, sostiene la botella con las dos manos como una taza tibia. Parte del temblor sale de sus hombros.', 'Ele bebe, segura a garrafa com as duas mãos como uma xícara quente. Parte do tremor sai dos ombros.') },
@@ -353,7 +353,7 @@
         do: { flag: 'rosa_met' },
         choices: [
           { tone: 'honest', t: T('"We\'re sorry. One of us was panicking and we didn\'t want to leave him alone."', '«Lo sentimos. Uno de nosotros estaba en pánico y no queríamos dejarlo solo».', '«A gente sente muito. Um de nós tava em pânico e a gente não queria deixar sozinho».'), req: { any: ['tato_checked', 'tato_calm', 'tato_water', 'tato_rough'] }, next: 'honest' },
-          { tone: 'honest', t: T('"Maru had to pee, and we move together. We should have thought about you."', '«Maru tenía que hacer pis y nos movemos juntos. Deberíamos haber pensado en ti».', '«A Maru precisava fazer xixi e a gente se move junto. A gente devia ter pensado em você».'), next: 'honest' },
+          { tone: 'honest', t: T('"Maru had to pee, and we move together. We should have thought about you."', '«Maru tenía que hacer pipí y nos movemos juntos. Deberíamos haber pensado en ti».', '«A Maru precisava fazer xixi e a gente se move junto. A gente devia ter pensado em você».'), next: 'honest' },
           { tone: 'care', t: T('"Have you had any water today? Please, take this."', '«¿Tomaste agua hoy? Por favor, toma esto».', '«Você bebeu água hoje? Por favor, pega isso».'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, flag: 'rosa_water' }, next: 'warm' },
           { tone: 'care', t: T('"Let us help you clean up. We left it tidy, but let us check."', '«Déjanos ayudarte a limpiar. Lo dejamos ordenado, pero déjanos revisar».', '«Deixa a gente ajudar a limpar. A gente deixou arrumado, mas deixa conferir».'), do: { care: 1, time: 5, soc: -1, flag: 'rosa_helped_clean' }, next: 'warm' },
           { tone: 'joke', t: T('"Team-building exercise."', '«Ejercicio de integración de equipo».', '«Dinâmica de integração de equipe».'), next: 'joke' },

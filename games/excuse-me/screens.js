@@ -24,17 +24,17 @@
     gender: T('HOW OTHERS SPEAK TO YOU', 'CÓMO TE HABLAN LOS DEMÁS', 'COMO OS OUTROS FALAM COM VOCÊ'),
     gN: T('NEUTRAL (default)', 'NEUTRO (por defecto)', 'NEUTRO (padrão)'), gM: T('MASCULINE', 'MASCULINO', 'MASCULINO'), gF: T('FEMININE', 'FEMENINO', 'FEMININO'),
     gNote: T('Only changes the grammar people use for you. Your character stays whoever you want.', 'Solo cambia la gramática que usan contigo. Tu personaje es quien tú quieras.', 'Só muda a gramática que usam com você. Seu personagem é quem você quiser.'),
-    skin: T('SKIN', 'PIEL', 'PELE'), hair: T('HAIR', 'PELO', 'CABELO'), hc: T('HAIR TONE', 'TONO', 'TOM'), expr: T('FACE', 'CARA', 'ROSTO'),
-    top: T('TOP', 'ARRIBA', 'PARTE DE CIMA'), bottom: T('BOTTOM', 'ABAJO', 'PARTE DE BAIXO'), acc: T('EXTRA', 'EXTRA', 'EXTRA'),
+    skin: T('SKIN', 'PIEL', 'PELE'), hair: T('HAIR', 'PELO', 'CABELO'), hc: T('HAIR COLOUR', 'COLOR DE PELO', 'COR DO CABELO'), expr: T('FACE', 'CARA', 'ROSTO'),
+    top: T('TOP', 'ARRIBA', 'PARTE DE CIMA'), tc: T('TOP COLOUR', 'COLOR DE ARRIBA', 'COR DE CIMA'), bottom: T('BOTTOM', 'ABAJO', 'PARTE DE BAIXO'), bc: T('BOTTOM COLOUR', 'COLOR DE ABAJO', 'COR DE BAIXO'), acc: T('EXTRA', 'EXTRA', 'EXTRA'), ac: T('ACCENT', 'ACENTO', 'DESTAQUE'),
     rand: T('RANDOMIZE', 'AL AZAR', 'ALEATÓRIO'), go: T('GO TO THE DOOR', 'IR A LA PUERTA', 'IR PARA A PORTA'), back: T('BACK', 'ATRÁS', 'VOLTAR'),
-    again: T('PLAY AGAIN', 'JUGAR OTRA VEZ', 'JOGAR DE NOVO'), report: T('NIGHT REPORT', 'REPORTE DE LA NOCHE', 'RELATÓRIO DA NOITE'),
+    again: T('PLAY AGAIN', 'JUGAR OTRA VEZ', 'JOGAR DE NOVO'), beginAgain: T('BEGIN AGAIN: IT IS 22:00', 'EMPEZAR DE NUEVO: SON LAS 22:00', 'COMEÇAR DE NOVO: SÃO 22:00'), title2: T('TITLE SCREEN', 'PANTALLA DE INICIO', 'TELA INICIAL'), night: T('NIGHT', 'NOCHE', 'NOITE'), resetNote: T('The night resets. Same you, same club, same pill. You remember some of it.', 'La noche se reinicia. El mismo tú, el mismo club, la misma pastilla. Recuerdas algo.', 'A noite reinicia. O mesmo você, o mesmo club, o mesmo comprimido. Você lembra de algo.'), report: T('NIGHT REPORT', 'REPORTE DE LA NOCHE', 'RELATÓRIO DA NOITE'),
     ending: T('ENDING', 'FINAL', 'FINAL'), clock: T('TIME', 'HORA', 'HORA'),
     friends: T('YOUR PEOPLE', 'TU GENTE', 'SUA GALERA'), moments: T('THE NIGHT, IN ORDER OF IMPORTANCE', 'LA NOCHE, POR ORDEN DE IMPORTANCIA', 'A NOITE, POR ORDEM DE IMPORTÂNCIA'),
     final: T('FINAL BARS', 'BARRAS FINALES', 'BARRAS FINAIS'),
     withYou: T('WITH YOU', 'CONTIGO', 'COM VOCÊ'), notWith: T('NOT WITH YOU', 'NO ESTÁ CONTIGO', 'NÃO ESTÁ COM VOCÊ')
   };
   const PARTS = [
-    ['skin', 4], ['hair', 9], ['hc', 4], ['expr', 6], ['top', 11], ['bottom', 6], ['acc', 8]
+    ['skin', 6], ['hair', 9], ['hc', 10], ['expr', 6], ['top', 11], ['tc', 12], ['bottom', 6], ['bc', 10], ['acc', 8], ['ac', 9]
   ];
 
 
@@ -65,6 +65,13 @@
     $('#t-sub').textContent = EM.tr(S.sub);
     $('#t-tag').textContent = EM.tr(S.tag);
     $('#t-notice').textContent = EM.tr(S.notice);
+    const home = $('#t-home');
+    if (home) {
+      let top = true; try { top = window.parent === window; } catch (e) { /* cross-origin */ }
+      home.hidden = !top;
+      home.href = { en: '/games', es: '/juegos', pt: '/jogos' }[EM.lang];
+      home.textContent = EM.tr(EM.T('← ÆRIEL GAMES', '← JUEGOS ÆRIEL', '← JOGOS ÆRIEL'));
+    }
     $('#btn-new').textContent = EM.tr(S.newGame);
     const c = $('#btn-cont'); c.textContent = EM.tr(S.cont); c.hidden = !EM.hasSave();
     $('#t-how-h').textContent = EM.tr(S.how);
@@ -75,16 +82,20 @@
 
   /* ------------------------------------------------------------ creator */
   let cre = null;
+  const NM = function (arr) { return arr.map(function (x) { return T(x[0], x[1], x[2]); }); };
   const PART_NAMES = {
-    skin: ['', '', '', ''],
-    hair: [T('BALD', 'CALVO', 'CARECA'), T('BUZZ', 'RAPADO', 'RASPADO'), T('SHORT', 'CORTO', 'CURTO'), T('LONG', 'LARGO', 'LONGO'), T('AFRO', 'AFRO', 'AFRO'), T('MOHAWK', 'MOHAWK', 'MOHAWK'), T('BUN', 'MOÑO', 'COQUE'), T('BOB', 'BOB', 'BOB'), T('PIGTAILS', 'COLETAS', 'MARIA-CHIQUINHA')],
-    hc: [T('BLACK', 'NEGRO', 'PRETO'), T('GREY', 'GRIS', 'CINZA'), T('WHITE', 'BLANCO', 'BRANCO'), T('FROSTED', 'DECOLORADO', 'DESCOLORIDO')],
-    expr: [T('NEUTRAL', 'NEUTRA', 'NEUTRO'), T('SMILE', 'SONRISA', 'SORRISO'), T('GRIN', 'SONRISOTA', 'SORRISÃO'), T('SMIRK', 'MEDIA SONRISA', 'MEIO SORRISO'), T('TIRED', 'CANSADA', 'CANSADO'), T('WIDE-EYED', 'OJOS ABIERTOS', 'OLHOS ARREGALADOS')],
-    top: [T('WHITE TEE', 'REMERA BLANCA', 'CAMISETA BRANCA'), T('BLACK TEE', 'REMERA NEGRA', 'CAMISETA PRETA'), T('STRIPES', 'RAYAS', 'LISTRAS'), T('HOODIE', 'BUZO', 'MOLETOM'), T('MESH', 'MALLA', 'TELA'), T('HARNESS', 'ARNÉS', 'HARNESS'), T('TANK', 'MUSCULOSA', 'REGATA'), T('DRESS', 'VESTIDO', 'VESTIDO'), T('VEST', 'CHALECO', 'COLETE'), T('LEATHER', 'CUERO', 'COURO'), T('CROSS TEE', 'REMERA CRUZ', 'CAMISETA CRUZ')],
-    bottom: [T('JEANS', 'JEANS', 'JEANS'), T('BLACK PANTS', 'PANTALÓN NEGRO', 'CALÇA PRETA'), T('SHORTS', 'SHORTS', 'SHORTS'), T('SKIRT', 'FALDA', 'SAIA'), T('CARGO', 'CARGO', 'CARGO'), T('LEATHER', 'CUERO', 'COURO')],
-    acc: [T('NONE', 'NADA', 'NADA'), T('SUNGLASSES', 'LENTES', 'ÓCULOS'), T('CAP', 'GORRA', 'BONÉ'), T('BANDANA', 'BANDANA', 'BANDANA'), T('HEADPHONES', 'AURICULARES', 'FONES'), T('CHAINS', 'CADENAS', 'CORRENTES'), T('FACE PAINT', 'PINTURA', 'PINTURA'), T('BEANIE', 'GORRO', 'TOUCA')]
+    skin: NM([['PORCELAIN', 'PORCELANA', 'PORCELANA'], ['SAND', 'ARENA', 'AREIA'], ['TAN', 'BRONCEADO', 'BRONZEADO'], ['CARAMEL', 'CARAMELO', 'CARAMELO'], ['BROWN', 'MARRÓN', 'MARROM'], ['DEEP', 'PROFUNDO', 'PROFUNDO']]),
+    hair: NM([['BALD', 'CALVO', 'CARECA'], ['BUZZ', 'RAPADO', 'RASPADO'], ['SHORT', 'CORTO', 'CURTO'], ['LONG', 'LARGO', 'LONGO'], ['AFRO', 'AFRO', 'AFRO'], ['MOHAWK', 'MOHAWK', 'MOHAWK'], ['BUN', 'MOÑO', 'COQUE'], ['BOB', 'BOB', 'BOB'], ['PIGTAILS', 'COLETAS', 'MARIA-CHIQUINHA']]),
+    hc: NM([['BLACK', 'NEGRO', 'PRETO'], ['DARK BROWN', 'CASTAÑO OSCURO', 'CASTANHO ESCURO'], ['BROWN', 'CASTAÑO', 'CASTANHO'], ['BLONDE', 'RUBIO', 'LOURO'], ['GINGER', 'PELIRROJO', 'RUIVO'], ['GREY', 'GRIS', 'CINZA'], ['WHITE', 'BLANCO', 'BRANCO'], ['PINK', 'ROSA', 'ROSA'], ['BLUE', 'AZUL', 'AZUL'], ['TEAL', 'TURQUESA', 'TURQUESA']]),
+    expr: NM([['NEUTRAL', 'NEUTRA', 'NEUTRO'], ['SMILE', 'SONRISA', 'SORRISO'], ['GRIN', 'SONRISOTA', 'SORRISÃO'], ['SMIRK', 'MEDIA SONRISA', 'MEIO SORRISO'], ['TIRED', 'CANSADA', 'CANSADO'], ['WIDE-EYED', 'OJOS ABIERTOS', 'OLHOS ARREGALADOS']]),
+    top: NM([['TEE', 'CAMISETA', 'CAMISETA'], ['TANK', 'MUSCULOSA', 'REGATA'], ['STRIPES', 'RAYAS', 'LISTRAS'], ['HOODIE', 'BUZO', 'MOLETOM'], ['MESH', 'MALLA', 'TELA'], ['HARNESS', 'ARNÉS', 'HARNESS'], ['CROP TOP', 'CROP TOP', 'CROPPED'], ['DRESS', 'VESTIDO', 'VESTIDO'], ['VEST', 'CHALECO', 'COLETE'], ['LEATHER JACKET', 'CHAQUETA DE CUERO', 'JAQUETA DE COURO'], ['CROSS VEST', 'CHALECO CRUZ', 'COLETE CRUZ']]),
+    tc: NM([['WHITE', 'BLANCO', 'BRANCO'], ['BLACK', 'NEGRO', 'PRETO'], ['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['LIME', 'LIMA', 'LIMA'], ['AMBER', 'ÁMBAR', 'ÂMBAR'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['RED', 'ROJO', 'VERMELHO'], ['BLUE', 'AZUL', 'AZUL'], ['TEAL', 'TURQUESA', 'TURQUESA'], ['ORANGE', 'NARANJA', 'LARANJA'], ['CREAM', 'CREMA', 'CREME']]),
+    bottom: NM([['JEANS', 'JEANS', 'JEANS'], ['PANTS', 'PANTALÓN', 'CALÇA'], ['SHORTS', 'SHORTS', 'SHORTS'], ['SKIRT', 'FALDA', 'SAIA'], ['CARGO', 'CARGO', 'CARGO'], ['LEATHER', 'CUERO', 'COURO']]),
+    bc: NM([['DENIM', 'JEAN', 'JEANS'], ['BLACK', 'NEGRO', 'PRETO'], ['GREY', 'GRIS', 'CINZA'], ['WINE', 'VINO', 'VINHO'], ['GREEN', 'VERDE', 'VERDE'], ['BROWN', 'MARRÓN', 'MARROM'], ['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['CREAM', 'CREMA', 'CREME']]),
+    acc: NM([['NONE', 'NADA', 'NADA'], ['SUNGLASSES', 'LENTES', 'ÓCULOS'], ['CAP', 'GORRA', 'BONÉ'], ['BANDANA', 'BANDANA', 'BANDANA'], ['HEADPHONES', 'AURICULARES', 'FONES'], ['CHAINS', 'CADENAS', 'CORRENTES'], ['FACE PAINT', 'PINTURA', 'PINTURA'], ['BEANIE', 'GORRO', 'TOUCA']]),
+    ac: NM([['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['LIME', 'LIMA', 'LIMA'], ['AMBER', 'ÁMBAR', 'ÂMBAR'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['ORANGE', 'NARANJA', 'LARANJA'], ['RED', 'ROJO', 'VERMELHO'], ['TEAL', 'TURQUESA', 'TURQUESA'], ['YELLOW', 'AMARILLO', 'AMARELO']])
   };
-  function newLook() { return { skin: 0, hair: 2, hc: 0, expr: 1, top: 1, bottom: 1, acc: 0, wide: false }; }
+  function newLook() { return { skin: 2, hair: 2, hc: 0, expr: 1, top: 0, tc: 2, bottom: 1, bc: 1, acc: 0, ac: 1, wide: false }; }
 
   U.openCreator = function () {
     cre = { look: newLook(), gender: 'x', name: '' };
@@ -116,6 +127,10 @@
         const v = cre.look[key];
         const nm = PART_NAMES[key][v];
         val.textContent = (nm ? EM.tr(nm) : (v + 1) + '') + '  ' + (v + 1) + '/' + n;
+        if (key === 'skin' || key === 'hc' || key === 'tc' || key === 'bc' || key === 'ac') {
+          const hex = key === 'skin' ? EM.SKINS[v] : (key === 'hc' ? EM.HAIRS[v] : (key === 'tc' ? EM.CLOTHES[v] : (key === 'bc' ? EM.BOTTOMS[v] : [EM.NEON.mag, EM.NEON.cyn, EM.NEON.lim, EM.NEON.amb, EM.NEON.vio, EM.NEON.org, EM.NEON.red, EM.NEON.teal, EM.NEON.yel][v])));
+          val.style.borderLeft = '14px solid ' + hex;
+        }
       }
       function step(d) { cre.look[key] = (cre.look[key] + d + n) % n; upd(); drawPreview(); EM.audio.blip('move'); }
       prev.addEventListener('click', function () { step(-1); }); next.addEventListener('click', function () { step(1); });
@@ -129,9 +144,10 @@
   }
   function drawPreview() {
     const cv = $('#c-preview'); const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
-    g.fillStyle = C.D; g.fillRect(0, 0, cv.width, cv.height);
+    g.fillStyle = '#0A0A0D'; g.fillRect(0, 0, cv.width, cv.height);
+    g.fillStyle = '#16161C'; g.fillRect(0, cv.height - 22, cv.width, 22);
     const spr = EM.person(cre.look, 'd', 0, 'stand');
-    g.drawImage(spr, 0, 0, 14 * 8, 22 * 8);
+    g.drawImage(spr, 0, 0, spr.width * 8, spr.height * 8);
   }
   function cleanName(s) {
     s = (s || '').replace(/[^A-Za-zÀ-ÿ0-9 '\-.]/g, '').replace(/\s+/g, ' ').trim().slice(0, 12);
@@ -152,9 +168,9 @@
   }
 
   /* ------------------------------------------------------------ start / continue */
-  U.startNight = function (player) {
+  U.startNight = function (player, carry) {
     EM.clearSave();
-    EM.state = EM.newState(player);
+    EM.state = EM.newState(player, carry);
     EM.story.init(EM.state);
     U.screen('game'); U.mode = 'play';
     E.paused = true; show('dialog', false); show('menu', false);
@@ -164,6 +180,14 @@
     $('#toasts').textContent = '';
     setTimeout(function () { EM.hooks.script('intro'); }, 450);
     U.postHeight();
+  };
+  /* a hard reset: the same person, the same night, 22:00 again. They remember some of it. */
+  U.beginAgain = function () {
+    const old = EM.state;
+    const lessons = (old.lessons || []).slice();
+    const ed = EM.ENDINGS[old.ended];
+    if (ed && ed.lesson) lessons.push(ed.lesson);
+    U.startNight(old.player, { seed: old.seed, attempt: (old.attempt || 1) + 1, lessons: lessons });
   };
   U.continueNight = function () {
     const s = EM.load(); if (!s) return;
@@ -232,7 +256,11 @@
     const fb = $('#e-bars'); fb.textContent = '';
     fb.appendChild(el('h3', '', EM.tr(S.final)));
     fb.appendChild(bar(EM.tr(EM.UI.funL), s.stats.fun)); fb.appendChild(bar(EM.tr(EM.UI.socL), s.stats.soc)); fb.appendChild(bar(EM.tr(EM.UI.hpL), s.stats.hp)); fb.appendChild(bar(EM.tr(EM.UI.weirdL), s.stats.weird));
-    $('#e-again').textContent = EM.tr(S.again);
+    const again = $('#e-again'), tbtn = $('#e-title-btn');
+    again.textContent = EM.tr(ed.reset ? S.beginAgain : S.again);
+    again.onclick = ed.reset ? U.beginAgain : U.toTitle;
+    tbtn.hidden = !ed.reset; tbtn.textContent = EM.tr(S.title2);
+    $('#e-night').textContent = (s.attempt > 1 ? EM.tr(S.night) + ' ' + s.attempt + ' — ' : '') + (ed.reset ? EM.tr(S.resetNote) : '');
     EM.clearSave();
     E.fade = 0; E.fadeDir = 0;
     U.postHeight();
@@ -241,65 +269,66 @@
 
   function drawEndingArt(kind) {
     const cv = $('#e-art'); const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
-    const W = cv.width, H = cv.height;
+    const W = cv.width, H = cv.height, N = EM.NEON;
     const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
-    g.fillStyle = C.K; g.fillRect(0, 0, W, H);
-    function dither(x, y, w, h, dens, c1, c2) { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) { g.fillStyle = B[((y + j) & 3) * 4 + ((x + i) & 3)] / 16 < dens ? c1 : (c2 || C.K); g.fillRect(x + i, y + j, 1, 1); } }
+    function fill(c, x, y, w, h) { g.fillStyle = c; g.fillRect(x, y, w, h); }
+    function dither(x, y, w, h, dens, c1, c2) { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) { g.fillStyle = B[((y + j) & 3) * 4 + ((x + i) & 3)] / 16 < dens ? c1 : c2; g.fillRect(x + i, y + j, 1, 1); } }
+    function gradient(y0, y1, top, bot) { for (let y = y0; y < y1; y++) { const t = (y - y0) / Math.max(1, y1 - y0 - 1); const n = 4; const k = Math.min(n - 1, Math.floor(t * n)); const f = t * n - k; const c1 = lerp(top, bot, k / n), c2 = lerp(top, bot, (k + 1) / n); for (let x = 0; x < W; x++) { g.fillStyle = B[(y & 3) * 4 + (x & 3)] / 16 < f ? c2 : c1; g.fillRect(x, y, 1, 1); } } }
+    function lerp(a, b, t) { const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16); const r = Math.round((pa >> 16 & 255) + ((pb >> 16 & 255) - (pa >> 16 & 255)) * t), gg = Math.round((pa >> 8 & 255) + ((pb >> 8 & 255) - (pa >> 8 & 255)) * t), bl = Math.round((pa & 255) + ((pb & 255) - (pa & 255)) * t); return '#' + ((1 << 24) | (r << 16) | (gg << 8) | bl).toString(16).slice(1); }
     const player = EM.state.player.look;
-    function person(look, x, y, dir) { const sp = EM.person(look, dir || 'd', 0, 'stand'); g.drawImage(sp, x, y); }
+    function person(look, x, feetY, dir, pose) { const sp = EM.person(look, dir || 'd', 0, pose || 'stand'); g.drawImage(sp, Math.round(x - sp.width / 2), Math.round(feetY - (pose === 'sit' ? sp.height - 2 : 32))); }
+    function skyline(baseY, seed) { for (let i = 0; i < 12; i++) { const w = 10 + (i * 7 + seed) % 12, h = 14 + (i * 13 + seed) % 22, x = i * 14 - 4; fill('#0B0B14', x, baseY - h, w, h); for (let k = 0; k < 6; k++) { const wx = x + 2 + (k * 5) % (w - 3), wy = baseY - h + 3 + (k * 7) % (h - 6); if (EM.hash2(i, k, seed) > 0.55) fill(N.yel, wx, wy, 1, 2); } } }
+    fill('#07070C', 0, 0, W, H);
     if (kind.indexOf('sunrise') === 0) {
-      for (let y = 0; y < 48; y++) dither(0, y, W, 1, (1 - y / 48) * 0.95, C.W, C.K);
-      g.fillStyle = C.W; g.fillRect(W / 2 - 9, 36, 18, 12); g.fillRect(W / 2 - 6, 33, 12, 3);
-      g.fillStyle = C.D; [[2, 40, 14, 14], [20, 34, 10, 20], [34, 42, 16, 12], [78, 38, 12, 16], [94, 44, 14, 10], [110, 36, 14, 18]].forEach(function (b) { g.fillRect(b[0], b[1], b[2], b[3]); });
-      g.fillStyle = C.G; g.fillRect(0, 52, W, 20);
-      g.fillStyle = C.W; g.fillRect(0, 52, W, 1);
+      gradient(0, 56, '#2B2F7A', '#FF8A3D');
+      fill('#FFE9A8', W / 2 - 10, 38, 20, 12); fill('#FFE9A8', W / 2 - 7, 35, 14, 3); fill('#FFB020', W / 2 - 12, 50, 24, 3); fill('#FF7AB8', W / 2 - 18, 53, 36, 2);
+      for (let i = 0; i < 20; i++) fill('#FFFFFF', (i * 31) % W, (i * 11) % 18, 1, 1);
+      skyline(60, 3);
+      fill('#14141C', 0, 60, W, H - 60); fill(N.org, 0, 60, W, 1); fill('#22222E', 0, 61, W, 3);
       const party = ['maru', 'dani', 'tato'].filter(function (f) { return EM.state.party.indexOf(f) !== -1; });
       if (kind === 'sunrise_legend') {
-        /* the whole roof: rows of small silhouettes and a halo of stars */
-        for (let i = 0; i < 26; i++) { const x = 4 + (i * 17) % 118, y = 40 + ((i * 7) % 3) * 4; g.fillStyle = i % 3 ? C.D : C.K; g.fillRect(x, y + 6, 6, 8); g.fillRect(x + 1, y + 2, 4, 4); }
-        for (let i = 0; i < 18; i++) { g.fillStyle = C.W; g.fillRect((i * 29) % 126, (i * 11) % 22, 1, 1); }
-        person(player, 54, 31); party.forEach(function (f, i) { person(EM.CAST[f].look, 70 + i * 15, 31); });
+        for (let i = 0; i < 30; i++) { const x = 6 + (i * 17) % (W - 12), fy = 74 + (i % 3) * 3; const lk = EM.CAST[['maru', 'dani', 'tato', 'sol', 'kiki', 'hugo', 'nuri', 'bruno'][i % 8]].look; person(Object.assign({}, lk, { ol: '#050508' }), x, fy, 'u'); }
+        person(player, 70, 86); party.forEach(function (f, i) { person(EM.CAST[f].look, 92 + i * 17, 86); });
       } else if (kind === 'sunrise_romance') {
-        person(player, 46, 31, 'r'); person(EM.CAST.sol.look, 64, 31, 'l');
-        g.fillStyle = C.W; g.fillRect(58, 44, 4, 5); g.fillRect(61, 45, 2, 3);
-        party.forEach(function (f, i) { person(EM.CAST[f].look, 84 + i * 14, 31); });
+        person(player, 58, 84, 'r'); person(EM.CAST.sol.look, 78, 84, 'l');
+        fill(N.cyn, 66, 66, 4, 6); fill('#FFFFFF', 66, 66, 4, 2);
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 108 + i * 17, 86); });
       } else if (kind === 'sunrise_wrecked') {
-        g.fillStyle = C.G; g.fillRect(50, 58, 36, 3);
-        const sp = EM.person(player, 'd', 0, 'sit'); g.drawImage(sp, 56, 40);
-        party.forEach(function (f, i) { person(EM.CAST[f].look, 78 + i * 15, 35); });
+        person(player, 64, 86, 'd', 'sit');
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 92 + i * 17, 86); });
       } else if (kind === 'sunrise_missing') {
-        person(player, 50, 31);
-        party.forEach(function (f, i) { person(EM.CAST[f].look, 66 + i * 15, 31); });
-        g.strokeStyle = C.G; g.setLineDash([2, 2]); g.strokeRect(86.5, 33.5, 12, 19); g.setLineDash([]);
-        g.fillStyle = C.W; g.fillRect(104, 44, 5, 8); g.fillStyle = C.K; g.fillRect(105, 45, 3, 5);
+        person(player, 58, 86);
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 80 + i * 17, 86); });
+        g.strokeStyle = '#7F7F7F'; g.setLineDash([2, 2]); g.strokeRect(100.5, 50.5, 16, 36); g.setLineDash([]);
       } else {
-        person(player, 52, 31 + 0);
-        party.forEach(function (f, i) { person(EM.CAST[f].look, 68 + i * 16, 31); });
+        person(player, 62, 86);
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 84 + i * 18, 86); });
       }
     } else if (kind === 'door') {
-      dither(0, 0, W, 40, 0.15, C.G, C.K);
-      g.fillStyle = C.D; g.fillRect(0, 40, W, 32); g.fillStyle = C.W; g.fillRect(0, 40, W, 1);
-      g.fillStyle = C.W; g.fillRect(70, 8, 34, 54); g.fillStyle = C.K; g.fillRect(73, 11, 28, 51);
-      dither(73, 11, 28, 51, 0.5, C.W, C.K);
-      person(EM.CAST.dragan.look, 54, 30, 'r'); person(player, 38, 36, 'r');
+      gradient(0, 56, '#0B0B1A', '#2A1A3A'); skyline(56, 9);
+      fill('#14141C', 0, 56, W, H - 56); fill(N.mag, 0, 56, W, 1);
+      fill(N.amb, 98, 10, 36, 62); fill('#140A00', 101, 13, 30, 59); dither(101, 13, 30, 59, 0.55, N.amb, '#3A2000');
+      person(EM.CAST.dragan.look, 76, 86, 'r'); person(player, 44, 90, 'r');
     } else if (kind === 'siren') {
-      g.fillStyle = C.D; g.fillRect(0, 44, W, 28);
-      for (let k = 0; k < 6; k++) dither(0, 4 + k * 7, W, 6, 0.3 + (k % 2) * 0.25, C.W, C.K);
-      g.drawImage(EM.icon('cross'), W / 2 - 16, 16, 32, 32);
-      person(player, W / 2 - 7, 48, 'd');
+      gradient(0, 90, '#10101A', '#1A1A28');
+      for (let k = 0; k < 7; k++) dither(0, 4 + k * 11, W, 8, 0.45, k % 2 ? N.red : N.blu, '#10101A');
+      fill('#F4F4F4', W / 2 - 20, 18, 40, 40); fill(N.red, W / 2 - 6, 22, 12, 32); fill(N.red, W / 2 - 16, 33, 32, 10);
+      fill('#1A1A22', 0, 72, W, 18);
+      person(player, W / 2, 88, 'd', 'sit');
     } else if (kind === 'bench') {
-      for (let y = 0; y < 50; y++) dither(0, y, W, 1, 0.1 + y / 120, C.G, C.K);
-      g.fillStyle = C.W; g.fillRect(100, 8, 8, 8); g.fillStyle = C.K; g.fillRect(103, 8, 6, 8);
-      g.fillStyle = C.W; g.fillRect(34, 50, 60, 4); g.fillStyle = C.G; g.fillRect(36, 54, 3, 10); g.fillRect(88, 54, 3, 10);
-      person(player, 58, 33, 'd');
+      gradient(0, 66, '#0A0F2A', '#3A2A5A');
+      fill('#FFE9A8', 118, 10, 14, 14); fill('#0A0F2A', 123, 10, 10, 14);
+      for (let i = 0; i < 18; i++) fill('#FFFFFF', (i * 29) % W, (i * 13) % 40, 1, 1);
+      fill('#14141C', 0, 66, W, H - 66);
+      fill('#8A5A3A', 48, 66, 64, 5); fill('#4A2E1A', 48, 71, 64, 3); fill('#2A1A10', 52, 74, 4, 10); fill('#2A1A10', 104, 74, 4, 10);
+      person(player, 80, 78, 'd', 'sit');
     } else if (kind === 'road') {
-      g.fillStyle = C.D; g.fillRect(0, 40, W, 32); g.fillStyle = C.W; for (let x = 4; x < W; x += 20) g.fillRect(x, 56, 10, 2);
-      dither(0, 0, W, 40, 0.35, C.G, C.K);
-      g.fillStyle = C.W; g.fillRect(84, 34, 28, 10); g.fillRect(90, 30, 16, 4); g.fillStyle = C.K; g.fillRect(92, 31, 12, 3); g.fillStyle = C.W; g.fillRect(96, 26, 6, 3);
-      person(player, 46, 30, 'r');
+      gradient(0, 60, '#0A0F2A', '#3A4A7A'); skyline(60, 5);
+      fill('#101016', 0, 60, W, H - 60); for (let x = 4; x < W; x += 24) fill(N.amb, x, 74, 12, 2);
+      fill(N.yel, 96, 56, 40, 14); fill('#1A1A22', 100, 58, 14, 6); fill('#1A1A22', 118, 58, 14, 6); fill(N.yel, 108, 50, 18, 6); fill('#0A0A0A', 112, 52, 10, 3); fill('#FFFFFF', 102, 70, 6, 3); fill('#FFFFFF', 126, 70, 6, 3);
+      person(player, 54, 88, 'r');
     } else {
-      dither(0, 0, W, H, 0.2, C.G, C.K);
-      person(player, W / 2 - 7, 24, 'd');
+      gradient(0, H, '#0A0A14', '#2A1A3A'); person(player, W / 2, 80);
     }
   }
 
@@ -312,7 +341,7 @@
     bindCreator();
     $('#btn-new').addEventListener('click', U.openCreator);
     $('#btn-cont').addEventListener('click', U.continueNight);
-    $('#e-again').addEventListener('click', U.toTitle);
+    $('#e-title-btn').addEventListener('click', U.toTitle);
     $$('.langbtn').forEach(function (b) { b.addEventListener('click', function () { const l = b.getAttribute('data-l'); EM.setLang(l); try { localStorage.setItem('preferred-lang', l); } catch (e) { /* ignore */ } }); });
     EM.onLang = function () {
       applyAria();

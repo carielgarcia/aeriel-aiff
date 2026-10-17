@@ -87,7 +87,11 @@
     const clapBus = ctx.createBiquadFilter(); clapBus.type = 'bandpass'; clapBus.frequency.value = 1500; clapBus.Q.value = 0.8; clapBus.connect(mix);
     const bassBus = ctx.createBiquadFilter(); bassBus.type = 'lowpass'; bassBus.frequency.value = 420; bassBus.Q.value = 3; bassBus.connect(mix);
     const padBus = ctx.createBiquadFilter(); padBus.type = 'lowpass'; padBus.frequency.value = 1800; padBus.connect(mix);
-    bus = { master: master, zoneLP: zoneLP, mix: mix, revSend: revSend, hat: hatBus, clap: clapBus, bass: bassBus, pad: padBus, limiter: limiter };
+    /* persistent chain for spatial cues (the dark room): band-pass -> panner -> master */
+    const cueBP = ctx.createBiquadFilter(); cueBP.type = 'bandpass'; cueBP.frequency.value = 520; cueBP.Q.value = 2.2;
+    const cuePan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+    if (cuePan) { cueBP.connect(cuePan); cuePan.connect(master); } else cueBP.connect(master);
+    bus = { cueBP: cueBP, cuePan: cuePan, master: master, zoneLP: zoneLP, mix: mix, revSend: revSend, hat: hatBus, clap: clapBus, bass: bassBus, pad: padBus, limiter: limiter };
 
   }
 
@@ -165,6 +169,25 @@
     o.type = 'square'; o.frequency.setValueAtTime(spec[0], t); o.frequency.linearRampToValueAtTime(spec[1], t + spec[2]);
     e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(0.09, t + 0.005); e.gain.exponentialRampToValueAtTime(0.0001, t + spec[2] + 0.03);
     o.connect(e); e.connect(bus.master); o.start(t); o.stop(t + spec[2] + 0.06);
+  };
+
+  /* Spatial cue: a soft breath / murmur / tap placed left or right of the listener. */
+  A.cue = function (pan, gain, kind) {
+    if (!A.ready || EM.settings.mute || !bus.cueBP) return;
+    const c = A.ctx, t = c.currentTime + 0.01;
+    if (bus.cuePan) bus.cuePan.pan.setValueAtTime(pan, t);
+    if (kind === 'tap') {
+      const o = c.createOscillator(), e = c.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(130, t); o.frequency.exponentialRampToValueAtTime(70, t + 0.12);
+      e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(gain, t + 0.01); e.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+      o.connect(e); e.connect(bus.master); o.start(t); o.stop(t + 0.2);
+      return;
+    }
+    const s = c.createBufferSource(), e = c.createGain();
+    s.buffer = noiseBuf;
+    bus.cueBP.frequency.setValueAtTime(380 + Math.random() * 380, t);
+    e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain * 5), t + 0.12); e.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+    s.connect(e); e.connect(bus.cueBP); s.start(t, Math.random() * 0.4, 0.55);
   };
 
   /* ------------------------------------------------------------ scheduler */

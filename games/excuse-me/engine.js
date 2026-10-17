@@ -1,22 +1,25 @@
-/* EXCUSE ME — world simulation and renderer (canvas 256x144, 16 px tiles). */
+/* EXCUSE ME — world simulation and renderer (canvas 320x180, 16 px tiles).
+   A black world with neon trim; the people carry the colour. */
 'use strict';
 (function () {
   const EM = window.EM;
-  const TL = EM.TL, C = EM.PAL, L = EM.logic, T = EM.T;
-  const TS = 16, VW = 256, VH = 144;
+  const TL = EM.TL, L = EM.logic, T = EM.T, N = EM.NEON;
+  const TS = 16, VW = 320, VH = 180;
   const E = EM.engine = {};
 
   let cv, g, S, Z, R;
   E.paused = true;
   E.input = { x: 0, y: 0 };
   E.overlay = null;
-  E.parting = 0; E.excuseCool = 0; E.gateCool = 0; E.bumpAcc = 0; E.justDoor = null;
+  E.parting = 0; E.excuseCool = 0; E.gateCool = 0; E.bumpAcc = 0; E.justDoor = null; E.hostileCool = 0; E.reachT = 0;
   E.time = 0;
   E.target = null;
   E.fade = 0; /* 0..1 dither wipe */
   E.fadeDir = 0; E.fadeCb = null;
+  E.reacts = [];
   const trail = [];
-  let timeAcc = 0, stumble = 0, stumbleT = 0, lastPhase = '';
+  const cueCool = {};
+  let timeAcc = 0, stumble = 0, stumbleT = 0, lastPhase = '', murmurT = 0, bumpDark = {}, heldToast = 0;
 
   const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 
@@ -32,8 +35,8 @@
   function pool() {
     if (cache.pool) return cache.pool;
     const r = EM.mulberry32(77), p = [];
-    for (let i = 0; i < 32; i++) {
-      p.push({ skin: Math.floor(r() * 4), hair: Math.floor(r() * 9), hc: Math.floor(r() * 4), expr: 1 + Math.floor(r() * 3), top: Math.floor(r() * 10), bottom: Math.floor(r() * 6), acc: Math.floor(r() * 8), wide: false });
+    for (let i = 0; i < 48; i++) {
+      p.push({ skin: Math.floor(r() * 6), hair: Math.floor(r() * 9), hc: Math.floor(r() * 10), expr: 1 + Math.floor(r() * 3), top: Math.floor(r() * 11), tc: Math.floor(r() * 12), bottom: Math.floor(r() * 6), bc: Math.floor(r() * 10), acc: Math.floor(r() * 8), wide: false });
     }
     return (cache.pool = p);
   }
@@ -45,13 +48,14 @@
     for (let y = 0; y < z.h; y++) for (let x = 0; x < z.w; x++) {
       let t = z.get(x, y);
       if (t === TL.DANCE && variant === 'B') t = 'DANCE_B';
-      EM.drawTile(cg, t, x * TS, y * TS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && z.get(x + dx, y + dy) !== TL.VOID; });
+      EM.drawTile(cg, t, x * TS, y * TS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && z.get(x + dx, y + dy) !== TL.VOID; }, z.theme);
     }
-    z.signs.forEach(function (sg) {
+    z.signs.forEach(function (sg, i) {
       const w = EM.textWidth(sg.text) + 4, h = 9;
       const sc = EM.mkCanvas(w, h); const sx = sc.getContext('2d');
-      sx.fillStyle = C.K; sx.fillRect(0, 0, w, h); sx.fillStyle = C.W; sx.fillRect(0, 0, w, 1); sx.fillRect(0, h - 1, w, 1); sx.fillRect(0, 0, 1, h); sx.fillRect(w - 1, 0, 1, h);
-      EM.drawText(sx, sg.text, 2, 2, 'W');
+      const colr = i % 2 ? z.theme.b : z.theme.a;
+      sx.fillStyle = '#07070A'; sx.fillRect(0, 0, w, h); sx.fillStyle = colr; sx.fillRect(0, 0, w, 1); sx.fillRect(0, h - 1, w, 1); sx.fillRect(0, 0, 1, h); sx.fillRect(w - 1, 0, 1, h);
+      EM.drawText(sx, sg.text, 2, 2, EM.shade(colr, 0.45));
       cg.drawImage(sc, 0, 0, w, h, sg.x * TS + 1, sg.y * TS + 3, w * sg.scale, h * sg.scale);
     });
     return c;
@@ -107,10 +111,13 @@
       const d = R.crowd[y * Z.w + x];
       if (!d) continue;
       const h0 = EM.hash2(x, y, 31 + Z.w);
-      const n = d === 1 ? (h0 > 0.7 ? 1 : 0) : (d === 2 ? (h0 > 0.3 ? 1 : 0) : (h0 > 0.65 ? 2 : 1));
+      const n = d === 1 ? (h0 > 0.78 ? 1 : 0) : (d === 2 ? (h0 > 0.5 ? 1 : 0) : (h0 > 0.82 ? 2 : (h0 > 0.15 ? 1 : 0)));
       for (let k = 0; k < n; k++) {
         const hx = EM.hash2(x + k * 7, y, 5), hy = EM.hash2(x, y + k * 11, 9), hl = EM.hash2(x * 3 + k, y * 5, 2);
-        R.dancers.push({ x: x * TS + 3 + hx * 10, y: y * TS + 8 + hy * 8, look: p[Math.floor(hl * p.length)], ph: hx, tx: x, ty: y });
+        const ha = EM.hash2(x * 5 + k * 3, y * 9 + k, 91);
+        /* most people yield when you ask; some do not move; a few get nasty */
+        const att = ha < 0.8 ? 'yield' : (ha < 0.92 ? 'stubborn' : 'hostile');
+        R.dancers.push({ x: x * TS + 3 + hx * 10, y: y * TS + 9 + hy * 7, look: p[Math.floor(hl * p.length)], ph: hx, tx: x, ty: y, att: att, id: 'hd_' + Z.id + '_' + x + '_' + y + '_' + k });
       }
     }
     R.dancers.sort(function (a, b) { return a.y - b.y; });
@@ -124,7 +131,7 @@
     S.x = tx * TS + 8; S.y = ty * TS + 12; S.dir = dir || 'd';
     trail.length = 0;
     for (let i = 0; i < 90; i++) trail.push({ x: S.x, y: S.y, d: S.dir });
-    E.parting = 0; E.bumpAcc = 0; E.gateCool = 0.6;
+    E.parting = 0; E.bumpAcc = 0; E.gateCool = 0.6; E.reacts = []; E.reachT = 0; E.hostileCool = 2;
     E.justDoor = 'init';
     rebuildCrowd();
     applyAudio();
@@ -218,7 +225,7 @@
     list.forEach(function (e) {
       if (e.def.decor && !e.def.dlg) return;
       if (!e.def.dlg) return;
-      const r = npcRect(e), reach = (e.def.reach || 12) * (e.def.box ? 1 : 1);
+      const r = npcRect(e), reach = (e.def.reach || 12);
       const d = rectDist(px, py, r);
       if (d <= reach * 0.5 + 6 && d < bd) { bd = d; best = e; }
     });
@@ -234,7 +241,16 @@
     if (E.paused) return;
     const t = E.target;
     if (t) { EM.hooks.interact(t); return; }
+    if (Z.id === 'darkroom') { E.reach(); return; }
     E.excuse();
+  };
+
+  /* In the dark room you cannot see. Z reaches out a hand and the space answers for a moment. */
+  E.reach = function () {
+    if (E.excuseCool > 0) return;
+    E.excuseCool = 1.1; E.reachT = 1.15;
+    L.stat('soc', -0.25);
+    EM.hooks.sfx('select'); EM.audio.cue(0, 0.22, 'tap');
   };
 
   const BARKS = [
@@ -242,9 +258,19 @@
     T('Pardon me, thank you.', 'Permiso, gracias.', 'Licença, obrigado.'), T('Just squeezing past.', 'Solo me cuelo un poquito.', 'Só dando uma espremida.')
   ];
   const BUMPS = [
-    T('HEY. WATCH IT.', 'EH. FIJATE.', 'EI. OLHA AÍ.'), T('Somebody just elbowed you out of the way.', 'Alguien te sacó a codazos.', 'Alguém te tirou do caminho a cotoveladas.'),
-    T('"You could ask, you know."', '«Podrías pedir permiso, eh.»', '«Podia pedir licença, né.»'), T('You wade through a stranger\'s dance. They glare.', 'Cruzas el baile de un desconocido. Te mira mal.', 'Você atravessa a dança de um estranho. Ele te encara.')
+    T('HEY. WATCH IT.', 'OYE. CUIDADO.', 'EI. OLHA AÍ.'), T('Somebody just elbowed you out of the way.', 'Alguien te sacó a codazos.', 'Alguém te tirou do caminho a cotoveladas.'),
+    T('"You could ask, you know."', '«Podrías pedir permiso, ¿no?»', '«Podia pedir licença, né.»'), T('You wade through a stranger\'s dance. They glare.', 'Cruzas el baile de un desconocido. Te mira mal.', 'Você atravessa a dança de um estranho. Ele te encara.')
   ];
+  const HELD = T('Some people do not move. Not everyone is moved by a polite word.', 'Algunas personas no se mueven. No a todos los mueve una palabra amable.', 'Algumas pessoas não saem do lugar. Nem todo mundo se comove com uma palavra educada.');
+
+  function react(d, icon) { E.reacts.push({ x: d.x, y: d.y, t: 1.4, icon: icon }); }
+  function triggerHostile(d) {
+    if (E.hostileCool > 0 || S.res[d.id]) return;
+    E.hostileCool = 12;
+    S.hostile = { id: d.id, look: d.look, kind: Math.floor(EM.hash2(d.tx, d.ty, 5) * 4) };
+    setTimeout(function () { if (!E.paused && !EM.state.ended) EM.hooks.script('hostile_dancer', S.hostile); }, 420);
+  }
+
   E.excuse = function () {
     if (E.excuseCool > 0) return;
     E.excuseCool = 1.0; E.parting = 2.8;
@@ -252,7 +278,18 @@
     if (nearCrowd) { L.stat('soc', -0.4); }
     EM.hooks.bark(EM.pick(BARKS), 'self');
     EM.hooks.sfx('select');
+    /* not everybody listens */
+    let held = false, hostile = null;
+    R.dancers.forEach(function (d) {
+      const dist = Math.hypot(d.x - S.x, d.y - S.y);
+      if (dist > 40 || S.res[d.id]) return;
+      if (d.att === 'stubborn') { react(d, 'hand'); held = true; }
+      else if (d.att === 'hostile') { react(d, 'anger'); if (dist < 30 && !hostile) hostile = d; }
+    });
+    if (held && E.time - heldToast > 25) { heldToast = E.time; EM.hooks.toast({ icon: 'hand', text: HELD, kind: 'info', ms: 4200 }); }
+    if (hostile) triggerHostile(hostile);
   };
+  E.settle = function (id) { S.res[id] = true; };
 
   /* ------------------------------------------------------------ update */
   E.update = function (dt) {
@@ -266,6 +303,9 @@
     if (E.excuseCool > 0) E.excuseCool -= dt;
     if (E.parting > 0) E.parting -= dt;
     if (E.gateCool > 0) E.gateCool -= dt;
+    if (E.hostileCool > 0) E.hostileCool -= dt;
+    if (E.reachT > 0) E.reachT -= dt;
+    if (E.reacts.length) { E.reacts.forEach(function (r) { r.t -= dt; }); E.reacts = E.reacts.filter(function (r) { return r.t > 0; }); }
     if (E.paused) return;
 
     /* the night clock */
@@ -285,9 +325,22 @@
       const d = E.crowdAt(S.x, S.y);
       if (d > 0) {
         speed *= E.parting > 0 ? (1 - 0.07 * d) : (1 - 0.17 * d);
+        /* a stubborn body in the way does not care that you asked */
+        for (let i = 0; i < R.dancers.length; i++) {
+          const dn = R.dancers[i];
+          if (dn.att !== 'stubborn' || S.res[dn.id]) continue;
+          if (Math.abs(dn.x - S.x) < 11 && Math.abs(dn.y - S.y) < 8) { speed *= 0.45; break; }
+        }
         if (E.parting <= 0) {
           E.bumpAcc += dt * d * 0.7;
-          if (E.bumpAcc >= 2.0) { E.bumpAcc = 0; L.stat('soc', -1); L.stat('weird', 0.4); EM.hooks.bark(EM.pick(BUMPS), 'bad'); EM.hooks.sfx('warn'); }
+          if (E.bumpAcc >= 2.0) {
+            E.bumpAcc = 0; L.stat('soc', -1); L.stat('weird', 0.4); EM.hooks.bark(EM.pick(BUMPS), 'bad'); EM.hooks.sfx('warn');
+            /* bump a hostile one and they notice */
+            for (let i = 0; i < R.dancers.length; i++) {
+              const dn = R.dancers[i];
+              if (dn.att === 'hostile' && !S.res[dn.id] && Math.hypot(dn.x - S.x, dn.y - S.y) < 20) { react(dn, 'anger'); triggerHostile(dn); break; }
+            }
+          }
         }
       }
       if (ix && iy) { ix *= 0.7071; iy *= 0.7071; }
@@ -321,6 +374,39 @@
       }
     }
 
+    /* the dark room: touching someone you cannot see, cues of the space, murmurs on the left and right */
+    if (Z.id === 'darkroom') {
+      if (moving) {
+        for (let i = 0; i < list.length; i++) {
+          const e = list[i];
+          if (e.def.decor || (e.def.dlg && e.def.dlg === 'dario' )) continue;
+          if (rectDist(S.x, S.y - 2, npcRect(e)) <= 2.5 && (E.time - (bumpDark[e.id] || -99)) > 7) {
+            bumpDark[e.id] = E.time;
+            L.stat('soc', -0.6); L.stat('weird', 0.8);
+            EM.hooks.toast({ icon: 'eyes', text: T('Your hand lands on someone\'s shoulder in the dark. "Hey." "Sorry!" Reach out first, next time.', 'Tu mano cae sobre el hombro de alguien en la oscuridad. «Oye». «¡Perdón!» Extiende la mano primero, la próxima vez.', 'Sua mão cai no ombro de alguém no escuro. «Ei». «Desculpa!» Estenda a mão primeiro, da próxima vez.'), kind: 'bad', ms: 4200 });
+            EM.hooks.sfx('warn');
+          }
+        }
+      }
+      murmurT -= dt;
+      if (murmurT <= 0) {
+        murmurT = 2.4;
+        list.forEach(function (e) {
+          if (e.def.decor) return;
+          const p = npcPos(e); const dx = p.x * TS - S.x, dy = p.y * TS - S.y; const dist = Math.hypot(dx, dy);
+          if (dist < 170) EM.audio.cue(EM.clamp(dx / 110, -1, 1), 0.10 * (1 - dist / 170), 'murmur');
+        });
+      }
+      (Z.cues || []).forEach(function (c, i) {
+        if (c.when && !c.when(S)) return;
+        const cx = c.x * TS + 8, cy = c.y * TS + 8;
+        if (Math.hypot(cx - S.x, cy - S.y) <= c.r * TS && E.time - (cueCool[i] || -99) > 45) {
+          cueCool[i] = E.time;
+          EM.hooks.toast({ icon: c.icon || 'eyes', text: c.text, kind: 'cue', ms: 4200 });
+        }
+      });
+    }
+
     /* doors, triggers */
     let onDoor = null;
     R.ents.forEach(function (e) {
@@ -350,7 +436,8 @@
 
   function drawPerson(look, dir, frame, pose, cx, feetY, bob) {
     const spr = EM.person(look, dir, frame, pose);
-    g.drawImage(spr, Math.round(cx - spr.width / 2), Math.round(feetY - spr.height + 1 + (bob || 0)));
+    if (pose === 'lie') { g.drawImage(spr, Math.round(cx - spr.width / 2), Math.round(feetY - spr.height + 2)); return; }
+    g.drawImage(spr, Math.round(cx - spr.width / 2), Math.round(feetY - 32 + (bob || 0)));
   }
 
   function npcDraw(e, cam, items) {
@@ -368,34 +455,57 @@
       const pr = typeof d.pair === 'function' ? d.pair(S) : d.pair;
       const a = EM.CAST[pr[0]].look, b = EM.CAST[pr[1]].look;
       const tight = d.pose === 'hug';
-      items.push({ y: sy, fn: function () { drawPerson(a, tight ? 'r' : dir, 0, 'stand', cx - (tight ? 3 : 6), sy, bob); drawPerson(b, tight ? 'l' : dir, 0, 'stand', cx + (tight ? 3 : 6), sy + 0.1, bob); if (tight) { g.drawImage(EM.icon('heart'), Math.round(cx - 4), Math.round(sy - 30 + (odd ? 0 : -1))); } } });
+      items.push({ y: sy, fn: function () { drawPerson(a, tight ? 'r' : dir, 0, 'stand', cx - (tight ? 4 : 8), sy, bob); drawPerson(b, tight ? 'l' : dir, 0, 'stand', cx + (tight ? 4 : 8), sy + 0.1, bob); if (tight) { g.drawImage(EM.icon('heart'), Math.round(cx - 4), Math.round(sy - 42 + (odd ? 0 : -1))); } } });
     } else if (d.ring) {
       const n = d.ring.length;
       const w = d.box ? d.box.w * 8 : 14;
       d.ring.forEach(function (cid, i) {
         const ang = (i / n) * Math.PI * 2 + 0.4;
-        const rx = cx + Math.cos(ang) * Math.max(10, w - 8), ry = sy + Math.sin(ang) * 6;
+        const rx = cx + Math.cos(ang) * Math.max(12, w - 6), ry = sy + Math.sin(ang) * 6;
         const odd2 = (Math.floor(bpos + i * 0.5) & 1);
         items.push({ y: ry, fn: function () { drawPerson(EM.CAST[cid].look, Math.cos(ang) > 0 ? 'l' : 'r', 0, odd2 ? 'dance' : 'stand', rx, ry, odd2 ? -1 : 0); } });
       });
     } else {
       const look = cast.look;
-      items.push({ y: sy, fn: function () {
-        if (d.pose === 'lie') { const spr = EM.person(look, 'd', 0, 'lie'); g.drawImage(spr, Math.round(cx - spr.width / 2), Math.round(sy - spr.height + 2)); }
-        else drawPerson(look, dir, 0, pose, cx, sy, bob);
-      } });
+      items.push({ y: sy, fn: function () { drawPerson(look, dir, 0, pose, cx, sy, bob); } });
     }
     /* talk marker */
-    if (d.dlg && !d.decor && !S.res['talked_' + e.id] && !S.res[e.id]) {
-      items.push({ y: sy + 50, fn: function () { g.drawImage(EM.icon(d.gate ? 'exclam' : 'question'), Math.round(cx - 4), Math.round(sy - 33 + Math.sin(E.time * 4) * 1.5)); } });
+    if (d.dlg && !d.decor && !S.res['talked_' + e.id] && !S.res[e.id] && Z.id !== 'darkroom') {
+      items.push({ y: sy + 60, fn: function () { g.drawImage(EM.icon(d.gate ? 'exclam' : 'question'), Math.round(cx - 4), Math.round(sy - 45 + Math.sin(E.time * 4) * 1.5)); } });
     }
   }
 
+  function lerpHex(a, b, t) {
+    const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16);
+    const r = Math.round((pa >> 16 & 255) + ((pb >> 16 & 255) - (pa >> 16 & 255)) * t), gg = Math.round((pa >> 8 & 255) + ((pb >> 8 & 255) - (pa >> 8 & 255)) * t), bl = Math.round((pa & 255) + ((pb & 255) - (pa & 255)) * t);
+    return '#' + ((1 << 24) | (r << 16) | (gg << 8) | bl).toString(16).slice(1);
+  }
+
+  function drawSky(pw) {
+    /* a dithered gradient: night blue, then violet, then orange and pink as the closing set runs */
+    const prog = EM.clamp((S.time - 430) / 150, 0, 1);
+    const top = lerpHex('#05060F', '#2B3A8A', prog), mid = lerpHex('#0B1030', '#9A4A9A', prog), hor = lerpHex('#0F1538', '#FF8A3D', prog);
+    for (let y = 0; y < 32; y++) {
+      const t = y / 31;
+      const c1 = t < 0.5 ? lerpHex(top, mid, t * 2) : lerpHex(mid, hor, (t - 0.5) * 2);
+      const c2 = lerpHex(c1, hor, 0.25);
+      g.fillStyle = c1; g.fillRect(0, y, pw, 1);
+      g.fillStyle = c2;
+      for (let x = (y & 1); x < pw; x += 2) if (BAYER[(y & 3) * 4 + (x & 3)] / 16 < 0.5) g.fillRect(x, y, 1, 1);
+    }
+    if (prog > 0.35) {
+      const sy = Math.round(36 - prog * 16), sx = Math.round(pw / 2);
+      g.fillStyle = '#FFE9A8'; g.fillRect(sx - 6, sy - 1, 12, 8); g.fillRect(sx - 4, sy - 3, 8, 2); g.fillRect(sx - 8, sy + 1, 16, 4);
+      g.fillStyle = '#FFB020'; g.fillRect(sx - 8, sy + 5, 16, 2); g.fillStyle = '#FF7AB8'; g.fillRect(sx - 12, sy + 7, 24, 1);
+    }
+    for (let i = 0; i < 24; i++) { if (prog < 0.8) { g.fillStyle = prog > 0.4 ? '#8A92C8' : '#FFFFFF'; g.fillRect((i * 37) % pw, (i * 11) % 16, 1, 1); } }
+  }
+
   E.draw = function () {
-    if (!S || !Z) { g.fillStyle = C.K; g.fillRect(0, 0, VW, VH); return; }
+    if (!S || !Z) { g.fillStyle = '#0A0A0A'; g.fillRect(0, 0, VW, VH); return; }
     const t = E.time;
     const pw = Z.w * TS, ph = Z.h * TS;
-    let camx = Math.round(S.x - VW / 2), camy = Math.round(S.y - 16 - VH / 2);
+    let camx = Math.round(S.x - VW / 2), camy = Math.round(S.y - 20 - VH / 2);
     camx = pw <= VW ? Math.round((pw - VW) / 2) : EM.clamp(camx, 0, pw - VW);
     camy = ph <= VH ? Math.round((ph - VH) / 2) : EM.clamp(camy, 0, ph - VH);
     let shakeX = 0, shakeY = 0;
@@ -403,21 +513,13 @@
       if (L.high() >= 2) shakeX = Math.round(Math.sin(t * 1.3) * 1);
       if (S.fx.meth) shakeY = Math.round(Math.sin(t * 9) * 0.6);
     }
-    g.fillStyle = C.K; g.fillRect(0, 0, VW, VH);
+    g.fillStyle = '#050508'; g.fillRect(0, 0, VW, VH);
     g.save(); g.translate(-camx + shakeX, -camy + shakeY);
     const bpos = EM.audio.beatPos();
     const layer = (R.hasDance && (Math.floor(bpos) & 1)) ? R.B : R.A;
     g.drawImage(layer, 0, 0);
 
-    /* sky rows on the roof: dither gradient by time */
-    if (Z.sky) {
-      const prog = EM.clamp((S.time - 430) / 150, 0, 1);
-      for (let y = 0; y < 32; y++) for (let x = 0; x < pw; x++) {
-        const lift = prog * (1 - y / 32) * 1.2;
-        if (BAYER[(y & 3) * 4 + (x & 3)] / 16 < lift) { g.fillStyle = (lift > 0.6) ? C.W : C.G; g.fillRect(x, y, 1, 1); }
-      }
-      if (prog > 0.4) { g.fillStyle = C.W; g.fillRect(Math.round(pw / 2 - 5), Math.round(32 - 4 - prog * 6), 10, 6); g.fillStyle = C.G; g.fillRect(Math.round(pw / 2 - 7), Math.round(32 - 4 - prog * 6) + 6, 14, 2); }
-    }
+    if (Z.sky) drawSky(pw);
 
     /* world objects (floor-level hints) */
     R.ents.forEach(function (e) {
@@ -425,25 +527,28 @@
       if (e.kind === 'dance' || e.kind === 'peak') {
         const x = e.rect.x, y = e.rect.y, w = e.rect.w, h = e.rect.h;
         const pulse = Math.floor(bpos * 2) & 1;
-        g.fillStyle = pulse ? C.W : C.G;
+        const c1 = pulse ? Z.theme.a : EM.shade(Z.theme.a, -0.5);
+        g.fillStyle = c1;
         g.fillRect(x + 1, y + 1, w - 2, 1); g.fillRect(x + 1, y + h - 2, w - 2, 1); g.fillRect(x + 1, y + 1, 1, h - 2); g.fillRect(x + w - 2, y + 1, 1, h - 2);
-        g.drawImage(EM.icon('note', pulse ? 'W' : 'G'), x + Math.round(w / 2) - 4, y + Math.round(h / 2) - 4);
+        g.drawImage(EM.icon('note', pulse ? Z.theme.b : EM.shade(Z.theme.b, -0.5)), x + Math.round(w / 2) - 4, y + Math.round(h / 2) - 4);
       } else if (e.kind === 'rest' && !e.def.strong) {
-        g.drawImage(EM.icon('zzz', 'G'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 7);
+        g.drawImage(EM.icon('zzz'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 7);
       } else if (e.kind === 'water') {
-        g.drawImage(EM.icon('water', 'W'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4 - (e.rect.h > 20 ? 0 : 0));
+        g.drawImage(EM.icon('water'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
       } else if (e.kind === 'stall' || e.kind === 'sunrise') {
         g.drawImage(EM.icon('exclam'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 8 + Math.sin(t * 4));
       } else if (e.kind === 'smoke') {
-        g.drawImage(EM.icon('cig', 'G'), e.rect.x + 4, e.rect.y + 4);
+        g.drawImage(EM.icon('cig', N.org), e.rect.x + 4, e.rect.y + 4);
+      } else if (e.kind === 'poster') {
+        g.drawImage(EM.icon('question', Z.theme.b), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
       }
     });
-    /* doors: arrows */
+    /* doors: glow */
     R.ents.forEach(function (e) {
       if (e.type !== 'door') return;
       const ok = !e.def.when || e.def.when(S);
       if (ok && Math.floor(t * 2) & 1) {
-        g.fillStyle = C.W; g.fillRect(e.rect.x + Math.round(e.rect.w / 2) - 1, e.rect.y + e.rect.h - 3, 2, 2);
+        g.fillStyle = N.lim; g.fillRect(e.rect.x + Math.round(e.rect.w / 2) - 1, e.rect.y + e.rect.h - 3, 2, 2);
       }
       if (!ok) { g.drawImage(EM.icon('mute', 'G'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + 4); }
     });
@@ -460,14 +565,14 @@
       const cast = EM.CAST[f];
       const moving = E.moving && idx < trail.length - 1;
       const fr = personFrame(moving, t + i);
-      items.push({ y: p.y, fn: function () { drawPerson(cast.look, p.d, fr, E.paused && !E.dancing ? 'stand' : 'stand', p.x, p.y, 0); } });
+      items.push({ y: p.y, fn: function () { drawPerson(cast.look, p.d, fr, 'stand', p.x, p.y, 0); } });
     });
 
-    /* player */
+    /* player: the one with the white outline */
     const pl = S.player.look;
     let expr = pl.expr;
     if (S.stats.hp < 25 || (S.stats.soc < 10)) expr = 4; else if (S.fx.mdma) expr = 2;
-    const look = Object.assign({}, pl, { expr: expr, ol: 'W' });
+    const look = Object.assign({}, pl, { expr: expr, ol: '#FFFFFF' });
     const pfr = personFrame(E.moving, t);
     const dancing = E.dancing;
     items.push({ y: S.y, fn: function () {
@@ -477,37 +582,47 @@
 
     /* the crowd */
     const parting = E.parting > 0 ? Math.min(1, E.parting / 0.6) : 0;
-    const x0 = camx - 16, x1 = camx + VW + 16, y0 = camy - 24, y1 = camy + VH + 24;
-    const look2 = {};
+    const x0 = camx - 20, x1 = camx + VW + 20, y0 = camy - 12, y1 = camy + VH + 44;
     R.dancers.forEach(function (d) {
       if (d.x < x0 || d.x > x1 || d.y < y0 || d.y > y1) return;
+      const att = S.res[d.id] ? 'yield' : d.att;
       let ox = 0, oy = 0;
       const dx = d.x - S.x, dy = d.y - S.y, dist = Math.hypot(dx, dy);
-      if (parting > 0 && dist < 34) { const k = (34 - dist) / 34 * 9 * parting; ox = dx / (dist || 1) * k; oy = dy / (dist || 1) * k * 0.6; }
+      if (att === 'yield' && parting > 0 && dist < 38) { const k = (38 - dist) / 38 * 10 * parting; ox = dx / (dist || 1) * k; oy = dy / (dist || 1) * k * 0.6; }
       const odd = (Math.floor(bpos + d.ph * 2) & 1);
-      items.push({ y: d.y + oy, fn: function () { drawPerson(d.look, dist < 26 && parting > 0 ? (dx > 0 ? 'l' : 'r') : 'd', 0, odd ? 'dance' : 'stand', d.x + ox, d.y + oy, odd ? -1 : 0); } });
+      const facing = (att !== 'yield' && dist < 50 && parting > 0) ? (Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'l' : 'r') : (dy > 0 ? 'u' : 'd')) : (dist < 30 && parting > 0 ? (dx > 0 ? 'l' : 'r') : 'd');
+      const still = att !== 'yield' && dist < 50 && parting > 0; /* arms crossed: no dancing */
+      items.push({ y: d.y + oy, fn: function () { drawPerson(d.look, facing, 0, (odd && !still) ? 'dance' : 'stand', d.x + ox, d.y + oy, (odd && !still) ? -1 : 0); } });
     });
     items.sort(function (a, b) { return a.y - b.y; });
     items.forEach(function (it) { it.fn(); });
+
+    /* reactions of the people you asked to move */
+    E.reacts.forEach(function (r) {
+      g.drawImage(EM.icon(r.icon, r.icon === 'anger' ? N.red : '#FFFFFF'), Math.round(r.x - 4), Math.round(r.y - 40 - (1.4 - r.t) * 4));
+    });
 
     /* interaction hint above target */
     if (E.target && !E.paused) {
       const tg = E.target;
       let hx, hy;
-      if (tg.type === 'npc') { const p = npcPos(tg); hx = p.x * TS; hy = p.y * TS - 28; } else { hx = tg.rect.x + tg.rect.w / 2; hy = tg.rect.y - 10; }
-      g.fillStyle = C.W; g.fillRect(Math.round(hx - 5), Math.round(hy - 1 + Math.sin(t * 6)), 10, 9);
-      g.fillStyle = C.K; EM.drawText(g, 'Z', Math.round(hx - 1), Math.round(hy + 1 + Math.sin(t * 6)), 'K');
+      if (tg.type === 'npc') { const p = npcPos(tg); hx = p.x * TS; hy = p.y * TS - 40; } else { hx = tg.rect.x + tg.rect.w / 2; hy = tg.rect.y - 10; }
+      g.fillStyle = N.yel; g.fillRect(Math.round(hx - 5), Math.round(hy - 1 + Math.sin(t * 6)), 10, 9);
+      EM.drawText(g, 'Z', Math.round(hx - 1), Math.round(hy + 1 + Math.sin(t * 6)), '#0A0A0A');
     }
     g.restore();
 
-    /* darkness mask (dithered, no soft shadows) */
-    if (Z.dark > 0) darkMask(camx + shakeX, camy + shakeY);
+    /* light: coloured dither halos, and darkness */
+    lighting(camx + shakeX, camy + shakeY);
+
+    /* the dark room: faint embers where people breathe, a thread of light under the curtain */
+    if (Z.id === 'darkroom') darkroomCues(camx + shakeX, camy + shakeY, list);
 
     if (E.overlay) E.overlay(g);
 
-    /* screen-wipe: dithered */
+    /* screen wipe: dithered */
     if (E.fade > 0) {
-      g.fillStyle = C.K;
+      g.fillStyle = '#050508';
       const f = E.fade;
       for (let y = 0; y < VH; y += 2) for (let x = 0; x < VW; x += 2) {
         if (BAYER[((y >> 1) & 3) * 4 + ((x >> 1) & 3)] / 16 < f) g.fillRect(x, y, 2, 2);
@@ -515,27 +630,54 @@
     }
   };
 
+  function darkroomCues(camx, camy, list) {
+    list.forEach(function (e) {
+      if (e.def.decor) return;
+      const p = npcPos(e); const sx = p.x * TS - camx, sy = p.y * TS - camy - 26;
+      const k = Math.floor(E.time * 1.2 + EM.hash2(p.x * 3, p.y * 3, 1) * 5) % 5;
+      if (k === 0 && Math.hypot(p.x * TS - S.x, p.y * TS - S.y) < 150) {
+        g.fillStyle = EM.shade(Z.theme.a, -0.35); g.fillRect(Math.round(sx - 2), Math.round(sy), 1, 1); g.fillRect(Math.round(sx + 3), Math.round(sy - 3), 1, 1); g.fillRect(Math.round(sx), Math.round(sy - 6), 1, 1);
+      }
+    });
+    /* the curtain: a thin warm line */
+    R.ents.forEach(function (e) {
+      if (e.type !== 'door') return;
+      const sx = e.rect.x - camx + 4, sy = e.rect.y - camy + 6;
+      g.fillStyle = (Math.floor(E.time * 1.5) & 1) ? '#5A2A1A' : '#3A1A10';
+      g.fillRect(sx, sy, 8, 1);
+    });
+  }
+
   let maskCanvas = null, maskData = null;
-  function darkMask(camx, camy) {
+  function lighting(camx, camy) {
+    const dark = Z.id === 'darkroom' ? 0.985 : Z.dark;
+    const lights = Z.lights;
+    if (dark <= 0 && !lights.length) return;
     if (!maskCanvas) { maskCanvas = EM.mkCanvas(VW, VH); maskData = maskCanvas.getContext('2d').createImageData(VW, VH); }
     const d = maskData.data;
-    const lights = Z.lights.slice();
-    const pr = Z.id === 'tunnel' ? 40 : (Z.id === 'darkroom' ? 34 : (Z.dark > 0.5 ? 40 : 30));
-    lights.push({ x: S.x, y: S.y - 8, r: pr });
-    const dark = Z.dark;
-    const lx = lights.map(function (l) { return { x: l.x - camx, y: l.y - camy, r: l.r }; });
+    d.fill(0);
+    const col = Z.theme.a;
+    const rgb = function (hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    const L2 = lights.map(function (l) { return { x: l.x - camx, y: l.y - camy, r: l.r, c: rgb(l.c || col) }; });
+    let pr = Z.id === 'tunnel' ? 40 : (Z.dark > 0.5 ? 40 : 30);
+    if (Z.id === 'darkroom') pr = 8 + (E.reachT > 0 ? 46 * Math.sin(Math.PI * (1 - E.reachT / 1.15)) : 0);
+    const torch = { x: S.x - camx, y: S.y - 12 - camy, r: pr };
     for (let y = 0; y < VH; y++) for (let x = 0; x < VW; x++) {
-      let lf = 0;
-      for (let i = 0; i < lx.length; i++) {
-        const l = lx[i];
+      let lf = 0, lc = null, lcf = 0;
+      for (let i = 0; i < L2.length; i++) {
+        const l = L2[i];
         const dx = x - l.x, dy = (y - l.y) * 1.1;
+        if (dx > l.r || dx < -l.r) continue;
         const dd = dx * dx + dy * dy;
-        if (dd < l.r * l.r) { const v = 1 - Math.sqrt(dd) / l.r; if (v > lf) lf = v; }
+        if (dd < l.r * l.r) { const v = 1 - Math.sqrt(dd) / l.r; if (v > lf) lf = v; if (v > lcf) { lcf = v; lc = l.c; } }
       }
-      const v = dark * (1 - Math.min(1, lf * 1.6));
-      const hidden = BAYER[(y & 3) * 4 + (x & 3)] / 16 < v;
+      const tdx = x - torch.x, tdy = (y - torch.y) * 1.1, td = tdx * tdx + tdy * tdy;
+      let tl = 0; if (td < torch.r * torch.r) tl = 1 - Math.sqrt(td) / torch.r;
+      const lit = Math.max(lf, tl);
+      const bay = BAYER[(y & 3) * 4 + (x & 3)] / 16;
       const o = (y * VW + x) * 4;
-      if (hidden) { d[o] = 10; d[o + 1] = 10; d[o + 2] = 10; d[o + 3] = 255; } else d[o + 3] = 0;
+      if (dark > 0 && bay < dark * (1 - Math.min(1, lit * 1.6))) { d[o] = 5; d[o + 1] = 5; d[o + 2] = 8; d[o + 3] = 255; }
+      else if (lc && bay < lcf * 0.26 && Z.id !== 'darkroom') { d[o] = lc[0]; d[o + 1] = lc[1]; d[o + 2] = lc[2]; d[o + 3] = 255; }
     }
     maskCanvas.getContext('2d').putImageData(maskData, 0, 0);
     g.drawImage(maskCanvas, 0, 0);
@@ -549,4 +691,5 @@
   E.fadeIn = function () { E.fadeDir = -1; };
   E.camera = function () { return { w: VW, h: VH }; };
   E.playerRect = function () { return { x: S.x, y: S.y }; };
+  E.size = { w: VW, h: VH };
 })();
