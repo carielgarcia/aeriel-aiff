@@ -164,7 +164,7 @@
     unlockAudio();
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) { if (e.key === 'Enter' && U.mode === 'creator') return; if (e.key !== 'Escape') return; }
     const dir = KEYMAP[e.code];
-    const inGame = U.mode === 'play' || U.mode === 'dialog' || U.mode === 'rhythm' || U.mode === 'menu';
+    const inGame = U.mode === 'play' || U.mode === 'dialog' || U.mode === 'rhythm' || U.mode === 'menu' || U.mode === 'tutorial';
     if (inGame && (dir || e.code === 'Space' || e.code === 'Tab')) e.preventDefault();
     if (U.mode === 'play') {
       if (dir) { U.keys[dir] = true; updateInput(); }
@@ -182,6 +182,8 @@
     } else if (U.mode === 'rhythm') {
       if (dir && !e.repeat && U.rhythmKey) U.rhythmKey(dir.toUpperCase());
       else if (e.code === 'KeyX' || e.code === 'Escape') { if (U.rhythmCancel) U.rhythmCancel(); }
+    } else if (U.mode === 'tutorial') {
+      if (U.tutKey) U.tutKey(e);
     } else if (U.mode === 'menu') {
       if (e.code === 'Escape' || e.code === 'KeyP') U.closeMenu();
     }
@@ -199,6 +201,7 @@
       const k = b.getAttribute('data-k');
       const down = function (ev) {
         ev.preventDefault(); unlockAudio();
+        if (U.mode === 'tutorial') { if (k === 'a') U.tutNext(); else if (k === 'b') U.tutSkip(); return; }
         if (k === 'a') { if (U.mode === 'play') E.interact(); else if (U.mode === 'dialog') U.dlgConfirm(); return; }
         if (k === 'b') { if (U.mode === 'dialog') U.dlgLeave(); else if (U.mode === 'play') U.openMenu(); else if (U.mode === 'rhythm' && U.rhythmCancel) U.rhythmCancel(); return; }
         const d = { up: 'u', down: 'd', left: 'l', right: 'r' }[k];
@@ -642,6 +645,9 @@
         });
         box.appendChild(b);
       });
+      const hp = el('button', '', EM.tr(T('HOW TO PLAY', 'CÓMO SE JUEGA', 'COMO JOGAR'))); hp.type = 'button';
+      hp.addEventListener('click', function () { U.closeMenu(); U.tutorial(); });
+      box.appendChild(hp);
       const lr = el('div', 'langrow');
       ['en', 'es', 'pt'].forEach(function (l) {
         const b = el('button', EM.lang === l ? 'on' : '', l.toUpperCase()); b.type = 'button';

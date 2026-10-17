@@ -104,6 +104,9 @@
     const ok = Math.random() < p;
     s.makeouts = (s.makeouts || 0) + 1;
     L.addTime(o.time || 6);
+    s.flagAt = s.flagAt || {};
+    if (o.who) { s.flags[(ok ? 'kiss_' : 'flop_') + o.who] = true; s.flagAt[(ok ? 'kiss_' : 'flop_') + o.who] = s.time; }
+    setTimeout(function () { if (EM.story.kissReact && !s.ended) EM.story.kissReact(ok, o.who); }, 2600);
     if (ok) {
       s.flags.made_out = true; s.makeoutsOk = (s.makeoutsOk || 0) + 1;
       L.stat('fun', 10 + Math.floor(Math.random() * 5)); L.stat('soc', 3); L.stat('weird', -1);
@@ -356,7 +359,7 @@
       s.thirst = 0; L.stat('hp', 6); EM.hooks.sfx('drink');
       EM.hooks.toast({ icon: 'water', text: T('Water. Your body says thank you.', 'Agua. Tu cuerpo te lo agradece.', 'Água. Seu corpo agradece.'), kind: 'good' });
     }
-    if (e.flag) [].concat(e.flag).forEach(function (f) { if (!s.flags[f] && BADF[f]) L.addBad(BADF[f]); s.flags[f] = true; });
+    if (e.flag) [].concat(e.flag).forEach(function (f) { if (!s.flags[f]) { if (BADF[f]) L.addBad(BADF[f]); (s.flagAt = s.flagAt || {})[f] = s.time; } s.flags[f] = true; });
     if (e.unflag) [].concat(e.unflag).forEach(function (f) { delete s.flags[f]; });
     if (e.item) for (const k in e.item) s.items[k] = clamp((s.items[k] || 0) + e.item[k], 0, 3);
     if (e.bond) for (const k in e.bond) s.bond[k] = (s.bond[k] || 0) + e.bond[k];

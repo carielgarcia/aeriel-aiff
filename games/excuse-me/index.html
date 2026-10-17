@@ -79,7 +79,6 @@
   <!-- GAME -->
   <section id="screen-game" class="screen game" hidden>
   <div id="play">
-   <div id="main-col">
     <div id="hud">
       <div class="hud-top">
         <span id="hud-clock" class="clock">22:00</span>
@@ -99,6 +98,7 @@
       </div>
     </div>
 
+<aside id="logbox" aria-labelledby="log-h"><div id="log-inner"><h3 id="log-h"></h3><ol id="log-list" role="log" aria-live="off"></ol></div></aside>
     <div id="stage">
       <canvas id="screen" data-aria="screen" aria-label="Game view" role="img"></canvas>
       <div id="toasts" aria-live="polite"></div>
@@ -111,18 +111,17 @@
         </div>
         <div id="menu-body"></div>
       </div>
-    </div>
-   </div>
-   <aside id="logbox" aria-labelledby="log-h"><div id="log-inner"><h3 id="log-h"></h3><ol id="log-list" role="log" aria-live="off"></ol></div></aside>
-  </div>
-
-    <div id="panel">
-      <div id="hint"><span id="hint-obj"></span><span id="hint-prompt"></span></div>
       <div id="dialog" hidden>
         <div class="who"><canvas id="portrait" width="54" height="60"></canvas><div><strong id="dlg-name"></strong><span id="dlg-role"></span></div></div>
         <div id="dlg-text"></div>
         <div id="dlg-choices"></div>
       </div>
+      <div id="tut" hidden></div>
+    </div>
+  </div>
+
+    <div id="panel">
+      <div id="hint"><span id="hint-obj"></span><span id="hint-prompt"></span></div>
     </div>
 
     <div class="pad" data-aria="pad" aria-label="Touch controls">
@@ -178,7 +177,9 @@
 <script src="story_v4.js"></script>
 <script src="story_v5.js"></script>
 <script src="story_v6.js"></script>
+<script src="tutorial.js"></script>
 <script src="story_morning.js"></script>
+<script src="story_v7.js"></script>
 <script src="screens.js"></script>
 </body>
 </html>

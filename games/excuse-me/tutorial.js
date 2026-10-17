@@ -1,0 +1,105 @@
+/* EXCUSE ME — the short tutorial: five cards, shown once at the door (replay from MENU > SETTINGS). */
+'use strict';
+(function () {
+  const EM = window.EM;
+  const T = EM.T, U = EM.ui, E = EM.engine, S = EM.scripts;
+  const el = U.el;
+  const t = function (en, es, pt) { return T(en, es, pt); };
+
+  const CARDS = [
+    {
+      k: t('1 / 5 — MOVE AND TALK', '1 / 5 — MOVERSE Y HABLAR', '1 / 5 — ANDAR E CONVERSAR'),
+      h: t('WALK. PRESS Z.', 'CAMINA. PRESIONA Z.', 'ANDE. APERTE Z.'),
+      keys: [['c', '← ↑ ↓ →', t('WALK', 'CAMINAR', 'ANDAR')], ['m', 'Z', t('TALK / USE', 'HABLAR / USAR', 'FALAR / USAR')], ['l', 'X', t('STEP AWAY', 'ALEJARSE', 'SE AFASTAR')], ['a', 'P', t('MENU', 'MENÚ', 'MENU')]],
+      b: t('Stand next to a person or a glowing mark and press Z. The line under the map says what Z will do.', 'Párate junto a una persona o una marca brillante y presiona Z. La línea bajo el mapa dice qué hará Z.', 'Fique perto de uma pessoa ou de uma marca brilhante e aperte Z. A linha embaixo do mapa diz o que o Z vai fazer.')
+    },
+    {
+      k: t('2 / 5 — CHOOSING WORDS', '2 / 5 — ELEGIR PALABRAS', '2 / 5 — ESCOLHER PALAVRAS'),
+      h: t('PICK AN OPTION.', 'ELIGE UNA OPCIÓN.', 'ESCOLHA UMA OPÇÃO.'),
+      keys: [['c', '↑ ↓', t('MOVE', 'MOVER', 'MOVER')], ['m', 'Z · 1–5', t('PICK', 'ELEGIR', 'ESCOLHER')], ['l', 'X', t('LEAVE', 'IRSE', 'SAIR')]],
+      b: t('Each option has a tone tag: CHILL, JOKE, CARE, MAKE OUT… Talking costs SOCIAL BATTERY. Making out always starts by asking, and a no is a complete answer.', 'Cada opción tiene una etiqueta de tono: TRANQUI, BROMA, CUIDAR, BESARSE… Hablar gasta BATERÍA SOCIAL. Besarse siempre empieza preguntando, y un no es una respuesta completa.', 'Cada opção tem uma etiqueta de tom: TRANQUILO, PIADA, CUIDAR, BEIJAR… Conversar gasta BATERIA SOCIAL. Beijar sempre começa perguntando, e um não é uma resposta completa.')
+    },
+    {
+      k: t('3 / 5 — CROWDS', '3 / 5 — MULTITUDES', '3 / 5 — MULTIDÕES'),
+      h: t('SAY EXCUSE ME.', 'DI CON PERMISO.', 'DIGA COM LICENÇA.'),
+      keys: [['m', 'Z', t('EXCUSE ME (IN A CROWD)', 'CON PERMISO (EN UNA MULTITUD)', 'COM LICENÇA (NA MULTIDÃO)')]],
+      b: t('With nobody in front of you, press Z in a crowd. Most people make room. Some stay put. A few get angry: kindness gets you through more often than shoving.', 'Sin nadie al frente, presiona Z en una multitud. La mayoría te hace lugar. Algunos no se mueven. Unos pocos se enojan: la amabilidad te pasa más seguido que empujar.', 'Sem ninguém na frente, aperte Z na multidão. A maioria abre espaço. Alguns ficam parados. Poucos ficam bravos: a gentileza te leva mais longe do que empurrar.')
+    },
+    {
+      k: t('4 / 5 — DANCING', '4 / 5 — BAILAR', '4 / 5 — DANÇAR'),
+      h: t('FOLLOW THE ARROWS ON THE BEAT.', 'SIGUE LAS FLECHAS AL RITMO.', 'SIGA AS SETAS NO RITMO.'),
+      keys: [['m', 'Z', t('DANCE ON A FLOOR MARK', 'BAILAR EN UNA MARCA', 'DANÇAR NUMA MARCA')], ['c', '← ↑ ↓ →', t('HIT THE ARROW ON THE BEAT', 'PULSA LA FLECHA AL RITMO', 'APERTE A SETA NO RITMO')], ['l', 'X', t('STOP', 'PARAR', 'PARAR')]],
+      b: t('Stand on a glowing floor mark and press Z. Arrows come on the beat: hit the matching one to refill FUN. Some groups dance a phrase first: watch it, then repeat it. Rather skip timing? MENU → NO-RHYTHM.', 'Párate en una marca brillante del piso y presiona Z. Las flechas llegan al ritmo: pulsa la que corresponde para recargar DIVERSIÓN. Algunos grupos bailan una frase primero: míralos y repítela. ¿Prefieres sin tiempos? MENÚ → SIN RITMO.', 'Fique numa marca brilhante do chão e aperte Z. As setas chegam no ritmo: aperte a certa pra recarregar DIVERSÃO. Alguns grupos dançam uma frase primeiro: observe e repita. Prefere sem tempo? MENU → SEM RITMO.'),
+      beat: true
+    },
+    {
+      k: t('5 / 5 — LOOK AFTER YOURSELF', '5 / 5 — CUÍDATE', '5 / 5 — CUIDE DE VOCÊ'),
+      h: t('FOUR BARS. ONE LOG.', 'CUATRO BARRAS. UN REGISTRO.', 'QUATRO BARRAS. UM REGISTRO.'),
+      keys: [['c', t('FUN', 'DIVERSIÓN', 'DIVERSÃO'), t('DANCE', 'BAILA', 'DANCE')], ['a', t('SOCIAL', 'SOCIAL', 'SOCIAL'), t('QUIET PLACES', 'LUGARES TRANQUILOS', 'LUGARES CALMOS')], ['m', t('HEALTH', 'SALUD', 'SAÚDE'), t('WATER, REST', 'AGUA, DESCANSO', 'ÁGUA, DESCANSO')], ['l', t('WEIRD', 'RAREZA', 'ESTRANHEZA'), t('DON\'T PUSH OR LIE', 'NO EMPUJES NI MIENTAS', 'NÃO EMPURRE NEM MINTA')]],
+      b: t('FUN is blue, SOCIAL yellow, HEALTH red, WEIRDNESS green. The NIGHT LOG above the map records what every choice cost. Your friends notice how you treat people.', 'DIVERSIÓN es azul, SOCIAL amarilla, SALUD roja, RAREZA verde. El REGISTRO sobre el mapa anota lo que costó cada decisión. Tus amigos notan cómo tratas a la gente.', 'DIVERSÃO é azul, SOCIAL amarela, SAÚDE vermelha, ESTRANHEZA verde. O REGISTRO acima do mapa anota quanto cada escolha custou. Seus amigos notam como você trata as pessoas.')
+    }
+  ];
+  const L = {
+    next: t('NEXT [Z]', 'SIGUIENTE [Z]', 'PRÓXIMO [Z]'), go: t('GO TO THE DOOR [Z]', 'IR A LA PUERTA [Z]', 'IR PRA PORTA [Z]'),
+    skip: t('SKIP [X]', 'OMITIR [X]', 'PULAR [X]'), back: t('BACK', 'ATRÁS', 'VOLTAR')
+  };
+  let idx = 0, done = null;
+
+  function render() {
+    const box = document.getElementById('tut'); if (!box) return;
+    const c = CARDS[idx]; box.textContent = '';
+    box.appendChild(el('div', 'tk', EM.tr(c.k)));
+    box.appendChild(el('h2', '', EM.tr(c.h)));
+    const keys = el('div', 'keys');
+    c.keys.forEach(function (k) {
+      const wrap = el('div', '');
+      wrap.appendChild(el('div', 'key ' + k[0], k[1]));
+      if (k[2]) { const lab = el('div', 'tk', EM.tr(k[2])); lab.style.marginTop = '4px'; wrap.appendChild(lab); }
+      keys.appendChild(wrap);
+    });
+    box.appendChild(keys);
+    if (c.beat) {
+      const row = el('div', 'beat');
+      ['←', '↑', '→', '↓', '←'].forEach(function (a, i) { row.appendChild(el('span', i === 2 ? 'on' : '', a)); });
+      box.appendChild(row);
+    }
+    box.appendChild(el('p', 'tb', EM.tr(c.b)));
+    const nav = el('div', 'tnav');
+    if (idx > 0) { const bk = el('button', '', EM.tr(L.back)); bk.type = 'button'; bk.addEventListener('click', function () { idx--; render(); }); nav.appendChild(bk); }
+    const nx = el('button', 'primary', EM.tr(idx === CARDS.length - 1 ? L.go : L.next)); nx.type = 'button'; nx.addEventListener('click', U.tutNext); nav.appendChild(nx);
+    const sk = el('button', '', EM.tr(L.skip)); sk.type = 'button'; sk.addEventListener('click', U.tutSkip); nav.appendChild(sk);
+    nav.appendChild(el('span', 'dots', CARDS.map(function (_, i) { return i === idx ? '●' : '○'; }).join(' ')));
+    box.appendChild(nav);
+    nx.focus && nx.focus({ preventScroll: true });
+    U.postHeight();
+  }
+  function finish() {
+    const box = document.getElementById('tut'); if (box) { box.hidden = true; box.textContent = ''; }
+    try { localStorage.setItem('excuse-me-tutorial', '1'); } catch (e) { /* ignore */ }
+    U.mode = 'play'; E.paused = false;
+    const cb = done; done = null;
+    if (cb) cb();
+    U.postHeight();
+  }
+  U.tutNext = function () { if (idx >= CARDS.length - 1) finish(); else { idx++; render(); } };
+  U.tutSkip = function () { finish(); };
+  U.tutKey = function (e) {
+    if (e.code === 'KeyZ' || e.code === 'Enter' || e.code === 'Space' || e.code === 'ArrowRight' || e.code === 'KeyD') { if (!e.repeat) U.tutNext(); }
+    else if (e.code === 'ArrowLeft' || e.code === 'KeyA') { if (idx > 0) { idx--; render(); } }
+    else if (e.code === 'KeyX' || e.code === 'Escape') U.tutSkip();
+  };
+  U.tutorial = function (cb) {
+    idx = 0; done = cb || null;
+    U.mode = 'tutorial'; E.paused = true; E.input.x = E.input.y = 0; U.keys = {};
+    const box = document.getElementById('tut'); if (!box) { finish(); return; }
+    box.hidden = false; render();
+  };
+  U.tutorialSeen = function () { try { return localStorage.getItem('excuse-me-tutorial') === '1'; } catch (e) { return false; } };
+
+  /* after the intro: the tutorial the first time, then the lessons of earlier nights */
+  S.after_intro = function () {
+    if (!U.tutorialSeen()) U.tutorial(function () { if (S.show_lessons) S.show_lessons(); });
+    else if (S.show_lessons) S.show_lessons();
+  };
+  EM.DIALOGUES.intro.after = 'after_intro';
+})();
