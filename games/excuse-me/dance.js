@@ -130,7 +130,7 @@
   /* ------------------------------------------------------------ effects of a partner dance */
   function apply(res, id, extra) {
     const f = id + '_warm';
-    if (res.grade === 'win') L.apply(Object.assign({ fun: 9, soc: 3, flag: f }, extra || {}));
+    if (res.grade === 'win') L.apply(Object.assign({ fun: 9, soc: 3, flag: [f, id + '_dwin'] }, extra || {}));
     else if (res.grade === 'partial') L.apply(Object.assign({ fun: 5, soc: 1, flag: f }, extra && extra.p || {}));
     else if (res.grade === 'fail') L.apply({ fun: 1, weird: 1, soc: -1 });
     else L.apply({ soc: -1 });

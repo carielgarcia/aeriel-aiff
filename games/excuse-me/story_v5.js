@@ -68,8 +68,9 @@
         ask: {
           text: c.ask,
           choices: [
-            K('makeout', c.go, { req: { flag: warm }, do: { makeout: { p: 0.68, time: 7, who: id }, flag: done }, next: null }),
-            K('makeout', c.go, { req: { no: warm }, do: { makeout: { p: 0.4, time: 7, who: id }, flag: done }, next: null }),
+            K('makeout', c.go, { req: { flag: id + '_dwin' }, do: { makeout: { p: 0.82, time: 7, who: id } }, next: null }),
+            K('makeout', c.go, { req: { flag: warm, no: id + '_dwin' }, do: { makeout: { p: 0.68, time: 7, who: id } }, next: null }),
+            K('makeout', c.go, { req: { no: warm }, do: { makeout: { p: 0.4, time: 7, who: id } }, next: null }),
             K('chill', t(`"No pressure. Thanks for being honest."`, `«Sin presión. Gracias por decírmelo.»`, `«Sem pressão. Valeu por me dizer.»`), { free: true, do: { soc: 1 }, next: null })
           ]
         }
