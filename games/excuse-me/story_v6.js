@@ -71,7 +71,7 @@
     }
   };
   S.mirror_stare = function () {
-    if (Math.random() < 0.5) { L.apply({ weird: -2, soc: 3, fun: 1 }); U.toast({ icon: 'heart', text: t(`You look like somebody's friend. A good one. Somebody you would, honestly, go out with.`, `Te ves como el amigo de alguien. Uno bueno. Alguien con quien, la verdad, saldrías.`, `Você parece o amigo de alguém. Um bom. Alguém com quem, sinceramente, você sairia.`), kind: 'good' }); }
+    if (Math.random() < 0.5) { L.apply({ weird: -2, soc: 3, fun: 1 }); U.toast({ icon: 'heart', text: t(`You look like somebody's friend. A good one. Somebody you would go out with.`, `Te ves como el amigo de alguien. Uno bueno. Alguien con quien saldrías.`, `Você parece o amigo de alguém. Um bom. Alguém com quem você sairia.`), kind: 'good' }); }
     else { L.apply({ weird: 2, soc: -1 }); U.toast({ icon: 'eyes', text: t(`Your pupils are two doors, and the reflection is looking back a half-second too attentively. You step away politely.`, `Tus pupilas son dos puertas, y el reflejo te devuelve la mirada medio segundo demasiado atento. Te alejas con educación.`, `Suas pupilas são duas portas, e o reflexo devolve o olhar meio segundo atento demais. Você se afasta educadamente.`), kind: 'bad' }); }
   };
   D.obj_phone = {
@@ -156,7 +156,7 @@
     K('dance', t(`Dance with Maru. Copy her moves.`, `Bailar con Maru. Copiar sus pasos.`, `Dançar com a Maru. Copiar os passos dela.`), { call: 'pd_maru', free: true, next: null }),
     K('chill', t(`"After this song. Promise."`, `«Después de esta canción. Prometido».`, `«Depois dessa música. Prometo».`), { do: { soc: 1 }, next: null })
   ], { zones: ['main', 'attic', 'courtyard'], need: 'maru' });
-  ev('ev_dance_tato', 'tato', MOMENT, t(`TATO, very quietly: "Would you dance with me? Slowly? I made up a move. It's mostly swaying. It's very safe."`, `TATO, muy bajito: «¿Bailarías conmigo? ¿Lento? Inventé un paso. Es casi todo balanceo. Es muy seguro».`, `O TATO, bem baixinho: «Você dançaria comigo? Devagar? Eu inventei um passo. É quase tudo balanço. É muito seguro».`), [
+  ev('ev_dance_tato', 'tato', MOMENT, t(`TATO, low: "Would you dance with me? Slowly? I made up a move. It's mostly swaying. It's very safe."`, `TATO, en voz baja: «¿Bailarías conmigo? ¿Lento? Inventé un paso. Es casi todo balanceo. Es muy seguro».`, `O TATO, em voz baixa: «Você dançaria comigo? Devagar? Eu inventei um passo. É quase tudo balanço. É muito seguro».`), [
     K('dance', t(`Dance with Tato. Copy his moves.`, `Bailar con Tato. Copiar sus pasos.`, `Dançar com o Tato. Copiar os passos dele.`), { call: 'pd_tato', free: true, next: null }),
     K('chill', t(`"Of course, later. Save me a dance."`, `«Claro, después. Resérvame un baile».`, `«Claro, depois. Guarda uma dança pra mim».`), { do: { soc: 1 }, next: null })
   ], { zones: ['main', 'attic', 'courtyard', 'foyer'], need: 'tato' });

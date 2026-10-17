@@ -15,7 +15,7 @@
         ],
         choices: [
           { tone: 'chill', t: T('"Sorry, bro. Just trying to get to my friends."', '«Perdón, bro. Solo intento llegar con mis amigos».', '«Foi mal, mano. Só tô tentando chegar nos meus amigos».'), next: 'b' },
-          { tone: 'smooth', t: T('"You two look great together, honestly."', '«Se ven increíbles juntos, de verdad».', '«Vocês ficam ótimos juntos, sério».'), next: 'c' },
+          { tone: 'smooth', t: T('"You two look great together."', '«Se ven increíbles juntos».', '«Vocês ficam ótimos juntos».'), next: 'c' },
           { tone: 'bold', t: T('(To Sofi) "Hey, are you good? Want to dance with us?"', '(A Sofi) «Oye, ¿estás bien? ¿Quieres bailar con nosotros?»', '(Pra Sofi) «Ei, você tá bem? Quer dançar com a gente?»'), next: 'd' },
           { tone: 'hug', t: T('"Bro. I LOVE this energy. Come here."', '«Bro. AMO esta energía. Ven acá».', '«Mano. AMO essa energia. Vem cá».'), req: { high: 2 }, next: 'e' },
           { tone: 'push', t: T('"Move."', '«Muévete».', '«Sai».'), next: 'f', bad: true }

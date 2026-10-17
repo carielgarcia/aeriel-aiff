@@ -169,7 +169,7 @@
     begin({ kind: 'reagent', t: 0, stage: 0, cb: cb, cancel: function () {} });
     const t0 = performance.now();
     const msgs = [
-      T('A scraping from the pill. A drop of liquid. The room holds its breath.', 'Se raspa un poco de la pastilla. Una gota de líquido. El cuarto contiene el aire.', 'Raspa-se um pouco do comprimido. Uma gota de líquido. A sala segura o ar.'),
+      T('A scraping from the pill. A drop of liquid. Nobody in the room moves.', 'Se raspa un poco de la pastilla. Una gota de líquido. Nadie en el cuarto se mueve.', 'Raspa-se um pouco do comprimido. Uma gota de líquido. Ninguém na sala se mexe.'),
       T('It changes. Isi watches it like a bank teller counting.', 'Cambia. Isi lo mira como una cajera contando billetes.', 'Muda. A Isi olha como uma caixa contando notas.'),
       T('It settles. Isi checks the card twice.', 'Se asienta. Isi revisa la tarjeta dos veces.', 'Assenta. A Isi confere o cartão duas vezes.')
     ];
