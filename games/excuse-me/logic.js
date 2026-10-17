@@ -397,7 +397,12 @@
     const s = EM.state;
     if (s.quests[id] === state) return;
     s.quests[id] = state;
-    if (state === 'active') EM.hooks.toast({ icon: 'exclam', text: T('NEW OBJECTIVE', 'NUEVO OBJETIVO', 'NOVO OBJETIVO'), kind: 'info' });
+    if (state === 'active') {
+      const q = EM.QUESTS && EM.QUESTS[id], tt = q && q.title, side = /^sq_/.test(id);
+      EM.hooks.toast({ icon: 'exclam', kind: 'info', ms: 5200, text: side && tt
+        ? T('NEW SIDE QUEST: ' + tt.en, 'NUEVA MISIÓN SECUNDARIA: ' + tt.es, 'NOVA MISSÃO SECUNDÁRIA: ' + tt.pt)
+        : T('NEW OBJECTIVE', 'NUEVO OBJETIVO', 'NOVO OBJETIVO') });
+    }
     EM.hooks.questChanged && EM.hooks.questChanged(id, state);
   };
 })();

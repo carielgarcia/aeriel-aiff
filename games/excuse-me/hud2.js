@@ -7,7 +7,7 @@
   const UI = {
     goal: t('OBJECTIVE', 'OBJETIVO', 'OBJETIVO'), expand: t('FULL LOG [L]', 'VER TODO [L]', 'VER TUDO [L]'), pause: t('PAUSE [O]', 'PAUSA [O]', 'PAUSAR [O]'),
     paused: t('PAUSED', 'EN PAUSA', 'EM PAUSA'), pausedBody: t('The night waits. Nothing moves, nothing drains.', 'La noche espera. Nada se mueve, nada se gasta.', 'A noite espera. Nada se move, nada se gasta.'),
-    resume: t('RESUME [O]', 'SEGUIR [O]', 'CONTINUAR [O]'), newGoal: t('NEW OBJECTIVE', 'NUEVO OBJETIVO', 'NOVO OBJETIVO')
+    side: t('SIDE QUESTS', 'MISIONES SECUNDARIAS', 'MISSÕES SECUNDÁRIAS'), resume: t('RESUME [O]', 'SEGUIR [O]', 'CONTINUAR [O]'), newGoal: t('NEW OBJECTIVE', 'NUEVO OBJETIVO', 'NOVO OBJETIVO')
   };
   let lastGoal = null, flashUntil = 0;
 
@@ -38,6 +38,8 @@
     const b = { 'btn-pause': UI.pause, 'log-expand': UI.expand };
     Object.keys(b).forEach(function (id) { const e = $(id); if (e) e.textContent = EM.tr(b[id]); });
     const gl = $('goal-l'); if (gl) gl.textContent = EM.tr(UI.goal);
+    const gs = $('goal-side'), st = EM.state;
+    if (gs && st) { const n = Object.keys(st.quests || {}).filter(function (k) { return /^sq_/.test(k) && st.quests[k] === 'active'; }).length; gs.hidden = !n; if (n) gs.textContent = EM.tr(UI.side) + ': ' + n; }
     const p = $('pause'); if (p && !p.hidden) { p.querySelector('h2').textContent = EM.tr(UI.paused); p.querySelector('p').textContent = EM.tr(UI.pausedBody); p.querySelector('button').textContent = EM.tr(UI.resume); }
   }
   const hud0 = U.hud;
@@ -45,6 +47,7 @@
 
   function wire() {
     const bp = $('btn-pause'), be = $('log-expand'), pb = $('pause') && $('pause').querySelector('button');
+    const gsb = $('goal-side'); if (gsb) gsb.addEventListener('click', function () { U.openMenu('quests'); });
     if (bp) bp.addEventListener('click', function () { if (U.mode === 'pause') U.resume(); else U.pause(); });
     if (pb) pb.addEventListener('click', U.resume);
     if (be) be.addEventListener('click', function () { U.openMenu('nightlog'); });
@@ -63,6 +66,8 @@
   st.textContent = '#goal { display: flex; gap: 10px; align-items: center; margin-top: 6px; border: 2px solid var(--yel); background: var(--panel); padding: 3px 10px; font-size: 14px; line-height: 1.25; text-transform: uppercase; letter-spacing: 1px; min-height: 38px; }' +
     '#goal-l { background: var(--yel); color: #0A0A0A; padding: 3px 8px; font-size: 12px; flex: none; }' +
     '#goal-t { color: #FFFFFF; font-weight: bold; }' +
+    '#goal-side { margin-left: auto; flex: none; min-height: 30px; padding: 2px 8px; font-size: 11px; border-color: var(--yel); color: var(--yel); }' +
+    '.qhead { margin: 10px 0 4px; font-size: 12px; letter-spacing: 1px; color: var(--yel); border-bottom: 1px solid #4A4A5A; padding-bottom: 2px; }' +
     '#goal.flash { background: var(--yel); } #goal.flash #goal-t { color: #0A0A0A; } #goal.flash #goal-l { background: #0A0A0A; color: var(--yel); }' +
     '#log-expand { position: absolute; top: 4px; right: 6px; min-height: 28px; padding: 2px 8px; font-size: 11px; z-index: 2; }' +
     '#log-list { padding-right: 130px; }' +

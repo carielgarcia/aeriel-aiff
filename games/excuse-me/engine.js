@@ -568,6 +568,10 @@
     const list = npcs();
     list.forEach(function (e) {
       npcDraw(e, null, items);
+      if (e.def.heart) { /* two people, hand in hand, with a heart between them */
+        const hp = npcPos(e), hx = Math.round(hp.x * TS), hfy = Math.round(hp.y * TS + 6);
+        items.push({ y: hfy + 1, fn: function () { g.drawImage(EM.icon('heart', N.mag), hx - 4, hfy - 46 + Math.round(Math.sin(E.time * 3))); } });
+      }
       if (e.def.smoker) { /* a lit cigarette over their head, and a thread of smoke */
         const sp = npcPos(e), sx = Math.round(sp.x * TS), sfy = Math.round(sp.y * TS + 6);
         items.push({ y: sfy + 1, fn: function () {

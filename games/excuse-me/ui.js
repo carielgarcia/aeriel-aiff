@@ -650,7 +650,12 @@
     } else if (menuTab === 'quests') {
       const list = Object.keys(EM.QUESTS || {}).filter(function (id) { return s.quests[id]; });
       if (!list.length) box.appendChild(el('p', 'mnote', EM.tr(UI.none)));
-      list.forEach(function (id) {
+      const side = function (id) { return /^sq_/.test(id); };
+      const sections = [[T('MAIN MISSIONS', 'MISIONES PRINCIPALES', 'MISSÕES PRINCIPAIS'), list.filter(function (id) { return !side(id); })], [T('SIDE QUESTS', 'MISIONES SECUNDARIAS', 'MISSÕES SECUNDÁRIAS'), list.filter(side)]];
+      sections.forEach(function (sec) {
+        if (!sec[1].length) return;
+        box.appendChild(el('h3', 'qhead', EM.tr(sec[0])));
+        sec[1].forEach(function (id) {
         const q = EM.QUESTS[id];
         const r = el('div', 'qrow ' + s.quests[id]);
         r.appendChild(el('span', 'qs', '[' + EM.tr(s.quests[id] === 'done' ? UI.done : UI.active) + ']'));
@@ -658,6 +663,7 @@
         const qd = s.quests[id] === 'done' && q.doneText ? q.doneText : q.desc;
         r.appendChild(el('div', 'qd', EM.tr(typeof qd === 'function' ? qd(s) : qd)));
         box.appendChild(r);
+        });
       });
     } else if (menuTab === 'settings') {
       [['mute', 'soundOn', true], ['calm', 'calm'], ['noRhythm', 'norhythm']].forEach(function (p) {
