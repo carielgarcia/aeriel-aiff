@@ -9,21 +9,31 @@
   const K = function (tone, tx, o) { return Object.assign({ tone: tone, t: tx }, o || {}); };
 
   const KIND = {
-    mdma: t('MDMA', 'MDMA', 'MDMA'), meth: t('METH', 'METANFETAMINA', 'METANFETAMINA'),
+    mdma: t('MDMA', 'MDMA', 'MDMA'),
     coke: t('COCAINE', 'COCAÍNA', 'COCAÍNA'), ket: t('KETAMINE', 'KETAMINA', 'CETAMINA')
   };
-  const KINDS = ['mdma', 'meth', 'coke', 'ket'];
+  const KINDS = ['mdma', 'coke', 'ket'];
   const REAL = { mix: t('MDMA WITH A STIMULANT', 'MDMA CON UN ESTIMULANTE', 'MDMA COM UM ESTIMULANTE'), fake: t('NOT WHAT IT SAYS', 'NO ES LO QUE DICE', 'NÃO É O QUE DIZ') };
   function realName(r) { return KIND[r] || REAL[r]; }
 
   /* ------------------------------------------------------------ what a purchase really is */
-  function resolve(told) {
+  /* a pill's stamp is a story, not a guarantee, but the odds do lean a little */
+  const ODDS = { crown: [0.8, 0.1], heart: [0.8, 0.1], bolt: [0.45, 0.4], skull: [0.5, 0.15], smile: [0.7, 0.15], ae: [0.7, 0.15] };
+  function resolve(told, imprint) {
     const r = Math.random();
-    if (told === 'mdma') return r < 0.7 ? 'mdma' : (r < 0.85 ? 'mix' : 'fake');
-    if (told === 'meth') return r < 0.85 ? 'meth' : 'fake';
+    if (told === 'mdma') { const o = ODDS[imprint] || ODDS.smile; return r < o[0] ? 'mdma' : (r < o[0] + o[1] ? 'mix' : 'fake'); }
     if (told === 'coke') return r < 0.8 ? 'coke' : 'ket';
     return r < 0.8 ? 'ket' : 'coke';
   }
+  const SHAPES = {
+    round: t('ROUND', 'REDONDA', 'REDONDA'), heart: t('HEART', 'DE CORAZÓN', 'DE CORAÇÃO'), square: t('SQUARE', 'CUADRADA', 'QUADRADA'),
+    star: t('STAR', 'DE ESTRELLA', 'DE ESTRELA'), diamond: t('DIAMOND', 'DE ROMBO', 'DE LOSANGO')
+  };
+  const IMPRINTS = {
+    crown: { g: '♛', n: t('CROWN', 'CORONA', 'COROA') }, heart: { g: '♥', n: t('HEART', 'CORAZÓN', 'CORAÇÃO') },
+    bolt: { g: '⚡', n: t('LIGHTNING BOLT', 'RAYO', 'RAIO') }, skull: { g: '☠', n: t('SKULL', 'CALAVERA', 'CAVEIRA') },
+    smile: { g: '☺', n: t('SMILEY', 'CARITA', 'CARINHA') }, ae: { g: 'Æ', n: t('Æ', 'Æ', 'Æ') }
+  };
   function stash() { const s = EM.state; s.stash = s.stash || []; return s.stash; }
   story.hasStash = function (kind, untestedOnly) { return stash().some(function (e) { return e.kind === kind && (!untestedOnly || !e.tested); }); };
 
@@ -34,13 +44,20 @@
       a: {
         text: t(`The person at the back of the queue has a very big jacket with a lot of small pockets. "Psst. Don't look at the pockets. Look at me. I'm a menu, standing up. Say a word and I'll pretend it was your idea."`, `La persona del final de la fila lleva una chaqueta enorme con muchísimos bolsillitos. «Psst. No mires los bolsillos. Mírame a mí. Soy un menú de pie. Di una palabra y voy a fingir que fue idea tuya».`, `A pessoa no fim da fila usa uma jaqueta enorme com muitos bolsinhos. «Psiu. Não olha os bolsos. Olha pra mim. Eu sou um cardápio em pé. Fala uma palavra e eu finjo que foi ideia sua».`),
         choices: [
-          K('bold', t(`"MDMA."`, `«MDMA».`, `«MDMA».`), { req: function (s) { return !story.hasStash('mdma'); }, call: 'buy_mdma', next: null, free: true }),
-          K('bold', t(`"Speed. Meth."`, `«Speed. Metanfetamina».`, `«Speed. Metanfetamina».`), { req: function (s) { return !story.hasStash('meth'); }, call: 'buy_meth', next: null, free: true }),
+          K('bold', t(`"MDMA. Pills."`, `«MDMA. Pastillas».`, `«MDMA. Comprimidos».`), { req: function (s) { return !story.hasStash('mdma'); }, next: 'shape', free: true }),
           K('bold', t(`"Coke."`, `«Coca».`, `«Coca».`), { req: function (s) { return !story.hasStash('coke'); }, call: 'buy_coke', next: null, free: true }),
           K('bold', t(`"K."`, `«K».`, `«K».`), { req: function (s) { return !story.hasStash('ket'); }, call: 'buy_ket', next: null, free: true }),
           K('ask', t(`"How do I know it's what you say?"`, `«¿Cómo sé que es lo que dices?»`, `«Como eu sei que é o que você diz?»`), { next: 'honest' }),
           K('chill', t(`"Just waiting for the toilet."`, `«Solo espero el baño».`, `«Só esperando o banheiro».`), { free: true, next: null })
         ]
+      },
+      shape: {
+        text: t(`"Pills. I've got a few shapes in the lining. Pick one. It's only a shape; I say that about everything, and it's true about shapes."`, `«Pastillas. Tengo unas cuantas formas en el forro. Elige una. Es solo una forma; lo digo de todo, y de las formas es verdad».`, `«Comprimidos. Tenho algumas formas no forro. Escolhe uma. É só uma forma; eu falo isso de tudo, e de formas é verdade».`),
+        choices: Object.keys(SHAPES).map(function (k) { return K('bold', SHAPES[k], { call: 'ps_' + k, next: 'imprint', free: true }); }).concat([K('chill', t(`"Never mind."`, `«Olvídalo».`, `«Deixa pra lá».`), { next: 'a', free: true })])
+      },
+      imprint: {
+        text: t(`"And the stamp. Everyone wants a stamp. A crown, a heart, a bolt, a skull, a smiley, an Æ for the nerds. The stamp tells a story. The story is not a lab report. Don't tell Isi I said that."`, `«Y el sello. Todos quieren un sello. Una corona, un corazón, un rayo, una calavera, una carita, una Æ para los nerds. El sello cuenta una historia. La historia no es un análisis de laboratorio. No le digas a Isi que dije eso».`, `«E o carimbo. Todo mundo quer um carimbo. Uma coroa, um coração, um raio, uma caveira, uma carinha, um Æ pros nerds. O carimbo conta uma história. A história não é um laudo de laboratório. Não conta pra Isi que eu disse isso».`),
+        choices: Object.keys(IMPRINTS).map(function (k) { return K('bold', t(`${IMPRINTS[k].g}  ${IMPRINTS[k].n.en}`, `${IMPRINTS[k].g}  ${IMPRINTS[k].n.es}`, `${IMPRINTS[k].g}  ${IMPRINTS[k].n.pt}`), { call: 'pi_' + k, next: null, free: true }); })
       },
       honest: {
         text: t(`"You don't." He says it with real warmth. "Nobody does. Not me. I buy from a guy who buys from a guy. That's why there's a table in the quiet room with a woman who will tell you what it looks like, for free, no names. Go see her before you put anything in you. I mean it. I make money and I like being alive."`, `«No sabes». Lo dice con calidez de verdad. «Nadie sabe. Ni yo. Le compro a un tipo que le compra a un tipo. Por eso hay una mesa en la sala tranquila con una mujer que te dice a qué se parece, gratis, sin nombres. Ve con ella antes de ponerte nada. En serio. Yo gano plata y me gusta estar vivo».`, `«Não sabe». Ele fala com calor de verdade. «Ninguém sabe. Nem eu. Compro de um cara que compra de um cara. Por isso tem uma mesa na sala de calma com uma mulher que te diz com o que se parece, de graça, sem nomes. Vai lá antes de colocar qualquer coisa em você. Falo sério. Eu ganho dinheiro e gosto de estar vivo».`),
@@ -48,17 +65,30 @@
       }
     }
   };
+  function addToStash(entry, label) {
+    L.dealerHeat();
+    stash().push(entry);
+    EM.state.flags['bought_' + entry.kind] = true;
+    U.toast({ icon: 'question', text: label, kind: 'info', ms: 6500 });
+  }
   function buy(kind) {
     return function () {
-      const s = EM.state, list = stash();
-      L.dealerHeat();
-      list.push({ kind: kind, real: resolve(kind), tested: false, fake: ['faint', 'nothing', 'glitch'][Math.floor(Math.random() * 3)] });
-      s.flags['bought_' + kind] = true;
       const N = KIND[kind], cap = function (x) { return x.charAt(0) + x.slice(1).toLowerCase(); };
-      U.toast({ icon: 'question', text: t(`A small folded paper changes hands with no ceremony. ${cap(N.en)} (probably). It is in your pocket now. MENU → STATUS to take it, or ISI's table to find out what it looks like.`, `Un papelito doblado cambia de manos sin ceremonia. ${cap(N.es)} (probablemente). Ya está en tu bolsillo. MENÚ → ESTADO para tomarla, o la mesa de ISI para saber a qué se parece.`, `Um papelzinho dobrado troca de mãos sem cerimônia. ${cap(N.pt)} (provavelmente). Já está no seu bolso. MENU → ESTADO pra tomar, ou a mesa da ISI pra saber com o que se parece.`), kind: 'info', ms: 6500 });
+      addToStash({ kind: kind, real: resolve(kind), tested: false, fake: ['faint', 'nothing', 'glitch'][Math.floor(Math.random() * 3)] },
+        t(`A small folded paper changes hands with no ceremony. ${cap(N.en)} (probably). It is in your pocket now. MENU → STATUS to take it, or ISI's table to find out what it looks like.`, `Un papelito doblado cambia de manos sin ceremonia. ${cap(N.es)} (probablemente). Ya está en tu bolsillo. MENÚ → ESTADO para tomarla, o la mesa de ISI para saber a qué se parece.`, `Um papelzinho dobrado troca de mãos sem cerimônia. ${cap(N.pt)} (provavelmente). Já está no seu bolso. MENU → ESTADO pra tomar, ou a mesa da ISI pra saber com o que se parece.`));
     };
   }
-  KINDS.forEach(function (k) { S['buy_' + k] = buy(k); });
+  KINDS.filter(function (k) { return k !== 'mdma'; }).forEach(function (k) { S['buy_' + k] = buy(k); });
+  /* the pill: you pick the shape, then the stamp */
+  Object.keys(SHAPES).forEach(function (k) { S['ps_' + k] = function () { EM.state.pendingPill = { shape: k }; }; });
+  Object.keys(IMPRINTS).forEach(function (k) {
+    S['pi_' + k] = function () {
+      const s = EM.state, p = s.pendingPill || { shape: 'round' }; s.pendingPill = null;
+      const real = resolve('mdma', k);
+      addToStash({ kind: 'mdma', shape: p.shape, imprint: k, real: real, strong: k === 'crown' && (real === 'mdma' || real === 'mix'), tested: false, fake: ['faint', 'nothing', 'glitch'][Math.floor(Math.random() * 3)] },
+        t(`A small, ${SHAPES[p.shape].en.toLowerCase()} pill, stamped ${IMPRINTS[k].g} (${IMPRINTS[k].n.en.toLowerCase()}), is in your pocket now. MENU → STATUS to take it, or ISI's table to find out what is really in it.`, `Una pastilla chica ${SHAPES[p.shape].es.toLowerCase()}, con el sello ${IMPRINTS[k].g} (${IMPRINTS[k].n.es.toLowerCase()}), ya está en tu bolsillo. MENÚ → ESTADO para tomarla, o la mesa de ISI para saber qué tiene de verdad.`, `Um comprimido pequeno ${SHAPES[p.shape].pt.toLowerCase()}, com o carimbo ${IMPRINTS[k].g} (${IMPRINTS[k].n.pt.toLowerCase()}), já está no seu bolso. MENU → ESTADO pra tomar, ou a mesa da ISI pra saber o que tem de verdade.`));
+    };
+  });
   Z.restrooms.npc({ id: 'tico', x: 11.5, y: 10.5, dlg: 'tico', dir: 'r', reach: 16 });
 
   /* ------------------------------------------------------------ taking what you carry (MENU > STATUS) */
@@ -71,6 +101,7 @@
     const s = EM.state, e = stash()[i]; if (!e) return;
     stash().splice(i, 1);
     s.flags.took_stash = true;
+    if (e.strong) { L.apply({ fun: 4, weird: 4, hp: -2 }); U.toast({ text: t('A strong one. The room tilts brighter than you planned.', 'Una fuerte. El cuarto se inclina más brillante de lo que planeaste.', 'Uma forte. A sala se inclina mais brilhante do que você planejou.'), kind: 'info', ms: 4500 }); }
     if (e.real === 'coke' || e.real === 'ket') { story.applyPowder(e.real, e.kind); return; }
     if (e.real === 'mdma') {
       L.apply({ fx: 'mdma', fun: 10, hp: -3, weird: 10, flag: ['rolling', 'drug_taken'] });
@@ -78,9 +109,6 @@
     } else if (e.real === 'mix') {
       L.apply({ fx: ['mdma', 'meth'], fun: 8, hp: -6, weird: 20, flag: ['rolling', 'wired', 'drug_taken'] });
       U.toast({ icon: 'spark', text: t('A warm wave with a wire running through it. Your jaw and your pulse have opinions.', 'Una ola tibia con un cable adentro. Tu mandíbula y tu pulso tienen opiniones.', 'Uma onda morna com um fio dentro. Sua mandíbula e seu pulso têm opiniões.'), kind: 'bad', ms: 5000 });
-    } else if (e.real === 'meth') {
-      L.apply({ fx: 'meth', fun: 9, hp: -5, weird: 8, flag: ['wired', 'drug_taken'] });
-      U.toast({ icon: 'spark', text: t('Everything gets a little brighter and a lot faster. You have a great many opinions, all of them urgent.', 'Todo se vuelve un poco más brillante y mucho más rápido. Tienes muchas opiniones, todas urgentes.', 'Tudo fica um pouco mais brilhante e muito mais rápido. Você tem muitas opiniões, todas urgentes.'), kind: 'info', ms: 5000 });
     } else {
       /* fake */
       s.impaired = true;
@@ -90,6 +118,18 @@
       U.toast({ icon: e.fake === 'faint' ? 'skull' : 'eyes', text: FAKE_TOAST[e.fake], kind: e.fake === 'nothing' ? 'info' : 'bad', ms: 5500 });
     }
   };
+  /* a tiny drawing of the pill you picked */
+  function pillIcon(shape, imp) {
+    const c = document.createElement('canvas'); c.width = 28; c.height = 20; c.className = 'pillico';
+    const g = c.getContext('2d');
+    g.fillStyle = '#EDEDF5'; g.strokeStyle = '#0A0A0A';
+    if (shape === 'round') { g.beginPath(); g.arc(14, 10, 8, 0, 7); g.fill(); }
+    else if (shape === 'square') g.fillRect(6, 3, 16, 14);
+    else if (shape === 'diamond') { g.beginPath(); g.moveTo(14, 1); g.lineTo(24, 10); g.lineTo(14, 19); g.lineTo(4, 10); g.closePath(); g.fill(); }
+    else { g.font = '22px monospace'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(shape === 'heart' ? '♥' : '★', 14, 11); }
+    g.fillStyle = '#0A0A0A'; g.font = '10px monospace'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(IMPRINTS[imp].g, 14, 11);
+    return c;
+  }
   EM.menuExtras = EM.menuExtras || [];
   EM.menuExtras.push(function (box, s) {
     const list = stash(); if (!list.length) return;
@@ -97,8 +137,9 @@
     box.appendChild(head);
     list.forEach(function (e, i) {
       const row = U.el('div', 'stashrow');
-      const label = EM.tr(KIND[e.kind]) + (e.tested ? ' — ' + EM.tr(t('TESTED: looks like', 'PROBADO: se parece a', 'TESTADO: parece')) + ' ' + EM.tr(realName(e.real)) : ' — ' + EM.tr(t('untested', 'sin probar', 'sem testar')));
-      row.appendChild(U.el('span', '', label));
+      const label = EM.tr(KIND[e.kind]) + (e.imprint ? ' (' + EM.tr(SHAPES[e.shape]).toLowerCase() + ', ' + IMPRINTS[e.imprint].g + ')' : '') + (e.tested ? ' — ' + EM.tr(t('TESTED: looks like', 'PROBADO: se parece a', 'TESTADO: parece')) + ' ' + EM.tr(realName(e.real)) : ' — ' + EM.tr(t('untested', 'sin probar', 'sem testar')));
+      if (e.imprint) row.appendChild(pillIcon(e.shape, e.imprint));
+      row.appendChild(U.el('span', 'stl', label));
       const b = U.el('button', '', EM.tr(t('TAKE IT', 'TOMARLA', 'TOMAR')));
       b.type = 'button';
       b.addEventListener('click', function () { story.takeStash(i); U.closeMenu(); });
@@ -126,10 +167,17 @@
   const RES = {
     mdma: t(`"It's showing what MDMA shows, and only that." She taps the card. "*As far as this table can tell.* No word on strength, none on how your body will take it. If you take it: start small, give it an hour, water not litres, nothing on top."`, `«Muestra lo que muestra el MDMA, y solo eso». Golpea la tarjeta. «*Hasta donde esta mesa puede saber.* Nada sobre la fuerza ni sobre cómo lo tome tu cuerpo. Si lo tomas: empieza poco, dale una hora, agua y no litros, nada encima».`, `«Mostra o que o MDMA mostra, e só isso». Ela bate no cartão. «*Até onde esta mesa consegue saber.* Nada sobre a força, nada sobre como seu corpo vai levar. Se for tomar: comece pouco, espere uma hora, água e não litros, nada por cima».`),
     mix: t(`"It's showing MDMA with something stimulant alongside it. That isn't what you were told. Mixed things are rough on a heart. If you take it: half, and sit often. Or give it to the bin, which is a perfectly good friend."`, `«Muestra MDMA con algo estimulante al lado. No es lo que te dijeron. Las mezclas son duras para un corazón. Si la tomas: la mitad, y siéntate seguido. O dásela al bote, que es muy buen amigo».`, `«Mostra MDMA com algo estimulante do lado. Não é o que te disseram. Misturas pesam no coração. Se for tomar: metade, e sente seguido. Ou entrega pra lixeira, que é uma ótima amiga».`),
-    meth: t(`"A stimulant. Speed or meth: this table can't tell which, only that it's a stimulant. Your heart will notice, and so will your jaw. If you take it: water, snack, sit down every so often, and don't dance until you fall over."`, `«Un estimulante. Speed o meta: esta mesa no distingue, solo que es un estimulante. Tu corazón lo va a notar, y tu mandíbula también. Si la tomas: agua, algo de comer, siéntate de vez en cuando, y no bailes hasta caerte».`, `«Um estimulante. Speed ou meta: esta mesa não distingue, só que é um estimulante. Seu coração vai notar, e sua mandíbula também. Se for tomar: água, um lanche, sente de vez em quando e não dance até cair».`),
     coke: t(`"Cocaine, as far as the table sees. Short, bright, and hard on a heart that's already dancing. If you take it: slow down on the floor, drink water, and be careful of the person you turn into at 4 a.m."`, `«Cocaína, hasta donde ve la mesa. Corta, brillante, y dura para un corazón que ya está bailando. Si la tomas: baja el ritmo en la pista, toma agua, y cuídate de la persona en la que te conviertes a las 4».`, `«Cocaína, até onde a mesa vê. Curta, brilhante e dura pra um coração que já está dançando. Se for tomar: desacelere na pista, beba água e cuidado com a pessoa em que você vira às 4 da manhã».`),
     ket: t(`"Ketamine, as far as I can see. It can drop you to the floor within minutes, sometimes before you feel it. Sit first. Never alone. Never near stairs. If you do take it: tell a person where you'll be."`, `«Ketamina, hasta donde veo. Te puede dejar en el piso en minutos, a veces antes de que lo sientas. Siéntate primero. Nunca solo. Nunca cerca de escaleras. Si la tomas: dile a alguien dónde vas a estar».`, `«Cetamina, até onde eu vejo. Ela pode te derrubar em minutos, às vezes antes de você sentir. Sente primeiro. Nunca sozinho. Nunca perto de escada. Se for tomar: diga a alguém onde você vai estar».`),
     fake: t(`"Nothing on this table looks like what it says. I can't tell you what's in there. It might do nothing. It might do something you didn't order. I'd put it in the bin, no shame, no questions."`, `«Nada en esta mesa se parece a lo que dice. No puedo decirte qué hay adentro. Puede no hacer nada. Puede hacer algo que no pediste. Yo la tiraría al bote, sin vergüenza, sin preguntas».`, `«Nada nesta mesa se parece com o que diz. Não posso dizer o que tem aí dentro. Pode não fazer nada. Pode fazer algo que você não pediu. Eu jogaria na lixeira, sem vergonha, sem perguntas».`)
+  };
+  const IMPNOTE = {
+    crown: t(`She turns the card over. "A crown stamp. Those have been circulating all night, and they come back strong. If you're taking it, half. If you're taking it with water, half of half."`, `Da vuelta la tarjeta. «Sello de corona. Han circulado toda la noche y vuelven fuertes. Si la vas a tomar, la mitad. Si la tomas con agua, la mitad de la mitad».`, `Ela vira o cartão. «Carimbo de coroa. Circula a noite inteira e voltam fortes. Se for tomar, metade. Se tomar com água, metade da metade».`),
+    heart: t(`"A heart stamp. Common, gentle, the sort of thing that's usually just what it says. *Usually.* I've learned not to trust the word."`, `«Sello de corazón. Común, suave, de las que suelen ser lo que dicen. *Suelen.* Aprendí a no confiar en esa palabra».`, `«Carimbo de coração. Comum, suave, do tipo que costuma ser o que diz. *Costuma.* Aprendi a não confiar nessa palavra».`),
+    bolt: t(`"A bolt. I've seen a few of those cut with a stimulant. Not all. Enough that I look twice."`, `«Un rayo. Vi unas cuantas cortadas con un estimulante. No todas. Las suficientes como para mirar dos veces».`, `«Um raio. Já vi alguns cortados com estimulante. Nem todos. O bastante pra eu olhar duas vezes».`),
+    skull: t(`"A skull. It's a joke stamp. It tells me nothing about what's inside, which is the opposite of funny."`, `«Una calavera. Es un sello de broma. No me dice nada de lo que hay adentro, que es lo contrario de gracioso».`, `«Uma caveira. É um carimbo de piada. Não me diz nada do que tem dentro, o que é o contrário de engraçado».`),
+    smile: t(`"A smiley. Smileys are the beige of pills. Nothing against them. Nothing for them either."`, `«Una carita. Las caritas son lo beige de las pastillas. Nada en su contra. Nada a su favor tampoco».`, `«Uma carinha. Carinhas são o bege dos comprimidos. Nada contra. Nada a favor também».`),
+    ae: t(`"An Æ! Somebody has been to a certain party. It means nothing, chemically. It means everything socially. I will tell nobody."`, `«¡Una Æ! Alguien fue a cierta fiesta. No significa nada, químicamente. Significa todo, socialmente. No se lo voy a decir a nadie».`, `«Um Æ! Alguém foi a certa festa. Não significa nada, quimicamente. Significa tudo, socialmente. Não vou contar pra ninguém».`)
   };
   D.isi_result = {
     forced: true, who: 'nuri', role: t('CHECKING TABLE', 'MESA DE CHEQUEO', 'MESA DE CHECAGEM'), start: 'a', nodes: {
@@ -140,7 +188,9 @@
           const lead = e.real === 'fake' || e.real === 'mix' || swapped
             ? t(`"That's not what you were told. Bags get swapped; that's why we check."`, `«Eso no es lo que te dijeron. Las bolsitas se cambian; por eso revisamos».`, `«Isso não é o que te disseram. Saquinhos são trocados; por isso a gente checa».`)
             : t(`"It matches what you were told. That's the good news, and only that."`, `«Coincide con lo que te dijeron. Esa es la buena noticia, y solo esa».`, `«Bate com o que te disseram. Essa é a boa notícia, e só ela».`);
-          return [lead, RES[e.real]];
+          const out = [lead, RES[e.real]];
+          if (e.imprint) out.push(IMPNOTE[e.imprint]);
+          return out;
         },
         choices: [
           K('chill', t(`"Thank you. I'll think about it."`, `«Gracias. Lo voy a pensar».`, `«Valeu. Vou pensar».`), { do: { soc: 2, care: 1 }, next: null }),

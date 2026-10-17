@@ -292,6 +292,6 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 - **Pushing**: asking again right after a flop is a firm no with a reputation cost; never reward it. Update `tutorial.js` whenever controls or dance rules change, in EN/ES/PT.
 - **Consequences come back**: kisses are remembered (friend reactions, the person returns, numbers), and small kindnesses pay off later the same night, in the morning, or both (`story_v7.js`).
 - **Dancing**: one rule everywhere: arrows come to you and you press the matching one. No memory challenges.
-- **Drugs bought in the queue**: carried in `s.stash`, true contents hidden until Isi's table tests them. Rosa's lanyard removes guard heat; Isi's wristband removes dealer heat.
+- **Drugs bought in the queue**: MDMA pills (the player picks shape and stamp), cocaine and ketamine only; meth is never sold, only a possible spike in MDMA. Carried in `s.stash`, true contents hidden until Isi's table tests them. Rosa's lanyard removes guard heat; Isi's wristband removes dealer heat.
 - **Errands** (`story_v9.js`): quests should interlock (Rosa, Luca, Biscuit's phone, Isi, Kai, Sia, Cleo, the headlamp). New ones should pay out in something another one needs.
 - **Dark room**: played blind; keep the subtle cues (sound, embers, curtain thread) and the reach mechanic.
