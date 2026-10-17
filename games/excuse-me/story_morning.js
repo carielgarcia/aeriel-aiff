@@ -37,7 +37,7 @@
         T('Check-in: home, showered, alive. Someone\'s lanyard is in my pocket. If it is yours, I am sorry. If it is not yours, also sorry.', 'Aviso: en casa, bañada, viva. Hay una credencial de alguien en mi bolsillo. Si es tuya, perdón. Si no es tuya, también perdón.', 'Aviso: em casa, de banho tomado, viva. Tem um crachá de alguém no meu bolso. Se for seu, desculpa. Se não for seu, desculpa também.')
       ],
       thanks: [
-        T('Thank you for tonight. Genuinely. I needed people who say "nobody gets lost" and mean it.', 'Gracias por esta noche. De verdad. Necesitaba gente que diga «nadie se pierde» y lo diga en serio.', 'Obrigada pela noite. De verdade. Eu precisava de gente que diz «ninguém se perde» e fala sério.'),
+        T('Thank you for tonight. Really. I needed people who say "nobody gets lost" and mean it.', 'Gracias por esta noche. En serio. Necesitaba gente que diga «nadie se pierde» y lo diga en serio.', 'Obrigada pela noite. Sério. Eu precisava de gente que diz «ninguém se perde» e fala sério.'),
         T('I do not say this enough: you are a good one to go out with. Next time I buy the first round. The first round is water.', 'No lo digo lo suficiente: eres buena compañía para salir. La próxima yo pago la primera ronda. La primera ronda es agua.', 'Eu não falo isso o bastante: você é uma boa companhia pra sair. Da próxima eu pago a primeira rodada. A primeira rodada é água.')
       ],
       lost: [
@@ -82,7 +82,7 @@
       thanks: T('Stop, I am crying on the metro too. We are on the same metro now.', 'Para, yo también estoy llorando en el metro. Ahora estamos en el mismo metro.', 'Para, eu também tô chorando no metrô. Agora a gente tá no mesmo metrô.')
     },
     tato: {
-      home: T('$, I am happy for you. Please text when you are home. Not because I doubt you. Because I like you.', '$, me alegro por ti. Escribe cuando llegues a casa. No porque dude de ti. Porque te quiero.', '$, fico feliz por você. Manda mensagem quando chegar em casa. Não porque eu duvide. Porque eu gosto de você.'),
+      home: T('$, I am happy for you. Please text when you are home. I don\'t doubt you. I just like you.', '$, me alegro por ti. Escribe cuando llegues a casa. No dudo de ti. Solo te quiero.', '$, fico feliz por você. Manda mensagem quando chegar em casa. Eu não duvido de você. Só gosto de você.'),
       safe: T('Glad you are safe, $. I checked the lock for you too.', 'Qué bueno que llegaste bien, $. Yo también revisé el cerrojo por ti.', 'Que bom que você chegou bem, $. Eu conferi a tranca por você também.'),
       thanks: T('Same. All of it. The wall too.', 'Igual. Todo. La pared también.', 'Igual. Tudo. A parede também.')
     }

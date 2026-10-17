@@ -592,7 +592,7 @@
       a: {
         text: T('A club cat. Nobody knows whose it is. It tolerates you.', 'Un gato del club. Nadie sabe de quién es. Te tolera.', 'Um gato do club. Ninguém sabe de quem é. Ele te tolera.'),
         choices: [
-          { t: T('Pet the cat.', 'Acariciar al gato.', 'Fazer carinho no gato.'), free: true, do: { time: 5, soc: 10, fun: 4, flag: 'pet_cat' }, next: null, react: T('The cat closes its eyes. This is the best conversation you have had all night.', 'El gato cierra los ojos. Es la mejor conversación que has tenido en toda la noche.', 'O gato fecha os olhos. É a melhor conversa que você teve a noite toda.') },
+          { t: T('Pet the cat.', 'Acariciar al gato.', 'Fazer carinho no gato.'), free: true, do: { time: 5, soc: 10, fun: 4, flag: 'pet_cat' }, next: null, react: T('The cat closes its eyes. It agrees with you.', 'El gato cierra los ojos. Está de acuerdo contigo.', 'O gato fecha os olhos. Concorda com você.') },
           { t: T('Leave it alone.', 'Dejarlo en paz.', 'Deixar em paz.'), free: true, next: null }
         ]
       }
