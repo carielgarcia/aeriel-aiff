@@ -47,6 +47,15 @@
   function fit() {
     const app = $('app'), st = $('stage'), g = $('screen-game'); if (!app || !st || !g || g.hidden) return;
     const c = app.offsetHeight - st.offsetHeight, root = document.documentElement.style;
+    /* portrait phones: spend the spare height on a taller game view instead of dead space under the D-pad */
+    if (E.setView) {
+      const phone = window.matchMedia('(max-width: 700px)').matches, w = st.clientWidth - 4;
+      if (!phone) E.setView(180);
+      else if (w > 0) {
+        const want = Math.floor((window.innerHeight - c - 8) / (w / 320)), cur = E.size.h;
+        if (Math.abs(want - cur) >= 8 || want < 180) E.setView(want);
+      }
+    }
     if (Math.abs(c - (parseFloat(root.getPropertyValue('--chrome')) || 0)) > 1) root.setProperty('--chrome', c + 'px');
   }
   function labels() {

@@ -4,7 +4,8 @@
 (function () {
   const EM = window.EM;
   const TL = EM.TL, L = EM.logic, T = EM.T, N = EM.NEON;
-  const TS = 16, VW = 320, VH = 180;
+  const TS = 16, VW = 320;
+  let VH = 180, camBias = 0; /* the view is 320 wide; on a portrait phone it grows taller (see E.setView) */
   const E = EM.engine = {};
 
   let cv, g, S, Z, R;
@@ -27,6 +28,14 @@
   E.init = function (canvas) {
     cv = canvas; cv.width = VW; cv.height = VH;
     g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+  };
+  /* a taller view for portrait phones: more of the room above and below you. The player sits a little above
+     centre so the dialogue panel, which covers the lower part of the stage, never hides them. */
+  E.setView = function (h) {
+    h = Math.max(180, Math.min(270, Math.round(h)));
+    if (h === VH) return;
+    VH = h; camBias = Math.round((VH - 180) * 0.3); E.size.h = VH; maskCanvas = null; maskData = null;
+    if (cv) { cv.height = VH; cv.style.aspectRatio = VW + ' / ' + VH; g = cv.getContext('2d'); g.imageSmoothingEnabled = false; }
   };
   E.zone = function () { return Z; };
   E.runtime = function () { return R; };
@@ -513,7 +522,7 @@
     if (!S || !Z) { g.fillStyle = '#0A0A0A'; g.fillRect(0, 0, VW, VH); return; }
     const t = E.time;
     const pw = Z.w * TS, ph = Z.h * TS;
-    let camx = Math.round(S.x - VW / 2), camy = Math.round(S.y - 20 - VH / 2);
+    let camx = Math.round(S.x - VW / 2), camy = Math.round(S.y - 20 - VH / 2 + camBias);
     camx = pw <= VW ? Math.round((pw - VW) / 2) : EM.clamp(camx, 0, pw - VW);
     camy = ph <= VH ? Math.round((ph - VH) / 2) : EM.clamp(camy, 0, ph - VH);
     let shakeX = 0, shakeY = 0;

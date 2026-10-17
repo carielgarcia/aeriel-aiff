@@ -375,4 +375,5 @@ button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A
   #menu-tabs { position: sticky; top: 0; z-index: 1; background: #08080C; padding: max(10px, env(safe-area-inset-top)) 0 8px; margin-bottom: 4px; }
   #menu-tabs button { min-height: 44px; }
   #tut .dots { letter-spacing: 1px; white-space: nowrap; }
+  #dialog { max-height: 50%; }
 }
