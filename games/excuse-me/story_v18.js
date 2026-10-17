@@ -2,7 +2,7 @@
    Side quests (quest ids starting with sq_) are small stories that characters hand you on top of the main missions: Rosa's
    errands, Biscuit's phone, Kai's battery and so on. They get their own section in MISSIONS and a NEW SIDE QUEST toast.
    Lalo (smoking area) has loved Fran (quiet room) for four years. Fran only talks about whisky honey and honey-cinnamon tea.
-   Rumi dances on the main floor and gives a whisky-honey-cinnamon gum to anyone who follows every arrow. The gum is the courage. */
+   Lupano dances on the main floor and gives a whisky-honey-cinnamon gum to anyone who follows every arrow. The gum is the courage. */
 'use strict';
 (function () {
   const EM = window.EM;
@@ -12,11 +12,11 @@
   const t = function (en, es, pt) { return T(en, es, pt); };
   const K = function (tone, tx, o) { return Object.assign({ tone: tone, t: tx }, o || {}); };
   const LEAVE = function () { return K('chill', t(`"Later."`, `«Después».`, `«Depois».`), { free: true, next: null }); };
-  const FRIEND = 'RUMI'; /* the friend who asked to be in the game: change the name here */
+  const FRIEND = 'LUPANO'; /* the friend who asked to be in the game (he, light brown skin, long hair) */
   const look = function (o) { return Object.assign({ skin: 2, hair: 2, hc: 0, expr: 1, top: 0, tc: 1, bottom: 1, bc: 1, acc: 0, wide: false }, o); };
   EM.CAST.lalo = { name: 'LALO', look: look({ skin: 1, hair: 3, hc: 1, expr: 3, top: 9, tc: 1, bottom: 1, acc: 0 }) };
   EM.CAST.fran = { name: 'FRAN', look: look({ skin: 2, hair: 6, hc: 6, expr: 4, top: 6, tc: 5, bottom: 3, bc: 6, acc: 0 }) };
-  EM.CAST.rumi = { name: FRIEND, look: look({ skin: 2, hair: 5, hc: 8, expr: 2, top: 4, tc: 3, bottom: 2, acc: 6, ac: 2 }) };
+  EM.CAST.rumi = { name: FRIEND, look: look({ skin: 3, hair: 3, hc: 1, expr: 2, top: 4, tc: 3, bottom: 2, acc: 6, ac: 2 }) };
 
   const open = function (s) { return s.quests.sq_honey === 'active'; };
   const mk = function (s, f) { return s.flags[f] ? '[X]' : '[ ]'; };
@@ -85,10 +85,10 @@
     }
   };
 
-  /* ============================================================ 3. RUMI, dancing on the main floor */
+  /* ============================================================ 3. LUPANO, dancing on the main floor */
   EM.PARTNERS.rumi = {
     tempo: 600, moves: ['shuffle', 'wave', 'spiral', 'sway'],
-    win: t(`${FRIEND} stops, breathless, hands on their knees, laughing. "That was SO fun! And you're not doing badly at all!"`, `${FRIEND} se detiene sin aire, con las manos en las rodillas, riendo. «¡Eso fue DIVERTIDÍSIMO! ¡Y no lo haces nada mal!»`, `${FRIEND} para sem fôlego, com as mãos nos joelhos, rindo. «Isso foi MUITO divertido! E você não dança nada mal!»`),
+    win: t(`${FRIEND} stops, breathless, hands on his knees, laughing. "That was SO fun! And you're not doing badly at all!"`, `${FRIEND} se detiene sin aire, con las manos en las rodillas, riendo. «¡Eso fue DIVERTIDÍSIMO! ¡Y no lo haces nada mal!»`, `${FRIEND} para sem fôlego, com as mãos nos joelhos, rindo. «Isso foi MUITO divertido! E você não dança nada mal!»`),
     lose: t(`${FRIEND} cheers anyway. "Almost! Again, again, no pressure, it's a dance floor!"`, `${FRIEND} celebra igual. «¡Casi! De nuevo, de nuevo, sin presión, ¡es una pista de baile!»`, `${FRIEND} comemora do mesmo jeito. «Quase! De novo, de novo, sem pressão, é uma pista de dança!»`)
   };
   D.rumi = {
@@ -98,7 +98,7 @@
         { req: function () { return true; }, to: 'a' }
       ] },
       a: {
-        text: t(`Someone is dancing with their entire body, arms up, eyes shut, a huge smile. They open one eye and spot you. "You look so excited! Come and dance with me! No pretence: nobody here is watching, and if they are, they're jealous."`, `Alguien baila con el cuerpo entero, los brazos arriba, los ojos cerrados y una sonrisa enorme. Abre un ojo y te ve. «¡Se nota que tienes ganas de bailar! ¡Ven a bailar conmigo! Sin tapujos: nadie mira, y si miran, es de envidia».`, `Alguém dança com o corpo inteiro, braços pro alto, olhos fechados, um sorrisão. Abre um olho e te vê. «Dá pra ver que você tá com vontade de dançar! Vem dançar comigo! Sem frescura: ninguém tá olhando, e se tiver, é de inveja».`),
+        text: t(`Lupano is dancing with his entire body, arms up, eyes shut, a huge smile. He opens one eye and spots you. "You look so excited! Come and dance with me! No pretence: nobody here is watching, and if they are, they're jealous."`, `Lupano baila con el cuerpo entero, los brazos arriba, los ojos cerrados y una sonrisa enorme. Abre un ojo y te ve. «¡Se nota que tienes ganas de bailar! ¡Ven a bailar conmigo! Sin tapujos: nadie mira, y si miran, es de envidia».`, `O Lupano dança com o corpo inteiro, braços pro alto, olhos fechados, um sorrisão. Ele abre um olho e te vê. «Dá pra ver que você tá com vontade de dançar! Vem dançar comigo! Sem frescura: ninguém tá olhando, e se tiver, é de inveja».`),
         choices: [
           K('dance', t(`Dance with ${FRIEND}.`, `Bailar con ${FRIEND}.`, `Dançar com ${FRIEND}.`), { call: 'pd_rumi', free: true, next: null }),
           K('chill', t(`"Maybe later."`, `«Quizás luego».`, `«Talvez depois».`), { free: true, next: null })
@@ -147,7 +147,7 @@
   Z.courtyard.npc({ id: 'lalo', x: 29.5, y: 15.5, dlg: 'lalo', dir: 'l', reach: 16, smoker: true, when: NF('sq_honey_done') });
   Z.welfare.npc({ id: 'fran', x: 10.5, y: 9.5, dlg: 'fran', dir: 'r', reach: 16, pose: 'lie', when: NF('sq_honey_done') });
   Z.welfare.npc({ id: 'lalofran', pair: ['lalo', 'fran'], x: 12.5, y: 8.5, dir: 'd', reach: 14, pose: 'hug', heart: true, decor: true, when: F('sq_honey_done') });
-  Z.main.npc({ id: 'rumi', x: 24.5, y: 13.5, dlg: 'rumi', dir: 'd', reach: 16, pose: 'dance' });
+  Z.main.npc({ id: 'rumi', x: 3.5, y: 18.5, dlg: 'rumi', dir: 'd', reach: 16, pose: 'dance' });
   const enter0 = story.enter;
   story.enter = function (zone) {
     enter0(zone);
