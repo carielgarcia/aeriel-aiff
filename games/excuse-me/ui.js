@@ -244,7 +244,7 @@
     D.node = n; D.nid = nid; D.page = 0; D.state = 'text';
     if (n.do && !n.__applied) { applyDo(n.do); }
     if (s.ended && !D.def.endingScene) return;
-    const pages = [].concat(n.text || []);
+    const pages = [].concat(typeof n.text === 'function' ? n.text(s) : (n.text || []));
     D.pages = pages.length ? pages : [];
     if (n.branch) {
       /* conditional jump: branch: [{req, to}] */
@@ -362,7 +362,8 @@
     }
     EM.audio.blip('select');
     if (!c.free) { L.stat('soc', -1 - (c.bad ? 2 : 0)); L.addTime(1); }
-    if (c.bad) L.addBad(1);
+    if (c.bad) { L.addBad(1); L.rep(1); }
+    else if (c.tone === 'care' || c.tone === 'sorry' || c.tone === 'hug') L.rep(-0.4);
     if (c.do) applyDo(c.do);
     if (EM.state.ended && !D.def.endingScene) { U.D = null; return; }
     D.lastChoice = c;

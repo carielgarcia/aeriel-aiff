@@ -161,7 +161,7 @@ input[type=text]:focus { outline: 2px solid var(--fg); outline-offset: 2px; }
    COLOUR (approved exception for this game): a black world, neon accents, coloured people.
    Frame stays brutalist: white borders, zero radius, mono caps, binary hover.
    ========================================================================== */
-:root { --mag: #FF2D95; --cyn: #19D3FF; --lim: #B6FF3B; --amb: #FFB020; --vio: #8A5CFF; --red: #FF3B30; --org: #FF6A00; --yel: #FFD23F; --grn: #5CFF7A; }
+:root { --mag: #FF2D95; --cyn: #19D3FF; --lim: #B6FF3B; --amb: #FFB020; --vio: #8A5CFF; --red: #FF3B30; --org: #FF6A00; --yel: #FFD23F; --blu: #3D8BFF; --grn: #5CFF7A; }
 .logo { text-shadow: 4px 4px 0 var(--mag), 8px 8px 0 var(--cyn); }
 .kicker { color: var(--cyn); }
 .sub { color: var(--amb); }
@@ -179,14 +179,13 @@ button:hover, button:focus-visible, button.on, button.sel { background: var(--ye
 .fxline { color: var(--org); }
 .bar .lab { color: #A8A8B8; }
 .bar .track { border-color: #3A3A48; }
-#bar-fun .fill { background: var(--yel); } #bar-fun .num { color: var(--yel); }
-#bar-soc .fill { background: var(--cyn); } #bar-soc .num { color: var(--cyn); }
-#bar-hp .fill { background: var(--grn); } #bar-hp .num { color: var(--grn); }
-#bar-weird .fill { background: var(--mag); } #bar-weird .num { color: var(--mag); }
-.bar.alert { background: var(--red); color: #0A0A0A; }
+#bar-hp .fill { background: var(--red); } #bar-hp .num { color: var(--red); }
+#bar-fun .fill { background: var(--blu); } #bar-fun .num { color: var(--blu); }
+#bar-weird .fill { background: var(--grn); } #bar-weird .num { color: var(--grn); }
+#bar-soc .fill { background: var(--yel); } #bar-soc .num { color: var(--yel); }
+.bar.alert { background: #FFFFFF; color: #0A0A0A; }
 .bar.alert .lab, .bar.alert .num { color: #0A0A0A; }
-.bar.alert .track { border-color: #0A0A0A; background: var(--red); }
-.bar.alert .fill { background: #0A0A0A; }
+.bar.alert .track { border-color: #0A0A0A; background: #FFFFFF; }
 .bar.up { border-color: #FFFFFF; } .bar.down { border-color: var(--red); border-style: dashed; }
 .toast { background: #0E0E14; border: 1px solid var(--cyn); }
 .toast.good { border: 2px solid var(--grn); }
@@ -227,3 +226,18 @@ button:hover, button:focus-visible, button.on, button.sel { background: var(--ye
 
 .homelink { color: var(--fg); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; display: inline-block; padding: 12px 0; min-height: 44px; }
 .homelink:hover, .homelink:focus-visible { background: #FFFFFF; color: #0A0A0A; transition: none; }
+.mfill.m-hp { background: var(--red); } .mfill.m-fun { background: var(--blu); } .mfill.m-weird { background: var(--grn); } .mfill.m-soc { background: var(--yel); }
+
+/* the morning after: phone thread */
+#e-phone { margin-top: 14px; }
+.phone-btn { min-height: 44px; }
+.thread { margin-top: 10px; border: 2px solid #FFFFFF; padding: 10px; background: #0E0E14; max-width: 760px; }
+.thread h3 { margin: 0; color: var(--yel); }
+.thread .sub2 { margin: 2px 0 10px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.bubble { border: 1px solid #FFFFFF; padding: 6px 8px; margin: 8px 0; background: #121212; }
+.bubble .bh { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+.bubble .bh strong { color: var(--mag); }
+.bubble.from-dani .bh strong { color: var(--cyn); }
+.bubble.from-tato .bh strong { color: var(--lim); }
+.bubble.from-x .bh strong { color: var(--amb); }
+.bubble .bt { margin-top: 3px; line-height: 1.45; }

@@ -280,4 +280,7 @@ Whenever designing, developing, or modifying interactive audio tools, games, or 
 - **The DJ is always ÆRIEL** and the club jokes about Æ000.X's access dynamics lightly; the tone is self-aware, never earnest.
 - **Rules**: no short nights; catastrophes (ban, ambulance, fed-up friends) end the night with BEGIN AGAIN (same player, same seed, lessons carried); a single faint is survivable. Weirdness decays slowly, faster when behaving, and always accumulates.
 - **Crowd**: roughly 80% of dancers yield to "excuse me", a stubborn minority does not, and a smaller minority turns hostile. Keep those proportions when editing `engine.js`.
+- **Bars**: HEALTH red, FUN blue, WEIRDNESS green, SOCIAL yellow.
+- **Drugs**: MDMA boosts dialogue and raises weirdness fast; MDMA plus a stimulant raises it less and makes dancing cost health; cocaine costs health when dancing and means you remember everything; ketamine is a 50% faint or a social/fun boost and raises weirdness like MDMA; a told-cocaine or told-ketamine powder is the other one about 1 time in 5. Drinking or taking those drugs means the night's lesson is forgotten on BEGIN AGAIN. Keep all of this in `logic.js` and `story_v4.js`.
+- **Morning after**: non-reset endings show a phone thread (`story_morning.js`): friends who took someone home, check in, say thanks, plus lines that reference the player's choices. Keep it funny and wholesome.
 - **Dark room**: played blind; keep the subtle cues (sound, embers, curtain thread) and the reach mechanic.

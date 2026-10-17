@@ -123,3 +123,17 @@ The Night Report lists your people and how they are, the ten most important mome
 - **Weirdness**: decays -0.03/min always, -0.05/min extra after 12 game-minutes without misbehaving.
 - **Links**: own link per game (see AGENTS.md section 11).
 - Deferred: own music, further chapters.
+
+
+## v0.4 changes
+- **Bar colours**: HEALTH red, FUN blue, WEIRDNESS green, SOCIAL yellow. The low-bar alert inverts to white.
+- **Consequences**: every non-free choice costs SOCIAL and a minute. Rude (`bad`) choices raise crowd reputation `s.rep`; care, apology and hugs lower it. Reputation shifts the share of stubborn and hostile dancers (rep 8: about 24% hostile; rep -4: none) when a zone is entered. Nagging a stubborn dancer three times turns them hostile. Hostile outcomes also move friends' bonds (`pb`) and set flags used by the morning-after messages.
+- **Drugs**:
+  - MDMA: dialogue pays more (SOCIAL gains x1.5, FUN x1.25, bonds x1.5); weirdness +0.12/min.
+  - MDMA with a stimulant (meth, cocaine): weirdness +0.07/min (less than MDMA alone); dancing costs HEALTH.
+  - Cocaine: dancing costs HEALTH; weirdness +0.04/min; you remember everything (lessons and a recap of your mistakes survive a reset, even if you also drank or took other things).
+  - Ketamine: 50% faint (a passout; the second is the ambulance) or 50% boost (+SOCIAL, +FUN, dialogue boost); weirdness +0.12/min, the same as MDMA.
+  - White powders: told cocaine or told ketamine, about 1 in 5 times it is the other one. Sources: Dragan (honest label, loose labels), Rico (K) and Hugo (his tin).
+- **Lessons**: only a clear-headed night teaches. If you drank or took MDMA, meth, ketamine or a fake pill, this night's lesson is lost (earlier lessons stay). Cocaine overrides that.
+- **Running gags** escalate (`s.gags`, carried across nights): ÆRIEL, Dragan, Luca, Hugo, and the friends' déjà vu barks.
+- **The morning after**: a phone thread on the ending card for non-reset endings. Each friend takes someone home, checks in, says thanks, was lost, or needs to talk (low bond), plus up to four messages that reference your choices.

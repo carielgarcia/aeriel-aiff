@@ -234,6 +234,7 @@
       if (res === 'win') { s.peak.win++; L.apply({ fun: 12, soc: 2 }); }
       else if (res === 'partial') { s.peak.partial++; L.apply({ fun: 7 }); }
       else { s.peak.fail++; L.apply({ fun: 2, soc: -1 }); }
+      L.danceCost(2);
       if (i < 2) peakRound(i + 1); else EM.hooks.script('the_drop');
     });
   }

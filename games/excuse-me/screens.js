@@ -184,10 +184,9 @@
   /* a hard reset: the same person, the same night, 22:00 again. They remember some of it. */
   U.beginAgain = function () {
     const old = EM.state;
-    const lessons = (old.lessons || []).slice();
     const ed = EM.ENDINGS[old.ended];
-    if (ed && ed.lesson) lessons.push(ed.lesson);
-    U.startNight(old.player, { seed: old.seed, attempt: (old.attempt || 1) + 1, lessons: lessons });
+    const mem = EM.story.memory(old, ed);
+    U.startNight(old.player, { seed: old.seed, attempt: (old.attempt || 1) + 1, lessons: mem.lessons, gags: old.gags, forgot: mem.forgot, recap: mem.recap });
   };
   U.continueNight = function () {
     const s = EM.load(); if (!s) return;
@@ -222,9 +221,9 @@
     E.fadeOut(done);
   };
 
-  function bar(label, v) {
+  function bar(label, v, key) {
     const r = el('div', 'rbar'); r.appendChild(el('span', 'k', label));
-    const b = el('span', 'mbar'); const f = el('span', 'mfill'); f.style.width = Math.round(v) + '%'; b.appendChild(f); r.appendChild(b);
+    const b = el('span', 'mbar'); const f = el('span', 'mfill m-' + key); f.style.width = Math.round(v) + '%'; b.appendChild(f); r.appendChild(b);
     r.appendChild(el('span', 'v', Math.round(v) + '')); return r;
   }
   function renderEnding(id, ed) {
@@ -255,7 +254,8 @@
     mo.appendChild(ul);
     const fb = $('#e-bars'); fb.textContent = '';
     fb.appendChild(el('h3', '', EM.tr(S.final)));
-    fb.appendChild(bar(EM.tr(EM.UI.funL), s.stats.fun)); fb.appendChild(bar(EM.tr(EM.UI.socL), s.stats.soc)); fb.appendChild(bar(EM.tr(EM.UI.hpL), s.stats.hp)); fb.appendChild(bar(EM.tr(EM.UI.weirdL), s.stats.weird));
+    fb.appendChild(bar(EM.tr(EM.UI.funL), s.stats.fun, 'fun')); fb.appendChild(bar(EM.tr(EM.UI.socL), s.stats.soc, 'soc')); fb.appendChild(bar(EM.tr(EM.UI.hpL), s.stats.hp, 'hp')); fb.appendChild(bar(EM.tr(EM.UI.weirdL), s.stats.weird, 'weird'));
+    if (EM.story.renderPhone) EM.story.renderPhone(s, ed);
     const again = $('#e-again'), tbtn = $('#e-title-btn');
     again.textContent = EM.tr(ed.reset ? S.beginAgain : S.again);
     again.onclick = ed.reset ? U.beginAgain : U.toTitle;

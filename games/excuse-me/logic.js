@@ -17,10 +17,10 @@
     return ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2);
   };
 
-  const DUR = { mdma: 240, meth: 270, glitch: 150, bump: 50, comedown: 140, comedown2: 200 };
+  const DUR = { mdma: 240, meth: 270, glitch: 150, coke: 90, ket: 80, comedown: 140, comedown2: 200 };
   EM.FXNAME = {
     mdma: T('ROLLING', 'ROLANDO', 'ROLANDO'), meth: T('WIRED', 'ACELERADO', 'ACELERADO'),
-    glitch: T('BAD SIGNAL', 'SEÑAL MALA', 'SINAL RUIM'), bump: T('NUMB', 'ANESTESIADO', 'ANESTESIADO'),
+    glitch: T('BAD SIGNAL', 'SEÑAL MALA', 'SINAL RUIM'), coke: T('SHARP', 'AFILADO', 'AFIADO'), ket: T('DRIFTING', 'A LA DERIVA', 'À DERIVA'),
     comedown: T('COMEDOWN', 'BAJÓN', 'BAIXÃO'), comedown2: T('HARD CRASH', 'BAJÓN FUERTE', 'BAIXÃO FORTE'),
     drunk: T('DRUNK', 'BORRACHO', 'BÊBADO'), thirsty: T('THIRSTY', 'SEDIENTO', 'COM SEDE')
   };
@@ -31,15 +31,36 @@
 
   L.high = function () {
     const s = EM.state; let h = 0;
-    if (s.fx.mdma) h += 2; if (s.fx.meth) h += 3; if (s.fx.glitch) h += 2; if (s.fx.bump) h += 2;
+    if (s.fx.mdma) h += 2; if (s.fx.meth) h += 3; if (s.fx.glitch) h += 2; if (s.fx.coke) h += 2; if (s.fx.ket) h += 3;
     if (s.drinks >= 3) h += 2; else if (s.drinks >= 1) h += 1;
     return Math.min(3, h);
+  };
+  /* stimulants: meth and cocaine */
+  L.stimulated = function () { const f = EM.state.fx; return !!(f.meth || f.coke); };
+  /* weirdness per minute from drugs. MDMA and ketamine climb fast; MDMA with a stimulant climbs less; cocaine a little. */
+  L.drugWeird = function () {
+    const f = EM.state.fx; let w = 0;
+    if (f.mdma) w = f.meth || f.coke ? 0.07 : 0.12;
+    else if (f.ket) w = 0.12;
+    else if (f.meth) w = 0.07;
+    else if (f.coke) w = 0.04;
+    if (f.coke && (f.mdma || f.ket)) w += 0.02;
+    return w;
+  };
+  /* dancing on a stimulant hurts */
+  L.danceCost = function (n) {
+    if (L.stimulated()) {
+      const mix = EM.state.fx.mdma ? 1.5 : 1;
+      L.stat('hp', -(n || 2) * mix);
+      return true;
+    }
+    return false;
   };
   L.isDrunk = function () { return EM.state.drinks >= 3; };
 
   L.socMult = function () {
     const s = EM.state; let m = 1;
-    if (s.fx.mdma) m *= 0.5; if (s.fx.meth) m *= 1.6; if (s.fx.glitch) m *= 2; if (s.fx.bump) m *= 0.6; if (s.drinks >= 2) m *= 0.85;
+    if (s.fx.mdma) m *= 0.5; if (s.fx.meth) m *= 1.6; if (s.fx.glitch) m *= 2; if (s.fx.ket) m *= 0.5; if (s.fx.coke) m *= 0.8; if (s.drinks >= 2) m *= 0.85;
     if (s.fx.comedown || s.fx.comedown2) m *= 1.3;
     return m;
   };
@@ -50,17 +71,17 @@
   };
   L.speedMult = function () {
     const s = EM.state; let m = 1;
-    if (s.fx.meth) m *= 1.2; if (s.fx.bump) m *= 0.7;
+    if (s.fx.meth) m *= 1.2; if (s.fx.coke) m *= 1.12; if (s.fx.ket) m *= 0.8;
     if (s.stats.hp < 25) m *= 0.85;
     return m;
   };
 
   /* ------------------------------------------------------------ bars */
-  L.stat = function (name, d) {
+  L.stat = function (name, d, raw) {
     const s = EM.state;
     if (!d) return;
     if (name === 'soc' && d < 0) d = -(-d * L.socMult());
-    if (name === 'weird' && d > 0) d = d * L.weirdMult();
+    if (name === 'weird' && d > 0 && !raw) d = d * L.weirdMult();
     const before = s.stats[name];
     if (name === 'weird' && d >= 0.5) s.lastBadAt = s.time;
     s.stats[name] = clamp(before + d, 0, 100);
@@ -71,6 +92,8 @@
   L.startFx = function (name, dur) {
     const s = EM.state;
     s.fx[name] = dur || DUR[name] || 120;
+    if (name === 'mdma' || name === 'meth' || name === 'ket' || name === 'glitch') s.impaired = true;
+    if (name === 'coke') s.remembers = true;
     EM.hooks.toast({ icon: 'spark', text: T('STATUS: ' + EM.FXNAME[name].en, 'ESTADO: ' + EM.FXNAME[name].es, 'ESTADO: ' + EM.FXNAME[name].pt), kind: 'info' });
   };
 
@@ -96,10 +119,12 @@
     L.stat('weird', -0.03);
     if (s.time - (s.lastBadAt === undefined ? -99 : s.lastBadAt) >= 12) L.stat('weird', -0.05);
     s.drinks = Math.max(0, s.drinks - 1 / 40);
-    if (s.fx.mdma) { L.stat('fun', 0.22); L.stat('hp', -0.05); L.stat('weird', 0.03); L.stat('soc', 0.04); }
-    if (s.fx.meth) { L.stat('fun', 0.15); L.stat('hp', -0.1); L.stat('weird', 0.07); L.stat('soc', -0.03); }
+    if (s.fx.mdma) { L.stat('fun', 0.22); L.stat('hp', -0.05); L.stat('soc', 0.08); }
+    if (s.fx.meth) { L.stat('fun', 0.15); L.stat('hp', -0.1); L.stat('soc', -0.03); }
     if (s.fx.glitch) { L.stat('weird', 0.05); L.stat('hp', -0.03); }
-    if (s.fx.bump) { L.stat('fun', 0.25); L.stat('weird', 0.08); }
+    if (s.fx.coke) { L.stat('fun', 0.12); L.stat('hp', -0.04); }
+    if (s.fx.ket) { L.stat('fun', 0.18); L.stat('soc', 0.06); }
+    L.stat('weird', L.drugWeird(), true);
     if (s.fx.comedown) { L.stat('fun', -0.16); L.stat('soc', -0.08); L.stat('hp', -0.04); }
     if (s.fx.comedown2) { L.stat('fun', -0.25); L.stat('soc', -0.12); L.stat('hp', -0.08); }
     if (s.drinks >= 3) L.stat('hp', -0.03);
@@ -113,7 +138,7 @@
       }
     });
     if (st.fun <= 0.01) s.boredFor = (s.boredFor || 0) + 1; else s.boredFor = 0;
-    if (s.pendingFaint && s.time >= s.pendingFaint) { s.pendingFaint = 0; L.passOut(T('The edges of the room come loose. Your knees file their resignation.', 'Los bordes del cuarto se sueltan. Tus rodillas presentan su renuncia.', 'As bordas da sala se soltam. Seus joelhos entregam a demissão.'), { fake: true }); return; }
+    if (s.pendingFaint && s.time >= s.pendingFaint) { s.pendingFaint = 0; const kind = s.pendingFaintKind; s.pendingFaintKind = null; L.passOut(kind === 'ket' ? T('The floor offers to hold you. You accept.', 'El piso se ofrece a sostenerte. Aceptas.', 'O chão se oferece pra te segurar. Você aceita.') : T('The edges of the room come loose. Your knees file their resignation.', 'Los bordes del cuarto se sueltan. Tus rodillas presentan su renuncia.', 'As bordas da sala se soltam. Seus joelhos entregam a demissão.'), { fake: kind !== 'ket', ket: kind === 'ket' }); return; }
     if (s.time >= 450 && !s.flags.roof_open) { s.flags.roof_open = true; if (!s.quests.q9) L.setQuest('q9', 'active'); EM.hooks.toast({ icon: 'star', text: T('THE ROOF IS OPEN. The closing set is about to start.', 'EL TECHO ESTÁ ABIERTO. El set de cierre está por empezar.', 'O TERRAÇO ESTÁ ABERTO. O set de encerramento vai começar.'), kind: 'good', ms: 6000 }); }
     if (s.thirst === 121) EM.hooks.toast({ text: T('Your mouth is a desert. Find water.', 'Tienes la boca seca como un desierto. Busca agua.', 'Sua boca é um deserto. Procure água.'), kind: 'bad' });
     L.check();
@@ -148,6 +173,21 @@
       EM.hooks.toast({ icon: 'anger', text: T('Your friends are going quiet. You are burning goodwill faster than it comes back.', 'Tus amigos se están quedando callados. Estás gastando buena voluntad más rápido de lo que vuelve.', 'Seus amigos estão ficando calados. Você tá gastando boa vontade mais rápido do que ela volta.'), kind: 'bad', ms: 6500 });
     }
     if (s.bad >= 11 && !s.flags.fed_up) { s.flags.fed_up = true; EM.hooks.script('fed_up'); }
+  };
+
+  /* how the crowd sees you: rude acts make people less patient, kindness warms the floor */
+  L.rep = function (d) {
+    const s = EM.state;
+    if (s.ended || !d) return;
+    s.rep = clamp((s.rep || 0) + d, -4, 8);
+    if (s.rep >= 3 && !s.flags.rep_bad) {
+      s.flags.rep_bad = true;
+      EM.hooks.toast({ icon: 'anger', text: T('Word travels on a dancefloor. People are less patient with you now.', 'Las noticias corren en una pista. La gente ya te tiene menos paciencia.', 'As notícias correm numa pista. As pessoas estão menos pacientes com você.'), kind: 'bad', ms: 6000 });
+    }
+    if (s.rep <= -2 && !s.flags.rep_good) {
+      s.flags.rep_good = true;
+      EM.hooks.toast({ icon: 'heart', text: T('The floor is warming to you. People shuffle over a little before you even ask.', 'La pista te toma cariño. La gente se corre un poco antes de que pidas.', 'A pista está te pegando carinho. As pessoas se afastam um pouco antes mesmo de você pedir.'), kind: 'good', ms: 6000 });
+    }
   };
 
   L.end = function (id) {
@@ -213,11 +253,21 @@
   L.apply = function (e, ctx) {
     if (!e) return;
     const s = EM.state;
+    /* MDMA and ketamine make you better company: good conversation pays more */
+    const open = !!(s.fx.mdma || s.fx.ket);
+    if (open && ctx && ctx.dialogue) {
+      if (e.soc > 0) e = Object.assign({}, e, { soc: e.soc * 1.5 });
+      if (e.fun > 0) e = Object.assign({}, e, { fun: e.fun * 1.25 });
+      if (e.bond) { const b = {}; for (const k in e.bond) b[k] = e.bond[k] > 0 ? Math.ceil(e.bond[k] * 1.5) : e.bond[k]; e = Object.assign({}, e, { bond: b }); }
+    }
     if (e.fun) L.stat('fun', e.fun);
     if (e.soc) L.stat('soc', e.soc);
     if (e.hp) L.stat('hp', e.hp);
     if (e.weird) L.stat('weird', e.weird);
     if (e.bad) L.addBad(e.bad);
+    if (e.rep) L.rep(e.rep);
+    if (e.pb) for (const k in e.pb) if (L.hasFriend(k)) s.bond[k] = (s.bond[k] || 0) + e.pb[k];
+    if (e.gag) [].concat(e.gag).forEach(function (k) { s.gags = s.gags || {}; s.gags[k] = (s.gags[k] || 0) + 1; });
     if (e.care) {
       s.care = (s.care || 0) + e.care;
       L.stat('soc', 3 * e.care); L.stat('weird', -5 * e.care); L.stat('fun', 2 * e.care);
@@ -225,7 +275,7 @@
       EM.hooks.toast({ icon: 'heart', text: T('You looked after someone. The room notices.', 'Cuidaste a alguien. El lugar lo nota.', 'Você cuidou de alguém. O lugar percebe.'), kind: 'good' });
     }
     if (e.drink) {
-      s.drinks += e.drink; L.stat('weird', 4 * e.drink); L.stat('hp', -2 * e.drink); L.stat('fun', 4 * e.drink); s.thirst += 10 * e.drink;
+      s.drinks += e.drink; s.impaired = true; L.stat('weird', 4 * e.drink); L.stat('hp', -2 * e.drink); L.stat('fun', 4 * e.drink); s.thirst += 10 * e.drink;
       EM.hooks.sfx('drink');
       if (s.drinks >= 6 && !s.flags.vomited) { s.flags.vomited = true; EM.hooks.script('vomit'); }
     }
