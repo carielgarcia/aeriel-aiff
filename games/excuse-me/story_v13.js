@@ -15,8 +15,8 @@
   function npc(zone, d) { d.reach = d.reach || 16; d.dir = d.dir || 'd'; Z[zone].npc(d); }
 
   /* ------------------------------------------------ no door, no guard: the rave has neither Dragan nor Ofelia */
-  /* ...and the front door is simply open (it opens on the bouncer's say-so, and there is no bouncer) */
-  Z.doors.ents.forEach(function (e) { if (e.id === 'door_in') { const w = e.when; e.when = function (s) { return RV(s) || (w ? w(s) : true); }; } });
+  /* ...but the door still wants a code, asked by somebody on the other side of it */
+  Z.doors.ents.forEach(function (e) { if (e.id === 'door_in') { const w = e.when; e.when = function (s) { return RV(s) ? !!s.flags.rave_code : (w ? w(s) : true); }; } });
   Z.doors.ents.forEach(function (e) { if (e.id === 'dragan') e.when = function (s) { return !RV(s) && !s.flags.bouncer_ok; }; });
   Z.courtyard.ents.forEach(function (e) { if (e.id === 'ofelia') e.when = function (s) { return !RV(s); }; });
 
@@ -222,10 +222,59 @@
     t(`A man with a satchel and the eyebrows of a retired professor leans in. "I sell certainty, and certainty is 15% organic. Pills, powder, K. I used to teach political economy. I now teach it in the original format: a person, a bag and a price."`, `Un hombre con maletín y las cejas de un profesor jubilado se inclina. «Vendo certeza, y la certeza es 15 % orgánica. Pastillas, polvo, K. Antes enseñaba economía política. Ahora la enseño en su formato original: una persona, una bolsa y un precio».`, `Um homem com uma pasta e as sobrancelhas de um professor aposentado se inclina. «Eu vendo certeza, e certeza é 15% orgânica. Comprimido, pó, K. Eu dava aula de economia política. Agora ensino no formato original: uma pessoa, uma sacola e um preço».`),
     t(`"You can't. That's called a market failure. Isi's table is a public good. Leave her a tip, she's subsidising your pupils."`, `«No puedes. Eso se llama falla de mercado. La mesa de Isi es un bien público. Déjale propina, subsidia tus pupilas».`, `«Não dá. Isso se chama falha de mercado. A mesa da Isi é bem público. Deixa gorjeta, ela tá subsidiando suas pupilas».`));
 
+  /* ============================================================ THE CODE AT THE DOOR */
+  const CODE = 'el amanecer es un abrazo';
+  cast('voice', 'THE SLOT', { skin: 3, hair: 0, hc: 2, expr: 0, top: 0, tc: 3, bottom: 0, bc: 3, acc: 0 });
+  const rightAnswer = function () { return K('honest', t(`"${CODE}."`, `«${CODE}».`, `«${CODE}».`), { do: { fun: 3, soc: 2, flag: 'rave_code' }, next: 'in' }); };
+  const JOKES = [
+    ['open', t(`"Open sesame. In Spanish: ábrete sésamo."`, `«Ábrete sésamo. En inglés: open sesame».`, `«Abre-te sésamo. Em espanhol: ábrete sésamo».`), t(`A pause. "…That's a very good try for a door in a warehouse. It's not the code."`, `Una pausa. «…Es un muy buen intento para una puerta de bodega. No es el código».`, `Uma pausa. «…É uma ótima tentativa pra porta de galpão. Não é o código».`)],
+    ['pw', t(`"Is the code 'password'?"`, `«¿El código es "contraseña"?»`, `«O código é "senha"?»`), t(`"Everyone tries that one. Nobody has ever been right. Please stop being everyone."`, `«Todos prueban esa. Nadie ha acertado jamás. Por favor deja de ser todos».`, `«Todo mundo tenta essa. Ninguém nunca acertou. Por favor para de ser todo mundo».`)],
+    ['dragan', t(`"Dragan sent me."`, `«Me manda Dragan».`, `«O Dragan me mandou».`), t(`"Who's Dragan?" A pause. "Exactly. There's no Dragan here. That's the whole venue."`, `«¿Quién es Dragan?» Una pausa. «Exacto. Aquí no hay Dragan. Ese es todo el local».`, `«Quem é o Dragan?» Uma pausa. «Exato. Aqui não tem Dragan. Esse é o lugar inteiro».`)],
+    ['list', t(`"I'm on the list for the list."`, `«Estoy en la lista de la lista».`, `«Tô na lista da lista».`), t(`"There's no list. There's a clipboard with a drawing of a cat. You're on it."`, `«No hay lista. Hay una tablilla con el dibujo de un gato. Estás en él».`, `«Não tem lista. Tem uma prancheta com o desenho de um gato. Você tá nele».`)],
+    ['excuse', t(`"Excuse me. Excuse me. Excuse me."`, `«Con permiso. Con permiso. Con permiso».`, `«Com licença. Com licença. Com licença».`), t(`"Very polite. I'd let you in on manners alone, but I'm a coward and I have a spreadsheet."`, `«Muy educado. Te dejaría pasar solo por los modales, pero soy cobarde y tengo una hoja de cálculo».`, `«Muito educado. Eu te deixaria entrar só pelos modos, mas sou covarde e tenho uma planilha».`)],
+    ['knock', t(`"Knock knock."`, `«Toc toc».`, `«Toc toc».`), t(`"…Who's there?" "Hm." "No, wait, I'm not allowed to do this. Code."`, `«…¿Quién es?» «Mm». «No, espera, no puedo hacer esto. El código».`, `«…Quem é?» «Hm». «Não, peraí, não posso fazer isso. O código».`)],
+    ['dj', t(`"My cousin knows the DJ."`, `«Mi primo conoce al DJ».`, `«Meu primo conhece o DJ».`), t(`"Everyone's cousin knows the DJ. The DJ has eleven thousand cousins. Code."`, `«El primo de todos conoce al DJ. El DJ tiene once mil primos. El código».`, `«O primo de todo mundo conhece o DJ. O DJ tem onze mil primos. O código».`)],
+    ['sunrise', t(`"The sunrise is a handshake?"`, `«¿El amanecer es un apretón de manos?»`, `«O amanhecer é um aperto de mão?»`), t(`"Warm. Colder than warm. It's a bit more intimate than that."`, `«Tibio. Más frío que tibio. Es un poco más íntimo que eso».`, `«Morno. Mais frio que morno. É um pouco mais íntimo que isso».`)],
+    ['bass', t(`"…Bass."`, `«…Bajo».`, `«…Grave».`), t(`"Honestly, fair. It's the answer to most things in here. It's not the code."`, `«Sinceramente, justo. Es la respuesta a casi todo aquí. No es el código».`, `«Sinceramente, justo. É a resposta pra quase tudo aqui. Não é o código».`)]
+  ];
+  JOKES.forEach(function (j) { j.node = 'w_' + j[0]; });
+  /* three rounds: the right answer is always there, between three jokes, and moves around */
+  const ROUND = function (picks, pos) {
+    const ch = picks.map(function (i) { const j = JOKES[i]; return K('joke', j[1], { do: { fun: 1 }, next: j.node }); });
+    ch.splice(pos, 0, rightAnswer());
+    return ch;
+  };
+  const ROUNDS = [[[0, 1, 4], 0], [[2, 3, 7], 2], [[5, 6, 8], 3]];
+  D.rave_voice = {
+    who: 'voice', role: t('FROM INSIDE', 'DESDE ADENTRO', 'DE DENTRO'), start: 'st', nodes: {
+      st: { branch: [
+        { req: function (s) { return !s.flags.voice_asked; }, to: 'r0' },
+        { req: function (s) { return Math.random() < 0.5; }, to: 'r1' },
+        { req: function () { return true; }, to: 'r2' }
+      ] },
+      r0: { text: t(`There's no bouncer. There's a steel door with a slot at eye height, and the slot slides open. A pair of tired, kind eyes and a calm voice from inside: "Code?"`, `No hay guardia. Hay una puerta de acero con una ranura a la altura de los ojos, y la ranura se abre. Un par de ojos cansados y amables y una voz tranquila desde adentro: «¿El código?»`, `Não tem segurança. Tem uma porta de aço com uma fresta na altura dos olhos, e a fresta se abre. Um par de olhos cansados e gentis e uma voz calma lá de dentro: «O código?»`), do: { flag: 'voice_asked' }, choices: ROUND(ROUNDS[0][0], ROUNDS[0][1]) },
+      r1: { text: t(`The slot slides open again. "Code?" the voice says, a little more patiently than before.`, `La ranura se abre otra vez. «¿El código?», dice la voz, un poco más paciente que antes.`, `A fresta abre de novo. «O código?», diz a voz, um pouco mais paciente que antes.`), choices: ROUND(ROUNDS[1][0], ROUNDS[1][1]) },
+      r2: { text: t(`"Code," says the slot, in the tone of someone who has said it four hundred times tonight and means it every time.`, `«El código», dice la ranura, en el tono de quien lo ha dicho cuatrocientas veces esta noche y lo dice en serio cada vez.`, `«O código», diz a fresta, no tom de quem já falou quatrocentas vezes essa noite e fala a sério toda vez.`), choices: ROUND(ROUNDS[2][0], ROUNDS[2][1]) },
+      in: { text: [t(`A long beat. Then a bolt, a second bolt, and a third one that sounds like a person leaning on it. "…Come in. Sunrise is a hug. Water's by the stairs, mind the speaker cable."`, `Un silencio largo. Luego un cerrojo, un segundo cerrojo y un tercero que suena a alguien apoyándose. «…Pasa. El amanecer es un abrazo. El agua está junto a las escaleras, cuidado con el cable de la bocina».`, `Um silêncio longo. Aí um ferrolho, um segundo e um terceiro que parece alguém se apoiando. «…Entra. O amanhecer é um abraço. A água tá do lado da escada, cuidado com o cabo da caixa de som».`)], do: { flag: 'sticker' }, next: null }
+    }
+  };
+  JOKES.forEach(function (j) {
+    D.rave_voice.nodes[j.node] = { text: j[2], next: 'st' };
+  });
+  /* the code, in the group chat, before the door */
+  const introNode = D.intro.nodes.a, introPrev = introNode.text;
+  const CHAT = t(`Maru, in the group chat, 22:41: "code at the door is 'el amanecer es un abrazo'. do NOT say it until you're at the slot. the slot is listening. the slot is always listening."`, `Maru, en el chat del grupo, 22:41: «el código en la puerta es "el amanecer es un abrazo". NO lo digas hasta estar en la ranura. la ranura escucha. la ranura siempre escucha».`, `Maru, no grupo, 22:41: «o código na porta é "el amanecer es un abrazo". NÃO fala até estar na fresta. a fresta tá ouvindo. a fresta sempre tá ouvindo».`);
+  introNode.text = function (s) {
+    const a = [].concat(typeof introPrev === 'function' ? introPrev(s) : introPrev);
+    if (s.venue === 'rave') a.push(CHAT);
+    return a;
+  };
+
   /* ============================================================ PLACEMENT (rave only) */
   npc('courtyard', { id: 'maya', x: 22.5, y: 16.5, dlg: 'maya', when: RV });
   npc('main', { id: 'bea', x: 6.5, y: 20.5, dlg: 'bea', when: RV });
   npc('tunnel', { id: 'sub', x: 22.5, y: 5.5, dlg: 'sub', when: RV });
+  npc('doors', { id: 'slot', cast: 'voice', x: 27, y: 4, dlg: 'rave_voice', gate: true, reach: 20, dir: 'd', when: function (s) { return RV(s) && !s.flags.rave_code; } });
   npc('doors', { id: 'pip', x: 14.5, y: 9.5, dlg: 'pip', when: RV });
   npc('courtyard', { id: 'juniper', x: 30.5, y: 18.5, dlg: 'juniper', when: RV });
   npc('main', { id: 'klaus', x: 24.5, y: 6.5, dlg: 'klaus', when: RV });
