@@ -44,8 +44,19 @@
     const rb = $('pause') && $('pause').querySelector('button'); if (rb) rb.textContent = rb.textContent.replace(/\s*\[[A-Z]\]\s*$/, '');
   }
   /* size the game column to the window height: chrome = everything above and below the stage */
+  /* phones: ordinary dialogue is a sheet under the stage that borrows the D-pad's space and carries its own X and Z.
+     Dance dialogues (node.pd) keep the arrow pad and the overlay. */
+  function syncDialogSheet() {
+    const g = $('screen-game'); if (!g) return;
+    const d = U.mode === 'dialog' && U.D, pd = !!(d && U.D.node && U.D.node.pd);
+    g.classList.toggle('dlg-sheet', !!d && !pd);
+    const x = $('dlg-x'); if (x) x.hidden = !(d && !U.D.def.forced);
+  }
   function fit() {
     const app = $('app'), st = $('stage'), g = $('screen-game'); if (!app || !st || !g || g.hidden) return;
+    if (g.classList.contains('dlg-sheet')) return; /* the layout is borrowed while a dialogue sheet is open */
+    const pad = document.querySelector('.pad');
+    if (pad && pad.offsetHeight) document.documentElement.style.setProperty('--dlg-room', Math.max(120, Math.round(Math.max(pad.getBoundingClientRect().bottom, $('logbox').getBoundingClientRect().bottom) - st.getBoundingClientRect().bottom - 4)) + 'px');
     const c = app.offsetHeight - st.offsetHeight, root = document.documentElement.style;
     /* portrait phones: spend the spare height on a taller game view instead of dead space under the D-pad */
     if (E.setView) {
@@ -64,7 +75,7 @@
     const gl = $('goal-l'); if (gl) gl.textContent = EM.tr(UI.goal);
     const gs = $('goal-side'), st = EM.state;
     if (gs && st) { const n = Object.keys(st.quests || {}).filter(function (k) { return /^sq_/.test(k) && st.quests[k] === 'active'; }).length; gs.hidden = !n; if (n) gs.textContent = EM.tr(UI.side) + ': ' + n; }
-    stripKeyHints();
+    stripKeyHints(); syncDialogSheet();
     const p = $('pause'); if (p && !p.hidden) { p.querySelector('h2').textContent = EM.tr(UI.paused); p.querySelector('p').textContent = EM.tr(UI.pausedBody); p.querySelector('button').textContent = EM.tr(UI.resume); }
   }
   const hud0 = U.hud;
@@ -72,6 +83,9 @@
 
   function wire() {
     const bp = $('btn-pause'), be = $('log-expand'), pb = $('pause') && $('pause').querySelector('button');
+    const dx = $('dlg-x'), dz = $('dlg-z');
+    if (dx) dx.addEventListener('click', function () { U.dlgLeave(); });
+    if (dz) dz.addEventListener('click', function () { U.dlgConfirm(); });
     const gsb = $('goal-side'); if (gsb) gsb.addEventListener('click', function () { U.openMenu('quests'); });
     if (bp) bp.addEventListener('click', function () { if (U.mode === 'pause') U.resume(); else U.pause(); });
     if (pb) pb.addEventListener('click', U.resume);
