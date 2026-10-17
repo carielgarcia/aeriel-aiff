@@ -879,6 +879,30 @@ html[lang="pt"] [lang="es"] {
   color: var(--text-primary);
 }
 
+.footer-ost-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #FFFFFF;
+  border-radius: 0 !important;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: none;
+}
+
+.footer-ost-btn:hover,
+.footer-ost-btn:focus-visible {
+  background: #FFFFFF;
+  color: #0A0A0A;
+  outline: none;
+}
+
 .footer-nav {
   display: flex;
   gap: var(--spacing-md);

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>EXCUSE ME — Soundtrack by ÆRIEL</title>
+  <meta name="description" content="The EXCUSE ME soundtrack: eleven records from one night at club LA GRIETA, played by the game's own engine.">
+  <meta name="author" content="ÆRIEL">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ÆRIEL">
+  <meta property="og:title" content="EXCUSE ME — Soundtrack by ÆRIEL">
+  <meta property="og:description" content="Eleven records from one night at club LA GRIETA, played by the game's own engine.">
+  <meta property="og:url" content="https://aeriel.net/games/excuse-me/soundtrack.html">
+  <meta property="og:image" content="https://aeriel.net/og-image.jpg">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://aeriel.net/og-image.jpg">
+  <link rel="canonical" href="https://aeriel.net/games/excuse-me/soundtrack.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; border-radius: 0 !important; transition: none !important; }
+    html, body { margin: 0; background: #0A0A0A; color: #FFFFFF; font-family: Consolas, Menlo, Monaco, "Courier New", Courier, monospace; }
+    body { padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+    main { max-width: 640px; margin: 0 auto; border: 2px solid #FFFFFF; background: #0A0A0A; }
+    .bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid #FFFFFF; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; color: #7F7F7F; }
+    .bar a { color: #FFFFFF; }
+    h1 { margin: 0; padding: 16px 12px 4px; font-size: 1.4rem; letter-spacing: 2px; text-transform: uppercase; }
+    .sub { margin: 0; padding: 0 12px 14px; font-size: 0.8rem; color: #7F7F7F; text-transform: uppercase; letter-spacing: 1px; }
+    .now { border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; padding: 12px; background: #121212; }
+    .now .t { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px; min-height: 1.4em; }
+    .now .m { font-size: 0.75rem; color: #7F7F7F; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+    .prog { margin-top: 10px; height: 10px; border: 1px solid #FFFFFF; }
+    .prog i { display: block; height: 100%; width: 0; background: #FFFFFF; }
+    .ctl { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #FFFFFF; }
+    button, .tr { font: inherit; color: #FFFFFF; background: #0A0A0A; border: 0; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+    .ctl button { min-height: 48px; border-right: 1px solid #FFFFFF; font-size: 0.8rem; }
+    .ctl button:last-child { border-right: 0; }
+    button:hover, button:focus-visible, .tr:hover, .tr:focus-visible { background: #FFFFFF; color: #0A0A0A; outline: none; }
+    button[aria-pressed="true"] { background: #FFFFFF; color: #0A0A0A; }
+    .vol { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #FFFFFF; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+    .vol input { flex: 1; min-height: 44px; accent-color: #FFFFFF; background: transparent; }
+    ol { list-style: none; margin: 0; padding: 0; }
+    .tr { display: grid; grid-template-columns: 2.4em 1fr auto; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 8px 12px; border-bottom: 1px solid #FFFFFF; text-align: left; font-size: 0.85rem; }
+    .tr .n { color: #7F7F7F; }
+    .tr .b { color: #7F7F7F; font-size: 0.72rem; }
+    .tr[aria-current="true"] { background: #FFFFFF; color: #0A0A0A; }
+    .tr[aria-current="true"] .n, .tr[aria-current="true"] .b { color: #0A0A0A; }
+    .note { padding: 12px; font-size: 0.72rem; color: #7F7F7F; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.5px; }
+    .lang button { min-height: 32px; padding: 0 10px; border: 1px solid #FFFFFF; font-size: 0.72rem; }
+    .lang { display: flex; gap: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="bar">
+    <a id="back" href="/games/excuse-me/">← EXCUSE ME</a>
+    <div class="lang" id="lang"><button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="es" aria-pressed="false">ES</button><button type="button" data-l="pt" aria-pressed="false">PT</button></div>
+  </div>
+  <h1>EXCUSE ME // OST</h1>
+  <p class="sub" id="sub"></p>
+  <div class="now" aria-live="polite">
+    <div class="t" id="nt"></div>
+    <div class="m" id="nm"></div>
+    <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="pg"><i id="pgi"></i></div>
+  </div>
+  <div class="ctl">
+    <button type="button" id="b-prev"></button>
+    <button type="button" id="b-play"></button>
+    <button type="button" id="b-next"></button>
+    <button type="button" id="b-auto" aria-pressed="true"></button>
+  </div>
+  <div class="vol"><label for="vol" id="l-vol"></label><input id="vol" type="range" min="0" max="100" value="80"></div>
+  <ol id="list"></ol>
+  <p class="note" id="note"></p>
+</main>
+<script src="core.js"></script>
+<script src="audio.js"></script>
+<script>
+'use strict';
+(function () {
+  const EM = window.EM, A = EM.audio, T = EM.T;
+  const $ = function (id) { return document.getElementById(id); };
+  /* one record per voicing in the game's engine, in the order of the night */
+  const TRACKS = [
+    { v: 'warm',    n: T('FOYER WARM-UP', 'CALENTAMIENTO EN EL FOYER', 'AQUECIMENTO NO FOYER') },
+    { v: 'house',   n: T('COAT CHECK HOUSE', 'HOUSE DEL GUARDARROPA', 'HOUSE DA CHAPELARIA') },
+    { v: 'disco',   n: T('GLITTER ON THE STAIRS', 'DIAMANTINA EN LAS ESCALERAS', 'GLITTER NA ESCADA') },
+    { v: 'techno',  n: T('MAIN FLOOR', 'PISTA PRINCIPAL', 'PISTA PRINCIPAL') },
+    { v: 'acid',    n: T('ACID IN THE TOILET QUEUE', 'ACID EN LA FILA DEL BAÑO', 'ACID NA FILA DO BANHEIRO') },
+    { v: 'minimal', n: T('DARK ROOM TICKS', 'TICS DEL CUARTO OSCURO', 'TIQUES DA DARK ROOM') },
+    { v: 'hard',    n: T('PEAK TIME', 'HORA PICO', 'HORÁRIO DE PICO') },
+    { v: 'trance',  n: T('ATTIC, ALMOST SUNRISE', 'ÁTICO, CASI AMANECE', 'SÓTÃO, QUASE AMANHECE') },
+    { v: 'dub',     n: T('A WOBBLE FOR ISI', 'UN WOBBLE PARA ISI', 'UM WOBBLE PRA ISI') },
+    { v: 'closing', n: T('CLOSING TIME', 'HORA DE CERRAR', 'HORA DE FECHAR') },
+    { v: 'chill',   n: T('QUIET ROOM', 'SALA TRANQUILA', 'SALA DE CALMA') }
+  ];
+  const PHRASES = 6; /* bars of 8 per phrase: a record plays six phrases, then the next one starts */
+  const UI = {
+    sub: T('Eleven records from one night at club LA GRIETA, played live by the game\'s own engine.', 'Once discos de una noche en el club LA GRIETA, tocados en vivo por el motor del propio juego.', 'Onze discos de uma noite no clube LA GRIETA, tocados ao vivo pelo motor do próprio jogo.'),
+    play: T('PLAY', 'REPRODUCIR', 'TOCAR'), pause: T('PAUSE', 'PAUSA', 'PAUSAR'), prev: T('◀ PREV', '◀ ANT.', '◀ ANT.'), next: T('NEXT ▶', 'SIG. ▶', 'PRÓX. ▶'),
+    auto: T('AUTO: ON', 'AUTO: SÍ', 'AUTO: SIM'), autoOff: T('AUTO: OFF', 'AUTO: NO', 'AUTO: NÃO'), vol: T('VOLUME', 'VOLUMEN', 'VOLUME'),
+    idle: T('PICK A TRACK', 'ELIGE UN TEMA', 'ESCOLHA UMA FAIXA'), paused: T('PAUSED', 'EN PAUSA', 'PAUSADO'),
+    note: T('Generated live, not recorded: each record is a groove template with a changing 8-bar arrangement, so no two listens are identical. AUTO moves to the next record after about six phrases.', 'Generado en vivo, no grabado: cada disco es una plantilla de groove con arreglos de 8 compases que cambian, así que ninguna escucha es idéntica. AUTO pasa al siguiente disco tras unas seis frases.', 'Gerado ao vivo, não gravado: cada disco é um modelo de groove com arranjo de 8 compassos que muda, então nenhuma audição é igual. AUTO passa ao próximo disco depois de umas seis frases.'),
+    back: T('← EXCUSE ME', '← EXCUSE ME', '← EXCUSE ME'), bpm: T('BPM', 'BPM', 'BPM')
+  };
+  let cur = -1, playing = false, auto = true, t0 = 0, dur = 1;
+  const tr = function (k) { return EM.tr(UI[k]); };
+
+  function load(i) {
+    cur = (i + TRACKS.length) % TRACKS.length;
+    const v = TRACKS[cur].v;
+    A.hold = true;
+    A.style = v;
+    A.setBpm(EM.STYLES[v].bpm);
+    t0 = performance.now();
+    dur = PHRASES * 32 * 60 / EM.STYLES[v].bpm * 1000;
+    paint();
+  }
+  function play(i) {
+    if (!A.ensure()) return;           /* synchronous inside the click handler (WebKit) */
+    EM.settings.mute = false; playing = true;
+    if (i !== undefined && i !== cur) load(i); else if (cur < 0) load(0);
+    A.vol = $('vol').value / 100; A.applyMute();
+    paint();
+  }
+  function pause() { playing = false; EM.settings.mute = true; A.applyMute(); paint(); }
+
+  function paint() {
+    const pl = $('b-play');
+    pl.textContent = tr(playing ? 'pause' : 'play');
+    $('b-prev').textContent = tr('prev'); $('b-next').textContent = tr('next');
+    const ab = $('b-auto'); ab.textContent = tr(auto ? 'auto' : 'autoOff'); ab.setAttribute('aria-pressed', String(auto));
+    $('l-vol').textContent = tr('vol'); $('sub').textContent = tr('sub'); $('note').textContent = tr('note'); $('back').textContent = tr('back');
+    $('nt').textContent = cur < 0 ? tr('idle') : (String(cur + 1).padStart(2, '0') + '  ' + EM.tr(TRACKS[cur].n));
+    $('nm').textContent = cur < 0 ? '' : EM.STYLES[TRACKS[cur].v].bpm + ' ' + tr('bpm') + (playing ? '' : '  //  ' + tr('paused'));
+    document.title = (cur < 0 ? '' : EM.tr(TRACKS[cur].n) + ' — ') + 'EXCUSE ME — Soundtrack by ÆRIEL';
+    document.querySelectorAll('#lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.l === EM.lang)); });
+    const had = document.activeElement && document.activeElement.classList.contains('tr') ? Array.prototype.indexOf.call(document.querySelectorAll('#list .tr'), document.activeElement) : -1;
+    $('list').innerHTML = '';
+    TRACKS.forEach(function (k, i) {
+      const li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.className = 'tr';
+      if (i === cur) b.setAttribute('aria-current', 'true');
+      b.innerHTML = '<span class="n"></span><span class="x"></span><span class="b"></span>';
+      b.children[0].textContent = String(i + 1).padStart(2, '0'); b.children[1].textContent = EM.tr(k.n);
+      b.children[2].textContent = EM.STYLES[k.v].bpm + ' ' + tr('bpm');
+      b.addEventListener('click', function () { play(i); });
+      li.appendChild(b); $('list').appendChild(li);
+      if (i === had) b.focus();
+    });
+  }
+
+  $('b-play').addEventListener('click', function () { if (playing) pause(); else play(); });
+  $('b-prev').addEventListener('click', function () { play(cur < 0 ? TRACKS.length - 1 : cur - 1); });
+  $('b-next').addEventListener('click', function () { play(cur + 1); });
+  $('b-auto').addEventListener('click', function () { auto = !auto; paint(); });
+  $('vol').addEventListener('input', function () { A.vol = this.value / 100; if (A.ctx) A.applyMute(); });
+  $('lang').addEventListener('click', function (e) {
+    const l = e.target && e.target.dataset && e.target.dataset.l; if (!l) return;
+    EM.setLang(l); try { localStorage.setItem('preferred-lang', l); } catch (x) { /* ignore */ }
+    $('back').href = '/games/excuse-me/' + (l === 'en' ? '' : '?lang=' + l);
+  });
+  EM.onLang = function () { paint(); };
+
+  setInterval(function () {
+    if (!playing || cur < 0) return;
+    const f = Math.min(1, (performance.now() - t0) / dur);
+    $('pgi').style.width = (f * 100).toFixed(1) + '%'; $('pg').setAttribute('aria-valuenow', Math.round(f * 100));
+    if (f >= 1) { if (auto) { load(cur + 1); } else { t0 = performance.now(); } }
+  }, 250);
+
+  EM.lang = EM.detectLang(); document.documentElement.lang = EM.lang;
+  paint();
+})();
+</script>
+</body>
+</html>
