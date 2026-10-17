@@ -221,13 +221,13 @@
     t(`"You can't. That's called a market failure. Isi's table is a public good. Leave her a tip, she's subsidising your pupils."`, `«No puedes. Eso se llama falla de mercado. La mesa de Isi es un bien público. Déjale propina, subsidia tus pupilas».`, `«Não dá. Isso se chama falha de mercado. A mesa da Isi é bem público. Deixa gorjeta, ela tá subsidiando suas pupilas».`));
 
   /* ============================================================ PLACEMENT (rave only) */
-  npc('courtyard', { id: 'maya', x: 20.5, y: 14.5, dlg: 'maya', when: RV });
+  npc('courtyard', { id: 'maya', x: 22.5, y: 16.5, dlg: 'maya', when: RV });
   npc('main', { id: 'bea', x: 6.5, y: 20.5, dlg: 'bea', when: RV });
   npc('tunnel', { id: 'sub', x: 22.5, y: 5.5, dlg: 'sub', when: RV });
   npc('doors', { id: 'pip', x: 14.5, y: 9.5, dlg: 'pip', when: RV });
   npc('courtyard', { id: 'juniper', x: 30.5, y: 18.5, dlg: 'juniper', when: RV });
   npc('main', { id: 'klaus', x: 24.5, y: 6.5, dlg: 'klaus', when: RV });
-  npc('attic', { id: 'madison', x: 20.5, y: 14.5, dlg: 'madison', when: RV });
+  npc('attic', { id: 'madison', x: 26.5, y: 17.5, dlg: 'madison', when: RV });
   npc('courtyard', { id: 'mambo', x: 14.5, y: 20.5, dlg: 'dealer_mambo', when: RV });
   npc('tunnel', { id: 'spoke', x: 10.5, y: 5.5, dlg: 'dealer_spoke', when: RV });
   npc('attic', { id: 'pixi', x: 8.5, y: 14.5, dlg: 'dealer_pixi', when: RV });

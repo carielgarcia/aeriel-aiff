@@ -143,7 +143,7 @@
     };
   });
   /* friends and the old head */
-  ['maru', 'dani', 'tato'].forEach(function (f) {
+  EM.FRIENDS.forEach(function (f) {
     S['pd_' + f] = function () {
       U.partnerDance(f, function (res) {
         const b = {}; b[f] = res.grade === 'win' ? 2 : (res.grade === 'partial' ? 1 : 0);

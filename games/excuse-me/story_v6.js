@@ -172,7 +172,7 @@
     if (s.time < 80) return;
     const ok = EV.filter(function (e) {
       if (s.flags['seen_' + e.id]) return false;
-      if (e.need3 ? s.party.length < 3 : !L.hasFriend(e.need || e.who)) return false;
+      if (e.need3 ? EM.coreCount(s) < 3 : !L.hasFriend(e.need || e.who)) return false;
       return !e.zones || e.zones.indexOf(s.zone) !== -1;
     });
     if (!ok.length) return;

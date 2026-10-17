@@ -367,7 +367,7 @@
       const d = Math.round(s.stats[p[0]] - snap.st[p[0]]);
       if (d) parts.push(EM.tr(UI[p[1]]) + ' ' + (d > 0 ? '+' : '−') + Math.abs(d));
     });
-    ['maru', 'dani', 'tato'].forEach(function (f) {
+    EM.FRIENDS.forEach(function (f) {
       const d = (s.bond[f] || 0) - (snap.bond[f] || 0);
       if (d) parts.push(EM.CAST[f].name + ' ' + (d > 0 ? '♥+' : '♥−') + Math.abs(d));
     });

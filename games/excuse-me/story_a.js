@@ -22,7 +22,7 @@
   /* ------------------------------------------------------------ framework */
   story.init = function (s) {
     s.quests.q1 = 'active';
-    s.away = { maru: 'main', dani: 'main', tato: 'main' };
+    s.away = { maru: 'main', dani: 'main', tato: 'main', vale: 'main', alex: 'main' };
     s.party = [];
     s.items.water = 1;
   };

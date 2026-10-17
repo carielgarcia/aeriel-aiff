@@ -168,11 +168,11 @@
   function npcs() {
     const out = [];
     R.ents.forEach(function (e) { if (e.type === 'npc' && visible(e)) out.push(e); });
-    ['maru', 'dani', 'tato'].forEach(function (f, i) {
+    EM.FRIENDS.forEach(function (f, i) {
       if (S.away[f] === Z.id && !S.party.includes(f)) {
         const spot = Z.friendAt[Z.id] || Z.friendAt['default'];
         if (!spot) return;
-        const off = [[0, 0], [1.2, 0.9], [-1.1, 1.1]][i];
+        const off = [[0, 0], [1.2, 0.9], [-1.1, 1.1], [2.3, 0.3], [-1.5, 0]][i];
         const ex = R.friendEnts && R.friendEnts[f];
         if (ex) { out.push(ex); return; }
         const fe = { id: 'fr_' + f, type: 'npc', cast: f, friend: f, def: { id: 'fr_' + f, x: spot.x + off[0] + 0.5, y: spot.y + off[1] + 0.5, reach: 18, dir: 'd', dlg: 'friend:' + f } };

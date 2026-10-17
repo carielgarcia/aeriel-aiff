@@ -252,7 +252,7 @@
     $('#e-rep-h').textContent = EM.tr(S.report);
     const fr = $('#e-friends'); fr.textContent = '';
     fr.appendChild(el('h3', '', EM.tr(S.friends)));
-    ['maru', 'dani', 'tato'].forEach(function (f) {
+    EM.FRIENDS.forEach(function (f) {
       const withYou = s.party.indexOf(f) !== -1;
       const row = el('div', 'frow ' + (withYou ? 'with' : 'away'));
       row.appendChild(el('strong', '', EM.CAST[f].name));
@@ -300,7 +300,7 @@
       for (let i = 0; i < 20; i++) fill('#FFFFFF', (i * 31) % W, (i * 11) % 18, 1, 1);
       skyline(60, 3);
       fill('#14141C', 0, 60, W, H - 60); fill(N.org, 0, 60, W, 1); fill('#22222E', 0, 61, W, 3);
-      const party = ['maru', 'dani', 'tato'].filter(function (f) { return EM.state.party.indexOf(f) !== -1; });
+      const party = EM.FRIENDS.filter(function (f) { return EM.state.party.indexOf(f) !== -1; });
       if (kind === 'sunrise_legend') {
         for (let i = 0; i < 30; i++) { const x = 6 + (i * 17) % (W - 12), fy = 74 + (i % 3) * 3; const lk = EM.CAST[['maru', 'dani', 'tato', 'sol', 'kiki', 'hugo', 'nuri', 'bruno'][i % 8]].look; person(Object.assign({}, lk, { ol: '#050508' }), x, fy, 'u'); }
         person(player, 70, 86); party.forEach(function (f, i) { person(EM.CAST[f].look, 92 + i * 17, 86); });

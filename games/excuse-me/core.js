@@ -49,6 +49,9 @@
 
   /* two of the three friends are renamed at display time (ids and save data stay tato / dani) */
   const NAMES = { Tato: { en: 'Fernando', es: 'Feña', pt: 'Fernando' }, Dani: { en: 'Benjamin', es: 'Benjamin', pt: 'Benjamin' } };
+  /* the entourage: the first three carry the plot, Vale and Alex come along for the night */
+  EM.FRIENDS = ['maru', 'dani', 'tato', 'vale', 'alex'];
+  EM.coreCount = function (s) { return ['maru', 'dani', 'tato'].filter(function (f) { return s.party.indexOf(f) !== -1; }).length; };
   EM.rename = function (s) {
     if (typeof s !== 'string') return s;
     return s.replace(/\b(Tato|Dani)\b/gi, function (m) {
@@ -104,7 +107,7 @@
       items: { water: 1 },
       flags: {},
       quests: {},
-      bond: { maru: 0, dani: 0, tato: 0 },
+      bond: { maru: 0, dani: 0, tato: 0, vale: 0, alex: 0 },
       party: [],            // friends currently following you
       away: {},             // friend id -> zone id where they are
       res: {},              // resolved npc/object ids

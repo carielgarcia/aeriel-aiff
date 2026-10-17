@@ -262,7 +262,7 @@
       mine: {
         branch: [
           { req: { with: 'maru', flag: 'tato_closure' }, to: 'tato' },
-          { req: function (s) { return s.party.length === 3; }, to: 'allthree' },
+          { req: function (s) { return EM.coreCount(s) === 3; }, to: 'allthree' },
           { req: function (s) { return s.party.length >= 1; }, to: 'some' },
           { req: function () { return true; }, to: 'alone' }
         ]
@@ -295,7 +295,7 @@
 
   S.final_ending = function () {
     const s = EM.state, st = s.stats, f = s.flags;
-    const all3 = s.party.length === 3;
+    const all3 = EM.coreCount(s) === 3;
     let id;
     if (all3 && st.hp >= 45 && st.soc >= 35 && st.fun >= 60 && st.weird <= 45 && (s.care || 0) >= 3) id = 'legend';
     else if (st.hp < 30 || st.weird > 70 || s.fx.comedown2) id = 'wrecked';

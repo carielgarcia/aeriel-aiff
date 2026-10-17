@@ -33,7 +33,7 @@
       },
       c: {
         text: T('The three of them fall in behind you like ducklings with eyeliner. Time to get across the main floor to the toilets.', 'Los tres se ponen detrás de ti como patitos con delineador. Hora de cruzar la pista principal hacia los baños.', 'Os três se enfileiram atrás de você como patinhos de delineador. Hora de cruzar a pista principal até os banheiros.'),
-        do: { join: ['maru', 'dani', 'tato'], quest: { q1: 'done', q2: 'active' }, at: 150, call: 'q2_start', fun: 4 }
+        do: { join: ['maru', 'dani', 'tato', 'vale', 'alex'], quest: { q1: 'done', q2: 'active' }, at: 150, call: 'q2_start', fun: 4 }
       }
     }
   };
@@ -57,7 +57,7 @@
     if (s.quests.q1 === 'active' && z === 'main') return 'friends_meet';
     return 'found_generic_' + id;
   };
-  ['maru', 'dani', 'tato'].forEach(function (f) {
+  EM.FRIENDS.forEach(function (f) {
     const names = { maru: 'MARU', dani: 'DANI', tato: 'TATO' };
     D['found_generic_' + f] = {
       who: f, start: 'a', nodes: {
@@ -93,6 +93,7 @@
       T('TATO: "Thanks for not leaving me with the crowd."', 'TATO: «Gracias por no dejarme con la multitud».', 'TATO: «Valeu por não me deixar com a multidão».')
     ]
   };
+  story.barks = BARKS;
   let barkT = 14;
   story.tick = function (dt) {
     const s = EM.state; if (!s || !s.party.length) return;
