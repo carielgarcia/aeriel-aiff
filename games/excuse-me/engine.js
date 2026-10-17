@@ -317,7 +317,7 @@
     if (E.paused) return;
 
     /* the night clock */
-    timeAcc += dt * 0.4;
+    timeAcc += dt * 0.2; /* game minutes per real second: a full night is about 50 minutes */
     while (timeAcc >= 1) { timeAcc -= 1; L.minute(); if (S.ended) return; }
     if (EM.phaseOf(S.time) !== lastPhase) { rebuildCrowd(); applyAudio(); }
 

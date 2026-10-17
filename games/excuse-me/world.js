@@ -189,8 +189,8 @@
     /* toilet nook */
     Z.fill(41, 25, 2, 1, TL.WALL); Z.fill(41, 27, 2, 1, TL.WALL);
     Z.set(43, 26, TL.DOORF); Z.set(21, 31, TL.DOORF); Z.set(22, 31, TL.DOORF);
-    Z.set(0, 26, TL.CURTAIN); Z.set(33, 1, TL.DOORF);
-    Z.sign(21, 25, 'EXIT', 1).sign(39, 24, 'WC >', 1).sign(1, 24, '< DARK ROOM', 1).sign(31, 4, 'STAFF', 1);
+    Z.set(0, 26, TL.CURTAIN); Z.set(33, 1, TL.DOORF); Z.set(27, 1, TL.DOORF); Z.set(28, 1, TL.DOORF);
+    Z.sign(21, 25, 'EXIT', 1).sign(39, 24, 'WC >', 1).sign(1, 24, '< DARK ROOM', 1).sign(31, 4, 'STAFF', 1).sign(27, 4, 'ROOF', 1);
     Z.light(22, 12, 90).light(22, 3, 70);
     /* crowd (base densities at peak) */
     Z.crowdRect(9, 6, 26, 16, 3);
@@ -201,6 +201,8 @@
     Z.door(21, 31, 2, 1, 'foyer', 13, 3, 'd', { id: 'door_foyer' });
     Z.door(43, 26, 1, 1, 'restrooms', 10, 19, 'u', { id: 'door_wc2' });
     Z.door(0, 26, 1, 1, 'darkroom', 13, 15, 'u', { id: 'door_dark' });
+    /* roof stairs to the right of the DJ booth: the same closing-set door as the attic and backstage ones */
+    Z.door(27, 1, 2, 1, 'rooftop', 24, 11, 'u', { id: 'door_roof3', when: F('roof_open'), locked: T('The roof stairs next to the booth are chained. The closing set opens them.', 'La escalera al techo junto a la cabina tiene cadena. El set de cierre la abre.', 'A escada do terraço ao lado da cabine está acorrentada. O set de encerramento abre ela.') });
     Z.door(33, 1, 1, 1, 'backstage', 4, 9, 'u', { id: 'door_backstage', when: function (s) { return !!(s.flags.backstage_access || s.flags.rosa_ally || s.flags.resident_friend); }, locked: T('STAFF ONLY. A woman with a clipboard is looking at you.', 'SOLO STAFF. Una mujer con una carpeta te está mirando.', 'SÓ STAFF. Uma mulher com uma prancheta está te olhando.'), caught: 'beatriz_catch' });
     /* the three passages */
     Z.npc({ id: 'broh', pair: function (s) { return s.flags.broh_back ? ['broh', 'brohF1'] : ['broh', 'sofi']; }, x: 7, y: 23.5, box: { w: 2, h: 1 }, dlg: function (s) { return s.flags.broh_back ? 'broh_return' : 'broh1'; }, gate: true, reach: 26, dir: 'd', when: function (s) { return !s.res.broh; } });
@@ -385,10 +387,11 @@
     Z.fill(0, 2, 30, 1, TL.RAIL);
     Z.fill(1, 3, 28, 10, TL.CONC);
     Z.fill(0, 3, 1, 10, TL.RAIL); Z.fill(29, 3, 1, 10, TL.RAIL); Z.fill(0, 13, 30, 1, TL.RAIL);
-    Z.set(14, 13, TL.DOORF); Z.set(4, 12, TL.DOORF);
+    Z.set(14, 13, TL.DOORF); Z.set(4, 12, TL.DOORF); Z.set(24, 13, TL.DOORF);
     Z.fill(22, 4, 2, 1, TL.CRATE); Z.fill(5, 5, 1, 1, TL.BARREL); Z.set(25, 9, TL.BENCH); Z.set(26, 9, TL.BENCH);
     Z.door(14, 13, 1, 1, 'backstage', 24, 2, 'd', { id: 'door_bs2' });
     Z.door(4, 12, 1, 1, 'attic', 20, 2, 'd', { id: 'door_attic2' });
+    Z.door(24, 13, 1, 1, 'main', 27, 3, 'd', { id: 'door_main_roof' });
     Z.light(5, 5, 50);
     Z.obj({ id: 'sunrise_spot', kind: 'sunrise', x: 13, y: 5, w: 4, h: 3, label: T('WATCH THE SUNRISE', 'VER EL AMANECER', 'VER O AMANHECER'), when: function (s) { return s.quests.q9 === 'active'; } });
     Z.friend('default', 10, 8);
