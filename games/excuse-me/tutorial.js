@@ -10,7 +10,7 @@
     {
       k: t('1 / 5 — MOVE AND TALK', '1 / 5 — MOVERSE Y HABLAR', '1 / 5 — ANDAR E CONVERSAR'),
       h: t('WALK. PRESS Z.', 'CAMINA. PRESIONA Z.', 'ANDE. APERTE Z.'),
-      keys: [['c', '← ↑ ↓ →', t('WALK', 'CAMINAR', 'ANDAR')], ['m', 'Z', t('TALK / USE', 'HABLAR / USAR', 'FALAR / USAR')], ['l', 'X', t('STEP AWAY', 'ALEJARSE', 'SE AFASTAR')], ['a', 'P', t('MENU', 'MENÚ', 'MENU')]],
+      keys: [['c', '← ↑ ↓ →', t('WALK', 'CAMINAR', 'ANDAR')], ['m', 'Z', t('TALK / USE', 'HABLAR / USAR', 'FALAR / USAR')], ['l', 'X', t('STEP AWAY', 'ALEJARSE', 'SE AFASTAR')], ['a', 'P', t('MENU', 'MENÚ', 'MENU')], ['c', 'C', t('DRINK WATER', 'BEBER AGUA', 'BEBER ÁGUA')], ['m', 'I', t('ITEMS', 'OBJETOS', 'ITENS')]],
       b: t('Stand next to a person or a glowing mark and press Z. The line under the map says what Z will do.', 'Párate junto a una persona o una marca brillante y presiona Z. La línea bajo el mapa dice qué hará Z.', 'Fique perto de uma pessoa ou de uma marca brilhante e aperte Z. A linha embaixo do mapa diz o que o Z vai fazer.')
     },
     {

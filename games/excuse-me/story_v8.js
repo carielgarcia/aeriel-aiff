@@ -131,7 +131,8 @@
     return c;
   }
   EM.menuExtras = EM.menuExtras || [];
-  EM.menuExtras.push(function (box, s) {
+  EM.menuItems = EM.menuItems || [];
+  EM.menuItems.push(function (box, s) {
     const list = stash(); if (!list.length) return;
     const head = U.el('p', 'mnote', EM.tr(t('IN YOUR POCKETS:', 'EN TUS BOLSILLOS:', 'NOS SEUS BOLSOS:')));
     box.appendChild(head);

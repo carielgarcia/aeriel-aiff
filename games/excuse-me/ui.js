@@ -18,9 +18,9 @@
     norhythm: T('NO-RHYTHM MODE: dance moves ignore timing', 'MODO SIN RITMO: los pasos ignoran el tiempo', 'MODO SEM RITMO: os passos ignoram o tempo'),
     soundOn: T('SOUND', 'SONIDO', 'SOM'),
     on: T('ON', 'SÍ', 'LIGADO'), off: T('OFF', 'NO', 'DESLIGADO'),
-    items: T('POCKETS', 'BOLSILLOS', 'BOLSOS'), water: T('WATER BOTTLE', 'BOTELLA DE AGUA', 'GARRAFA DE ÁGUA'),
+    items: T('ITEMS', 'OBJETOS', 'ITENS'), water: T('WATER BOTTLE', 'BOTELLA DE AGUA', 'GARRAFA DE ÁGUA'),
     fxNone: T('NOTHING IN YOUR SYSTEM BUT THE MUSIC', 'NADA EN TU CUERPO SALVO LA MÚSICA', 'NADA NO CORPO ALÉM DA MÚSICA'),
-    effects: T('RIGHT NOW', 'AHORA MISMO', 'AGORA'), keysHelp: T('ARROWS move // Z talk / confirm // X leave // P menu // Z in a crowd = EXCUSE ME', 'FLECHAS mover // Z hablar / confirmar // X salir // P menú // Z en la multitud = CON PERMISO', 'SETAS mover // Z falar / confirmar // X sair // P menu // Z na multidão = COM LICENÇA'),
+    effects: T('RIGHT NOW', 'AHORA MISMO', 'AGORA'), keysHelp: T('ARROWS move // Z talk / confirm // X leave // C drink // I items // P menu // Z in a crowd = EXCUSE ME', 'FLECHAS mover // Z hablar / confirmar // X salir // C beber // I objetos // P menú // Z en la multitud = CON PERMISO', 'SETAS mover // Z falar / confirmar // X sair // C beber // I itens // P menu // Z na multidão = COM LICENÇA'),
     leave: T('[X] WALK AWAY', '[X] ALEJARSE', '[X] SE AFASTAR'), more: T('Z ▼', 'Z ▼', 'Z ▼'), drained: T('TOO DRAINED', 'SIN BATERÍA', 'SEM BATERIA'),
     silent: T('Say nothing. Back away.', 'No decir nada. Retroceder.', 'Não dizer nada. Recuar.'),
     time: T('TIME', 'HORA', 'HORA'), night: T('NIGHT', 'NOCHE', 'NOITE'), none: T('nothing yet', 'nada todavía', 'nada ainda'),
@@ -129,7 +129,6 @@
     if (s.drinks >= 1) fx.push(EM.tr(EM.FXNAME.drunk));
     if (s.thirst > 120) fx.push(EM.tr(EM.FXNAME.thirsty));
     $('#hud-fx').textContent = fx.join(' · ');
-    $('#hud-water').textContent = '≈ ' + (s.items.water || 0);
     $('#btn-menu').textContent = EM.tr(UI.menu);
     $('#btn-mute').textContent = EM.tr(UI.mute) + ': ' + EM.tr(EM.settings.mute ? UI.off : UI.on);
   };
@@ -602,18 +601,21 @@
 
   /* ------------------------------------------------------------ menu */
   let menuTab = 'status';
-  U.openMenu = function () {
+  U.openMenu = function (tab) {
     if (U.mode !== 'play') return;
+    if (typeof tab === 'string') menuTab = tab;
     U.mode = 'menu'; E.paused = true; E.input.x = E.input.y = 0; U.keys = {};
     show('menu', true); renderMenu(); postHeight();
   };
   U.closeMenu = function () {
     show('menu', false); U.mode = 'play'; E.paused = false; postHeight();
   };
+  U.renderMenu = function () { renderMenu(); };
   function renderMenu() {
     const s = EM.state, box = $('#menu-body');
     $$('#menu-tabs button').forEach(function (b) {
       const id = b.getAttribute('data-tab');
+      if (!id) return;
       b.textContent = EM.tr(UI[id]);
       b.classList.toggle('on', id === menuTab);
     });
@@ -630,6 +632,9 @@
       box.appendChild(el('p', 'mnote', EM.tr(UI.items) + ': ' + EM.tr(UI.water) + ' ×' + (s.items.water || 0)));
       (EM.menuExtras || []).forEach(function (f) { f(box, s); });
       box.appendChild(el('p', 'mnote', EM.tr(UI.time) + ': ' + EM.clockStr(s.time)));
+      box.appendChild(el('p', 'mnote dim', EM.tr(UI.keysHelp)));
+    } else if (menuTab === 'items') {
+      (EM.menuItems || []).forEach(function (f) { f(box, s); });
       box.appendChild(el('p', 'mnote dim', EM.tr(UI.keysHelp)));
     } else if (menuTab === 'quests') {
       const list = Object.keys(EM.QUESTS || {}).filter(function (id) { return s.quests[id]; });
