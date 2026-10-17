@@ -37,6 +37,21 @@
     ['skin', 4], ['hair', 9], ['hc', 4], ['expr', 6], ['top', 11], ['bottom', 6], ['acc', 8]
   ];
 
+
+  /* accessibility attributes are UI text: translated here (standalone games keep their own dictionary) */
+  const ARIA = {
+    screen: T('Game view: pixel map of a nightclub', 'Vista del juego: mapa en píxeles de un club nocturno', 'Visão do jogo: mapa em pixels de um club noturno'),
+    water: T('Water bottles you carry', 'Botellas de agua que llevas', 'Garrafas de água que você carrega'),
+    pad: T('Touch controls', 'Controles táctiles', 'Controles de toque'),
+    up: T('Up', 'Arriba', 'Cima'), down: T('Down', 'Abajo', 'Baixo'), left: T('Left', 'Izquierda', 'Esquerda'), right: T('Right', 'Derecha', 'Direita'),
+    back: T('Back or walk away', 'Atrás o alejarse', 'Voltar ou se afastar'), action: T('Action: talk, use, or say excuse me', 'Acción: hablar, usar o decir con permiso', 'Ação: falar, usar ou dizer com licença')
+  };
+  const PAGE_TITLE = T('EXCUSE ME — 8-bit night-out RPG', 'EXCUSE ME — RPG de 8 bits de una noche de club', 'EXCUSE ME — RPG de 8 bits de uma noite de club');
+  function applyAria() {
+    $$('[data-aria]').forEach(function (e) { const k = e.getAttribute('data-aria'); if (ARIA[k]) { e.setAttribute('aria-label', EM.tr(ARIA[k])); if (k === 'water') e.setAttribute('title', EM.tr(ARIA[k])); } });
+    document.title = EM.tr(PAGE_TITLE);
+  }
+
   /* ------------------------------------------------------------ title */
   U.toTitle = function () {
     E.paused = true; U.mode = 'title';
@@ -232,15 +247,35 @@
     function dither(x, y, w, h, dens, c1, c2) { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) { g.fillStyle = B[((y + j) & 3) * 4 + ((x + i) & 3)] / 16 < dens ? c1 : (c2 || C.K); g.fillRect(x + i, y + j, 1, 1); } }
     const player = EM.state.player.look;
     function person(look, x, y, dir) { const sp = EM.person(look, dir || 'd', 0, 'stand'); g.drawImage(sp, x, y); }
-    if (kind === 'sunrise') {
+    if (kind.indexOf('sunrise') === 0) {
       for (let y = 0; y < 48; y++) dither(0, y, W, 1, (1 - y / 48) * 0.95, C.W, C.K);
       g.fillStyle = C.W; g.fillRect(W / 2 - 9, 36, 18, 12); g.fillRect(W / 2 - 6, 33, 12, 3);
       g.fillStyle = C.D; [[2, 40, 14, 14], [20, 34, 10, 20], [34, 42, 16, 12], [78, 38, 12, 16], [94, 44, 14, 10], [110, 36, 14, 18]].forEach(function (b) { g.fillRect(b[0], b[1], b[2], b[3]); });
       g.fillStyle = C.G; g.fillRect(0, 52, W, 20);
       g.fillStyle = C.W; g.fillRect(0, 52, W, 1);
       const party = ['maru', 'dani', 'tato'].filter(function (f) { return EM.state.party.indexOf(f) !== -1; });
-      person(player, 52, 31 + 0);
-      party.forEach(function (f, i) { person(EM.CAST[f].look, 68 + i * 16, 31); });
+      if (kind === 'sunrise_legend') {
+        /* the whole roof: rows of small silhouettes and a halo of stars */
+        for (let i = 0; i < 26; i++) { const x = 4 + (i * 17) % 118, y = 40 + ((i * 7) % 3) * 4; g.fillStyle = i % 3 ? C.D : C.K; g.fillRect(x, y + 6, 6, 8); g.fillRect(x + 1, y + 2, 4, 4); }
+        for (let i = 0; i < 18; i++) { g.fillStyle = C.W; g.fillRect((i * 29) % 126, (i * 11) % 22, 1, 1); }
+        person(player, 54, 31); party.forEach(function (f, i) { person(EM.CAST[f].look, 70 + i * 15, 31); });
+      } else if (kind === 'sunrise_romance') {
+        person(player, 46, 31, 'r'); person(EM.CAST.sol.look, 64, 31, 'l');
+        g.fillStyle = C.W; g.fillRect(58, 44, 4, 5); g.fillRect(61, 45, 2, 3);
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 84 + i * 14, 31); });
+      } else if (kind === 'sunrise_wrecked') {
+        g.fillStyle = C.G; g.fillRect(50, 58, 36, 3);
+        const sp = EM.person(player, 'd', 0, 'sit'); g.drawImage(sp, 56, 40);
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 78 + i * 15, 35); });
+      } else if (kind === 'sunrise_missing') {
+        person(player, 50, 31);
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 66 + i * 15, 31); });
+        g.strokeStyle = C.G; g.setLineDash([2, 2]); g.strokeRect(86.5, 33.5, 12, 19); g.setLineDash([]);
+        g.fillStyle = C.W; g.fillRect(104, 44, 5, 8); g.fillStyle = C.K; g.fillRect(105, 45, 3, 5);
+      } else {
+        person(player, 52, 31 + 0);
+        party.forEach(function (f, i) { person(EM.CAST[f].look, 68 + i * 16, 31); });
+      }
     } else if (kind === 'door') {
       dither(0, 0, W, 40, 0.15, C.G, C.K);
       g.fillStyle = C.D; g.fillRect(0, 40, W, 32); g.fillStyle = C.W; g.fillRect(0, 40, W, 1);
@@ -280,12 +315,14 @@
     $('#e-again').addEventListener('click', U.toTitle);
     $$('.langbtn').forEach(function (b) { b.addEventListener('click', function () { const l = b.getAttribute('data-l'); EM.setLang(l); try { localStorage.setItem('preferred-lang', l); } catch (e) { /* ignore */ } }); });
     EM.onLang = function () {
+      applyAria();
       renderTitle();
       if (U.mode === 'creator') buildCreator();
       if (U.mode === 'dialog' && U.D) { /* re-render current page */ }
     };
     window.addEventListener('storage', function (e) { if (e.key === 'preferred-lang' && e.newValue) EM.setLang(e.newValue); });
     window.addEventListener('message', function (e) { if (e.origin === window.location.origin && e.data && e.data.type === 'set-lang') EM.setLang(e.data.lang); });
+    applyAria();
     U.toTitle();
 
     let last = performance.now(), slow = 0, fast = 0, frames = 0;

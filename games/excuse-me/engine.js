@@ -287,7 +287,7 @@
         speed *= E.parting > 0 ? (1 - 0.07 * d) : (1 - 0.17 * d);
         if (E.parting <= 0) {
           E.bumpAcc += dt * d * 0.7;
-          if (E.bumpAcc >= 1.5) { E.bumpAcc = 0; L.stat('soc', -1); L.stat('weird', 0.6); EM.hooks.bark(EM.pick(BUMPS), 'bad'); EM.hooks.sfx('warn'); }
+          if (E.bumpAcc >= 2.0) { E.bumpAcc = 0; L.stat('soc', -1); L.stat('weird', 0.4); EM.hooks.bark(EM.pick(BUMPS), 'bad'); EM.hooks.sfx('warn'); }
         }
       }
       if (ix && iy) { ix *= 0.7071; iy *= 0.7071; }

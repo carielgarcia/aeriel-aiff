@@ -63,7 +63,7 @@
         <span id="hud-place" class="place"></span>
         <span id="hud-fx" class="fxline"></span>
         <span class="hud-btns">
-          <span id="hud-water" class="water" title="water"></span>
+          <span id="hud-water" class="water" data-aria="water" title="Water bottles"></span>
           <button id="btn-mute" type="button"></button>
           <button id="btn-menu" type="button"></button>
         </span>
@@ -77,7 +77,7 @@
     </div>
 
     <div id="stage">
-      <canvas id="screen" aria-label="Game view" role="img"></canvas>
+      <canvas id="screen" data-aria="screen" aria-label="Game view" role="img"></canvas>
       <div id="toasts" aria-live="polite"></div>
       <div id="menu" hidden>
         <div id="menu-tabs">
@@ -99,16 +99,16 @@
       </div>
     </div>
 
-    <div class="pad" aria-label="touch controls">
+    <div class="pad" data-aria="pad" aria-label="Touch controls">
       <div class="dpad">
-        <button type="button" data-k="up" aria-label="up">▲</button>
-        <button type="button" data-k="left" aria-label="left">◀</button>
-        <button type="button" data-k="right" aria-label="right">▶</button>
-        <button type="button" data-k="down" aria-label="down">▼</button>
+        <button type="button" data-k="up" data-aria="up" aria-label="Up">▲</button>
+        <button type="button" data-k="left" data-aria="left" aria-label="Left">◀</button>
+        <button type="button" data-k="right" data-aria="right" aria-label="Right">▶</button>
+        <button type="button" data-k="down" data-aria="down" aria-label="Down">▼</button>
       </div>
       <div class="ab">
-        <button type="button" data-k="b" aria-label="back">X</button>
-        <button type="button" data-k="a" aria-label="action">Z</button>
+        <button type="button" data-k="b" data-aria="back" aria-label="Back">X</button>
+        <button type="button" data-k="a" data-aria="action" aria-label="Action">Z</button>
       </div>
     </div>
   </section>
@@ -144,6 +144,7 @@
 <script src="story_c.js"></script>
 <script src="story_d.js"></script>
 <script src="story_e.js"></script>
+<script src="story_extra.js"></script>
 <script src="endings.js"></script>
 <script src="screens.js"></script>
 </body>

@@ -19,7 +19,7 @@
   EM.STYLES = STYLES;
 
   const A = EM.audio = {
-    ctx: null, ready: false, style: 'warm', lp: 18000, wet: 0.05, vol: 0.72,
+    ctx: null, ready: false, style: 'warm', lp: 18000, wet: 0.05, vol: 1.0,
     /* beat grid (performance.now seconds) */
     bpm: 120, anchorT: 0, anchorB: 0
   };

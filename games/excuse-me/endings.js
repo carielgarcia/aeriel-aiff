@@ -66,7 +66,7 @@
   };
 
   E.legend = {
-    art: 'sunrise', music: 'closing', lp: 12000,
+    art: 'sunrise_legend', music: 'closing', lp: 12000,
     title: T('THE LEGEND OF LA GRIETA', 'LA LEYENDA DE LA GRIETA', 'A LENDA DA GRIETA'),
     text: [
       T('On the roof, somebody you have never met hands you a thermos of tea and says "you\'re the one who—" and then tells a story that is a lovely distortion of something you did. By the time the sun clears the skyline, three separate people have told you three different versions of your night, and in all of them you were kind.', 'En el techo, alguien que nunca viste te da un termo de té y dice «tú eres quien…» y luego cuenta una historia que es una distorsión hermosa de algo que hiciste. Cuando el sol supera el horizonte, tres personas distintas te contaron tres versiones de tu noche, y en todas fuiste amable.', 'No terraço, alguém que você nunca viu te passa uma garrafa térmica de chá e diz «você é quem…» e conta uma história que é uma distorção linda de algo que você fez. Quando o sol passa do horizonte, três pessoas diferentes te contaram três versões da sua noite, e em todas você foi gentil.'),
@@ -75,7 +75,7 @@
   };
 
   E.wrecked = {
-    art: 'sunrise', music: 'closing', lp: 3000,
+    art: 'sunrise_wrecked', music: 'closing', lp: 3000,
     title: T('BARELY, BEAUTIFULLY', 'APENAS, HERMOSAMENTE', 'POR POUCO, LINDAMENTE'),
     text: [
       T('You made it to the roof. You are not sure how. Your shoes are in your hand, your voice is a rumour, and the sun arrives like a very expensive apology. Everyone near you is in a similar state of lovely ruin.', 'Llegaste al techo. No sabes cómo. Tus zapatos están en tu mano, tu voz es un rumor y el sol llega como una disculpa carísima. Todos a tu alrededor están en un estado parecido de ruina hermosa.', 'Você chegou ao terraço. Não sabe como. Seus sapatos estão na sua mão, sua voz é um boato e o sol chega feito um pedido de desculpas caríssimo. Todo mundo perto de você está num estado parecido de ruína linda.'),
@@ -84,7 +84,7 @@
   };
 
   E.romance = {
-    art: 'sunrise', music: 'closing', lp: 12000,
+    art: 'sunrise_romance', music: 'closing', lp: 12000,
     title: T('TWO COFFEES', 'DOS CAFÉS', 'DOIS CAFÉS'),
     text: [
       T('"You made it." Sol appears at your elbow with two paper cups. "I bribed the Resident\'s manager with a chocolate bar." The sun rises. You do not touch each other. You stand with the exact distance between your shoulders that two people choose when they both want to choose it.', '«Llegaste». Sol aparece a tu lado con dos vasitos de papel. «Soborné al manager de la Resident con una barra de chocolate». Sale el sol. No se tocan. Quedan a la distancia exacta entre hombros que eligen dos personas cuando las dos quieren elegirla.', '«Você chegou». A Sol aparece do seu lado com dois copinhos de papel. «Subornei o manager da Resident com uma barra de chocolate». O sol nasce. Vocês não se tocam. Ficam na distância exata entre ombros que duas pessoas escolhem quando as duas querem escolher.'),
@@ -102,7 +102,7 @@
   };
 
   E.missing = {
-    art: 'sunrise', music: 'closing', lp: 6000,
+    art: 'sunrise_missing', music: 'closing', lp: 6000,
     title: T('AN EMPTY SPOT AT THE RAIL', 'UN LUGAR VACÍO EN LA BARANDA', 'UM LUGAR VAZIO NO PARAPEITO'),
     text: [
       T('You are on the roof as the sun comes up, and it is beautiful, and there is a person-shaped gap beside you. It is not tragedy. It is a night that went in more directions than you could hold. You hold what you have.', 'Estás en el techo cuando sale el sol, y es hermoso, y hay un hueco con forma de persona a tu lado. No es una tragedia. Es una noche que fue en más direcciones de las que pudiste sostener. Sostienes lo que tienes.', 'Você tá no terraço quando o sol nasce, e é lindo, e tem um buraco em forma de pessoa ao seu lado. Não é tragédia. É uma noite que foi em mais direções do que você conseguiu segurar. Você segura o que tem.'),
