@@ -149,7 +149,7 @@
       if (res.grade === 'win') L.apply({ fun: 10, soc: 4, weird: -2, flag: 'slowd_warm' });
       else if (res.grade === 'partial') L.apply({ fun: 5, soc: 2 });
       else L.apply({ fun: 1 });
-      L.addTime(6);
+      L.spend(6);
     });
   };
   S.pd_amar = function () {
@@ -157,7 +157,7 @@
       if (res.grade === 'win') L.apply({ fun: 10, soc: 4, flag: 'dpair_warm' });
       else if (res.grade === 'partial') L.apply({ fun: 5, soc: 2 });
       else L.apply({ fun: 2 });
-      L.addTime(5);
+      L.spend(5);
       if (!EM.state.ended) U.startDialogue('dpair', { npc: 'amar' });
     });
   };

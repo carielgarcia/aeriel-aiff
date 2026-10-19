@@ -418,7 +418,7 @@
       if (others.length) { c = EM.pick(others).c; U.toast({ text: T('That is not what you meant to say.', 'Eso no era lo que querías decir.', 'Não era isso que você queria dizer.'), kind: 'bad' }); }
     }
     EM.audio.blip('select');
-    if (!c.free) { L.stat('soc', -1 - (c.bad ? 2 : 0)); L.addTime(1); }
+    if (!c.free) { L.stat('soc', -1 - (c.bad ? 2 : 0)); L.spend(1); }
     if (c.bad) { L.addBad(1); L.rep(1); }
     else if (c.tone === 'care' || c.tone === 'sorry' || c.tone === 'hug') L.rep(-0.4);
     if (c.do) applyDo(c.do);

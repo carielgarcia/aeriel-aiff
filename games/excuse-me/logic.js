@@ -9,6 +9,11 @@
   EM.hooks = { toast: function () {}, stat: function () {}, ending: function () {}, script: function () {}, sfx: function () {}, dialog: function () {}, travel: function () {} };
   EM.scripts = {};
 
+  /* PACE: how fast the night goes. 1 = the old speed (a full night about 50 real minutes). The real-time clock and every
+     time cost of talking, kissing and dancing are multiplied by it, so 0.5 doubles the room for missions and side quests.
+     Story skips (passing out, set pieces at a fixed hour) are not scaled. */
+  EM.PACE = 0.5;
+
   /* night phases by minutes since 22:00 */
   EM.phaseOf = function (t) { return t < 150 ? 'warm' : (t < 300 ? 'techno' : (t < 450 ? 'hard' : 'closing')); };
   EM.crowdFactor = function (t) { return t < 120 ? 0.5 : (t < 300 ? 0.85 : (t < 450 ? 1.0 : 0.7)); };
@@ -103,7 +108,7 @@
     const p = L.makeoutChance(o.p);
     const ok = Math.random() < p;
     s.makeouts = (s.makeouts || 0) + 1;
-    L.addTime(o.time || 6);
+    L.spend(o.time || 6);
     s.flagAt = s.flagAt || {};
     if (o.who) {
       s.flags[(ok ? 'kiss_' : 'flop_') + o.who] = true; s.flagAt[(ok ? 'kiss_' : 'flop_') + o.who] = s.time;
@@ -180,6 +185,12 @@
   L.addTime = function (min) {
     const n = Math.max(0, Math.floor(min));
     for (let i = 0; i < n; i++) { L.minute(); if (EM.state.ended) break; }
+  };
+  /* time spent doing things (talking, dancing, kissing): scaled by PACE, with the remainder carried over */
+  L.spend = function (min) {
+    const s = EM.state; s.timeFrac = (s.timeFrac || 0) + Math.max(0, min) * EM.PACE;
+    const n = Math.floor(s.timeFrac); s.timeFrac -= n;
+    if (n) L.addTime(n);
   };
   L.clockFloor = function (t) {
     const s = EM.state;
@@ -383,7 +394,7 @@
     if (e.join) [].concat(e.join).forEach(L.join);
     if (e.leave) for (const k in e.leave) L.leave(k, e.leave[k]);
     if (e.cool) for (const k in e.cool) s.cool[k] = s.time + e.cool[k];
-    if (e.time) L.addTime(e.time);
+    if (e.time) L.spend(e.time);
     if (e.at) L.clockFloor(e.at);
     if (e.say) EM.hooks.toast({ text: e.say, kind: e.sayKind || 'info' });
     if (e.sfx) EM.hooks.sfx(e.sfx);

@@ -139,7 +139,7 @@
   /* flirts: dance, then come back to the conversation */
   ['vera', 'ines', 'rafa', 'mina', 'nox', 'ludo'].forEach(function (id) {
     S['pd_' + id] = function () {
-      U.partnerDance(id, function (res) { apply(res, id); L.addTime(5); if (!EM.state.ended) U.startDialogue(id, { npc: id }); });
+      U.partnerDance(id, function (res) { apply(res, id); L.spend(5); if (!EM.state.ended) U.startDialogue(id, { npc: id }); });
     };
   });
   /* friends and the old head */
@@ -148,7 +148,7 @@
       U.partnerDance(f, function (res) {
         const b = {}; b[f] = res.grade === 'win' ? 2 : (res.grade === 'partial' ? 1 : 0);
         L.apply(res.grade === 'win' ? { fun: 10, soc: 3, bond: b } : (res.grade === 'partial' ? { fun: 5, soc: 1, bond: b } : (res.grade === 'fail' ? { fun: 2 } : {})));
-        L.addTime(5);
+        L.spend(5);
       });
     };
   });

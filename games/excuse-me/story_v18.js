@@ -126,7 +126,7 @@
     U.partnerDance('rumi', function (res) {
       const s = EM.state;
       L.apply(res.grade === 'win' ? { fun: 10, soc: 3 } : (res.grade === 'partial' ? { fun: 5, soc: 1 } : (res.grade === 'fail' ? { fun: 2 } : {})));
-      L.addTime(5);
+      L.spend(5);
       if (res.grade === 'win' && open(s) && s.flags.fran_met && !s.flags.have_honeygum && !s.flags.honey_given && !s.ended) {
         U.startDialogue('rumi_gum', { npc: 'rumi' });
         U.toast({ icon: 'spark', kind: 'good', ms: 6000, text: t(`You got a whisky-honey-cinnamon gum. Take it to Lalo. (ITEMS: I)`, `Conseguiste un chicle de whisky miel y canela. Llévaselo a Lalo. (OBJETOS: I)`, `Você ganhou um chiclete de whisky com mel e canela. Leve pro Lalo. (ITENS: I)`) });
