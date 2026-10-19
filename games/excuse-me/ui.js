@@ -143,7 +143,8 @@
       const t = E.target;
       let p = '';
       if (t) {
-        if (t.type === 'npc') { const c = EM.CAST[t.cast]; p = '[Z] ' + EM.tr(UI.talk) + ' — ' + (c ? c.name : ''); }
+        if (t.type === 'npc' && U.npcSpent(t)) p = '[Z] ' + EM.tr(UI.excuse);
+        else if (t.type === 'npc') { const c = EM.CAST[t.cast]; p = '[Z] ' + EM.tr(UI.talk) + ' — ' + (c ? c.name : ''); }
         else p = '[Z] ' + EM.tr(t.def.label || UI.use);
       } else p = '[Z] ' + EM.tr(UI.excuse);
       h.textContent = p;
@@ -265,7 +266,7 @@
     opts = opts || {};
     U.mode = 'dialog';
     E.paused = true; E.input.x = E.input.y = 0; U.keys = {};
-    U.D = { id: id, def: def, npc: opts.npc || null, node: null, pages: [], page: 0, choices: [], sel: 0, state: 'text', onEnd: opts.onEnd || null, picked: null, seed: (Math.random() * 1000) | 0 };
+    U.D = { id: id, def: def, npc: opts.npc || null, npcId: opts.npcId || null, node: null, pages: [], page: 0, choices: [], sel: 0, state: 'text', onEnd: opts.onEnd || null, picked: null, seed: (Math.random() * 1000) | 0 };
     show('dialog', true);
     if (opts.npc) EM.state.res['talked_' + opts.npc] = true;
     gotoNode(def.start || 'a');
@@ -460,17 +461,53 @@
     U.mode = 'play'; E.paused = false; E.gateCool = 1.0;
     if (!left && def.after) { const f = EM.scripts[def.after]; if (f) f({}); }
     if (cb) cb(left);
+    if (!left) U.markSpent(D);
     U.mode === 'play' && U.hint();
   }
   U.endDialogue = endDialogue;
 
   /* ------------------------------------------------------------ interactions with the world */
-  EM.hooks.interact = function (ent) {
+  /* A character you have finished talking to is "spent" when nothing in the story has changed since: pressing Z next
+     to them goes back to EXCUSE ME instead of reopening the same "we already talked" scene. Services (drinks, water,
+     items, drugs, kisses, scripted calls) are never spent, and neither is anyone after about one game hour. */
+  const SERVICE_DO = ['water', 'item', 'drink', 'fx', 'open', 'call', 'goto', 'makeout', 'end', 'join'];
+  const serviceCache = {};
+  function isService(id, def) {
+    if (serviceCache[id] !== undefined) return serviceCache[id];
+    let svc = false;
+    Object.keys(def.nodes || {}).forEach(function (k) {
+      const n = def.nodes[k], ds = [n.do].concat((n.choices || []).map(function (c) { return c.do; }));
+      ds.forEach(function (d) { if (d && typeof d === 'object' && SERVICE_DO.some(function (key) { return d[key] !== undefined; })) svc = true; });
+      if (n.call) svc = true;
+    });
+    return (serviceCache[id] = svc);
+  }
+  function storySig(s) {
+    return JSON.stringify([s.flags, s.quests, s.items, s.party, s.stash, s.worn, s.pill, s.away, Math.floor(s.time / 60)]);
+  }
+  function npcDialogueId(ent, s) {
+    let id = ent.def.dlg;
+    if (typeof id === 'function') id = id(s);
+    if (typeof id === 'string' && id.indexOf('friend:') === 0) id = EM.story.friendDialogue(id.slice(7), s);
+    return id;
+  }
+  U.markSpent = function (D) {
+    const s = EM.state; if (!D || !D.npcId || !s || D.def.forced || isService(D.id, D.def)) return;
+    s.talked = s.talked || {};
+    s.talked[D.npcId] = { d: D.id, sig: storySig(s) };
+  };
+  U.npcSpent = function (ent) {
+    const s = EM.state; if (!s || !ent || ent.type !== 'npc' || ent.def.gate) return false;
+    const rec = s.talked && s.talked[ent.id]; if (!rec) return false;
+    let id; try { id = npcDialogueId(ent, s); } catch (e) { return false; }
+    return !!id && id === rec.d && rec.sig === storySig(s);
+  };
+
+  EM.hooks.interact = function (ent, how) {
     const s = EM.state;
     if (ent.type === 'npc') {
-      let id = ent.def.dlg;
-      if (typeof id === 'function') id = id(s);
-      if (typeof id === 'string' && id.indexOf('friend:') === 0) id = EM.story.friendDialogue(id.slice(7), s);
+      if (how && how.manual && U.npcSpent(ent)) { E.excuse(); return; }
+      const id = npcDialogueId(ent, s);
       if (!id) return;
       U.startDialogue(id, { npc: ent.cast, npcId: ent.id });
       return;

@@ -250,7 +250,7 @@
   E.interact = function () {
     if (E.paused) return;
     const t = E.target;
-    if (t) { EM.hooks.interact(t); return; }
+    if (t) { EM.hooks.interact(t, { manual: true }); return; }
     if (Z.id === 'darkroom') { E.reach(); return; }
     E.excuse();
   };
