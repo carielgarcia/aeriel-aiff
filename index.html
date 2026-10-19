@@ -2778,6 +2778,15 @@
       if (frame.getAttribute('data-game') !== id) { frame.setAttribute('data-game', id); frame.setAttribute('src', g.src); }
       syncGamesStage();
       window.scrollTo({ top: 0, behavior: scrollBehavior() });
+      /* phones: bring the game itself to the top of the screen, under the fixed header, so it uses the whole screen */
+      if (window.matchMedia('(max-width: 700px)').matches) {
+        const align = function () {
+          const w = document.querySelector('.games-app-frame-wrapper'), hd = document.querySelector('header');
+          if (w && activeGame) window.scrollTo({ top: Math.max(0, Math.round(w.getBoundingClientRect().top + window.scrollY - (hd ? hd.getBoundingClientRect().height : 56) - 2)), behavior: 'instant' });
+        };
+        setTimeout(align, 80); setTimeout(align, 500);
+        frame.addEventListener('load', function () { setTimeout(align, 60); }, { once: true });
+      }
     }
     function closeGame() {
       const frame = document.getElementById('games-frame');

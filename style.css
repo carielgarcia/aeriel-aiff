@@ -2249,6 +2249,7 @@ body[data-view="games"] #games-subsite {
 
 .games-app-frame-wrapper {
   width: 100%;
+  scroll-margin-top: calc(var(--header-h, 56px) + 4px);
   border: var(--border-thick);
   background: #07080c;
   overflow: hidden;

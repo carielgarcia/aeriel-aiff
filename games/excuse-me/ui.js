@@ -52,7 +52,10 @@
 
   function postHeight() {
     if (window.parent === window) return;
-    const h = Math.ceil(Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
+    /* measure the content, never documentElement.scrollHeight: that is at least the iframe's own height, so the
+       iframe could grow but never shrink (it ratcheted to 1400px on phones, leaving a black void under the game) */
+    const app = document.getElementById('app');
+    const h = Math.ceil(app ? app.getBoundingClientRect().height : document.body.scrollHeight);
     window.parent.postMessage({ type: 'resize-games-iframe', height: h }, window.location.origin);
   }
   U.postHeight = postHeight;

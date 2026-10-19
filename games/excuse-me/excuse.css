@@ -355,7 +355,7 @@ button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A
 /* desktop and tablets: the game column is sized to the window height (--chrome is measured in hud2.js) so the
    stage, dialogue and hint bar fit without scrolling. Never narrower than 560px, never wider than #app. */
 @media (min-width: 701px) {
-  #screen-game { width: min(100%, max(560px, calc((100dvh - var(--chrome, 220px) - 4px) * 16 / 9 + 4px))); margin: 0 auto; }
+  #screen-game { width: min(100%, max(560px, calc((var(--real-h, 100dvh) - var(--chrome, 220px) - 4px) * 16 / 9 + 4px))); margin: 0 auto; }
   #logbox { height: 52px; }
   #goal { min-height: 32px; }
 }
@@ -369,7 +369,7 @@ button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A
   #hud .hud-top .hud-btns #btn-mute { flex-grow: 1.7; }
   #logbox { height: 56px; }
   #log-list { padding-right: 96px; }
-  #menu, #tut, #pause { position: fixed; inset: 0; height: 100dvh; z-index: 20; padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  #menu, #tut, #pause { position: fixed; inset: 0; height: min(100dvh, var(--real-h, 100dvh)); z-index: 20; padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
   #menu { padding-top: 0; }
   #tut, #pause { padding-top: max(12px, env(safe-area-inset-top)); }
   #menu-tabs { position: sticky; top: 0; z-index: 1; background: #08080C; padding: max(10px, env(safe-area-inset-top)) 0 8px; margin-bottom: 4px; }

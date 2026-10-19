@@ -52,18 +52,25 @@
     g.classList.toggle('dlg-sheet', !!d && !pd);
     const x = $('dlg-x'); if (x) x.hidden = !(d && !U.D.def.forced);
   }
+  /* the real screen height. Inside the games hub the iframe is as tall as the game itself, so its own innerHeight says
+     nothing about the screen: ask the same-origin parent (minus the host's fixed bottom tab bar). */
+  function realH() {
+    if (window.parent !== window) { try { return Math.max(320, window.parent.innerHeight - 72); } catch (e) { /* cross-origin: fall through */ } }
+    return window.innerHeight;
+  }
   function fit() {
     const app = $('app'), st = $('stage'), g = $('screen-game'); if (!app || !st || !g || g.hidden) return;
     if (g.classList.contains('dlg-sheet')) return; /* the layout is borrowed while a dialogue sheet is open */
     const pad = document.querySelector('.pad');
     if (pad && pad.offsetHeight) document.documentElement.style.setProperty('--dlg-room', Math.max(120, Math.round(Math.max(pad.getBoundingClientRect().bottom, $('logbox').getBoundingClientRect().bottom) - st.getBoundingClientRect().bottom - 4)) + 'px');
-    const c = app.offsetHeight - st.offsetHeight, root = document.documentElement.style;
+    const c = app.offsetHeight - st.offsetHeight, root = document.documentElement.style, rh = realH();
+    if (root.getPropertyValue('--real-h') !== rh + 'px') root.setProperty('--real-h', rh + 'px');
     /* portrait phones: spend the spare height on a taller game view instead of dead space under the D-pad */
     if (E.setView) {
       const phone = window.matchMedia('(max-width: 700px)').matches, w = st.clientWidth - 4;
       if (!phone) E.setView(180);
       else if (w > 0) {
-        const want = Math.floor((window.innerHeight - c - 8) / (w / 320)), cur = E.size.h;
+        const want = Math.floor((rh - c - 8) / (w / 320)), cur = E.size.h;
         if (Math.abs(want - cur) >= 8 || want < 180) E.setView(want);
       }
     }
