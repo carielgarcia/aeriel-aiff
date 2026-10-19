@@ -518,8 +518,15 @@
     for (let i = 0; i < 24; i++) { if (prog < 0.8) { g.fillStyle = prog > 0.4 ? '#8A92C8' : '#FFFFFF'; g.fillRect((i * 37) % pw, (i * 11) % 16, 1, 1); } }
   }
 
+  /* low HEALTH blurs the picture (a CSS filter on the canvas: blur grows as HEALTH falls below 40) */
+  let lastBlur = '';
+  function blurForHealth() {
+    const d = L.dizzy ? L.dizzy() : 0, f = d > 0 ? 'blur(' + (0.6 + d * 2.4).toFixed(1) + 'px)' : '';
+    if (f !== lastBlur) { lastBlur = f; cv.style.filter = f; }
+  }
   E.draw = function () {
     if (!S || !Z) { g.fillStyle = '#0A0A0A'; g.fillRect(0, 0, VW, VH); return; }
+    blurForHealth();
     const t = E.time;
     const pw = Z.w * TS, ph = Z.h * TS;
     let camx = Math.round(S.x - VW / 2), camy = Math.round(S.y - 20 - VH / 2 + camBias);

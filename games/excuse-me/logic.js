@@ -14,6 +14,15 @@
      Story skips (passing out, set pieces at a fixed hour) are not scaled. */
   EM.PACE = 0.5;
 
+  /* every HEALTH loss is multiplied by this: thirst, drugs, smoke, speakers and rough choices all hurt twice as much */
+  EM.HP_LOSS = 2;
+
+  /* below 40 HEALTH you are dizzy: the picture blurs (engine.js) and your words slip (ui.js). 0 = fine, 1 = about to drop.
+     The chance of saying the wrong thing climbs from 15% at 39 HEALTH to 60% at 10 or less. */
+  EM.LOW_HP = 40;
+  /* staff: being rude to any of them costs an immense amount of WEIRDNESS, and the second time you are thrown out */
+  EM.STAFF = { dragan: 1, luca: 1, nico: 1, mika: 1, rosa: 1, nuri: 1, camilo: 1, teo: 1, dario: 1, ofelia: 1, bruce: 1, beatriz: 1, ines: 1, lampie: 1, sub: 1, maya: 1, bea: 1 };
+
   /* night phases by minutes since 22:00 */
   EM.phaseOf = function (t) { return t < 150 ? 'warm' : (t < 300 ? 'techno' : (t < 450 ? 'hard' : 'closing')); };
   EM.crowdFactor = function (t) { return t < 120 ? 0.5 : (t < 300 ? 0.85 : (t < 450 ? 1.0 : 0.7)); };
@@ -27,7 +36,7 @@
     mdma: T('ROLLING', 'ROLANDO', 'ROLANDO'), meth: T('WIRED', 'ACELERADO', 'ACELERADO'),
     glitch: T('BAD SIGNAL', 'SEÑAL MALA', 'SINAL RUIM'), coke: T('SHARP', 'AFILADO', 'AFIADO'), ket: T('DRIFTING', 'A LA DERIVA', 'À DERIVA'),
     comedown: T('COMEDOWN', 'BAJÓN', 'BAIXÃO'), comedown2: T('HARD CRASH', 'BAJÓN FUERTE', 'BAIXÃO FORTE'),
-    drunk: T('DRUNK', 'BORRACHO', 'BÊBADO'), thirsty: T('THIRSTY', 'SEDIENTO', 'COM SEDE')
+    drunk: T('DRUNK', 'BORRACHO', 'BÊBADO'), thirsty: T('THIRSTY', 'SEDIENTO', 'COM SEDE'), dizzy: T('DIZZY', 'MAREO', 'TONTURA')
   };
 
   const L = EM.logic = {};
@@ -165,6 +174,7 @@
     const s = EM.state;
     if (!d) return;
     if (name === 'soc' && d < 0) d = -(-d * L.socMult());
+    if (name === 'hp' && d < 0) d = d * EM.HP_LOSS;
     if (name === 'weird' && d > 0 && !raw) d = d * L.weirdMult();
     const before = s.stats[name];
     if (name === 'weird' && d >= 0.5) s.lastBadAt = s.time;
@@ -186,6 +196,18 @@
     const n = Math.max(0, Math.floor(min));
     for (let i = 0; i < n; i++) { L.minute(); if (EM.state.ended) break; }
   };
+  L.dizzy = function () { const hp = EM.state.stats.hp; return hp < EM.LOW_HP ? (EM.LOW_HP - hp) / EM.LOW_HP : 0; };
+  L.misspeakP = function () { const d = L.dizzy(); return d > 0 ? Math.min(0.6, 0.15 + d * 0.6) : 0; };
+  L.isRude = function (c) { return !!c && (c.tone === 'push' || c.tone === 'fight' || c.tone === 'rant' || (!!c.bad && c.tone !== 'lie')); };
+  L.staffRude = function () {
+    const s = EM.state; if (s.ended) return;
+    s.staffStrikes = (s.staffStrikes || 0) + 1;
+    L.stat('weird', s.staffStrikes === 1 ? 30 : 50, true);
+    L.rep(2);
+    if (s.staffStrikes === 1) EM.hooks.toast({ icon: 'anger', kind: 'bad', ms: 6500, text: T('STAFF TALK. Everyone behind a counter, a door or a mop bucket knows your face now. Do it again and you are out.', 'EL PERSONAL HABLA. Todos los que trabajan tras una barra, una puerta o un balde de limpieza ya conocen tu cara. Hazlo otra vez y te sacan.', 'A EQUIPE CONVERSA. Todo mundo que trabalha atrás de um balcão, de uma porta ou de um balde de limpeza já sabe quem você é. Faça de novo e você está fora.') });
+    else { EM.hooks.toast({ icon: 'anger', kind: 'bad', ms: 5000, text: T('THAT IS TWICE. Someone has already called the door.', 'YA SON DOS. Alguien ya avisó a la puerta.', 'JÁ FORAM DUAS. Alguém já avisou a porta.') }); L.end(s.venue === 'rave' ? 'frozenout' : 'banned'); }
+  };
+
   /* time spent doing things (talking, dancing, kissing): scaled by PACE, with the remainder carried over */
   L.spend = function (min) {
     const s = EM.state; s.timeFrac = (s.timeFrac || 0) + Math.max(0, min) * EM.PACE;
@@ -246,6 +268,8 @@
     if (st.soc > 45) delete s.flags.warn_soc;
     if (st.hp <= 25 && !s.flags.warn_hp) { s.flags.warn_hp = true; EM.hooks.toast({ icon: 'cross', text: T('Your HEALTH is low. Water, a seat, the quiet room.', 'Tu SALUD está baja. Agua, un asiento, la sala tranquila.', 'Sua SAÚDE está baixa. Água, um lugar pra sentar, a sala de calma.'), kind: 'bad', ms: 6000 }); }
     if (st.hp > 50) delete s.flags.warn_hp;
+    if (st.hp < EM.LOW_HP && !s.flags.warn_dizzy) { s.flags.warn_dizzy = true; EM.hooks.toast({ icon: 'cross', kind: 'bad', ms: 7000, text: T('YOUR HEAD IS SWIMMING. The room blurs and your words slip. Drink some water or sit down and rest (a bench, the quiet room) before it gets worse.', 'TE MAREAS. La sala se desenfoca y las palabras se te escapan. Toma agua o siéntate a descansar (un banco, la sala tranquila) antes de que empeore.', 'SUA CABEÇA RODA. A sala embaça e as palavras escapam. Beba água ou sente e descanse (um banco, a sala de calma) antes que piore.') }); }
+    if (st.hp >= EM.LOW_HP + 10) delete s.flags.warn_dizzy;
     if (st.fun <= 12 && !s.flags.warn_fun) { s.flags.warn_fun = true; EM.hooks.toast({ icon: 'note', text: T('Your FUN is running out. Find a glowing mark on the floor and dance.', 'Tu DIVERSIÓN se agota. Busca una marca brillante en el piso y baila.', 'Sua DIVERSÃO está acabando. Procure uma marca brilhante no chão e dance.'), kind: 'bad', ms: 6000 }); }
     if (st.fun > 35) delete s.flags.warn_fun;
     if (st.weird >= 70 && s.venue === 'rave' && !s.flags.sec_watch) { s.flags.sec_watch = true; EM.hooks.toast({ icon: 'eyes', text: T('PEOPLE ARE STEERING AROUND YOU. There is no security here; there is only the crowd.', 'LA GENTE TE ESQUIVA. Aquí no hay seguridad; solo hay multitud.', 'AS PESSOAS ESTÃO TE EVITANDO. Aqui não tem segurança; só tem a multidão.'), kind: 'bad' }); }

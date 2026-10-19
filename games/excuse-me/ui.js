@@ -131,6 +131,7 @@
     const fx = Object.keys(s.fx).map(function (k) { return EM.tr(EM.FXNAME[k]); });
     if (s.drinks >= 1) fx.push(EM.tr(EM.FXNAME.drunk));
     if (s.thirst > 120) fx.push(EM.tr(EM.FXNAME.thirsty));
+    if (st.hp < EM.LOW_HP) fx.push(EM.tr(EM.FXNAME.dizzy));
     $('#hud-fx').textContent = fx.join(' · ');
     $('#btn-menu').textContent = EM.tr(UI.menu);
     $('#btn-mute').textContent = EM.tr(UI.mute) + ': ' + EM.tr(EM.settings.mute ? UI.off : UI.on);
@@ -412,13 +413,18 @@
     const snap = { st: Object.assign({}, EM.state.stats), bond: Object.assign({}, EM.state.bond) };
     if (o.disabled) { U.toast({ text: UI.drained, kind: 'bad', ms: 1500 }); return; }
     let c = o.c;
-    /* bad signal: sometimes you say something else entirely */
-    if (EM.state.fx.glitch && D.choices.length > 1 && Math.random() < 0.25) {
+    /* bad signal or low HEALTH: sometimes you say something else entirely (worse the lower HEALTH gets) */
+    const missP = Math.max(EM.state.fx.glitch ? 0.25 : 0, L.misspeakP());
+    if (missP > 0 && D.choices.length > 1 && Math.random() < missP) {
       const others = D.choices.filter(function (x) { return x !== o && !x.disabled; });
-      if (others.length) { c = EM.pick(others).c; U.toast({ text: T('That is not what you meant to say.', 'Eso no era lo que querías decir.', 'Não era isso que você queria dizer.'), kind: 'bad' }); }
+      if (others.length) {
+        c = EM.pick(others).c;
+        U.toast({ text: EM.state.fx.glitch ? T('That is not what you meant to say.', 'Eso no era lo que querías decir.', 'Não era isso que você queria dizer.') : T('Your head is swimming. That is not what you meant to say.', 'Todo te da vueltas. Eso no era lo que querías decir.', 'Tudo gira. Não era isso que você queria dizer.'), kind: 'bad' });
+      }
     }
     EM.audio.blip('select');
     if (!c.free) { L.stat('soc', -1 - (c.bad ? 2 : 0)); L.spend(1); }
+    if (L.isRude(c) && EM.STAFF[curWho()]) L.staffRude();
     if (c.bad) { L.addBad(1); L.rep(1); }
     else if (c.tone === 'care' || c.tone === 'sorry' || c.tone === 'hug') L.rep(-0.4);
     if (c.do) applyDo(c.do);

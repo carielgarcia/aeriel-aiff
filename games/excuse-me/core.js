@@ -110,9 +110,12 @@
   /* Time is minutes since 22:00. The venue closes at 08:00 (minute 600). */
   EM.newState = function (player, carry) {
     carry = carry || {};
+    const seed = carry.seed !== undefined ? carry.seed : (Math.random() * 1e9) | 0;
+    /* the night starts flat: FUN about 15, plus or minus 10 (5 to 25), the same on BEGIN AGAIN (seeded) */
+    const startFun = 5 + Math.floor(EM.mulberry32(seed + 17)() * 21);
     return {
       v: 2,
-      seed: carry.seed !== undefined ? carry.seed : (Math.random() * 1e9) | 0,
+      seed: seed,
       attempt: carry.attempt || 1,
       lessons: carry.lessons || [],
       bad: 0,
@@ -124,7 +127,7 @@
       player: player,
       zone: 'doors', x: 0, y: 0, dir: 'r',
       time: 60,
-      stats: { fun: 55, soc: 85, hp: 90, weird: 0 },
+      stats: { fun: startFun, soc: 85, hp: 90, weird: 0 },
       items: { water: 1 },
       flags: {},
       quests: {},
