@@ -39,7 +39,17 @@
     t(`"Hi. I'm Isi, from ${RD}. Water on the left, notebook on the right. We don't take names. What do you need?" Her black T-shirt says RD.`, `«Hola. Soy Isi, de ${RD}. Agua a la izquierda, cuaderno a la derecha. No anotamos nombres. ¿Qué necesitas?» Su camiseta negra dice RD.`, `«Oi. Sou a Isi, da ${RD}. Água à esquerda, caderno à direita. A gente não anota nomes. Do que você precisa?» A camiseta preta dela diz RD.`),
     t(`"One reminder for everyone: alcohol is a drug too. We don't test it, but give it the same care as anything else."`, `«Un recordatorio para todos: el alcohol también es una droga. No lo testeamos, pero cuídalo igual que cualquier otra cosa».`, `«Um lembrete pra todo mundo: o álcool também é uma droga. A gente não testa, mas tenha o mesmo cuidado que teria com qualquer outra coisa».`)
   ];
-  D.nuri.nodes.a.text = greeting;
+  /* her dubstep complaint grows each time you come back (counted across nights), and she has seen Skrillex once */
+  const GAG = [
+    t(`"Still no dubstep. I started a petition. It has one signature, mine, twice."`, `«Todavía no hay dubstep. Empecé una petición. Tiene una firma, la mía, dos veces».`, `«Ainda sem dubstep. Comecei um abaixo-assinado. Tem uma assinatura, a minha, duas vezes».`),
+    t(`"Night after night, and the DJ says 'we'll see'. I saw Skrillex once. One time. I know what a good drop does to a room."`, `«Noche tras noche, y el DJ dice “ya veremos”. Yo vi a Skrillex una vez. Una sola. Sé lo que hace un buen drop en una sala».`, `«Noite após noite, e a DJ diz “a gente vê”. Eu vi o Skrillex uma vez. Uma só. Eu sei o que um bom drop faz com uma sala».`),
+    t(`"I hum wobbles under my breath at the table. The patients are calmer. This is unrelated. Also: Skrillex. Once."`, `«Tarareo wobbles entre dientes en la mesa. Los pacientes están más tranquilos. Esto no tiene relación. Además: Skrillex. Una vez».`, `«Cantarolo wobbles entre os dentes na mesa. Os pacientes estão mais calmos. Isso não tem relação. Além disso: Skrillex. Uma vez».`),
+    t(`"One wobble at 3 a.m. would heal this whole venue. I say it as someone who saw Skrillex once."`, `«Un wobble a las 3 de la mañana sanaría todo este local. Lo digo como alguien que vio a Skrillex una vez».`, `«Um wobble às 3 da manhã curaria este local inteiro. Falo como alguém que viu o Skrillex uma vez».`)
+  ];
+  D.nuri.nodes.a.text = function (s) {
+    const lvl = (s.gags && s.gags.isi) || 0;
+    return lvl >= 2 ? greeting.concat([GAG[Math.min(lvl - 2, GAG.length - 1)]]) : greeting;
+  };
   D.nuri.nodes.explain.text = [
     t(`"We scrape a little off your sample and put a drop of reagent on it. The colour tells us what is in there. Pills get three reagents: Marquis, Froehde and Simmons. Powders get two: Morris and Liebermann."`, `«Raspamos un poco de tu muestra y le ponemos una gota de reactivo. El color nos dice qué hay adentro. A las pastillas les hacemos tres reactivos: Marquis, Froehde y Simmons. A los polvos, dos: Morris y Liebermann».`, `«A gente raspa um pouco da sua amostra e coloca uma gota de reagente. A cor diz o que tem ali dentro. Comprimidos levam três reagentes: Marquis, Froehde e Simmons. Pós levam dois: Morris e Liebermann».`),
     t(`"A test only shows what it can see. It does not tell me how strong something is, or how your body will react. I don't tell anyone what to do. You decide."`, `«Un test solo muestra lo que alcanza a ver. No me dice qué tan fuerte es algo ni cómo va a reaccionar tu cuerpo. Yo no le digo a nadie qué hacer. Tú decides».`, `«Um teste só mostra o que ele consegue ver. Não me diz a força nem como o seu corpo vai reagir. Eu não digo a ninguém o que fazer. Você decide».`)
@@ -49,7 +59,27 @@
     choices: [K('chill', t(`"Thanks. I'll take it slow."`, `«Gracias. Voy a ir despacio».`, `«Valeu. Vou com calma».`), { do: { soc: 2, care: 1 }, next: null, free: true })]
   };
   const ask = K('ask', t(`"Do you test alcohol?"`, `«¿Testean el alcohol?»`, `«Vocês testam álcool?»`), { next: 'alcohol', free: true });
+  /* "tell me about the dubstep": she is happy to, and she has seen Skrillex once */
+  const dubAsk = K('ask', t(`"Tell me about the dubstep."`, `«Cuéntame del dubstep».`, `«Me conta do dubstep».`), { next: 'dub', free: true });
+  D.nuri.nodes.dub = {
+    text: [
+      t(`"Dubstep. Finally, someone asks." Isi sits up straight. "A good drop is a whole room breathing out at the same time. For four seconds nobody is thinking about anything. In my work, four seconds of that is a lot."`, `«Dubstep. Por fin alguien pregunta». Isi se endereza. «Un buen drop es una sala entera soltando el aire al mismo tiempo. Durante cuatro segundos nadie piensa en nada. En mi trabajo, cuatro segundos de eso es mucho».`, `«Dubstep. Finalmente alguém pergunta». A Isi se endireita. «Um bom drop é uma sala inteira soltando o ar ao mesmo tempo. Durante quatro segundos ninguém pensa em nada. No meu trabalho, quatro segundos disso é muito».`),
+      t(`"I saw Skrillex once. One time. I think about it more than I should."`, `«Yo vi a Skrillex una vez. Una sola. Lo pienso más de lo que debería».`, `«Eu vi o Skrillex uma vez. Uma só. Penso nisso mais do que deveria».`),
+      t(`"So if you see the DJ: one wobble. Just one. I will bring water for everyone."`, `«Así que si ves al DJ: un wobble. Solo uno. Yo llevo agua para todos».`, `«Então se você encontrar a DJ: um wobble. Só um. Eu levo água pra todo mundo».`)
+    ],
+    do: { soc: 2, fun: 2, flag: 'isi_chatted' },
+    choices: [
+      K('ask', t(`"Skrillex? Really?"`, `«¿Skrillex? ¿En serio?»`, `«Skrillex? Sério?»`), { next: 'skrillex', free: true }),
+      K('yes', t(`"I'll tell them."`, `«Se lo digo».`, `«Eu falo com ela».`), { do: { fun: 3, soc: 3 }, next: null, react: t(`"Thank you. Say it was me. Say Isi, quiet room, one wobble."`, `«Gracias. Diles que fui yo. Di Isi, sala tranquila, un wobble».`, `«Valeu. Diz que fui eu. Diz Isi, sala de calma, um wobble».`) }),
+      K('chill', t(`"Maybe later."`, `«Quizás más tarde».`, `«Talvez mais tarde».`), { next: null, free: true })
+    ]
+  };
+  D.nuri.nodes.skrillex = {
+    text: t(`"Really. Once. I was standing at the back, a drop landed, and a stranger hugged me. I never found that stranger again. I never found a drop like that again either."`, `«En serio. Una vez. Estaba parada al fondo, cayó un drop y un desconocido me abrazó. Nunca volví a encontrar a ese desconocido. Tampoco volví a encontrar un drop así».`, `«Sério. Uma vez. Eu estava no fundo, um drop caiu e um estranho me abraçou. Nunca mais encontrei esse estranho. Também nunca mais encontrei um drop assim».`),
+    choices: [K('chill', t(`"That's a good story."`, `«Es una buena historia».`, `«É uma boa história».`), { do: { soc: 2, fun: 2 }, next: null, free: true })]
+  };
   D.nuri.nodes.alcohol = alcohol;
+  D.nuri.nodes.a.choices.push(dubAsk);
   D.nuri.nodes.a.choices.push(ask);
-  if (D.nuri_after) { D.nuri_after.nodes.alcohol = alcohol; D.nuri_after.nodes.a.choices.push(ask); }
+  if (D.nuri_after) { D.nuri_after.nodes.alcohol = alcohol; D.nuri_after.nodes.a.choices.push(ask); D.nuri_after.nodes.dub = D.nuri.nodes.dub; D.nuri_after.nodes.skrillex = D.nuri.nodes.skrillex; D.nuri_after.nodes.a.choices.push(dubAsk); }
 })();

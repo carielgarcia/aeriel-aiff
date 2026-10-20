@@ -56,6 +56,8 @@
   D.rollPowder = function (told, r) { return from(told === 'coke' ? COKE : KET, r); };
   /* an untested powder sold as cocaine is ketamine about one time in five (testing it removes that doubt) */
   D.rollKetVariant = function () { return Math.random() < 0.75 ? 'ket' : 'ket_lev'; };
+  /* and an untested powder sold as ketamine is cocaine about one time in five (testing it removes that doubt) */
+  D.rollCokeVariant = function () { return from(COKE.filter(function (x) { return x[0] !== 'nothing'; }).map(function (x) { return [x[0], x[1] / 0.95]; })); };
   D.COKE_ODDS = COKE; D.KET_ODDS = KET; D.PILL_ODDS = PILL;
 
   /* ------------------------------------------------------------ the tests, as the animation draws them */
