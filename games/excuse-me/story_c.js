@@ -10,7 +10,9 @@
     const s = EM.state;
     if (s.pill.type) return s.pill.type;
     const r = EM.hash2(s.seed, 7, 3);
-    s.pill.type = r < 0.38 ? 'pure' : (r < 0.7 ? 'mix' : 'fake');
+    /* the same four things a pill can be everywhere else (drugs.js). For the story, MDA counts as the real thing's cousin ('pure') */
+    s.pill.comp = r < 0.28 ? 'mdma' : (r < 0.38 ? 'mda' : (r < 0.7 ? 'mix' : 'unknown'));
+    s.pill.type = s.pill.comp === 'mix' ? 'mix' : (s.pill.comp === 'unknown' ? 'fake' : 'pure');
     if (s.pill.type === 'fake') {
       const r2 = EM.hash2(s.seed, 11, 5);
       s.pill.fake = r2 < 0.34 ? 'faint' : (r2 < 0.67 ? 'nothing' : 'glitch');
@@ -89,7 +91,7 @@
     const s = EM.state;
     S.decidePill();
     s.pill.tested = true;
-    U.reagent(function () { U.startDialogue('nuri_result', { npc: 'nuri' }); });
+    U.reagent(function () { U.startDialogue('nuri_result', { npc: 'nuri' }); }, EM.drugs.tests(s.pill.comp || 'mdma'));
   };
 
   D.nuri_after = {

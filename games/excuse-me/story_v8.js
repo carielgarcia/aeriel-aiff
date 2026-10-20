@@ -13,18 +13,12 @@
     coke: t('COCAINE', 'COCAÍNA', 'COCAÍNA'), ket: t('KETAMINE', 'KETAMINA', 'CETAMINA')
   };
   const KINDS = ['mdma', 'coke', 'ket'];
-  const REAL = { mix: t('MDMA WITH A STIMULANT', 'MDMA CON UN ESTIMULANTE', 'MDMA COM UM ESTIMULANTE'), fake: t('NOT WHAT IT SAYS', 'NO ES LO QUE DICE', 'NÃO É O QUE DIZ') };
-  function realName(r) { return KIND[r] || REAL[r]; }
+  /* what is really in a sample is a composition key from drugs.js (mdma, mix, mda, unknown, coke, coke_lev, ...) */
+  function realName(r) { return EM.drugs.name(r); }
 
   /* ------------------------------------------------------------ what a purchase really is */
-  /* a pill's stamp is a story, not a guarantee, but the odds do lean a little */
-  const ODDS = { crown: [0.8, 0.1], heart: [0.8, 0.1], bolt: [0.45, 0.4], skull: [0.5, 0.15], smile: [0.7, 0.15], ae: [0.7, 0.15] };
-  function resolve(told, imprint) {
-    const r = Math.random();
-    if (told === 'mdma') { const o = ODDS[imprint] || ODDS.smile; return r < o[0] ? 'mdma' : (r < o[0] + o[1] ? 'mix' : 'fake'); }
-    if (told === 'coke') return r < 0.8 ? 'coke' : 'ket';
-    return r < 0.8 ? 'ket' : 'coke';
-  }
+  /* a pill's stamp is a story, not a guarantee; the odds are in drugs.js */
+  function resolve(told, imprint) { return told === 'mdma' ? EM.drugs.rollPill(imprint) : EM.drugs.rollPowder(told); }
   const SHAPES = {
     round: t('ROUND', 'REDONDA', 'REDONDA'), heart: t('HEART', 'DE CORAZÓN', 'DE CORAÇÃO'), square: t('SQUARE', 'CUADRADA', 'QUADRADA'),
     star: t('STAR', 'DE ESTRELLA', 'DE ESTRELA'), diamond: t('DIAMOND', 'DE ROMBO', 'DE LOSANGO')
@@ -97,26 +91,49 @@
     nothing: t('Nothing happens. Nothing keeps happening. You paid for a very expensive mint.', 'No pasa nada. Nada sigue pasando. Pagaste una menta carísima.', 'Nada acontece. Nada continua acontecendo. Você pagou por uma bala de menta caríssima.'),
     glitch: t('Static. Everything arrives half a second late and a little wrong.', 'Estática. Todo llega medio segundo tarde y un poco mal.', 'Estática. Tudo chega meio segundo atrasado e um pouco errado.')
   };
+  const LEV = t('Something cheap is in there. Your gums sting and a flu-like ache starts behind your eyes.', 'Hay algo barato ahí adentro. Te arden las encías y un malestar como de gripe empieza detrás de los ojos.', 'Tem algo barato aí dentro. Suas gengivas ardem e um mal-estar de gripe começa atrás dos olhos.');
+  const AMPH = t('Your heart is going too fast and it does not slow down. That was a bad mix.', 'Tu corazón va demasiado rápido y no baja. Fue una mala mezcla.', 'Seu coração tá rápido demais e não desacelera. Foi uma mistura ruim.');
+  const NOTHING = t('Nothing. A bitter nothing. You paid for dust.', 'Nada. Una nada amarga. Pagaste por polvo.', 'Nada. Um nada amargo. Você pagou por pó.');
+  const MDA_TOAST = t('Slower to arrive than you expected. A warm hum, and it is going to last longer than you planned.', 'Tarda más en llegar de lo que esperabas. Un zumbido tibio, y va a durar más de lo que planeaste.', 'Demora mais pra chegar do que você esperava. Um zumbido morno, e vai durar mais do que você planejou.');
+  /* what a composition does to you. told: what you thought it was ('mdma' | 'coke' | 'ket') */
+  story.takeComp = function (comp, told, fake) {
+    const s = EM.state;
+    if (comp === 'coke' || comp === 'coke_lev' || comp === 'coke_amph' || comp === 'ket' || comp === 'ket_lev') {
+      story.applyPowder(comp.indexOf('coke') === 0 ? 'coke' : 'ket', told);
+      if (comp === 'coke_lev' || comp === 'ket_lev') { L.apply({ hp: -3, weird: 3, flag: 'took_levamisole' }); U.toast({ icon: 'cross', text: LEV, kind: 'bad', ms: 5500 }); }
+      if (comp === 'coke_amph') { L.apply({ fx: 'meth', hp: -6, weird: 8, flag: ['took_amph', 'wired'] }); U.toast({ icon: 'skull', text: AMPH, kind: 'bad', ms: 6000 }); }
+      return;
+    }
+    if (comp === 'nothing') { L.apply({ fun: -2, weird: 1, flag: 'drug_taken' }); U.toast({ text: NOTHING, kind: 'info', ms: 4500 }); return; }
+    if (comp === 'mdma') {
+      L.apply({ fx: 'mdma', fun: 10, hp: -3, weird: 10, flag: ['rolling', 'drug_taken'] });
+      U.toast({ icon: 'heart', text: t('Twenty minutes later: a warm tide. Everyone\'s hands look kind.', 'Veinte minutos después: una marea tibia. Las manos de todos se ven amables.', 'Vinte minutos depois: uma maré morna. As mãos de todo mundo parecem gentis.'), kind: 'good', ms: 5000 });
+    } else if (comp === 'mix') {
+      L.apply({ fx: ['mdma', 'meth'], fun: 8, hp: -6, weird: 20, flag: ['rolling', 'wired', 'drug_taken'] });
+      U.toast({ icon: 'spark', text: t('A warm wave with a wire running through it. Your jaw and your pulse have opinions.', 'Una ola tibia con un cable adentro. Tu mandíbula y tu pulso tienen opiniones.', 'Uma onda morna com um fio dentro. Sua mandíbula e seu pulso têm opiniões.'), kind: 'bad', ms: 5000 });
+    } else if (comp === 'mda') {
+      L.apply({ fx: 'mdma', fun: 9, hp: -4, weird: 14, flag: ['rolling', 'drug_taken', 'took_mda'] });
+      s.fx.mdma = Math.round((s.fx.mdma || 240) * 1.5);
+      U.toast({ icon: 'heart', text: MDA_TOAST, kind: 'info', ms: 5500 });
+    } else {
+      /* unknown substance */
+      s.impaired = true;
+      fake = fake || 'nothing';
+      if (fake === 'faint') { s.pendingFaint = s.time + 10 + Math.floor(Math.random() * 6); L.apply({ weird: 6, flag: 'drug_taken' }); }
+      else if (fake === 'nothing') L.apply({ fun: -3, weird: 2, flag: 'drug_taken' });
+      else L.apply({ fx: 'glitch', weird: 8, hp: -4, flag: 'drug_taken' });
+      U.toast({ icon: fake === 'faint' ? 'skull' : 'eyes', text: FAKE_TOAST[fake], kind: fake === 'nothing' ? 'info' : 'bad', ms: 5500 });
+    }
+  };
   story.takeStash = function (i) {
     const s = EM.state, e = stash()[i]; if (!e) return;
     stash().splice(i, 1);
     s.flags.took_stash = true;
-    if (e.strong) { L.apply({ fun: 4, weird: 4, hp: -2 }); U.toast({ text: t('A strong one. The room tilts brighter than you planned.', 'Una fuerte. El cuarto se inclina más brillante de lo que planeaste.', 'Uma forte. A sala se inclina mais brilhante do que você planejou.'), kind: 'info', ms: 4500 }); }
-    if (e.real === 'coke' || e.real === 'ket') { story.applyPowder(e.real, e.kind); return; }
-    if (e.real === 'mdma') {
-      L.apply({ fx: 'mdma', fun: 10, hp: -3, weird: 10, flag: ['rolling', 'drug_taken'] });
-      U.toast({ icon: 'heart', text: t('Twenty minutes later: a warm tide. Everyone\'s hands look kind.', 'Veinte minutos después: una marea tibia. Las manos de todos se ven amables.', 'Vinte minutos depois: uma maré morna. As mãos de todo mundo parecem gentis.'), kind: 'good', ms: 5000 });
-    } else if (e.real === 'mix') {
-      L.apply({ fx: ['mdma', 'meth'], fun: 8, hp: -6, weird: 20, flag: ['rolling', 'wired', 'drug_taken'] });
-      U.toast({ icon: 'spark', text: t('A warm wave with a wire running through it. Your jaw and your pulse have opinions.', 'Una ola tibia con un cable adentro. Tu mandíbula y tu pulso tienen opiniones.', 'Uma onda morna com um fio dentro. Sua mandíbula e seu pulso têm opiniões.'), kind: 'bad', ms: 5000 });
-    } else {
-      /* fake */
-      s.impaired = true;
-      if (e.fake === 'faint') { s.pendingFaint = s.time + 10 + Math.floor(Math.random() * 6); L.apply({ weird: 6, flag: 'drug_taken' }); }
-      else if (e.fake === 'nothing') L.apply({ fun: -3, weird: 2, flag: 'drug_taken' });
-      else L.apply({ fx: 'glitch', weird: 8, hp: -4, flag: 'drug_taken' });
-      U.toast({ icon: e.fake === 'faint' ? 'skull' : 'eyes', text: FAKE_TOAST[e.fake], kind: e.fake === 'nothing' ? 'info' : 'bad', ms: 5500 });
-    }
+    let comp = e.real;
+    /* untested cocaine is ketamine about one time in five; testing it first removes that doubt */
+    if (e.kind === 'coke' && !e.tested && Math.random() < 0.2) comp = EM.drugs.rollKetVariant();
+    if (e.strong && (comp === 'mdma' || comp === 'mix')) { L.apply({ fun: 4, weird: 4, hp: -2 }); U.toast({ text: t('A strong one. The room tilts brighter than you planned.', 'Una fuerte. El cuarto se inclina más brillante de lo que planeaste.', 'Uma forte. A sala se inclina mais brilhante do que você planejou.'), kind: 'info', ms: 4500 }); }
+    story.takeComp(comp, e.kind, e.fake);
   };
   /* a tiny drawing of the pill you picked */
   function pillIcon(shape, imp) {
@@ -161,37 +178,16 @@
       if (!e) return;
       e.tested = true; s.testedAny = true;
       s.stashResult = e;
-      U.reagent(function () { U.startDialogue('isi_result', { npc: 'nuri' }); });
+      U.reagent(function () { U.startDialogue('isi_result', { npc: 'nuri' }); }, EM.drugs.tests(e.real));
     };
   }
   KINDS.forEach(function (k) { S['test_' + k] = testKind(k); });
-  const RES = {
-    mdma: t(`"It's showing what MDMA shows, and only that." She taps the card. "*As far as this table can tell.* No word on strength, none on how your body will take it. If you take it: start small, give it an hour, water not litres, nothing on top."`, `«Muestra lo que muestra el MDMA, y solo eso». Golpea la tarjeta. «*Hasta donde esta mesa puede saber.* Nada sobre la fuerza ni sobre cómo lo tome tu cuerpo. Si lo tomas: empieza poco, dale una hora, agua y no litros, nada encima».`, `«Mostra o que o MDMA mostra, e só isso». Ela bate no cartão. «*Até onde esta mesa consegue saber.* Nada sobre a força, nada sobre como seu corpo vai levar. Se for tomar: comece pouco, espere uma hora, água e não litros, nada por cima».`),
-    mix: t(`"It's showing MDMA with something stimulant alongside it. That isn't what you were told. Mixed things are rough on a heart. If you take it: half, and sit often. Or give it to the bin, which is a perfectly good friend."`, `«Muestra MDMA con algo estimulante al lado. No es lo que te dijeron. Las mezclas son duras para un corazón. Si la tomas: la mitad, y siéntate seguido. O dásela al bote, que es muy buen amigo».`, `«Mostra MDMA com algo estimulante do lado. Não é o que te disseram. Misturas pesam no coração. Se for tomar: metade, e sente seguido. Ou entrega pra lixeira, que é uma ótima amiga».`),
-    coke: t(`"Cocaine, as far as the table sees. Short, bright, and hard on a heart that's already dancing. If you take it: slow down on the floor, drink water, and be careful of the person you turn into at 4 a.m."`, `«Cocaína, hasta donde ve la mesa. Corta, brillante, y dura para un corazón que ya está bailando. Si la tomas: baja el ritmo en la pista, toma agua, y cuídate de la persona en la que te conviertes a las 4».`, `«Cocaína, até onde a mesa vê. Curta, brilhante e dura pra um coração que já está dançando. Se for tomar: desacelere na pista, beba água e cuidado com a pessoa em que você vira às 4 da manhã».`),
-    ket: t(`"Ketamine, as far as I can see. It can drop you to the floor within minutes, sometimes before you feel it. Sit first. Never alone. Never near stairs. If you do take it: tell a person where you'll be."`, `«Ketamina, hasta donde veo. Te puede dejar en el piso en minutos, a veces antes de que lo sientas. Siéntate primero. Nunca solo. Nunca cerca de escaleras. Si la tomas: dile a alguien dónde vas a estar».`, `«Cetamina, até onde eu vejo. Ela pode te derrubar em minutos, às vezes antes de você sentir. Sente primeiro. Nunca sozinho. Nunca perto de escada. Se for tomar: diga a alguém onde você vai estar».`),
-    fake: t(`"Nothing on this table looks like what it says. I can't tell you what's in there. It might do nothing. It might do something you didn't order. I'd put it in the bin, no shame, no questions."`, `«Nada en esta mesa se parece a lo que dice. No puedo decirte qué hay adentro. Puede no hacer nada. Puede hacer algo que no pediste. Yo la tiraría al bote, sin vergüenza, sin preguntas».`, `«Nada nesta mesa se parece com o que diz. Não posso dizer o que tem aí dentro. Pode não fazer nada. Pode fazer algo que você não pediu. Eu jogaria na lixeira, sem vergonha, sem perguntas».`)
-  };
-  const IMPNOTE = {
-    crown: t(`She turns the card over. "A crown stamp. Those have been circulating all night, and they come back strong. If you're taking it, half. If you're taking it with water, half of half."`, `Da vuelta la tarjeta. «Sello de corona. Han circulado toda la noche y vuelven fuertes. Si la vas a tomar, la mitad. Si la tomas con agua, la mitad de la mitad».`, `Ela vira o cartão. «Carimbo de coroa. Circula a noite inteira e voltam fortes. Se for tomar, metade. Se tomar com água, metade da metade».`),
-    heart: t(`"A heart stamp. Common, gentle, the sort of thing that's usually just what it says. *Usually.* I've learned not to trust the word."`, `«Sello de corazón. Común, suave, de las que suelen ser lo que dicen. *Suelen.* Aprendí a no confiar en esa palabra».`, `«Carimbo de coração. Comum, suave, do tipo que costuma ser o que diz. *Costuma.* Aprendi a não confiar nessa palavra».`),
-    bolt: t(`"A bolt. I've seen a few of those cut with a stimulant. Not all. Enough that I look twice."`, `«Un rayo. Vi unas cuantas cortadas con un estimulante. No todas. Las suficientes como para mirar dos veces».`, `«Um raio. Já vi alguns cortados com estimulante. Nem todos. O bastante pra eu olhar duas vezes».`),
-    skull: t(`"A skull. It's a joke stamp. It tells me nothing about what's inside, which is the opposite of funny."`, `«Una calavera. Es un sello de broma. No me dice nada de lo que hay adentro, que es lo contrario de gracioso».`, `«Uma caveira. É um carimbo de piada. Não me diz nada do que tem dentro, o que é o contrário de engraçado».`),
-    smile: t(`"A smiley. Smileys are the beige of pills. Nothing against them. Nothing for them either."`, `«Una carita. Las caritas son lo beige de las pastillas. Nada en su contra. Nada a su favor tampoco».`, `«Uma carinha. Carinhas são o bege dos comprimidos. Nada contra. Nada a favor também».`),
-    ae: t(`"An Æ! Somebody has been to a certain party. It means nothing, chemically. It means everything socially. I will tell nobody."`, `«¡Una Æ! Alguien fue a cierta fiesta. No significa nada, químicamente. Significa todo, socialmente. No se lo voy a decir a nadie».`, `«Um Æ! Alguém foi a certa festa. Não significa nada, quimicamente. Significa tudo, socialmente. Não vou contar pra ninguém».`)
-  };
   D.isi_result = {
     forced: true, who: 'nuri', role: t('CHECKING TABLE', 'MESA DE CHEQUEO', 'MESA DE CHECAGEM'), start: 'a', nodes: {
       a: {
         text: function (s) {
           const e = s.stashResult || { kind: 'mdma', real: 'mdma' };
-          const swapped = e.real !== e.kind && e.real !== 'mix' && e.real !== 'fake';
-          const lead = e.real === 'fake' || e.real === 'mix' || swapped
-            ? t(`"That's not what you were told. Bags get swapped; that's why we check."`, `«Eso no es lo que te dijeron. Las bolsitas se cambian; por eso revisamos».`, `«Isso não é o que te disseram. Saquinhos são trocados; por isso a gente checa».`)
-            : t(`"It matches what you were told. That's the good news, and only that."`, `«Coincide con lo que te dijeron. Esa es la buena noticia, y solo esa».`, `«Bate com o que te disseram. Essa é a boa notícia, e só ela».`);
-          const out = [lead, RES[e.real]];
-          if (e.imprint) out.push(IMPNOTE[e.imprint]);
-          return out;
+          return EM.drugs.pages(e.real, e.kind, e.imprint);
         },
         choices: [
           K('chill', t(`"Thank you. I'll think about it."`, `«Gracias. Lo voy a pensar».`, `«Valeu. Vou pensar».`), { do: { soc: 2, care: 1 }, next: null }),
@@ -249,6 +245,9 @@
     };
     n.do = Object.assign({}, n.do, { gag: 'isi' });
   })();
+  /* direct offers (the door, the dealers in the corners): no table to test them on, so about one time in five a "cocaine" is ketamine */
+  S.powder_coke = function () { L.dealerHeat(); story.takeComp(Math.random() < 0.2 ? EM.drugs.rollKetVariant() : EM.drugs.rollPowder('coke'), 'coke'); };
+  S.powder_ket = function () { L.dealerHeat(); story.takeComp(EM.drugs.rollPowder('ket'), 'ket'); };
   /* her morning messages */
   if (story.morningRefs) {
     story.morningRefs.push({ id: 'isi_ink', who: '#ISI', ok: function (s) { return !!s.flags.isi_ink; }, t: t(`did gerard (the octopus) survive the night? the ink goes by tuesday. the seafood is forever. grilled octopus, two blocks from the club, saturday? my treat.`, `¿sobrevivió Gerardo (el pulpo) a la noche? la tinta se va el martes. los mariscos son para siempre. pulpo a la parrilla, a dos cuadras del club, ¿el sábado? va por mi cuenta.`, `o Gerardo (o polvo) sobreviveu à noite? a tinta sai na terça. o frutos do mar é pra sempre. polvo grelhado, a duas quadras do club, sábado? é por minha conta.`) });

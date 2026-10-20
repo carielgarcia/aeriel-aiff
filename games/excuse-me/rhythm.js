@@ -67,21 +67,31 @@
   function drawReagent(g) {
     const w = 120, h = 78, x = 68, y = 30;
     box(g, x, y, w, h);
-    const st = R.stage;
+    const st = R.stage, tests = R.tests, test = tests && tests[st], n = tests ? tests.length : 3;
+    /* a reagent test: the title of the test on top, and the liquid takes the colour the sample gives */
+    const taken = !!test && R.t > R.per * 0.45;
+    if (test) EM.drawText(g, EM.tr(test.name), x + 6, y + 5, 'W');
     /* vial */
     const vx = x + 48, vy = y + 12;
+    if (test) { g.fillStyle = '#34343F'; g.fillRect(vx + 1, vy + 2, 22, 44); }
     g.fillStyle = C.W; g.fillRect(vx, vy, 24, 2); g.fillRect(vx, vy, 1, 46); g.fillRect(vx + 23, vy, 1, 46); g.fillRect(vx, vy + 46, 24, 1);
-    const fill = Math.min(1, R.t / 2.2) * (st >= 0 ? 1 : 0);
+    const fill = Math.min(1, R.t / (test ? R.per * 0.25 : 2.2));
     const level = Math.round(34 * fill);
     for (let yy = 0; yy < level; yy++) for (let xx = 0; xx < 22; xx++) {
+      if (taken) {
+        const cs = test.colors;
+        g.fillStyle = cs.length > 1 ? cs[((xx >> 1) + (yy >> 1)) & 1 ? 1 : 0] : cs[0];
+        g.fillRect(vx + 1 + xx, vy + 45 - yy, 1, 1);
+        continue;
+      }
       const bayer = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5][(yy & 3) * 4 + (xx & 3)] / 16;
-      const dens = st === 0 ? 0.25 : (st === 1 ? 0.55 : 0.85);
+      const dens = st === 0 || test ? 0.25 : (st === 1 ? 0.55 : 0.85);
       g.fillStyle = bayer < dens ? C.W : C.G;
       g.fillRect(vx + 1 + xx, vy + 45 - yy, 1, 1);
     }
     /* drops */
-    if (st === 0 && R.t < 1.2) { g.fillStyle = C.W; g.fillRect(vx + 11, vy - 6 + Math.round(R.t * 14), 2, 3); }
-    g.fillStyle = C.G; for (let i = 0; i < 3; i++) g.fillRect(x + 8 + i * 6, y + h - 8, 4, 3);
+    if (test ? R.t < 0.5 : (st === 0 && R.t < 1.2)) { g.fillStyle = C.W; g.fillRect(vx + 11, vy - 6 + Math.round(R.t * (test ? 28 : 14)), 2, 3); }
+    g.fillStyle = C.G; for (let i = 0; i < n; i++) g.fillRect(x + 8 + i * 6, y + h - 8, 4, 3);
     g.fillStyle = C.W; for (let i = 0; i <= st; i++) g.fillRect(x + 8 + i * 6, y + h - 8, 4, 3);
   }
 
@@ -165,21 +175,27 @@
   };
 
   /* reagent test: a 3-stage animation, 7 seconds */
-  U.reagent = function (cb) {
-    begin({ kind: 'reagent', t: 0, stage: 0, cb: cb, cancel: function () {} });
+  /* tests (optional): [{ name, word, colors, title }] from EM.drugs.tests(): one stage per test, with the test's title
+     and the colour it takes. Without it the old three-stage animation plays. */
+  U.reagent = function (cb, tests) {
+    tests = tests && tests.length ? tests : null;
+    const n = tests ? tests.length : 3;
+    begin({ kind: 'reagent', t: 0, stage: 0, cb: cb, cancel: function () {}, tests: tests, per: 7.4 / n, shown: {} });
     const t0 = performance.now();
     const msgs = [
       T('A scraping from the pill. A drop of liquid. Nobody in the room moves.', 'Se raspa un poco de la pastilla. Una gota de líquido. Nadie en el cuarto se mueve.', 'Raspa-se um pouco do comprimido. Uma gota de líquido. Ninguém na sala se mexe.'),
       T('It changes. Isi watches it like a bank teller counting.', 'Cambia. Isi lo mira como una cajera contando billetes.', 'Muda. A Isi olha como uma caixa contando notas.'),
       T('It settles. Isi checks the card twice.', 'Se asienta. Isi revisa la tarjeta dos veces.', 'Assenta. A Isi confere o cartão duas vezes.')
     ];
-    setHint(msgs[0]);
+    setHint(tests ? tests[0].name : msgs[0]);
     const iv = setInterval(function () {
       if (!R || R.kind !== 'reagent') { clearInterval(iv); return; }
       const e = (performance.now() - t0) / 1000;
-      const st = e < 2.5 ? 0 : (e < 5 ? 1 : 2);
-      if (st !== R.stage) { R.stage = st; R.t = 0; setHint(msgs[st]); EM.audio.blip('warn'); }
+      const st = tests ? Math.min(n - 1, Math.floor(e / R.per)) : (e < 2.5 ? 0 : (e < 5 ? 1 : 2));
+      if (st !== R.stage) { R.stage = st; R.t = 0; setHint(tests ? tests[st].name : msgs[st]); EM.audio.blip('warn'); }
       R.t += 0.05;
+      /* the colour takes: say it in words too, for anyone who cannot tell the colours apart */
+      if (tests && R.t > R.per * 0.45 && !R.shown[st]) { R.shown[st] = 1; setHint(tests[st].title); EM.audio.blip('select'); }
       if (e >= 7.4) { clearInterval(iv); finish('done', 100); }
     }, 50);
   };
