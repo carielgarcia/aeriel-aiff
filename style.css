@@ -879,6 +879,34 @@ html[lang="pt"] [lang="es"] {
   color: var(--text-primary);
 }
 
+/* Photography mark (Archivo Æ): links to aeriel.xyz, the analog photography project */
+.footer-photo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px 8px;
+  color: var(--text-primary);
+  border-radius: 0 !important;
+  text-decoration: none;
+  transition: none;
+}
+
+.footer-photo-mark svg {
+  display: block;
+  height: 28px;
+  width: auto;
+  fill: currentColor;
+}
+
+.footer-photo-mark:hover,
+.footer-photo-mark:focus-visible {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  outline: none;
+}
+
 .footer-ost-btn {
   display: inline-flex;
   align-items: center;
