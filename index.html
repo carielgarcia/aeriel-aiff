@@ -48,6 +48,9 @@
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
   <link rel="stylesheet" href="style.css?v=20.7">
+  <!-- Inclusive mode (ADHD / neurodivergent-friendly redesign), activated by html.inclusive-mode -->
+  <link rel="stylesheet" href="inclusive.css?v=1.0">
+  <script>try{if(localStorage.getItem('inclusive-mode')==='on')document.documentElement.classList.add('inclusive-mode');}catch(e){}</script>
 
   <!-- Contador de visitas sin cookies (analisis_metricas/): ver /privacy -->
   <script src="/contador.js" defer></script>
@@ -101,6 +104,11 @@
           <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
           <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
         </div>
+        <button type="button" class="inclusive-toggle" id="inclusive-toggle" aria-pressed="false" aria-label="Inclusive mode: calmer, easier-to-read layout for ADHD and other neurodivergent readers" onclick="toggleInclusiveMode()">
+          <span lang="en">inclusive<br>mode</span>
+          <span lang="es">modo<br>inclusivo</span>
+          <span lang="pt">modo<br>inclusivo</span>
+        </button>
       </div>
     </div>
   </header>
@@ -2697,6 +2705,7 @@
       'Site destinations': { es: 'Destinos del sitio', pt: 'Destinos do site' },
       'On this page': { es: 'En esta página', pt: 'Nesta página' },
       'Primary': { es: 'Principal', pt: 'Principal' },
+      'Inclusive mode: calmer, easier-to-read layout for ADHD and other neurodivergent readers': { es: 'Modo inclusivo: diseño más calmado y fácil de leer para personas con TDAH y otras neurodivergencias', pt: 'Modo inclusivo: layout mais calmo e fácil de ler para pessoas com TDAH e outras neurodivergências' },
       'Language Selector': { es: 'Selector de idioma', pt: 'Seletor de idioma' },
       'ÆRIEL on SoundCloud': { es: 'ÆRIEL en SoundCloud', pt: 'ÆRIEL no SoundCloud' },
       'ÆRIEL on Instagram': { es: 'ÆRIEL en Instagram', pt: 'ÆRIEL no Instagram' },
@@ -2807,7 +2816,7 @@
     });
 
     function scrollBehavior() {
-      return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      return (document.documentElement.classList.contains('inclusive-mode') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth';
     }
 
     const FORM_MSG = {
@@ -3753,7 +3762,10 @@
     function setThemeMode(mode) {
       const html = document.documentElement;
       html.classList.remove('disco-mode', 'trance-mode', 'house-mode');
-      if (mode === 'disco') {
+      // Inclusive mode suspends the genre easter-egg skins; the saved genre returns when it is switched off.
+      if (html.classList.contains('inclusive-mode')) {
+        /* keep the calm theme */
+      } else if (mode === 'disco') {
         html.classList.add('disco-mode');
       } else if (mode === 'trance') {
         html.classList.add('trance-mode');
@@ -3770,6 +3782,58 @@
       updateSoundCloudDrawerForMode(mode);
     }
     window.setThemeMode = setThemeMode;
+
+    // ---- Inclusive mode: calmer, plainer, ADHD / neurodivergent-friendly redesign (inclusive.css) ----
+    function syncInclusiveToggle() {
+      const on = document.documentElement.classList.contains('inclusive-mode');
+      const btn = document.getElementById('inclusive-toggle');
+      if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      applySoftCase(on);
+    }
+    function toggleInclusiveMode() {
+      const html = document.documentElement;
+      const on = !html.classList.contains('inclusive-mode');
+      html.classList.toggle('inclusive-mode', on);
+      try { localStorage.setItem('inclusive-mode', on ? 'on' : 'off'); } catch (e) { /* storage blocked */ }
+      syncInclusiveToggle();
+      let theme = 'default';
+      try { theme = localStorage.getItem('theme-mode') || 'default'; } catch (e) { /* storage blocked */ }
+      setThemeMode(theme);
+    }
+    window.toggleInclusiveMode = toggleInclusiveMode;
+
+    // All-caps text is hard to read (COGA / dyslexia / ADHD guidance). In inclusive mode, headings and titles
+    // that are written in capitals are shown in sentence case; the originals are kept and restored on exit.
+    const SOFTCASE_SELECTOR = 'h1, h2, h3, h4, .dj-card-name, .article-card-title, .reader-title, .grid-cell-title, .game-card-title, .faq-question-text, .faq-category-name, .subsite-main-title, .hero-main-title';
+    const SOFTCASE_KEEP = new Set(['DJ', 'DJS', 'MDMA', 'LSD', 'GHB', 'FLINTA', 'LGBTQ', 'LGBTQIA', 'UK', 'USA', 'EEUU', 'ONU', 'TDAH', 'ADHD', 'FAQ', 'RSVP', 'VIP', 'BPM', 'ID', 'II', 'III']);
+    const softCaseOriginals = new WeakMap();
+    function softCaseText(str) {
+      const out = str.replace(/[^\s\-–—/]+/g, (tok) => {
+        const core = tok.replace(/[^A-Za-zÀ-ÿÆ]/g, '');
+        if (!core || /[ÆæÀ-ÿ]/.test(tok) && /Æ/.test(tok)) return tok;
+        if (/\d/.test(tok) || SOFTCASE_KEEP.has(core)) return tok;
+        return tok.toLowerCase();
+      });
+      const i = out.search(/[A-Za-zÀ-ÿ]/);
+      return i < 0 ? out : out.slice(0, i) + out.charAt(i).toUpperCase() + out.slice(i + 1);
+    }
+    function applySoftCase(on) {
+      document.querySelectorAll(SOFTCASE_SELECTOR).forEach((el) => {
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+          const text = node.nodeValue;
+          if (on) {
+            if (/[a-zà-ÿ]/.test(text) || !/[A-ZÀ-Þ]{3,}/.test(text) || softCaseOriginals.has(node)) continue;
+            softCaseOriginals.set(node, text);
+            node.nodeValue = softCaseText(text);
+          } else if (softCaseOriginals.has(node)) {
+            node.nodeValue = softCaseOriginals.get(node);
+            softCaseOriginals.delete(node);
+          }
+        }
+      });
+    }
     
     function openAe000xSubsite(event) {
       if (event) event.preventDefault();
@@ -4554,6 +4618,7 @@
       
       const savedTheme = localStorage.getItem('theme-mode') || 'default';
       setThemeMode(savedTheme);
+      syncInclusiveToggle();
 
       const path = window.location.pathname.toLowerCase();
       const rawHash = window.location.hash.toLowerCase();

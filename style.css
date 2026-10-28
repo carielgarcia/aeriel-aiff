@@ -248,6 +248,36 @@ select:focus-visible {
   color: var(--bg-primary);
 }
 
+/* Inclusive mode switch (sits next to the language selector) */
+.inclusive-toggle {
+  margin-left: 10px;
+  background: transparent;
+  color: var(--text-primary);
+  border: var(--border-thin);
+  font-family: 'Helvetica Neue', Arial, sans-serif !important;
+  font-weight: 800;
+  font-size: 0.6rem;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  text-align: center;
+  cursor: pointer;
+  height: 34px;
+  min-width: 44px;
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: none;
+}
+.inclusive-toggle:hover,
+.inclusive-toggle:focus-visible,
+.inclusive-toggle[aria-pressed="true"] {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
 /* Language Visibility Controller */
 html[lang="en"] [lang="es"],
 html[lang="en"] [lang="pt"] {
@@ -1031,6 +1061,7 @@ html[lang="pt"] [lang="es"] {
 
   /* Minimum 44px x 44px Touch Targets */
   .lang-btn,
+  .inclusive-toggle,
   .filter-btn,
   .lightbox-close-btn,
   .mobile-nav-toggle-btn,
