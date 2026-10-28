@@ -1,62 +1,38 @@
 /* ==========================================================================
-   INCLUSIVE MODE — calm, plain, ADHD / neurodivergent-friendly redesign
+   INCLUSIVE MODE — the ÆRIEL brutalist system, tuned for ADHD / neurodivergent readers
    Activated by the "inclusive mode" switch (html.inclusive-mode).
-   Deliberate, documented exception to the brutalist invariants (AGENTS.md §4):
-   it is opt-in, persisted in localStorage('inclusive-mode') and fully reversible.
 
-   Design rules (WCAG 2.2 / W3C COGA / ADHD design guidance):
-   - Predictable, single-column layout; one clear action per card; generous space
-   - Sentence case, plain readable sans-serif, ~18px, 1.7 line height, ~65ch lines
-   - Soft off-white canvas, dark text (AAA contrast), ONE calm accent colour
-   - No motion: no animation, no transitions, no smooth scrolling
-   - Distractions removed (genre skins, genre buttons, easter eggs)
-   - Strong 3px focus ring, 44px touch targets, underlined links
+   Identity is kept: black canvas, white 1px grid, zero radius, monospace,
+   instant binary hover. Only what hurts reading and focus changes:
+   - sentence case instead of all-caps; weight 400 body / 700 headings; normal tracking
+   - 18px / 1.75 line height / ~66ch lines, one column, generous space
+   - fewer heavy frames (2px → 1px), brighter secondary text (AAA contrast)
+   - no motion at all, no genre skins, no decorative extras
+   - unmistakable 3px focus ring, 44px touch targets, underlined links
+   No new colours, no radius, no shadows: the palette stays monochrome.
    ========================================================================== */
 
 html.inclusive-mode {
-  --bg-primary: #F6F3EC;
-  --bg-secondary: #FFFFFF;
-  --text-primary: #1D1D22;
-  --text-muted: #4B4B55;
-  --border-color: #BDB8AA;
-  --border-thick: 1px solid #BDB8AA;
-  --border-thin: 1px solid #BDB8AA;
-  --border-muted: 1px solid #D6D1C4;
-  --accent: #1F4E9C;
-  --accent-soft: #E4ECF8;
-  --focus: #1F4E9C;
-  --font-mono: "Atkinson Hyperlegible", Verdana, "Segoe UI", Tahoma, Arial, sans-serif;
-  --font-sans: var(--font-mono);
-  --radius: 10px;
-  --spacing-xl: 56px;
-  --section-gap: 56px;
-  --container-width: 880px;
+  --text-muted: #C4C4C4;
+  --border-thick: 1px solid #FFFFFF;
+  --spacing-xl: 64px;
+  --section-gap: 64px;
 
-  font-family: var(--font-mono);
   font-size: 18px;
-  line-height: 1.7;
+  line-height: 1.75;
   font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
   scroll-behavior: auto;
-  border-right: none;
-  padding-right: 0;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
 }
 
-/* ---- Typography: plain, sentence case, readable ---- */
+/* ---- Typography: sentence case, calm weight, no tracking, no motion ---- */
 html.inclusive-mode *,
 html.inclusive-mode *::before,
 html.inclusive-mode *::after {
-  font-family: var(--font-mono) !important;
   text-transform: none !important;
   letter-spacing: normal !important;
   font-weight: inherit !important;
-  font-style: normal;
-  text-shadow: none !important;
-  box-shadow: none !important;
-  /* No motion at all */
   animation: none !important;
   transition: none !important;
   scroll-behavior: auto !important;
@@ -71,39 +47,31 @@ html.inclusive-mode th,
 html.inclusive-mode label,
 html.inclusive-mode .form-label,
 html.inclusive-mode .nav-link,
+html.inclusive-mode .tab-link,
 html.inclusive-mode .btn-brutal,
 html.inclusive-mode .btn-secondary-brutal,
 html.inclusive-mode .portal-btn,
-html.inclusive-mode .genre-btn,
+html.inclusive-mode .lang-btn,
+html.inclusive-mode .inclusive-toggle,
+html.inclusive-mode .filter-btn,
+html.inclusive-mode .logo-link,
+html.inclusive-mode .hero-main-title,
 html.inclusive-mode .dj-card-name,
 html.inclusive-mode .article-card-title,
 html.inclusive-mode .game-card-title,
 html.inclusive-mode .grid-cell-title,
 html.inclusive-mode .reader-title,
 html.inclusive-mode .subsite-main-title,
-html.inclusive-mode .hero-main-title,
 html.inclusive-mode .faq-question-text,
 html.inclusive-mode .tldr-title,
 html.inclusive-mode .highlight-box-title,
-html.inclusive-mode .tab-link,
-html.inclusive-mode .lang-btn,
-html.inclusive-mode .inclusive-toggle,
-html.inclusive-mode .filter-btn,
-html.inclusive-mode .page-rail-heading,
-html.inclusive-mode .logo-link {
+html.inclusive-mode .article-card-action,
+html.inclusive-mode .grid-cell-action,
+html.inclusive-mode .page-rail-heading {
   font-weight: 700 !important;
 }
 html.inclusive-mode .reader-body em,
-html.inclusive-mode .reader-body i {
-  font-style: italic;
-}
-
-html.inclusive-mode body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.7;
-}
-html.inclusive-mode ::selection { background: #FFE9A8; color: #1D1D22; }
+html.inclusive-mode .reader-body i { font-style: italic; }
 
 html.inclusive-mode h1,
 html.inclusive-mode .hero-main-title,
@@ -111,8 +79,9 @@ html.inclusive-mode .subsite-main-title,
 html.inclusive-mode .games-title {
   font-size: clamp(2rem, 5vw, 2.75rem) !important;
   line-height: 1.2 !important;
-  margin-bottom: 0.5em;
 }
+/* The ÆRIEL wordmark in the hero keeps its logotype */
+html.inclusive-mode .hero-main-title { font-weight: 900 !important; }
 html.inclusive-mode h2,
 html.inclusive-mode .intent-header,
 html.inclusive-mode .subsite-header-title {
@@ -124,145 +93,66 @@ html.inclusive-mode h3 { font-size: 1.25rem !important; line-height: 1.35 !impor
 html.inclusive-mode p,
 html.inclusive-mode li,
 html.inclusive-mode .hero-description,
-html.inclusive-mode .intent-content p,
 html.inclusive-mode .dj-card-bio,
 html.inclusive-mode .article-card-teaser,
 html.inclusive-mode .game-card-desc,
 html.inclusive-mode .faq-answer-body p {
-  font-size: 1.0625rem;
   line-height: 1.75;
   max-width: 66ch;
   text-align: left !important;
   hyphens: none;
   overflow-wrap: break-word;
 }
+html.inclusive-mode .intent-content p { margin-bottom: 1.2em; max-width: 66ch; }
+
+/* Secondary text stays readable */
+html.inclusive-mode .dj-card-role,
+html.inclusive-mode .article-card-meta,
+html.inclusive-mode .grid-cell-meta,
+html.inclusive-mode .caption-meta,
+html.inclusive-mode .gallery-header-meta,
+html.inclusive-mode .variant-item-tag,
+html.inclusive-mode .sc-credit-bar { font-size: 0.9rem; color: var(--text-muted); }
 
 /* ---- Distractions off ---- */
 html.inclusive-mode .genre-button-strip,
 html.inclusive-mode .easter-egg-trigger,
-html.inclusive-mode .easter-egg-btn,
-html.inclusive-mode .mobile-back-to-top {
-  display: none !important;
-}
+html.inclusive-mode .easter-egg-btn { display: none !important; }
 
 /* ---- Links ---- */
-html.inclusive-mode a { color: var(--accent); }
 html.inclusive-mode .reader-body a,
 html.inclusive-mode .intent-content a,
 html.inclusive-mode .faq-answer-body a,
 html.inclusive-mode .footer-copy a,
+html.inclusive-mode .article-card-action,
+html.inclusive-mode .grid-cell-action,
 html.inclusive-mode .back-btn {
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 4px;
   text-decoration-thickness: 2px;
 }
-html.inclusive-mode a:hover { background: var(--accent-soft); color: var(--accent); }
 
-/* ---- Focus: unmistakable ---- */
+/* ---- Focus: unmistakable on the black canvas ---- */
 html.inclusive-mode :focus-visible {
-  outline: 3px solid var(--focus) !important;
+  outline: 3px solid #FFFFFF !important;
   outline-offset: 3px !important;
 }
-html.inclusive-mode .skip-link:focus { background: var(--accent); color: #fff; }
 
-/* ---- Soft shape language (opt-in exception to zero-radius) ---- */
-html.inclusive-mode .dj-card,
-html.inclusive-mode .article-card,
-html.inclusive-mode .grid-cell,
-html.inclusive-mode .game-card,
-html.inclusive-mode .poster-card,
-html.inclusive-mode .variant-item-block,
-html.inclusive-mode .faq-item,
-html.inclusive-mode .portal-cta-box,
-html.inclusive-mode .disclaimer-box,
-html.inclusive-mode .reader-highlight-box,
-html.inclusive-mode .genre-player-container,
-html.inclusive-mode .soundcloud-drawer-wrapper,
-html.inclusive-mode .variants-drawer-wrapper,
-html.inclusive-mode .gallery-drawer-wrapper,
-html.inclusive-mode .rider-table-wrapper,
-html.inclusive-mode .reader-table-wrapper,
-html.inclusive-mode .portal-form-container,
-html.inclusive-mode .intent-portrait-frame,
-html.inclusive-mode .share-toast-msg,
-html.inclusive-mode .contact-feedback-banner,
-html.inclusive-mode .page-rail,
-html.inclusive-mode .btn-brutal,
-html.inclusive-mode .btn-secondary-brutal,
-html.inclusive-mode .portal-btn,
-html.inclusive-mode .filter-btn,
-html.inclusive-mode .share-btn,
-html.inclusive-mode .back-btn,
-html.inclusive-mode .drawer-toggle-btn,
-html.inclusive-mode .gallery-drawer-toggle-btn,
-html.inclusive-mode .games-all-btn,
-html.inclusive-mode .lang-btn,
-html.inclusive-mode .inclusive-toggle,
-html.inclusive-mode .form-input,
-html.inclusive-mode .form-textarea,
-html.inclusive-mode select,
-html.inclusive-mode input,
-html.inclusive-mode textarea {
-  border-radius: var(--radius) !important;
-}
-
-/* ---- Header: calm, predictable ---- */
-html.inclusive-mode .header-wrapper {
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
-}
-html.inclusive-mode .header-container { height: auto; min-height: 68px; padding-top: 6px; padding-bottom: 6px; }
-html.inclusive-mode .header-actions { border-left: none; gap: 10px; }
-html.inclusive-mode .logo-link { color: var(--text-primary); font-size: 1.5rem; }
-html.inclusive-mode #main-navigation .nav-link {
-  color: var(--text-primary);
-  border-color: transparent;
-  background: transparent;
-  min-height: 44px;
-  font-size: 1rem;
-  padding: 0 16px;
-}
-html.inclusive-mode #main-navigation .nav-link:hover,
-html.inclusive-mode #main-navigation .nav-link:focus-visible {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
+/* ---- Header: lighter frame, same structure ---- */
+html.inclusive-mode .header-wrapper { border-bottom: 1px solid #FFFFFF; }
+html.inclusive-mode #main-navigation .nav-link { font-size: 1rem; min-height: 44px; }
 html.inclusive-mode #main-navigation .nav-link[aria-current="page"] {
-  background: transparent;
-  color: var(--accent);
-  box-shadow: inset 0 -4px 0 var(--accent) !important;
+  box-shadow: inset 0 -4px 0 #FFFFFF !important;
 }
-
-/* Language + inclusive toggles */
 html.inclusive-mode .lang-btn,
-html.inclusive-mode .inclusive-toggle {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 2px solid var(--border-color);
-  min-height: 44px;
-  min-width: 44px;
-  font-size: 0.9rem;
-}
-html.inclusive-mode .lang-btn:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
-html.inclusive-mode .lang-btn.active,
-html.inclusive-mode .inclusive-toggle[aria-pressed="true"] {
-  background: var(--accent);
-  color: #FFFFFF;
-  border-color: var(--accent);
-}
-html.inclusive-mode .inclusive-toggle { font-size: 0.7rem; line-height: 1.15; }
-html.inclusive-mode .inclusive-toggle:hover,
-html.inclusive-mode .inclusive-toggle:focus-visible { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
-html.inclusive-mode .inclusive-toggle[aria-pressed="true"]:hover { background: var(--accent); color: #fff; }
+html.inclusive-mode .inclusive-toggle { min-height: 44px; min-width: 44px; }
+html.inclusive-mode .lang-btn { font-size: 0.9rem; }
+html.inclusive-mode .inclusive-toggle { font-size: 0.72rem; line-height: 1.15; }
 
 /* ---- Layout: one calm column, clear sections ---- */
-html.inclusive-mode .container { max-width: var(--container-width); padding-left: 24px; padding-right: 24px; }
-html.inclusive-mode .structural-row {
-  border-bottom: 1px solid var(--border-color);
-  padding: var(--spacing-xl) 0;
-}
-html.inclusive-mode .hero-block { padding: 48px 0 32px; border-bottom: 1px solid var(--border-color); }
-html.inclusive-mode .hero-layout { text-align: left; align-items: flex-start; }
+html.inclusive-mode .container { max-width: 880px; }
+html.inclusive-mode .structural-row { border-bottom: 1px solid #FFFFFF; padding: var(--spacing-xl) 0; }
+html.inclusive-mode .hero-block { padding-bottom: 32px; }
 
 html.inclusive-mode .dj-grid,
 html.inclusive-mode .discography-grid,
@@ -271,181 +161,55 @@ html.inclusive-mode .games-grid,
 html.inclusive-mode .intent-grid {
   display: grid !important;
   grid-template-columns: 1fr !important;
-  gap: 20px !important;
-  border: none !important;
+  gap: 24px !important;
 }
 
-/* Cards: quiet surface, one clear action */
+/* Cards: 1px frame, roomy padding, one clear action (hover inversion stays as designed) */
 html.inclusive-mode .dj-card,
 html.inclusive-mode .article-card,
 html.inclusive-mode .grid-cell,
-html.inclusive-mode .game-card,
-html.inclusive-mode .variant-item-block,
-html.inclusive-mode .portal-cta-box,
-html.inclusive-mode .disclaimer-box,
-html.inclusive-mode .portal-form-container,
-html.inclusive-mode .soundcloud-drawer-wrapper,
-html.inclusive-mode .variants-drawer-wrapper,
-html.inclusive-mode .gallery-drawer-wrapper {
-  background: var(--bg-secondary) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--border-color) !important;
-  padding: 24px;
+html.inclusive-mode .game-card {
+  border: 1px solid #FFFFFF !important;
+  padding: 28px;
 }
-html.inclusive-mode .dj-card:hover,
-html.inclusive-mode .article-card:hover,
-html.inclusive-mode .grid-cell:hover,
-html.inclusive-mode .game-card:hover,
-html.inclusive-mode .dj-card:focus-within,
-html.inclusive-mode .article-card:focus-within {
-  background: var(--accent-soft) !important;
-  color: var(--text-primary) !important;
-  border-color: var(--accent) !important;
-}
-html.inclusive-mode .dj-card *,
-html.inclusive-mode .article-card *,
-html.inclusive-mode .grid-cell *,
-html.inclusive-mode .game-card *,
-html.inclusive-mode .dj-card:hover *,
-html.inclusive-mode .article-card:hover *,
-html.inclusive-mode .grid-cell:hover *,
-html.inclusive-mode .game-card:hover *,
-html.inclusive-mode .dj-card:focus-within *,
-html.inclusive-mode .article-card:focus-within * { color: var(--text-primary) !important; background-color: transparent; }
-html.inclusive-mode .dj-link,
-html.inclusive-mode .dj-link-full {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px;
-  border: 2px solid var(--accent) !important; border-radius: var(--radius) !important;
-}
-html.inclusive-mode .dj-card .dj-link,
-html.inclusive-mode .dj-card .dj-link *,
-html.inclusive-mode .article-card .dj-link,
-html.inclusive-mode .article-card .dj-link * { color: var(--accent) !important; font-weight: 700 !important; }
-html.inclusive-mode .dj-card:hover .dj-link,
-html.inclusive-mode .article-card:hover .dj-link { background: var(--bg-secondary) !important; }
-html.inclusive-mode .dj-card-role,
-html.inclusive-mode .article-card-meta,
-html.inclusive-mode .grid-cell-meta,
-html.inclusive-mode .caption-meta,
-html.inclusive-mode .gallery-header-meta,
-html.inclusive-mode .variant-item-tag { color: var(--text-muted) !important; font-size: 0.9rem; }
 html.inclusive-mode .dj-card-name,
 html.inclusive-mode .article-card-title,
 html.inclusive-mode .game-card-title,
 html.inclusive-mode .grid-cell-title { font-size: 1.3rem !important; line-height: 1.35 !important; }
-html.inclusive-mode .article-card .article-card-action *,
-html.inclusive-mode .grid-cell .grid-cell-action *,
-html.inclusive-mode .game-card .game-card-cta *,
-html.inclusive-mode .article-card .article-card-action,
-html.inclusive-mode .article-card:hover .article-card-action,
-html.inclusive-mode .grid-cell .grid-cell-action,
-html.inclusive-mode .grid-cell:hover .grid-cell-action,
-html.inclusive-mode .game-card .game-card-cta {
-  color: var(--accent) !important;
-  font-weight: 700 !important;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
+html.inclusive-mode .dj-link,
+html.inclusive-mode .dj-link-full { min-height: 44px; display: inline-flex; align-items: center; }
 
-/* Buttons: one primary look */
+/* Buttons, forms, drawers: lighter 1px frames, bigger targets */
 html.inclusive-mode .btn-brutal,
-html.inclusive-mode .portal-btn,
-html.inclusive-mode .games-all-btn {
-  background: var(--accent) !important;
-  color: #FFFFFF !important;
-  border: 2px solid var(--accent) !important;
-  min-height: 48px;
-  padding: 10px 22px;
-  font-size: 1rem;
-}
-html.inclusive-mode .btn-brutal:hover,
-html.inclusive-mode .portal-btn:hover,
-html.inclusive-mode .games-all-btn:hover {
-  background: #173A75 !important;
-  border-color: #173A75 !important;
-  color: #FFFFFF !important;
-}
 html.inclusive-mode .btn-secondary-brutal,
+html.inclusive-mode .portal-btn,
 html.inclusive-mode .filter-btn,
 html.inclusive-mode .share-btn,
 html.inclusive-mode .back-btn,
 html.inclusive-mode .drawer-toggle-btn,
-html.inclusive-mode .gallery-drawer-toggle-btn {
-  background: var(--bg-secondary) !important;
-  color: var(--accent) !important;
-  border: 2px solid var(--accent) !important;
-  min-height: 44px;
-  font-size: 0.95rem;
-}
-html.inclusive-mode .btn-secondary-brutal:hover,
-html.inclusive-mode .filter-btn:hover,
-html.inclusive-mode .share-btn:hover,
-html.inclusive-mode .back-btn:hover,
-html.inclusive-mode .drawer-toggle-btn:hover,
-html.inclusive-mode .gallery-drawer-toggle-btn:hover,
-html.inclusive-mode .filter-btn.active {
-  background: var(--accent) !important;
-  color: #FFFFFF !important;
-}
+html.inclusive-mode .gallery-drawer-toggle-btn { min-height: 44px; font-size: 0.95rem; }
+html.inclusive-mode .btn-brutal,
+html.inclusive-mode .portal-btn { min-height: 48px; font-size: 1rem; }
 
-html.inclusive-mode .genre-player-container { border: none !important; background: transparent !important; padding: 0; }
-html.inclusive-mode .soundcloud-drawer-wrapper { padding: 16px; }
-html.inclusive-mode .drawer-header-bar { flex-wrap: wrap; gap: 12px; padding: 0 0 12px; }
-html.inclusive-mode .sc-credit-bar,
-html.inclusive-mode .sc-credit-bar a { font-size: 0.85rem; color: var(--text-muted); background: transparent; }
-html.inclusive-mode .sc-credit-bar a { color: var(--accent); text-decoration: underline; }
-
-/* Drawers and headers inside them */
-html.inclusive-mode .drawer-header-bar,
-html.inclusive-mode .gallery-drawer-header-bar,
-html.inclusive-mode .reader-header-bar,
-html.inclusive-mode .subsite-header-bar,
-html.inclusive-mode .faq-category-header {
-  background: transparent !important;
-  color: var(--text-primary) !important;
-  border-color: var(--border-color) !important;
-}
-html.inclusive-mode .player-header,
-html.inclusive-mode .gallery-main-title,
-html.inclusive-mode .faq-category-name { color: var(--text-primary) !important; font-size: 1.05rem !important; }
-
-/* FAQ */
-html.inclusive-mode .faq-item { padding: 0; margin-bottom: 12px; }
-html.inclusive-mode .faq-summary { padding: 16px 20px; min-height: 56px; color: var(--text-primary); background: transparent; }
-html.inclusive-mode .faq-summary:hover { background: var(--accent-soft); color: var(--text-primary); }
-html.inclusive-mode .faq-answer-body { padding: 4px 20px 20px; }
-
-/* Forms */
 html.inclusive-mode .form-input,
 html.inclusive-mode .form-textarea,
 html.inclusive-mode select,
 html.inclusive-mode input[type="text"],
 html.inclusive-mode input[type="email"],
-html.inclusive-mode textarea {
-  background: #FFFFFF;
-  color: var(--text-primary);
-  border: 2px solid #6B6B75;
-  font-size: 1rem !important;
-  min-height: 48px;
-  padding: 12px 14px;
-}
-html.inclusive-mode .form-input:focus,
-html.inclusive-mode .form-textarea:focus { background: #FFFFFF; color: var(--text-primary); border-color: var(--accent); }
-html.inclusive-mode .form-label { display: block; margin-bottom: 6px; font-size: 1rem; color: var(--text-primary); }
-html.inclusive-mode ::placeholder { color: #5C5C66; opacity: 1; }
-html.inclusive-mode .checkbox-item input[type="checkbox"] { accent-color: var(--accent); width: 24px; height: 24px; }
+html.inclusive-mode textarea { font-size: 1rem !important; min-height: 48px; padding: 12px 14px; }
+html.inclusive-mode .form-label { display: block; margin-bottom: 6px; font-size: 1rem; }
+html.inclusive-mode .checkbox-item input[type="checkbox"] { width: 24px; height: 24px; }
 
-/* Tables */
-html.inclusive-mode .rider-table th,
-html.inclusive-mode .reader-table th { background: var(--accent-soft); color: var(--text-primary); border-color: var(--border-color); }
-html.inclusive-mode .rider-table td,
-html.inclusive-mode .reader-table td { border-color: var(--border-color); }
-html.inclusive-mode .rider-table tr:nth-child(even) td,
-html.inclusive-mode .reader-table tr:nth-child(even) td { background: #FBFAF6; }
+html.inclusive-mode .soundcloud-drawer-wrapper { padding: 16px; }
+html.inclusive-mode .drawer-header-bar { flex-wrap: wrap; gap: 12px; }
+html.inclusive-mode .player-header,
+html.inclusive-mode .gallery-main-title,
+html.inclusive-mode .faq-category-name { font-size: 1.05rem !important; }
 
-/* ---- Essay reader: the place where reading comfort matters most ---- */
-html.inclusive-mode .reader-content,
-html.inclusive-mode .article-reader-container { background: var(--bg-primary); }
+html.inclusive-mode .faq-summary { padding: 16px 20px; min-height: 56px; }
+html.inclusive-mode .faq-answer-body { padding: 4px 20px 20px; }
+
+/* ---- Essay reader: where reading comfort matters most ---- */
 html.inclusive-mode .reader-title { font-size: clamp(1.8rem, 4.5vw, 2.4rem) !important; line-height: 1.25 !important; }
 html.inclusive-mode .reader-body { max-width: 66ch; }
 html.inclusive-mode .reader-body p,
@@ -455,81 +219,25 @@ html.inclusive-mode .reader-body li {
   max-width: none;
   margin-bottom: 1.35em;
 }
-html.inclusive-mode .reader-body h3 { margin-top: 2.2em; margin-bottom: 0.7em; padding-top: 0.2em; }
+html.inclusive-mode .reader-body h3 { margin-top: 2.2em; margin-bottom: 0.7em; }
 html.inclusive-mode .reader-body ul { padding-left: 1.4em; }
-html.inclusive-mode .reader-body blockquote {
-  border: none;
-  border-left: 5px solid var(--accent);
-  background: var(--accent-soft);
-  padding: 16px 22px;
-  color: var(--text-primary);
-}
-html.inclusive-mode .reader-body hr { border: none; border-top: 1px solid var(--border-color); margin: 2.5em 0; }
-html.inclusive-mode .reader-highlight-box {
-  background: var(--accent-soft);
-  color: var(--text-primary);
-  border: 1px solid var(--accent);
-  border-left: 6px solid var(--accent);
-  padding: 20px 24px;
-}
-html.inclusive-mode .tldr-title,
-html.inclusive-mode .highlight-box-title { color: var(--accent); font-size: 1.05rem; }
-html.inclusive-mode #reader-progress { background: var(--accent) !important; height: 4px; }
+html.inclusive-mode .reader-body blockquote { border-left: 4px solid #FFFFFF; padding: 4px 0 4px 22px; }
+html.inclusive-mode .reader-highlight-box { padding: 20px 24px; }
 
-/* ---- "On this page" rail ---- */
-html.inclusive-mode .page-rail { background: var(--bg-secondary); border: 1px solid var(--border-color); }
-html.inclusive-mode .page-rail-heading { color: var(--text-muted); border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
-html.inclusive-mode .page-rail-list a {
-  color: var(--text-primary);
-  font-size: 1rem;
-  white-space: normal;
-  border-top: 1px solid var(--border-color);
-}
-html.inclusive-mode .page-rail-list a:hover,
-html.inclusive-mode .page-rail-list a:focus-visible { background: var(--accent-soft); color: var(--accent); }
-html.inclusive-mode .page-rail-list a[aria-current="location"] {
-  background: var(--accent-soft);
-  color: var(--accent);
-  box-shadow: inset 4px 0 0 var(--accent) !important;
-}
-html.inclusive-mode .rail-num { color: var(--text-muted); }
-html.inclusive-mode .page-rail-toggle { background: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color); }
-html.inclusive-mode .page-rail-list { background: var(--bg-secondary); }
-
-/* ---- Footer ---- */
-html.inclusive-mode .footer { background: var(--bg-primary); border-top: 1px solid var(--border-color); border-bottom: none; }
+/* ---- Rail and footer ---- */
+html.inclusive-mode .page-rail-list a { font-size: 1rem; white-space: normal; }
 html.inclusive-mode .footer-nav-link,
-html.inclusive-mode .footer-email-link { color: var(--accent); background: transparent; border-color: var(--border-color); text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center; }
-html.inclusive-mode .footer-nav-link:hover,
-html.inclusive-mode .footer-email-link:hover { background: var(--accent-soft); color: var(--accent); }
-html.inclusive-mode .footer-ost-btn { background: var(--bg-secondary); color: var(--accent); border: 2px solid var(--accent); }
-html.inclusive-mode .footer-ost-btn:hover { background: var(--accent); color: #fff; }
-html.inclusive-mode .footer-photo-mark { color: var(--text-primary); border-color: var(--border-color); background: transparent; }
+html.inclusive-mode .footer-email-link { min-height: 44px; display: inline-flex; align-items: center; }
 
-/* ---- Images: keep calm, no heavy frames ---- */
-html.inclusive-mode .intent-portrait-frame { border: 1px solid var(--border-color); background: var(--bg-secondary); }
-html.inclusive-mode .intent-portrait-img { filter: none; }
-
-/* ---- Mobile tab bar ---- */
+/* ---- Mobile ---- */
 @media (max-width: 600px) {
   html.inclusive-mode { font-size: 17px; }
-  html.inclusive-mode .container { padding-left: 16px; padding-right: 16px; }
   html.inclusive-mode .structural-row { padding: 40px 0; }
-  html.inclusive-mode .tab-bar {
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border-color);
-  }
-  html.inclusive-mode .tab-link { color: var(--text-primary); background: transparent; border-color: var(--border-color); font-size: 0.8rem; }
-  html.inclusive-mode .tab-link[aria-current="page"],
-  html.inclusive-mode .tab-link.active {
-    background: var(--accent-soft);
-    color: var(--accent);
-    box-shadow: inset 0 4px 0 var(--accent) !important;
-  }
-  html.inclusive-mode .header-container { padding: 4px 12px; }
-  html.inclusive-mode .header-actions { gap: 6px; }
-  html.inclusive-mode .lang-btn { padding: 4px 8px; font-size: 0.8rem; }
-  html.inclusive-mode .inclusive-toggle { margin-left: 4px; padding: 2px 6px; }
+  html.inclusive-mode .dj-card,
+  html.inclusive-mode .article-card,
+  html.inclusive-mode .grid-cell,
+  html.inclusive-mode .game-card { padding: 20px; }
+  html.inclusive-mode .tab-link { font-size: 0.8rem; }
+  html.inclusive-mode .tab-link[aria-current="page"] { box-shadow: inset 0 4px 0 #FFFFFF !important; }
+  html.inclusive-mode .lang-btn { font-size: 0.8rem; }
 }
-
-/* Poster lightbox keeps its dark viewing surface so artwork reads correctly. */

@@ -3804,18 +3804,20 @@
 
     // All-caps text is hard to read (COGA / dyslexia / ADHD guidance). In inclusive mode, headings and titles
     // that are written in capitals are shown in sentence case; the originals are kept and restored on exit.
-    const SOFTCASE_SELECTOR = 'h1, h2, h3, h4, .dj-card-name, .article-card-title, .reader-title, .grid-cell-title, .game-card-title, .faq-question-text, .faq-category-name, .subsite-main-title, .hero-main-title';
+    const SOFTCASE_SELECTOR = 'h1, h2, h3, h4, .dj-card-name, .article-card-title, .reader-title, .grid-cell-title, .game-card-title, .faq-question-text, .faq-category-name, .subsite-main-title, .nav-link, .tab-link, .btn-brutal, .btn-secondary-brutal, .portal-btn, .back-btn, .article-card-action, .grid-cell-action, .game-card-cta, .grid-cell-meta, .article-card-meta, .dj-card-role, .page-rail-heading, .page-rail-toggle, .drawer-toggle-btn, .player-header';
     const SOFTCASE_KEEP = new Set(['DJ', 'DJS', 'MDMA', 'LSD', 'GHB', 'FLINTA', 'LGBTQ', 'LGBTQIA', 'UK', 'USA', 'EEUU', 'ONU', 'TDAH', 'ADHD', 'FAQ', 'RSVP', 'VIP', 'BPM', 'ID', 'II', 'III']);
+    const SOFTCASE_BRANDS = { YOUTUBE: 'YouTube', SOUNDCLOUD: 'SoundCloud', BANDCAMP: 'Bandcamp', INSTAGRAM: 'Instagram' };
     const softCaseOriginals = new WeakMap();
     function softCaseText(str) {
-      const out = str.replace(/[^\s\-–—/]+/g, (tok) => {
+      const out = str.replace(/_/g, ' ').replace(/[^\s\-–—/]+/g, (tok) => {
         const core = tok.replace(/[^A-Za-zÀ-ÿÆ]/g, '');
         if (!core || /[ÆæÀ-ÿ]/.test(tok) && /Æ/.test(tok)) return tok;
         if (/\d/.test(tok) || SOFTCASE_KEEP.has(core)) return tok;
+        if (SOFTCASE_BRANDS[core]) return tok.replace(core, SOFTCASE_BRANDS[core]);
         return tok.toLowerCase();
       });
-      const i = out.search(/[A-Za-zÀ-ÿ]/);
-      return i < 0 ? out : out.slice(0, i) + out.charAt(i).toUpperCase() + out.slice(i + 1);
+      const i = out.search(/[^\s\[#(]/);
+      return i < 0 || !/[A-Za-zÀ-ÿ]/.test(out.charAt(i)) ? out : out.slice(0, i) + out.charAt(i).toUpperCase() + out.slice(i + 1);
     }
     function applySoftCase(on) {
       document.querySelectorAll(SOFTCASE_SELECTOR).forEach((el) => {
