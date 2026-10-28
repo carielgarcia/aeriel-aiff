@@ -50,7 +50,8 @@
   <link rel="stylesheet" href="style.css?v=20.7">
   <!-- Inclusive mode (ADHD / neurodivergent-friendly redesign), activated by html.inclusive-mode -->
   <link rel="stylesheet" href="inclusive.css?v=1.0">
-  <script>try{if(localStorage.getItem('inclusive-mode')==='on')document.documentElement.classList.add('inclusive-mode');}catch(e){}</script>
+  <!-- DISABLED: no toggle is shown. To re-enable, restore the #inclusive-toggle button in .header-actions and the line that adds html.inclusive-mode from localStorage('inclusive-mode'). Clears any stale saved choice. -->
+  <script>try{localStorage.removeItem('inclusive-mode');}catch(e){}</script>
 
   <!-- Contador de visitas sin cookies (analisis_metricas/): ver /privacy -->
   <script src="/contador.js" defer></script>
@@ -104,11 +105,6 @@
           <button onclick="setLanguage('es')" class="lang-btn" id="btn-lang-es" aria-label="Español">ES</button>
           <button onclick="setLanguage('pt')" class="lang-btn" id="btn-lang-pt" aria-label="Português">PT</button>
         </div>
-        <button type="button" class="inclusive-toggle" id="inclusive-toggle" aria-pressed="false" aria-label="Inclusive mode: calmer, easier-to-read layout for ADHD and other neurodivergent readers" onclick="toggleInclusiveMode()">
-          <span lang="en">inclusive<br>mode</span>
-          <span lang="es">modo<br>inclusivo</span>
-          <span lang="pt">modo<br>inclusivo</span>
-        </button>
       </div>
     </div>
   </header>
