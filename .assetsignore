@@ -1,0 +1,20 @@
+# The Worker serves this whole folder as static assets (wrangler.jsonc → assets.directory "."),
+# so everything that is not part of the public site has to be listed here.
+.git
+.github
+.claude
+.wrangler
+.dev.vars
+.env
+.env.*
+*.pem
+node_modules
+.gitignore
+.assetsignore
+wrangler.jsonc
+analisis_metricas/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+README.md
+Code.gs

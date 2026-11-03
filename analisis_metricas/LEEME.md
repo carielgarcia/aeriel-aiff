@@ -1,46 +1,49 @@
 # analisis_metricas — visor privado de aeriel.net
 
-Estado: **código escrito y revisado en sintaxis; sin desplegar y sin probar contra Cloudflare real** (ver «Pendiente»). Nada fuera de esta carpeta fue modificado.
+Estado: **probado en local con `wrangler dev` (Worker + D1 local + navegador, 1280 px y 375 px, 4 temas)**. Falta solo lo que necesita la cuenta de Cloudflare: poner los secretos y desplegar (ver abajo).
 
-## Qué hay
-- `migraciones/` D1: `uso_diario`, `cloudflare_diario`, `limites`, `meta`, `eventos`, `formularios_meta`.
-- `api/comun.js` utilidades + **lista cerrada** de claves (al publicar un ensayo o set nuevo, agrega su id en `ENSAYOS` / `MIXES`).
-- `api/uso.js` `POST /api/uso` · `api/metricas.js` `GET /api/metricas`.
-- `sitio/contador.js` (para aeriel.net) · `sitio/metricas.{html,css,js}` (visor, sin estilos/scripts en línea, 4 temas).
-- `_headers.fragmento` CSP estricta de `/metricas` · `privacidad.md` · `pruebas/probar_local.sh`.
+## Qué hay y dónde vive
+- `worker.js` es la entrada del Worker de aeriel.net (`wrangler.jsonc` → `main`). Atiende `/api/uso` y `/api/metricas`; todo lo demás lo sirven los assets.
+- `api/comun.js` utilidades + **lista cerrada** de claves (al publicar un ensayo o set nuevo, agrega su id en `ENSAYOS` / `MIXES`). `api/uso.js` `POST /api/uso` · `api/metricas.js` `GET /api/metricas`.
+- `migraciones/` D1 (`uso_diario`, `cloudflare_diario`, `limites`, `meta`, `eventos`, `formularios_meta`). `wrangler.jsonc` apunta aquí con `migrations_dir`.
+- En la raíz pública: `contador.js` (cargado desde `index.html`) y el visor `metricas.html|css|js`, servido en `/metricas`. Sus cabeceras (CSP estricta, `no-store`, `noindex`) están al final de `/_headers`.
+- `/.assetsignore`: el Worker publica la carpeta entera (`assets.directory: "."`), así que ahí se listan los archivos que **no** deben quedar públicos (`.git`, `.dev.vars`, `wrangler.jsonc`, esta carpeta, `AGENTS.md`, `Code.gs`, …).
+- `privacidad.md` · `pruebas/probar_local.sh`.
 
-## Verificado en esta sesión
-- Sintaxis de todos los `.js` y del `.sh`.
-- Lista cerrada: acepta claves válidas y rechaza inventadas/inyecciones; `limpiarInicio` descarta campos no permitidos; recorte de IP.
-- Contraste de los 4 temas: texto ≥ 7:1; acento de gráficos ≥ 3:1 (House 3.04 sobre fondo, por eso su panel usa el mismo fondo); las barras llevan además borde blanco.
-
-## Pendiente (necesita navegador / dueño)
-1. Reconocimiento en dash.cloudflare.com (Account ID, zona, Pages/Worker, Web Analytics, `site_tag`) → ver `PLAN.md`.
-2. **Comprobar el esquema GraphQL** de `rumPageloadEventsAdaptiveGroups` con la cuenta real (nombres de filtros/dimensiones escritos de memoria, no probados).
-3. Probar `pruebas/probar_local.sh` (necesita `wrangler`; no se pudo ejecutar aquí).
-4. Probar a 375 px y en los 4 temas en un navegador real.
-5. Cableado en el sitio: `contador.js` detecta rutas, ensayos, lectura, portales, mix y tema por delegación, pero **éxito/error de formularios, compartir, cajones, afiches, lightbox y easter egg** necesitan que el sitio llame `window.aerielContar('form:contacto:enviado')`, etc. (cambio mínimo en `index.html`, con OK).
-6. Ley 21.719: retención decidida (eventos 90 d, formularios_meta 30 d, limites 2 d; `purgarVencidos` en `api/comun.js`, una vez al día desde `/api/uso`). `/privacy` y `/privacidad` publicadas (PT por `?lang=pt` o `preferred-lang`).
-
-## Qué se copiaría fuera de la carpeta (tras el OK)
-| Origen | Destino |
-|---|---|
-| `api/*.js` | `functions/api/` |
-| `sitio/metricas.*`, `sitio/contador.js` | raíz pública |
-| `_headers.fragmento` | añadir a `/_headers` |
-| — | `<script src="/contador.js" defer>` en las páginas; `Disallow: /metricas` y `/api/` en `robots.txt`; excluir `/api/` y `/metricas*` en `sw.js` |
-
-## Secretos (solo nombres; los valores nunca van a archivos ni al chat)
-`CF_API_TOKEN` (Account Analytics: Read) · `METRICAS_CLAVE` · `FIRMA` · variables no secretas: `CF_ACCOUNT_ID`, `CF_SITE_TAG`, `METRICAS_DESDE` (opcional).
+## Probar en local
 ```
-openssl rand -hex 32 | npx wrangler pages secret put METRICAS_CLAVE --project-name <proyecto>
-openssl rand -hex 32 | npx wrangler pages secret put FIRMA --project-name <proyecto>
-npx wrangler pages secret put CF_API_TOKEN --project-name <proyecto>   # el dueño pega el token
+bash analisis_metricas/pruebas/probar_local.sh
 ```
-Rotar = repetir el comando y volver a entregar el link `/metricas#k=…` por un canal privado.
+Crea `.dev.vars` con claves de prueba si no existe, aplica las migraciones a la D1 local, levanta `wrangler dev` en el puerto 8787 y comprueba: visita falsa → 204 y queda en D1; `GET /api/uso` → 405; `/api/metricas` sin clave → 401 y con clave → 200; `/metricas` → 200; y que `.dev.vars`, `wrangler.jsonc`, `analisis_metricas/` y `.git` den 404. Después abre `http://localhost:8787/metricas#k=clave-de-prueba`.
+
+## Lo que tiene que hacer el dueño en Cloudflare
+La base D1 `aeriel-metricas` y el binding `DB` ya existen (`wrangler.jsonc`). Faltan **cinco valores**, todos como secretos del Worker `aeriel-aiff` (así un `wrangler deploy` no los borra, cosa que sí pasa con las variables de texto puestas en el panel):
+
+| Nombre | Qué es | De dónde sale |
+|---|---|---|
+| `METRICAS_CLAVE` | La clave del link privado `/metricas#k=…` | `openssl rand -hex 32` |
+| `FIRMA` | Sal del HMAC que anonimiza IPs para los topes | `openssl rand -hex 32` |
+| `CF_API_TOKEN` | Token con permiso **Account → Account Analytics → Read** | dash.cloudflare.com → My Profile → API Tokens |
+| `CF_ACCOUNT_ID` | Account ID | dash.cloudflare.com → panel derecho de la cuenta |
+| `CF_SITE_TAG` | `site_tag` de Web Analytics de aeriel.net | Analytics & Logs → Web Analytics → aeriel.net (va en el snippet / la URL) |
+| `METRICAS_DESDE` *(opcional)* | Fecha `AAAA-MM-DD` desde la que contar | — |
+
+```
+openssl rand -hex 32 | npx wrangler secret put METRICAS_CLAVE
+openssl rand -hex 32 | npx wrangler secret put FIRMA
+npx wrangler secret put CF_API_TOKEN     # pegar el token cuando lo pida
+npx wrangler secret put CF_ACCOUNT_ID
+npx wrangler secret put CF_SITE_TAG
+npx wrangler secret list                 # ver que estén los cinco (no muestra valores)
+```
+Sin los tres `CF_*` el visor funciona igual con los datos propios y muestra el aviso «FALTA CONECTAR CLOUDFLARE». El link privado es `https://aeriel.net/metricas#k=<METRICAS_CLAVE>`; para rotar, repetir el comando y volver a entregar el link por un canal privado. Los valores nunca van a archivos del repo ni al chat.
 
 ## Deploy
-`npx wrangler d1 create aeriel-metricas` → binding `DB` → `npx wrangler d1 migrations apply aeriel-metricas --remote` (mover `migraciones/` a la carpeta que pida wrangler o usar `d1 execute --file`) → desplegar con el comando del proyecto, con un sí del dueño.
+1. (Una vez, no hace daño repetirlo: todas las tablas son `IF NOT EXISTS`) `npx wrangler d1 migrations apply aeriel-metricas --remote`
+2. Merge a `main` (si el Worker está conectado a Git, despliega solo) o `npx wrangler deploy`.
+3. Comprobar: `curl -I https://aeriel.net/wrangler.jsonc` → 404; abrir el link privado.
 
-## Ya conectado en el sitio (PR #5)
-`contador.js` en la raíz, cargado desde `index.html` (los stubs redirigen al SPA, no lo necesitan); `robots.txt` y `sw.js` excluyen `/api/` y `/metricas`. `analisis_metricas/worker.js` enruta `/api/uso` y `/api/metricas` (el sitio es un Worker, no Pages; `wrangler.jsonc` ya lo usa). **Falta**: poner los secretos con `wrangler secret put` y copiar el visor `metricas.*` a la raíz (la base D1 `aeriel-metricas` ya existe, con migraciones y binding). Mientras no exista la API, `POST /api/uso` falla en silencio.
+## Pendiente
+1. **Comprobar el esquema GraphQL** de `rumPageloadEventsAdaptiveGroups` con la cuenta real (los nombres de filtros/dimensiones no se han probado contra Cloudflare; sin token no se puede en local). Si falla, el visor muestra el error de Cloudflare en el aviso.
+2. Cableado de eventos que el sitio todavía no emite: éxito/error de formularios, compartir, cajones, afiches, lightbox y easter egg necesitan `window.aerielContar('form:contacto:enviado')`, etc.
+3. Ley 21.719: retención decidida (eventos 90 d, formularios_meta 30 d, limites 2 d; `purgarVencidos` en `api/comun.js`, una vez al día desde `/api/uso`). `/privacy` y `/privacidad` publicadas.
