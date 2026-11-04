@@ -1,6 +1,6 @@
 /* EXCUSE ME — story v13: the illegal rave. Nobody is in charge, so everything is politics: who holds the keys to a
    warehouse, who pays for the sound, who gets to be tired of whom. Rave-only cast, two storylines (THE RAID, THE
-   PETITION), more dealers, and the pickpocket (1 in 150 encounters), after which the friends carry you. */
+   PETITION), more dealers, and the pickpocket (1 in 1500 conversations; EM.PICK_ODDS), after which the friends carry you. */
 'use strict';
 (function () {
   const EM = window.EM;
@@ -326,7 +326,7 @@
     }
   };
 
-  /* ============================================================ THE PICKPOCKET: 1 in 150 encounters */
+  /* ============================================================ THE PICKPOCKET: 1 in 1500 conversations (EM.PICK_ODDS) */
     const FRIENDS = ['dani', 'tato', 'maru'];
   D.pickpocket = {
     who: 'dani', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), forced: true, start: 'a', nodes: {

@@ -382,7 +382,7 @@
         ]
       },
       warm: {
-        text: T('Rosa looks at you for a long time, the way you look at a plant that surprised you. "…Twenty years of this. You know how many people ask how I am? Come here. Don\'t touch anything that isn\'t yours."', 'Rosa te mira un buen rato, como se mira una planta que te sorprendió. «…Veinte años de esto. ¿Sabes cuánta gente pregunta cómo estoy? Ven. No toques nada que no sea tuyo».', 'A Rosa te olha por muito tempo, do jeito que se olha uma planta que te surpreendeu. «…Vinte anos disso. Sabe quanta gente pergunta como eu estou? Vem. Não toque em nada que não seja seu».'),
+        text: T('Rosa looks at you for a long time, the way you look at a plant that surprised you. "…Seventeen years of this. You know how many people ask how I am? Come here. Don\'t touch anything that isn\'t yours."', 'Rosa te mira un buen rato, como se mira una planta que te sorprendió. «…Diecisiete años de esto. ¿Sabes cuánta gente pregunta cómo estoy? Ven. No toques nada que no sea tuyo».', 'A Rosa te olha por muito tempo, do jeito que se olha uma planta que te surpreendeu. «…Dezessete anos disso. Sabe quanta gente pergunta como eu estou? Vem. Não toque em nada que não seja seu».'),
         do: { flag: ['rosa_ally', 'rosa_warm'], soc: 4, fun: 3 },
         next: 'ally'
       },

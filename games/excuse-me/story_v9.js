@@ -82,7 +82,7 @@
       after: {
         text: function (s) {
           return s.flags.rosa_best
-            ? t(`Rosa tilts the thermos at you with respect. "The best legs I've had in twenty years. Wear the lanyard like you were born in it. Coffee?"`, `Rosa inclina el termo hacia ti con respeto. «Las mejores piernas que tuve en veinte años. Lleva la credencial como si hubieras nacido con ella. ¿Café?»`, `A Rosa inclina a garrafa térmica pra você com respeito. «As melhores pernas que tive em vinte anos. Use o crachá como se tivesse nascido com ele. Café?»`)
+            ? t(`Rosa tilts the thermos at you with respect. "The best legs I've had in seventeen years. Wear the lanyard like you were born in it. Coffee?"`, `Rosa inclina el termo hacia ti con respeto. «Las mejores piernas que tuve en diecisiete años. Lleva la credencial como si hubieras nacido con ella. ¿Café?»`, `A Rosa inclina a garrafa térmica pra você com respeito. «As melhores pernas que tive em dezessete anos. Use o crachá como se tivesse nascido com ele. Café?»`)
             : t(`Rosa nods at the lanyard. "Good. It suits you. Coffee?"`, `Rosa asiente hacia la credencial. «Bien. Te queda bien. ¿Café?»`, `A Rosa assente pro crachá. «Bom. Combina com você. Café?»`);
         },
         choices: [
