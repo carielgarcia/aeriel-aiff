@@ -59,6 +59,7 @@
       if (t === TL.DANCE && variant === 'B') t = 'DANCE_B';
       EM.drawTile(cg, t, x * TS, y * TS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && z.get(x + dx, y + dy) !== TL.VOID; }, z.theme);
     }
+    if (EM.ART16 && EM.decorate16) EM.decorate16(z, cg, TS);
     z.signs.forEach(function (sg, i) {
       const w = EM.textWidth(sg.text) + 4, h = 9;
       const sc = EM.mkCanvas(w, h); const sx = sc.getContext('2d');
@@ -449,12 +450,34 @@
   };
 
   /* ------------------------------------------------------------ drawing */
-  function personFrame(moving, t) { return moving ? 1 + (Math.floor(t * 8) & 1) : 0; }
+  function personFrame(moving, t) {
+    if (!moving) return 0;
+    return EM.ART16 ? [1, 3, 2, 3][Math.floor(t * 9) & 3] : 1 + (Math.floor(t * 8) & 1);
+  }
 
+  /* 16-bit prototype: a soft pixel shadow under every character (three rows, wider in the middle) */
+  function blobShadow(cx, feetY, pose) {
+    const x = Math.round(cx), y = Math.round(feetY);
+    const w = pose === 'sit' ? 10 : 12;
+    g.fillStyle = 'rgba(6,4,14,0.34)'; g.fillRect(x - w / 2 + 2, y - 1, w - 4, 1); g.fillRect(x - w / 2, y, w, 1); g.fillRect(x - w / 2 + 2, y + 1, w - 4, 1);
+    g.fillStyle = 'rgba(6,4,14,0.22)'; g.fillRect(x - w / 2 + 3, y, w - 6, 1);
+  }
   function drawPerson(look, dir, frame, pose, cx, feetY, bob) {
+    if (EM.ART16 && pose !== 'lie') {
+      /* frame 3 is the passing step of the 4-phase walk: both feet down, body a pixel higher */
+      if (frame === 3) { frame = 0; bob = (bob || 0) - 1; }
+      blobShadow(cx, feetY, pose);
+    }
     const spr = EM.person(look, dir, frame, pose);
     if (pose === 'lie') { g.drawImage(spr, Math.round(cx - spr.width / 2), Math.round(feetY - spr.height + 2)); return; }
-    g.drawImage(spr, Math.round(cx - spr.width / 2), Math.round(feetY - 32 + (bob || 0)));
+    const bx = Math.round(cx - spr.width / 2), by = Math.round(feetY - 32 + (bob || 0));
+    /* 16-bit idle: every so often the chest and head settle a pixel (breathing), out of step from person to person */
+    if (EM.ART16 && pose === 'stand' && frame === 0 && !bob && ((Math.floor((E.time + cx * 0.043 + feetY * 0.021) / 0.65)) % 4) === 0) {
+      g.drawImage(spr, 0, 0, spr.width, 22, bx, by + 1, spr.width, 22);
+      g.drawImage(spr, 0, 22, spr.width, spr.height - 22, bx, by + 22, spr.width, spr.height - 22);
+      return;
+    }
+    g.drawImage(spr, bx, by);
   }
 
   function npcDraw(e, cam, items) {
@@ -689,7 +712,7 @@
     });
   }
 
-  let maskCanvas = null, maskData = null;
+  let maskCanvas = null, maskData = null, glowCanvas = null, glowData = null;
   function lighting(camx, camy) {
     const shades = !!(S.worn && S.worn.sunglasses);
     const dark = Z.id === 'darkroom' ? 0.985 : (shades ? Math.max(Z.dark, 0.96) : Z.dark);
@@ -698,6 +721,13 @@
     if (!maskCanvas) { maskCanvas = EM.mkCanvas(VW, VH); maskData = maskCanvas.getContext('2d').createImageData(VW, VH); }
     const d = maskData.data;
     d.fill(0);
+    /* 16-bit prototype: smooth darkness in six dithered steps, and the coloured light is additive (it lifts the ground under it) */
+    const A16 = !!EM.ART16;
+    let gd = null;
+    if (A16) {
+      if (!glowCanvas || glowCanvas.width !== VW || glowCanvas.height !== VH) { glowCanvas = EM.mkCanvas(VW, VH); glowData = glowCanvas.getContext('2d').createImageData(VW, VH); }
+      gd = glowData.data; gd.fill(0);
+    }
     const col = Z.theme.a;
     const rgb = function (hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
     const L2 = lights.map(function (l) { return { x: l.x - camx, y: l.y - camy, r: l.r, c: rgb(l.c || col) }; });
@@ -719,10 +749,26 @@
       const lit = Math.max(lf, tl);
       const bay = BAYER[(y & 3) * 4 + (x & 3)] / 16;
       const o = (y * VW + x) * 4;
+      if (A16) {
+        const da = dark > 0 ? dark * (1 - Math.min(1, lit * 1.6)) : 0, dl = da * 6, db = Math.floor(dl), dq = (dl - db > bay ? db + 1 : db) / 6;
+        if (dq > 0) { d[o] = 5; d[o + 1] = 5; d[o + 2] = 8; d[o + 3] = Math.round(255 * dq); }
+        gd[o + 3] = 255;
+        if (lc && Z.id !== 'darkroom') {
+          const gl = Math.pow(lcf, 1.35) * 4, gb = Math.floor(gl), gq = (gl - gb > bay ? gb + 1 : gb) / 4;
+          if (gq > 0) { gd[o] = lc[0] * gq * 0.4; gd[o + 1] = lc[1] * gq * 0.4; gd[o + 2] = lc[2] * gq * 0.4; }
+        }
+        continue;
+      }
       if (dark > 0 && bay < dark * (1 - Math.min(1, lit * 1.6))) { d[o] = 5; d[o + 1] = 5; d[o + 2] = 8; d[o + 3] = 255; }
       else if (lc && bay < lcf * 0.26 && Z.id !== 'darkroom') { d[o] = lc[0]; d[o + 1] = lc[1]; d[o + 2] = lc[2]; d[o + 3] = 255; }
     }
     maskCanvas.getContext('2d').putImageData(maskData, 0, 0);
+    if (A16) {
+      glowCanvas.getContext('2d').putImageData(glowData, 0, 0);
+      g.save(); g.globalCompositeOperation = 'lighter'; g.drawImage(glowCanvas, 0, 0); g.restore(); /* added to the picture first, then the dark steps go on top */
+      g.drawImage(maskCanvas, 0, 0);
+      return;
+    }
     g.drawImage(maskCanvas, 0, 0);
   }
 

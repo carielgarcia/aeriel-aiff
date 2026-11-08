@@ -12,12 +12,18 @@
   const NAMED = { K: '#0A0A0A', D: '#121212', G: '#7F7F7F', W: '#FFFFFF' };
   function col(c) { return NAMED[c] || c; }
   const shadeCache = {};
+  const ART16 = !!EM.ART16;
   function shade(hex, f) {
     const key = hex + f;
     if (shadeCache[key]) return shadeCache[key];
     const n = parseInt(hex.slice(1), 16);
     let r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
-    if (f < 0) { r = Math.round(r * (1 + f)); g = Math.round(g * (1 + f)); b = Math.round(b * (1 + f)); }
+    if (ART16) {
+      /* 16-bit ramps: shadows drift toward cool blue-violet, highlights toward warm light, instead of just darker and lighter */
+      if (f < 0) { const t = Math.min(1, -f); r = r * (1 + f) * (1 - 0.14 * t); g = g * (1 + f) * (1 - 0.06 * t); b = b * (1 + f) * (1 + 0.14 * t) + 12 * t; }
+      else { r = r + (255 - r) * f; g = g + (255 - g) * f * 0.94; b = b + (255 - b) * f * 0.76; }
+      r = Math.max(0, Math.min(255, Math.round(r))); g = Math.max(0, Math.min(255, Math.round(g))); b = Math.max(0, Math.min(255, Math.round(b)));
+    } else if (f < 0) { r = Math.round(r * (1 + f)); g = Math.round(g * (1 + f)); b = Math.round(b * (1 + f)); }
     else { r = Math.round(r + (255 - r) * f); g = Math.round(g + (255 - g) * f); b = Math.round(b + (255 - b) * f); }
     return (shadeCache[key] = '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase());
   }
@@ -321,15 +327,52 @@
     return c;
   }
 
+  /* 16-bit finishing pass on the raw 16x32 sprite:
+     1. a checkerboard of the shadow tone beside every shadow line, inside big flat areas only (faces stay clean),
+     2. a sheen on the hair, a little blush on the cheeks (front view),
+     3. a two-tone neon rim light: magenta on the right edge, cyan on the left, like a club. */
+  function finishPass(raw, look, dir, K) {
+    const w = raw.width, h = raw.height, g = raw.getContext('2d');
+    const im = g.getImageData(0, 0, w, h), d = im.data, o = new Uint8ClampedArray(d);
+    const at = function (x, y) { if (x < 0 || y < 0 || x >= w || y >= h) return null; const i = (y * w + x) * 4; return d[i + 3] > 0 ? [d[i], d[i + 1], d[i + 2]] : null; };
+    const same = function (a, b) { return !!a && !!b && a[0] === b[0] && a[1] === b[1] && a[2] === b[2]; };
+    const darker = function (a, b) { if (!a || !b) return false; const k = [0, 1, 2].map(function (c) { return a[c] > 20 ? b[c] / a[c] : 0.7; }); return Math.max.apply(null, k) < 0.93 && Math.min.apply(null, k) > 0.5 && Math.max.apply(null, k) - Math.min.apply(null, k) < 0.22; };
+    const rgbOf = function (hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    const put = function (x, y, c) { const i = (y * w + x) * 4; o[i] = c[0]; o[i + 1] = c[1]; o[i + 2] = c[2]; };
+    const mixc = function (a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; };
+    const hair = rgbOf(K.hair), skin = rgbOf(K.skin);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const p = at(x, y); if (!p) continue;
+      /* 1. dithered ramp, interior pixels only */
+      if (((x + y) & 1) === 0 && same(p, at(x - 1, y)) && same(p, at(x, y - 1)) && (darker(p, at(x + 1, y)) || darker(p, at(x, y + 1)))) put(x, y, [p[0] * 0.9, p[1] * 0.93, Math.min(255, p[2] * 0.96 + 3)]);
+      /* 2. hair sheen (top-left of the head), cheek blush */
+      if (same(p, hair) && y >= 3 && y <= 8 && x >= 3 && x <= 8 && ((x + y * 2) % 4 === 0)) put(x, y, mixc(hair, [255, 244, 214], 0.34));
+      if (dir === 'd' && same(p, skin) && y === 11 && (x === 5 || x === 10)) put(x, y, mixc(skin, [255, 96, 140], 0.34));
+      /* 3. neon rim light on the silhouette edges (not on the sprite's darkest pixels) */
+      if (p[0] + p[1] + p[2] > 90) {
+        if (!at(x + 1, y)) put(x, y, mixc(p, [255, 80, 175], 0.30));
+        else if (!at(x - 1, y)) put(x, y, mixc(p, [70, 215, 255], 0.26));
+      }
+    }
+    im.data.set(o); g.putImageData(im, 0, 0);
+  }
   function outline(raw, colr) {
     const w = raw.width, h = raw.height;
     const out = mk(w + 2, h + 2); const g = out.getContext('2d');
     const src = raw.getContext('2d').getImageData(0, 0, w, h).data;
     function on(x, y) { return x >= 0 && y >= 0 && x < w && y < h && src[(y * w + x) * 4 + 3] > 0; }
+    /* 16-bit: the outline takes the colour of the material it hugs, darkened and cooled, instead of one black for everything */
+    function hexAt(x, y) { const i = (y * w + x) * 4; return '#' + ((1 << 24) | (src[i] << 16) | (src[i + 1] << 8) | src[i + 2]).toString(16).slice(1).toUpperCase(); }
     g.fillStyle = colr || '#050508';
     for (let y = -1; y <= h; y++) for (let x = -1; x <= w; x++) {
       if (on(x, y)) continue;
-      if (on(x - 1, y) || on(x + 1, y) || on(x, y - 1) || on(x, y + 1)) g.fillRect(x + 1, y + 1, 1, 1);
+      if (on(x - 1, y) || on(x + 1, y) || on(x, y - 1) || on(x, y + 1)) {
+        if (ART16 && !colr) {
+          const nx = on(x - 1, y) ? x - 1 : (on(x + 1, y) ? x + 1 : x), ny = on(x, y - 1) ? y - 1 : (on(x, y + 1) ? y + 1 : y);
+          g.fillStyle = on(x, y - 1) ? '#07060D' : shade(hexAt(on(x - 1, y) || on(x + 1, y) ? nx : x, on(x - 1, y) || on(x + 1, y) ? y : ny), -0.84);
+        }
+        g.fillRect(x + 1, y + 1, 1, 1);
+      }
     }
     g.drawImage(raw, 1, 1);
     return out;
@@ -342,7 +385,9 @@
     const key = [look.skin, look.hair, look.hc, look.expr, look.top, look.tc, look.bottom, look.bc, look.acc, look.accentHex || '', look.tee || '', look.teeC || '', look.wide ? 1 : 0, look.ol || '', dir, frame, pose || ''].join(',');
     let c = cache[key];
     if (c) return c;
-    const base = outline(drawRaw(look, dir === 'u' || dir === 'l' || dir === 'r' ? dir : 'd', frame, pose), look.ol);
+    const raw = drawRaw(look, dir === 'u' || dir === 'l' || dir === 'r' ? dir : 'd', frame, pose);
+    if (ART16) finishPass(raw, look, dir, kit(look));
+    const base = outline(raw, look.ol);
     if (pose === 'lie') {
       const r = mk(base.height, base.width); const g = r.getContext('2d');
       g.translate(0, base.width); g.rotate(-Math.PI / 2); g.drawImage(base, 0, 0);
@@ -470,11 +515,83 @@
   }
   function dim(hex, f) { return shade(hex, -f); }
 
+  /* ------------------------------------------------------------ 16-bit tiles (prototype) */
+  function slab16(g, tx, ty) {
+    const tones = ['#15151C', '#17171F', '#13131A', '#191921'];
+    for (let q = 0; q < 4; q++) { const qx = (q & 1) * 8, qy = (q >> 1) * 8; rectF(g, qx, qy, 8, 8, tones[Math.floor(EM.hash2(tx * 2 + (q & 1), ty * 2 + (q >> 1), 17) * 4)]); }
+    rectF(g, 0, 7, 16, 1, '#0C0C12'); rectF(g, 7, 0, 1, 16, '#0C0C12'); rectF(g, 0, 15, 16, 1, '#0C0C12'); rectF(g, 15, 0, 1, 16, '#0C0C12');
+    rectF(g, 0, 0, 7, 1, '#262633'); rectF(g, 8, 0, 7, 1, '#262633'); rectF(g, 0, 8, 7, 1, '#262633'); rectF(g, 8, 8, 7, 1, '#262633');
+    rectF(g, 0, 1, 1, 6, '#1E1E29'); rectF(g, 8, 1, 1, 6, '#1E1E29'); rectF(g, 0, 9, 1, 6, '#1E1E29'); rectF(g, 8, 9, 1, 6, '#1E1E29');
+    specks(g, 5, 4, '#23232E', tx, ty); specks(g, 6, 3, '#0F0F15', tx, ty);
+    if (EM.hash2(tx, ty, 23) > 0.86) { for (let i = 0; i < 9; i++) { pxF(g, 2 + i, 3 + i + (i > 4 ? -1 : 0), '#0A0A0F'); pxF(g, 3 + i, 3 + i + (i > 4 ? -1 : 0), '#1F1F2A'); } }
+    if (EM.hash2(tx, ty, 29) > 0.94) { rectF(g, 10, 4, 2, 2, '#2B2233'); }
+  }
+  /* returns true when the tile was drawn here */
+  function art16Tile(g, t, tx, ty, open, A, B) {
+    const h = function (i) { return EM.hash2(tx * 3 + i, ty * 5 + i * 2, 41); };
+    if (t === TL.SIDEWALK) {
+      slab16(g, tx, ty);
+      return true;
+    }
+    if (t === TL.ROAD) {
+      rectF(g, 0, 0, 16, 16, '#0D0D12'); specks(g, 9, 6, '#17171F', tx, ty); specks(g, 10, 4, '#08080C', tx, ty);
+      if (open(0, -1)) { rectF(g, 0, 0, 16, 3, '#22222C'); rectF(g, 0, 0, 16, 1, '#3B3B4A'); rectF(g, 0, 3, 16, 1, '#06060A'); rectF(g, 0, 4, 16, 1, '#111119'); }
+      [[2, 5], [10, 5]].forEach(function (d, i) {
+        rectF(g, d[0], 7, d[1], 2, N.amb); rectF(g, d[0], 7, d[1], 1, shade(N.amb, 0.25)); rectF(g, d[0] + 1, 9, d[1] - 2, 1, shade(N.amb, -0.78));
+        if (h(2 + i) > 0.55) pxF(g, d[0] + Math.floor(h(5 + i) * d[1]), 7, '#0D0D12');
+      });
+      return true;
+    }
+    if (t === TL.FENCE) {
+      slab16(g, tx, ty);
+      rectF(g, 0, 5, 16, 1, A); rectF(g, 0, 6, 16, 1, dim(A, 0.5)); rectF(g, 0, 10, 16, 1, A); rectF(g, 0, 11, 16, 1, dim(A, 0.5));
+      [1, 6, 11].forEach(function (i) { rectF(g, i, 3, 2, 12, '#9A9AA8'); rectF(g, i, 3, 1, 12, '#D8D8E2'); rectF(g, i + 1, 3, 1, 12, '#5E5E6C'); rectF(g, i, 2, 2, 1, '#EDEDF5'); });
+      rectF(g, 0, 14, 16, 2, 'rgba(4,4,10,0.62)');
+      for (let x = 0; x < 16; x += 3) pxF(g, x, 15, dim(A, 0.55));
+      return true;
+    }
+    return false;
+  }
+  /* bricks that are not all the same brick */
+  function wall16(g, tx, ty) {
+    for (let r = 0; r < 4; r++) for (let k = -1; k < 2; k++) {
+      const x0 = ((r & 1) ? 4 : 0) + k * 8 + 0;
+      const v = EM.hash2(tx * 5 + k, ty * 4 + r, 61) * 2 - 0.5;
+      const cx = Math.max(0, x0 + 1), cw = Math.min(16, x0 + 8) - cx; if (cw <= 0) continue;
+      g.fillStyle = v > 0 ? 'rgba(255,232,210,' + (0.05 * v).toFixed(3) + ')' : 'rgba(0,0,14,' + (-0.2 * v).toFixed(3) + ')';
+      g.fillRect(cx, r * 4, cw, 3);
+      g.fillStyle = 'rgba(255,236,216,0.06)'; g.fillRect(cx, r * 4, cw, 1);
+    }
+  }
+
+  /* the facade of the street scene: lit and unlit windows and a lamp over the door */
+  EM.decorate16 = function (z, g, TS) {
+    if (z.id !== 'doors') return;
+    const win = function (x, y, lit, tone) {
+      rectF(g, x - 1, y - 1, 14, 11, '#08080D'); rectF(g, x - 1, y + 9, 14, 1, '#2A2A38');
+      if (lit) {
+        rectF(g, x, y, 12, 9, shade(tone, -0.55)); rectF(g, x + 1, y + 1, 10, 7, shade(tone, -0.15)); rectF(g, x + 1, y + 1, 10, 2, tone);
+        rectF(g, x + 5, y, 2, 9, '#14121A'); /* the frame */
+        rectF(g, x + 2, y + 4, 2, 3, shade(tone, -0.6)); rectF(g, x + 8, y + 3, 2, 4, shade(tone, -0.6)); /* people behind the curtain */
+        g.fillStyle = 'rgba(255,200,120,0.07)'; g.fillRect(x - 2, y + 10, 16, 5);
+      } else { rectF(g, x, y, 12, 9, '#0C0E1A'); rectF(g, x + 5, y, 2, 9, '#07070C'); rectF(g, x + 1, y + 1, 4, 1, '#1A1E34'); }
+    };
+    const tones = ['#FFB84A', '#FF5FB0', '#4FD8FF', '#FFB84A'];
+    [6, 38, 70, 102, 236, 268, 300].forEach(function (x, i) {
+      const lit1 = EM.hash2(i, 1, 77) > 0.45, lit2 = EM.hash2(i, 2, 77) > 0.5;
+      win(x, 7, lit1, tones[Math.floor(EM.hash2(i, 3, 77) * 4)]);
+      if (x < 120 || x > 220) win(x, 29, lit2, tones[Math.floor(EM.hash2(i, 4, 77) * 4)]);
+    });
+    /* a lamp over the door */
+    const lx = 27 * TS + 8; rectF(g, lx - 1, 46, 3, 2, '#222230'); rectF(g, lx - 3, 48, 7, 2, '#FFE9B0'); g.fillStyle = 'rgba(255,225,150,0.10)'; g.fillRect(lx - 14, 50, 29, 12);
+  };
+
   /* th: { a, b } accent colours of the room */
   EM.drawTile = function (g, t, ox, oy, tx, ty, open, th) {
     th = th || { a: N.mag, b: N.cyn };
     const A = th.a, Bc = th.b;
     g.save(); g.translate(ox, oy);
+    if (ART16 && art16Tile(g, t, tx, ty, open, A, Bc)) { g.restore(); return; }
     switch (t) {
       case TL.FLOOR: rectF(g, 0, 0, 16, 16, '#0A0A0D'); specks(g, 1, 3, '#15151B', tx, ty); specks(g, 2, 1, dim(A, 0.72), tx, ty); break;
       case TL.DANCE: rectF(g, 0, 0, 16, 16, '#0B0B10'); rectF(g, 0, 0, 8, 8, dim(A, 0.8)); rectF(g, 8, 8, 8, 8, dim(Bc, 0.8)); rectF(g, 0, 0, 8, 1, dim(A, 0.55)); rectF(g, 8, 8, 8, 1, dim(Bc, 0.55)); pxF(g, 3, 3, dim(A, 0.3)); pxF(g, 11, 11, dim(Bc, 0.3)); break;
@@ -525,6 +642,7 @@
       case TL.SKY: rectF(g, 0, 0, 16, 16, '#05060F'); specks(g, 11, 2, '#6A7AA8', tx, ty); if (EM.hash2(tx, ty, 3) > 0.7) pxF(g, 4, 4, '#FFFFFF'); break;
       default: rectF(g, 0, 0, 16, 16, '#050508');
     }
+    if (ART16 && t === TL.WALL) wall16(g, tx, ty);
     g.restore();
   };
 })();

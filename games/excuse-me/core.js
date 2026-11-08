@@ -4,6 +4,15 @@
 (function () {
   const EM = window.EM = {};
 
+  /* PROTOTYPE: the 16-bit look. Open the game with ?art=16 to switch it on (it is remembered); ?art=8 switches it off. */
+  EM.ART16 = (function () {
+    try {
+      const q = /[?&]art=(8|16)\b/.exec(location.search);
+      if (q) { if (q[1] === '16') localStorage.setItem('excuse-me-art', '16'); else localStorage.removeItem('excuse-me-art'); }
+      return localStorage.getItem('excuse-me-art') === '16';
+    } catch (e) { return /[?&]art=16\b/.test(location.search); }
+  })();
+
   /* Monochrome palette (site rule: four values only). */
   EM.PAL = { K: '#0A0A0A', D: '#121212', G: '#7F7F7F', W: '#FFFFFF' };
 
