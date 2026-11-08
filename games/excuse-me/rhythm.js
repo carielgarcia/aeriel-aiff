@@ -57,7 +57,7 @@
       const ax = hitX + (bt - b) * speed;
       if (ax < x + 2 || ax > x + w - 14) continue;
       const res = R.res[i];
-      g.drawImage(EM.arrow(R.seq[i], res === 'hit' ? 'G' : (res === 'miss' ? 'D' : 'W')), Math.round(ax), y + 8);
+      EM.blit(g, EM.arrow(R.seq[i], res === 'hit' ? 'G' : (res === 'miss' ? 'D' : 'W')), Math.round(ax), y + 8);
     }
     g.fillStyle = C.W; g.fillRect(x + 6, y + 28, Math.round((w - 12) * R.hits / Math.max(1, R.seq.length)), 2);
     g.fillStyle = C.G; g.fillRect(x + 6, y + 30, w - 12, 1);

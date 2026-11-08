@@ -91,7 +91,7 @@
     if (spec.text && !spec.nolog) U.logAdd(spec.text, spec.kind);
     const box = $('#toasts'); if (!box) return;
     const t = el('div', 'toast ' + (spec.kind || 'info'));
-    if (spec.icon && EM.hasIcon(spec.icon)) { const c = EM.mkCanvas(8, 8); c.getContext('2d').drawImage(EM.icon(spec.icon), 0, 0); c.className = 'ico'; t.appendChild(c); }
+    if (spec.icon && EM.hasIcon(spec.icon)) { const c = EM.iconCanvas(spec.icon); c.className = 'ico'; t.appendChild(c); }
     t.appendChild(document.createTextNode(EM.tr(spec.text)));
     box.appendChild(t);
     while (box.children.length > 4) box.removeChild(box.firstChild);
@@ -257,7 +257,8 @@
     const look = Object.assign({}, cast.look);
     const spr = EM.person(look, 'd', 0, 'stand');
     g.imageSmoothingEnabled = false;
-    g.drawImage(spr, 0, 0, 18, 20, 0, 0, 54, 60);
+    /* head and shoulders of the HD sprite (34x38 device pixels) at 2x */
+    g.drawImage(spr, 1, 2, 34, 38, 0, 0, 68, 76);
   }
   U.portrait = portrait;
 
@@ -350,7 +351,7 @@
       const c = o.c;
       const b = el('button', 'choice' + (o.disabled ? ' disabled' : ''), '');
       b.type = 'button';
-      if (n.gesture && c.icon) { const cv = EM.mkCanvas(8, 8); cv.getContext('2d').drawImage(EM.icon(c.icon), 0, 0); cv.className = 'gico'; b.appendChild(cv); }
+      if (n.gesture && c.icon) { const cv = EM.iconCanvas(c.icon); cv.className = 'gico'; b.appendChild(cv); }
       else b.appendChild(el('span', 'num', (i + 1) + ''));
       let label = EM.tr(c.t);
       if (EM.state.fx.glitch && !n.gesture) label = garble(label, D.seed + i * 7);

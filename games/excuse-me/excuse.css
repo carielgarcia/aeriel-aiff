@@ -76,7 +76,7 @@ input[type=text]:focus { outline: 2px solid var(--fg); outline-offset: 2px; }
 .toast.bad { background: var(--fg); color: var(--bg); }
 .toast.good { border-width: 2px; }
 .toast.bark { border-color: var(--muted); color: var(--fg); }
-.toast .ico { width: 16px; height: 16px; image-rendering: pixelated; flex: none; }
+.toast .ico { width: 18px; height: 18px; image-rendering: pixelated; flex: none; }
 .toast.bad .ico { filter: invert(1); }
 
 /* menu */
@@ -118,7 +118,7 @@ input[type=text]:focus { outline: 2px solid var(--fg); outline-offset: 2px; }
 .choice.sel .tone { color: var(--bg); }
 .choice.disabled { color: var(--muted); border-style: dashed; cursor: not-allowed; }
 .choice.disabled.sel { background: var(--bg); color: var(--muted); }
-.gico { width: 24px; height: 24px; image-rendering: pixelated; vertical-align: middle; margin-right: 6px; }
+.gico { width: 27px; height: 27px; image-rendering: pixelated; vertical-align: middle; margin-right: 6px; }
 .choice.sel .gico { filter: invert(1); }
 .more { color: var(--muted); font-size: 12px; text-align: right; cursor: pointer; padding: 4px; }
 .leave { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; text-align: right; padding: 4px; cursor: pointer; }
@@ -282,7 +282,7 @@ button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A
 #hint { padding: 3px 10px; }
 #dialog { max-height: 232px; padding: 6px 10px; }
 #dialog .who { margin-bottom: 4px; gap: 8px; }
-#portrait { width: 32px; height: 36px; }
+#portrait { width: 40px; height: 45px; image-rendering: auto; }
 #dlg-name { font-size: 13px; }
 #dlg-text { font-size: 13.5px; line-height: 1.4; margin-bottom: 6px; min-height: 2.6em; }
 .choice { font-size: 13px; padding: 4px 10px; min-height: 30px; line-height: 1.3; }

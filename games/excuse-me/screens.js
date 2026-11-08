@@ -160,7 +160,7 @@
     g.fillStyle = '#0A0A0D'; g.fillRect(0, 0, cv.width, cv.height);
     g.fillStyle = '#16161C'; g.fillRect(0, cv.height - 22, cv.width, 22);
     const spr = EM.person(cre.look, 'd', 0, 'stand');
-    g.drawImage(spr, 0, 0, spr.width * 8, spr.height * 8);
+    g.drawImage(spr, 0, 0, spr.width * 4, spr.height * 4);
   }
   function cleanName(s) {
     s = (s || '').replace(/[^A-Za-zÀ-ÿ0-9 '\-.]/g, '').replace(/\s+/g, ' ').trim().slice(0, 12);
@@ -284,14 +284,23 @@
 
   function drawEndingArt(kind) {
     const cv = $('#e-art'); const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
-    const W = cv.width, H = cv.height, N = EM.NEON;
+    const RS = EM.RS; g.setTransform(RS, 0, 0, RS, 0, 0); /* drawn in logical pixels (160x90) on a canvas RS times bigger */
+    const W = cv.width / RS, H = cv.height / RS, N = EM.NEON;
     const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
     function fill(c, x, y, w, h) { g.fillStyle = c; g.fillRect(x, y, w, h); }
-    function dither(x, y, w, h, dens, c1, c2) { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) { g.fillStyle = B[((y + j) & 3) * 4 + ((x + i) & 3)] / 16 < dens ? c1 : c2; g.fillRect(x + i, y + j, 1, 1); } }
+    function dither(x, y, w, h, dens, c1, c2) { /* in device pixels, so the dots are as fine as the characters */
+      g.save(); g.scale(1 / RS, 1 / RS);
+      for (let j = 0; j < h * RS; j++) for (let i = 0; i < w * RS; i++) { g.fillStyle = B[((y * RS + j) & 3) * 4 + ((x * RS + i) & 3)] / 16 < dens ? c1 : c2; g.fillRect(x * RS + i, y * RS + j, 1, 1); }
+      g.restore();
+    }
     function gradient(y0, y1, top, bot) { for (let y = y0; y < y1; y++) { const t = (y - y0) / Math.max(1, y1 - y0 - 1); const n = 4; const k = Math.min(n - 1, Math.floor(t * n)); const f = t * n - k; const c1 = lerp(top, bot, k / n), c2 = lerp(top, bot, (k + 1) / n); for (let x = 0; x < W; x++) { g.fillStyle = B[(y & 3) * 4 + (x & 3)] / 16 < f ? c2 : c1; g.fillRect(x, y, 1, 1); } } }
     function lerp(a, b, t) { const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16); const r = Math.round((pa >> 16 & 255) + ((pb >> 16 & 255) - (pa >> 16 & 255)) * t), gg = Math.round((pa >> 8 & 255) + ((pb >> 8 & 255) - (pa >> 8 & 255)) * t), bl = Math.round((pa & 255) + ((pb & 255) - (pa & 255)) * t); return '#' + ((1 << 24) | (r << 16) | (gg << 8) | bl).toString(16).slice(1); }
     const player = EM.state.player.look;
-    function person(look, x, feetY, dir, pose) { const sp = EM.person(look, dir || 'd', 0, pose || 'stand'); g.drawImage(sp, Math.round(x - sp.width / 2), Math.round(feetY - (pose === 'sit' ? sp.height - 2 : 32))); }
+    function person(look, x, feetY, dir, pose) {
+      const sp = EM.person(look, dir || 'd', 0, pose || 'stand'), sn = function (v) { return Math.round(v * RS) / RS; };
+      g.fillStyle = 'rgba(6,4,14,0.4)'; g.beginPath(); g.ellipse(x, feetY + 0.5, 6, 1.9, 0, 0, Math.PI * 2); g.fill();
+      g.drawImage(sp, sn(x - sp.lw / 2), sn(feetY - (pose === 'sit' ? sp.lh - 2 : 32) - 1 / RS), sp.lw, sp.lh);
+    }
     function skyline(baseY, seed) { for (let i = 0; i < 12; i++) { const w = 10 + (i * 7 + seed) % 12, h = 14 + (i * 13 + seed) % 22, x = i * 14 - 4; fill('#0B0B14', x, baseY - h, w, h); for (let k = 0; k < 6; k++) { const wx = x + 2 + (k * 5) % (w - 3), wy = baseY - h + 3 + (k * 7) % (h - 6); if (EM.hash2(i, k, seed) > 0.55) fill(N.yel, wx, wy, 1, 2); } } }
     fill('#07070C', 0, 0, W, H);
     if (kind.indexOf('sunrise') === 0) {

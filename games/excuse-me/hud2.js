@@ -60,6 +60,8 @@
   }
   function fit() {
     const app = $('app'), st = $('stage'), g = $('screen-game'); if (!app || !st || !g || g.hidden) return;
+    /* the picture is 2x the logical size: crisp pixels when it is shown at 2x or more, smooth when it is scaled down or by a small factor */
+    const cvs = $('screen'); if (cvs && cvs.clientWidth) cvs.style.imageRendering = (cvs.clientWidth * (window.devicePixelRatio || 1) / cvs.width >= 1.9) ? 'pixelated' : 'auto';
     if (g.classList.contains('dlg-sheet')) return; /* the layout is borrowed while a dialogue sheet is open */
     const pad = document.querySelector('.pad');
     if (pad && pad.offsetHeight) document.documentElement.style.setProperty('--dlg-room', Math.max(120, Math.round(Math.max(pad.getBoundingClientRect().bottom, $('logbox').getBoundingClientRect().bottom) - st.getBoundingClientRect().bottom - 4)) + 'px');

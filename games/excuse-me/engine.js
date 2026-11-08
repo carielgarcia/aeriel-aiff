@@ -4,7 +4,7 @@
 (function () {
   const EM = window.EM;
   const TL = EM.TL, L = EM.logic, T = EM.T, N = EM.NEON;
-  const TS = 16, VW = 320;
+  const TS = 16, VW = 320, RS = EM.RS; /* logic runs in logical pixels; the canvas is RS times bigger (the transform in draw()) */
   let VH = 180, camBias = 0; /* the view is 320 wide; on a portrait phone it grows taller (see E.setView) */
   const E = EM.engine = {};
 
@@ -26,7 +26,7 @@
 
   /* ------------------------------------------------------------ setup */
   E.init = function (canvas) {
-    cv = canvas; cv.width = VW; cv.height = VH;
+    cv = canvas; cv.width = VW * RS; cv.height = VH * RS;
     g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
   };
   /* a taller view for portrait phones: more of the room above and below you. The player sits a little above
@@ -35,7 +35,7 @@
     h = Math.max(180, Math.min(270, Math.round(h)));
     if (h === VH) return;
     VH = h; camBias = Math.round((VH - 180) * 0.3); E.size.h = VH; maskCanvas = null; maskData = null;
-    if (cv) { cv.height = VH; cv.style.aspectRatio = VW + ' / ' + VH; g = cv.getContext('2d'); g.imageSmoothingEnabled = false; }
+    if (cv) { cv.height = VH * RS; cv.style.aspectRatio = VW + ' / ' + VH; g = cv.getContext('2d'); g.imageSmoothingEnabled = false; }
   };
   E.zone = function () { return Z; };
   E.runtime = function () { return R; };
@@ -52,21 +52,24 @@
 
   /* ------------------------------------------------------------ zone loading */
   function buildStatic(z, variant) {
-    const c = EM.mkCanvas(z.w * TS, z.h * TS); const cg = c.getContext('2d');
+    /* the whole zone in device pixels: RS times the logical size, tiles drawn at 32x32 */
+    const c = EM.mkCanvas(z.w * TS * RS, z.h * TS * RS); const cg = c.getContext('2d'); cg.imageSmoothingEnabled = false;
     const solid = function (x, y) { return EM.isSolidTile(z.get(x, y)); };
     for (let y = 0; y < z.h; y++) for (let x = 0; x < z.w; x++) {
       let t = z.get(x, y);
       if (t === TL.DANCE && variant === 'B') t = 'DANCE_B';
-      EM.drawTile(cg, t, x * TS, y * TS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && z.get(x + dx, y + dy) !== TL.VOID; }, z.theme);
+      EM.drawTile(cg, t, x * TS * RS, y * TS * RS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && z.get(x + dx, y + dy) !== TL.VOID; }, z.theme);
     }
-    if (EM.ART16 && EM.decorate16) EM.decorate16(z, cg, TS);
+    if (EM.decorateZone) EM.decorateZone(z, cg);
+    /* signs: drawn in logical units under the render scale, so the text is the smooth font */
     z.signs.forEach(function (sg, i) {
-      const w = EM.textWidth(sg.text) + 4, h = 9;
-      const sc = EM.mkCanvas(w, h); const sx = sc.getContext('2d');
-      const colr = i % 2 ? z.theme.b : z.theme.a;
-      sx.fillStyle = '#07070A'; sx.fillRect(0, 0, w, h); sx.fillStyle = colr; sx.fillRect(0, 0, w, 1); sx.fillRect(0, h - 1, w, 1); sx.fillRect(0, 0, 1, h); sx.fillRect(w - 1, 0, 1, h);
-      EM.drawText(sx, sg.text, 2, 2, EM.shade(colr, 0.45));
-      cg.drawImage(sc, 0, 0, w, h, sg.x * TS + 1, sg.y * TS + 3, w * sg.scale, h * sg.scale);
+      const w = EM.textWidth(sg.text) + 4, h = 9, colr = i % 2 ? z.theme.b : z.theme.a;
+      cg.save(); cg.scale(RS, RS); cg.translate(sg.x * TS + 1, sg.y * TS + 3); cg.scale(sg.scale, sg.scale);
+      cg.fillStyle = '#07070A'; cg.fillRect(0, 0, w, h);
+      cg.fillStyle = colr; cg.fillRect(0, 0, w, 1); cg.fillRect(0, h - 1, w, 1); cg.fillRect(0, 0, 1, h); cg.fillRect(w - 1, 0, 1, h);
+      cg.fillStyle = 'rgba(255,255,255,0.10)'; cg.fillRect(1, 1, w - 2, 1);
+      EM.drawText(cg, sg.text, 2, 2, EM.shade(colr, 0.45));
+      cg.restore();
     });
     return c;
   }
@@ -452,32 +455,41 @@
   /* ------------------------------------------------------------ drawing */
   function personFrame(moving, t) {
     if (!moving) return 0;
-    return EM.ART16 ? [1, 3, 2, 3][Math.floor(t * 9) & 3] : 1 + (Math.floor(t * 8) & 1);
+    return [1, 3, 2, 3][Math.floor(t * 9) & 3];
   }
 
-  /* 16-bit prototype: a soft pixel shadow under every character (three rows, wider in the middle) */
+  const snap = function (v) { return Math.round(v * RS) / RS; };
+  /* a soft shadow under every character: drawn once into a small sprite, then just blitted */
+  const shadowImgs = {};
+  function shadowImg(w) {
+    if (shadowImgs[w]) return shadowImgs[w];
+    const c = EM.mkCanvas(Math.round((w + 2) * RS), 8 * RS), x = c.getContext('2d');
+    x.fillStyle = 'rgba(6,4,14,0.36)'; x.beginPath(); x.ellipse(c.width / 2, c.height / 2, w / 2 * RS, 1.9 * RS, 0, 0, Math.PI * 2); x.fill();
+    x.fillStyle = 'rgba(6,4,14,0.22)'; x.beginPath(); x.ellipse(c.width / 2, c.height / 2, (w / 2 - 2) * RS, 1.0 * RS, 0, 0, Math.PI * 2); x.fill();
+    c.lw = c.width / RS; c.lh = c.height / RS;
+    return (shadowImgs[w] = c);
+  }
   function blobShadow(cx, feetY, pose) {
-    const x = Math.round(cx), y = Math.round(feetY);
-    const w = pose === 'sit' ? 10 : 12;
-    g.fillStyle = 'rgba(6,4,14,0.34)'; g.fillRect(x - w / 2 + 2, y - 1, w - 4, 1); g.fillRect(x - w / 2, y, w, 1); g.fillRect(x - w / 2 + 2, y + 1, w - 4, 1);
-    g.fillStyle = 'rgba(6,4,14,0.22)'; g.fillRect(x - w / 2 + 3, y, w - 6, 1);
+    const im = shadowImg(pose === 'sit' ? 10 : 12);
+    g.drawImage(im, snap(cx - im.lw / 2), snap(feetY + 0.5 - im.lh / 2), im.lw, im.lh);
   }
   function drawPerson(look, dir, frame, pose, cx, feetY, bob) {
-    if (EM.ART16 && pose !== 'lie') {
+    if (pose !== 'lie') {
       /* frame 3 is the passing step of the 4-phase walk: both feet down, body a pixel higher */
       if (frame === 3) { frame = 0; bob = (bob || 0) - 1; }
       blobShadow(cx, feetY, pose);
     }
-    const spr = EM.person(look, dir, frame, pose);
-    if (pose === 'lie') { g.drawImage(spr, Math.round(cx - spr.width / 2), Math.round(feetY - spr.height + 2)); return; }
-    const bx = Math.round(cx - spr.width / 2), by = Math.round(feetY - 32 + (bob || 0));
-    /* 16-bit idle: every so often the chest and head settle a pixel (breathing), out of step from person to person */
-    if (EM.ART16 && pose === 'stand' && frame === 0 && !bob && ((Math.floor((E.time + cx * 0.043 + feetY * 0.021) / 0.65)) % 4) === 0) {
-      g.drawImage(spr, 0, 0, spr.width, 22, bx, by + 1, spr.width, 22);
-      g.drawImage(spr, 0, 22, spr.width, spr.height - 22, bx, by + 22, spr.width, spr.height - 22);
+    const spr = EM.person(look, dir, frame, pose), lw = spr.lw, lh = spr.lh;
+    if (pose === 'lie') { g.drawImage(spr, snap(cx - lw / 2), snap(feetY - lh + 2), lw, lh); return; }
+    const bx = snap(cx - lw / 2), by = snap(feetY - 32 + (bob || 0) - 1 / RS);
+    /* idle: every so often the chest and head settle half a pixel (breathing), out of step from person to person */
+    if (pose === 'stand' && frame === 0 && !bob && ((Math.floor((E.time + cx * 0.043 + feetY * 0.021) / 0.65)) % 4) === 0) {
+      const cut = 22 * RS;
+      g.drawImage(spr, 0, 0, spr.width, cut, bx, by + 1 / RS, lw, cut / RS);
+      g.drawImage(spr, 0, cut, spr.width, spr.height - cut, bx, by + cut / RS, lw, (spr.height - cut) / RS);
       return;
     }
-    g.drawImage(spr, bx, by);
+    g.drawImage(spr, bx, by, lw, lh);
   }
 
   function npcDraw(e, cam, items) {
@@ -495,7 +507,7 @@
       const pr = typeof d.pair === 'function' ? d.pair(S) : d.pair;
       const a = EM.CAST[pr[0]].look, b = EM.CAST[pr[1]].look;
       const tight = d.pose === 'hug';
-      items.push({ y: sy, fn: function () { drawPerson(a, tight ? 'r' : dir, 0, 'stand', cx - (tight ? 4 : 8), sy, bob); drawPerson(b, tight ? 'l' : dir, 0, 'stand', cx + (tight ? 4 : 8), sy + 0.1, bob); if (tight) { g.drawImage(EM.icon('heart'), Math.round(cx - 4), Math.round(sy - 42 + (odd ? 0 : -1))); } } });
+      items.push({ y: sy, fn: function () { drawPerson(a, tight ? 'r' : dir, 0, 'stand', cx - (tight ? 4 : 8), sy, bob); drawPerson(b, tight ? 'l' : dir, 0, 'stand', cx + (tight ? 4 : 8), sy + 0.1, bob); if (tight) { EM.blit(g, EM.icon('heart'), Math.round(cx - 4), Math.round(sy - 42 + (odd ? 0 : -1))); } } });
     } else if (d.ring) {
       const n = d.ring.length;
       const w = d.box ? d.box.w * 8 : 14;
@@ -511,7 +523,7 @@
     }
     /* talk marker */
     if (d.dlg && !d.decor && !S.res['talked_' + e.id] && !S.res[e.id] && Z.id !== 'darkroom') {
-      items.push({ y: sy + 60, fn: function () { g.drawImage(EM.icon(d.gate ? 'exclam' : 'question'), Math.round(cx - 4), Math.round(sy - 45 + Math.sin(E.time * 4) * 1.5)); } });
+      items.push({ y: sy + 60, fn: function () { EM.blit(g, EM.icon(d.gate ? 'exclam' : 'question'), Math.round(cx - 4), Math.round(sy - 45 + Math.sin(E.time * 4) * 1.5)); } });
     }
   }
 
@@ -521,24 +533,36 @@
     return '#' + ((1 << 24) | (r << 16) | (gg << 8) | bl).toString(16).slice(1);
   }
 
+  /* the sky changes slowly with the night, so it is drawn into a canvas (in device pixels) and reused until the time moves on */
+  let skyCache = { key: '', c: null };
   function drawSky(pw) {
-    /* a dithered gradient: night blue, then violet, then orange and pink as the closing set runs */
-    const prog = EM.clamp((S.time - 430) / 150, 0, 1);
-    const top = lerpHex('#05060F', '#2B3A8A', prog), mid = lerpHex('#0B1030', '#9A4A9A', prog), hor = lerpHex('#0F1538', '#FF8A3D', prog);
-    for (let y = 0; y < 32; y++) {
-      const t = y / 31;
-      const c1 = t < 0.5 ? lerpHex(top, mid, t * 2) : lerpHex(mid, hor, (t - 0.5) * 2);
-      const c2 = lerpHex(c1, hor, 0.25);
-      g.fillStyle = c1; g.fillRect(0, y, pw, 1);
-      g.fillStyle = c2;
-      for (let x = (y & 1); x < pw; x += 2) if (BAYER[(y & 3) * 4 + (x & 3)] / 16 < 0.5) g.fillRect(x, y, 1, 1);
+    const prog = EM.clamp((S.time - 430) / 150, 0, 1), key = pw + '|' + Math.round(prog * 100);
+    if (skyCache.key !== key) {
+      const c = EM.mkCanvas(pw * RS, 56 * RS), k = c.getContext('2d');
+      const top = lerpHex('#05060F', '#2B3A8A', prog), mid = lerpHex('#0B1030', '#9A4A9A', prog), hor = lerpHex('#0F1538', '#FF8A3D', prog);
+      const W = pw * RS, Hh = 32 * RS;
+      /* a dithered gradient: night blue, then violet, then orange and pink as the closing set runs */
+      for (let y = 0; y < Hh; y++) {
+        const t = y / (Hh - 1);
+        const c1 = t < 0.5 ? lerpHex(top, mid, t * 2) : lerpHex(mid, hor, (t - 0.5) * 2);
+        const c2 = lerpHex(c1, hor, 0.25);
+        k.fillStyle = c1; k.fillRect(0, y, W, 1);
+        k.fillStyle = c2;
+        for (let x = (y & 1); x < W; x += 2) if (BAYER[(y & 3) * 4 + (x & 3)] / 16 < 0.5) k.fillRect(x, y, 1, 1);
+      }
+      if (prog > 0.35) {
+        /* the rising sun: a disc with a lit top, then its reflection */
+        const sy = Math.round((36 - prog * 16) * RS), sx = Math.round(W / 2), r = 10 * RS;
+        for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) {
+          const d = Math.hypot(x, y); if (d > r) continue;
+          const v = (y + r) / (2 * r); k.fillStyle = d > r - 2 ? '#FFB020' : (v < 0.4 ? '#FFF2C8' : (v < 0.75 ? '#FFE08A' : '#FFB86A')); k.fillRect(sx + x, sy + y, 1, 1);
+        }
+        k.fillStyle = '#FF7AB8'; k.fillRect(sx - r - 8, sy + r + 2, r * 2 + 16, 2); k.fillStyle = '#FFB020'; k.fillRect(sx - r, sy + r, r * 2, 2);
+      }
+      for (let i = 0; i < 24; i++) { if (prog < 0.8) { k.fillStyle = prog > 0.4 ? '#8A92C8' : '#FFFFFF'; k.fillRect(Math.round(((i * 37) % pw) * RS), Math.round(((i * 11) % 16) * RS), 2, 2); } }
+      skyCache = { key: key, c: c };
     }
-    if (prog > 0.35) {
-      const sy = Math.round(36 - prog * 16), sx = Math.round(pw / 2);
-      g.fillStyle = '#FFE9A8'; g.fillRect(sx - 6, sy - 1, 12, 8); g.fillRect(sx - 4, sy - 3, 8, 2); g.fillRect(sx - 8, sy + 1, 16, 4);
-      g.fillStyle = '#FFB020'; g.fillRect(sx - 8, sy + 5, 16, 2); g.fillStyle = '#FF7AB8'; g.fillRect(sx - 12, sy + 7, 24, 1);
-    }
-    for (let i = 0; i < 24; i++) { if (prog < 0.8) { g.fillStyle = prog > 0.4 ? '#8A92C8' : '#FFFFFF'; g.fillRect((i * 37) % pw, (i * 11) % 16, 1, 1); } }
+    g.drawImage(skyCache.c, 0, 0, pw, 56);
   }
 
   /* low HEALTH blurs the picture (a CSS filter on the canvas: blur grows as HEALTH falls below 40) */
@@ -548,13 +572,14 @@
     if (f !== lastBlur) { lastBlur = f; cv.style.filter = f; }
   }
   E.draw = function () {
+    g.setTransform(RS, 0, 0, RS, 0, 0); g.imageSmoothingEnabled = false; /* everything below is in logical pixels */
     if (!S || !Z) { g.fillStyle = '#0A0A0A'; g.fillRect(0, 0, VW, VH); return; }
     blurForHealth();
     const t = E.time;
     const pw = Z.w * TS, ph = Z.h * TS;
-    let camx = Math.round(S.x - VW / 2), camy = Math.round(S.y - 20 - VH / 2 + camBias);
-    camx = pw <= VW ? Math.round((pw - VW) / 2) : EM.clamp(camx, 0, pw - VW);
-    camy = ph <= VH ? Math.round((ph - VH) / 2) : EM.clamp(camy, 0, ph - VH);
+    let camx = snap(S.x - VW / 2), camy = snap(S.y - 20 - VH / 2 + camBias);
+    camx = pw <= VW ? snap((pw - VW) / 2) : EM.clamp(camx, 0, pw - VW);
+    camy = ph <= VH ? snap((ph - VH) / 2) : EM.clamp(camy, 0, ph - VH);
     let shakeX = 0, shakeY = 0;
     if (!EM.settings.calm) {
       if (L.high() >= 2) shakeX = Math.round(Math.sin(t * 1.3) * 1);
@@ -564,7 +589,7 @@
     g.save(); g.translate(-camx + shakeX, -camy + shakeY);
     const bpos = EM.audio.beatPos();
     const layer = (R.hasDance && (Math.floor(bpos) & 1)) ? R.B : R.A;
-    g.drawImage(layer, 0, 0);
+    g.drawImage(layer, 0, 0, layer.width / RS, layer.height / RS);
 
     if (Z.sky) drawSky(pw);
 
@@ -577,19 +602,19 @@
         const c1 = pulse ? Z.theme.a : EM.shade(Z.theme.a, -0.5);
         g.fillStyle = c1;
         g.fillRect(x + 1, y + 1, w - 2, 1); g.fillRect(x + 1, y + h - 2, w - 2, 1); g.fillRect(x + 1, y + 1, 1, h - 2); g.fillRect(x + w - 2, y + 1, 1, h - 2);
-        g.drawImage(EM.icon('note', pulse ? Z.theme.b : EM.shade(Z.theme.b, -0.5)), x + Math.round(w / 2) - 4, y + Math.round(h / 2) - 4);
+        EM.blit(g, EM.icon('note', pulse ? Z.theme.b : EM.shade(Z.theme.b, -0.5)), x + Math.round(w / 2) - 4, y + Math.round(h / 2) - 4);
       } else if (e.kind === 'rest' && !e.def.strong) {
-        g.drawImage(EM.icon('zzz'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 7);
+        EM.blit(g, EM.icon('zzz'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 7);
       } else if (e.kind === 'water') {
-        g.drawImage(EM.icon('water'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
+        EM.blit(g, EM.icon('water'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
       } else if (e.kind === 'stall' || e.kind === 'sunrise') {
-        g.drawImage(EM.icon('exclam'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 8 + Math.sin(t * 4));
+        EM.blit(g, EM.icon('exclam'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y - 8 + Math.sin(t * 4));
       } else if (e.kind === 'smoke') {
-        g.drawImage(EM.icon('cig', N.org), e.rect.x + 4, e.rect.y + 4);
+        EM.blit(g, EM.icon('cig', N.org), e.rect.x + 4, e.rect.y + 4);
       } else if (e.kind === 'find') {
-        if (Math.floor(t * 2.5) % 3) g.drawImage(EM.icon('spark', N.yel), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 5 + Math.round(Math.sin(t * 5)));
+        if (Math.floor(t * 2.5) % 3) EM.blit(g, EM.icon('spark', N.yel), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 5 + Math.round(Math.sin(t * 5)));
       } else if (e.kind === 'poster') {
-        g.drawImage(EM.icon('question', Z.theme.b), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
+        EM.blit(g, EM.icon('question', Z.theme.b), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
       }
     });
     /* doors: glow */
@@ -599,7 +624,7 @@
       if (ok && Math.floor(t * 2) & 1) {
         g.fillStyle = N.lim; g.fillRect(e.rect.x + Math.round(e.rect.w / 2) - 1, e.rect.y + e.rect.h - 3, 2, 2);
       }
-      if (!ok) { g.drawImage(EM.icon('mute', 'G'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + 4); }
+      if (!ok) { EM.blit(g, EM.icon('mute', 'G'), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + 4); }
     });
 
     /* y-sorted things */
@@ -609,13 +634,13 @@
       npcDraw(e, null, items);
       if (e.def.heart) { /* two people, hand in hand, with a heart between them */
         const hp = npcPos(e), hx = Math.round(hp.x * TS), hfy = Math.round(hp.y * TS + 6);
-        items.push({ y: hfy + 1, fn: function () { g.drawImage(EM.icon('heart', N.mag), hx - 4, hfy - 46 + Math.round(Math.sin(E.time * 3))); } });
+        items.push({ y: hfy + 1, fn: function () { EM.blit(g, EM.icon('heart', N.mag), hx - 4, hfy - 46 + Math.round(Math.sin(E.time * 3))); } });
       }
       if (e.def.smoker) { /* a lit cigarette over their head, and a thread of smoke */
         const sp = npcPos(e), sx = Math.round(sp.x * TS), sfy = Math.round(sp.y * TS + 6);
         items.push({ y: sfy + 1, fn: function () {
           const k = Math.floor(E.time * 4);
-          g.drawImage(EM.icon('cig', N.org), sx - 4, sfy - 44);
+          EM.blit(g, EM.icon('cig', N.org), sx - 4, sfy - 44);
           g.fillStyle = '#9A9AA8'; g.fillRect(sx + ((k + 1) % 3) - 1, sfy - 47 - (k % 3), 1, 1); g.fillRect(sx + (k % 3) - 1, sfy - 50 - (k % 2), 1, 1);
         } });
       }
@@ -663,7 +688,7 @@
 
     /* reactions of the people you asked to move */
     E.reacts.forEach(function (r) {
-      g.drawImage(EM.icon(r.icon, r.icon === 'anger' ? N.red : '#FFFFFF'), Math.round(r.x - 4), Math.round(r.y - 40 - (1.4 - r.t) * 4));
+      EM.blit(g, EM.icon(r.icon, r.icon === 'anger' ? N.red : '#FFFFFF'), Math.round(r.x - 4), Math.round(r.y - 40 - (1.4 - r.t) * 4));
     });
 
     /* interaction hint above target */
@@ -712,22 +737,17 @@
     });
   }
 
+  /* Lighting: computed at logical resolution (cheap) and drawn smoothed up to the render scale, so light falls off softly.
+     Darkness is a dark overlay in six dithered steps; coloured light is added (it lifts the ground under it). */
   let maskCanvas = null, maskData = null, glowCanvas = null, glowData = null;
   function lighting(camx, camy) {
     const shades = !!(S.worn && S.worn.sunglasses);
     const dark = Z.id === 'darkroom' ? 0.985 : (shades ? Math.max(Z.dark, 0.96) : Z.dark);
     const lights = shades ? [] : Z.lights;
     if (dark <= 0 && !lights.length) return;
-    if (!maskCanvas) { maskCanvas = EM.mkCanvas(VW, VH); maskData = maskCanvas.getContext('2d').createImageData(VW, VH); }
-    const d = maskData.data;
-    d.fill(0);
-    /* 16-bit prototype: smooth darkness in six dithered steps, and the coloured light is additive (it lifts the ground under it) */
-    const A16 = !!EM.ART16;
-    let gd = null;
-    if (A16) {
-      if (!glowCanvas || glowCanvas.width !== VW || glowCanvas.height !== VH) { glowCanvas = EM.mkCanvas(VW, VH); glowData = glowCanvas.getContext('2d').createImageData(VW, VH); }
-      gd = glowData.data; gd.fill(0);
-    }
+    if (!maskCanvas || maskCanvas.width !== VW || maskCanvas.height !== VH) { maskCanvas = EM.mkCanvas(VW, VH); maskData = maskCanvas.getContext('2d').createImageData(VW, VH); glowCanvas = EM.mkCanvas(VW, VH); glowData = glowCanvas.getContext('2d').createImageData(VW, VH); }
+    const d = maskData.data, gd = glowData.data;
+    d.fill(0); gd.fill(0);
     const col = Z.theme.a;
     const rgb = function (hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
     const L2 = lights.map(function (l) { return { x: l.x - camx, y: l.y - camy, r: l.r, c: rgb(l.c || col) }; });
@@ -749,27 +769,20 @@
       const lit = Math.max(lf, tl);
       const bay = BAYER[(y & 3) * 4 + (x & 3)] / 16;
       const o = (y * VW + x) * 4;
-      if (A16) {
-        const da = dark > 0 ? dark * (1 - Math.min(1, lit * 1.6)) : 0, dl = da * 6, db = Math.floor(dl), dq = (dl - db > bay ? db + 1 : db) / 6;
-        if (dq > 0) { d[o] = 5; d[o + 1] = 5; d[o + 2] = 8; d[o + 3] = Math.round(255 * dq); }
-        gd[o + 3] = 255;
-        if (lc && Z.id !== 'darkroom') {
-          const gl = Math.pow(lcf, 1.35) * 4, gb = Math.floor(gl), gq = (gl - gb > bay ? gb + 1 : gb) / 4;
-          if (gq > 0) { gd[o] = lc[0] * gq * 0.4; gd[o + 1] = lc[1] * gq * 0.4; gd[o + 2] = lc[2] * gq * 0.4; }
-        }
-        continue;
+      const da = dark > 0 ? dark * (1 - Math.min(1, lit * 1.6)) : 0, dl = da * 6, db = Math.floor(dl), dq = (dl - db > bay ? db + 1 : db) / 6;
+      if (dq > 0) { d[o] = 5; d[o + 1] = 5; d[o + 2] = 8; d[o + 3] = Math.round(255 * dq); }
+      gd[o + 3] = 255;
+      if (lc && Z.id !== 'darkroom') {
+        const gl = Math.pow(lcf, 1.35) * 4, gb = Math.floor(gl), gq = (gl - gb > bay ? gb + 1 : gb) / 4;
+        if (gq > 0) { gd[o] = lc[0] * gq * 0.4; gd[o + 1] = lc[1] * gq * 0.4; gd[o + 2] = lc[2] * gq * 0.4; }
       }
-      if (dark > 0 && bay < dark * (1 - Math.min(1, lit * 1.6))) { d[o] = 5; d[o + 1] = 5; d[o + 2] = 8; d[o + 3] = 255; }
-      else if (lc && bay < lcf * 0.26 && Z.id !== 'darkroom') { d[o] = lc[0]; d[o + 1] = lc[1]; d[o + 2] = lc[2]; d[o + 3] = 255; }
     }
     maskCanvas.getContext('2d').putImageData(maskData, 0, 0);
-    if (A16) {
-      glowCanvas.getContext('2d').putImageData(glowData, 0, 0);
-      g.save(); g.globalCompositeOperation = 'lighter'; g.drawImage(glowCanvas, 0, 0); g.restore(); /* added to the picture first, then the dark steps go on top */
-      g.drawImage(maskCanvas, 0, 0);
-      return;
-    }
-    g.drawImage(maskCanvas, 0, 0);
+    glowCanvas.getContext('2d').putImageData(glowData, 0, 0);
+    g.save(); g.imageSmoothingEnabled = true;
+    g.globalCompositeOperation = 'lighter'; g.drawImage(glowCanvas, 0, 0); /* the light is added to the picture first... */
+    g.globalCompositeOperation = 'source-over'; g.drawImage(maskCanvas, 0, 0); /* ...then the dark steps go on top */
+    g.restore();
   }
 
   /* ------------------------------------------------------------ misc API */
