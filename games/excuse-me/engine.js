@@ -501,6 +501,20 @@
     const pose = d.pose === 'dance' ? (odd ? 'dance' : 'stand') : (d.pose === 'hug' ? 'stand' : d.pose);
     const sy = fy;
     const cast = EM.CAST[e.cast] || EM.CAST.maru;
+    if (d.slit) {
+      /* the rave door: no guard, a black steel door with a slit at eye height (a light moves behind it when you are close) */
+      const x0 = Math.floor(p.x) * TS, y0 = (Math.floor(p.y) - 1) * TS, near = Math.hypot(S.x - cx, S.y - fy) < 40;
+      items.push({ y: sy - 1, fn: function () {
+        g.fillStyle = '#07070A'; g.fillRect(x0, y0, TS, TS);
+        g.fillStyle = '#16161C'; g.fillRect(x0, y0, TS, 1); g.fillRect(x0, y0, 1, TS); g.fillRect(x0 + TS - 1, y0, 1, TS);
+        g.fillStyle = '#0E0E13'; g.fillRect(x0 + 2, y0 + 2, TS - 4, TS - 3);
+        g.fillStyle = '#26262E'; for (let i = 0; i < 4; i++) { g.fillRect(x0 + 3, y0 + 4 + i * 3, 1, 1); g.fillRect(x0 + TS - 4, y0 + 4 + i * 3, 1, 1); }
+        g.fillStyle = '#000'; g.fillRect(x0 + 3, y0 + 5, TS - 6, 2);
+        g.fillStyle = near && Math.floor(E.time * 2) % 5 === 0 ? '#2A2A33' : (near ? '#FFB020' : '#9A6A18'); g.fillRect(x0 + 4, y0 + 5.5, TS - 8, 1);
+      } });
+      if (!S.res['talked_' + e.id] && !S.res[e.id]) items.push({ y: sy + 60, fn: function () { EM.blit(g, EM.icon('exclam'), Math.round(cx - 4), Math.round(y0 - 6 + Math.sin(E.time * 4) * 1.5)); } });
+      return;
+    }
     let dir = d.dir || 'd';
     if (!d.decor && Math.hypot(S.x - cx, S.y - fy) < 40 && !d.pose) { dir = Math.abs(S.x - cx) > Math.abs(S.y - fy) ? (S.x > cx ? 'r' : 'l') : (S.y > fy ? 'd' : 'u'); }
     if (d.pair) {

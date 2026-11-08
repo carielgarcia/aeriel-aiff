@@ -274,7 +274,7 @@
   npc('courtyard', { id: 'maya', x: 22.5, y: 16.5, dlg: 'maya', when: RV });
   npc('main', { id: 'bea', x: 6.5, y: 20.5, dlg: 'bea', when: RV });
   npc('tunnel', { id: 'sub', x: 22.5, y: 5.5, dlg: 'sub', when: RV });
-  npc('doors', { id: 'slot', cast: 'voice', x: 27, y: 4, dlg: 'rave_voice', gate: true, reach: 20, dir: 'd', when: function (s) { return RV(s) && !s.flags.rave_code; } });
+  npc('doors', { id: 'slot', cast: 'voice', x: 27, y: 4, dlg: 'rave_voice', gate: true, slit: true, reach: 20, dir: 'd', when: function (s) { return RV(s) && !s.flags.rave_code; } });
   npc('doors', { id: 'pip', x: 14.5, y: 9.5, dlg: 'pip', when: RV });
   npc('courtyard', { id: 'juniper', x: 30.5, y: 18.5, dlg: 'juniper', when: RV });
   npc('main', { id: 'klaus', x: 24.5, y: 6.5, dlg: 'klaus', when: RV });
