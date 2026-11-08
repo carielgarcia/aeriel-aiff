@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="es" href="https://aeriel.net/juegos/excuse-me">
   <link rel="alternate" hreflang="pt" href="https://aeriel.net/jogos/excuse-me">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
-  <link rel="stylesheet" href="excuse.css?v=7">
+  <link rel="stylesheet" href="excuse.css?v=17">
 </head>
 <body>
 <div id="app">
@@ -56,7 +56,10 @@
   <section id="screen-creator" class="screen" hidden>
     <h2 id="c-title"></h2>
     <div class="creator">
-      <div class="preview"><canvas id="c-preview" width="144" height="272"></canvas></div>
+      <div class="preview" id="c-pv" role="img">
+        <canvas id="c-pv-d" width="144" height="272"></canvas>
+        <div class="pv-small"><canvas id="c-pv-r" width="72" height="136"></canvas><canvas id="c-pv-u" width="72" height="136"></canvas><canvas id="c-pv-w" width="72" height="136"></canvas></div>
+      </div>
       <div class="fields">
         <span id="c-venue-l" class="label"></span>
         <div id="c-venue" class="segs"></div>
@@ -66,7 +69,10 @@
         <span id="c-gender-l" class="label"></span>
         <div id="c-gender" class="segs"></div>
         <p id="c-gnote" class="note"></p>
-        <div id="c-rows"></div>
+        <span id="c-presets-l" class="label"></span>
+        <div id="c-presets" class="segs"></div>
+        <div id="c-tabs" class="tabs" role="tablist"></div>
+        <div id="c-panel"></div>
       </div>
     </div>
     <div class="row">
@@ -118,7 +124,7 @@
         <div id="menu-body"></div>
       </div>
       <div id="dialog" hidden>
-        <div class="who"><canvas id="portrait" width="54" height="60"></canvas><div><strong id="dlg-name"></strong><span id="dlg-role"></span></div></div>
+        <div class="who"><canvas id="portrait" width="68" height="76"></canvas><div><strong id="dlg-name"></strong><span id="dlg-role"></span></div></div>
         <div class="dlg-keys"><button type="button" id="dlg-x" data-aria="back" aria-label="Back">X</button><button type="button" id="dlg-z" class="primary" data-aria="action" aria-label="Action">Z</button></div>
         <div id="dlg-text"></div>
         <div id="dlg-choices"></div>
@@ -150,7 +156,7 @@
   <section id="screen-ending" class="screen" hidden>
     <p id="e-kicker" class="kicker"></p>
     <h1 id="e-title" class="etitle"></h1>
-    <canvas id="e-art" width="160" height="90"></canvas>
+    <canvas id="e-art" width="320" height="180"></canvas>
     <div id="e-text" class="etext"></div>
     <h2 id="e-rep-h"></h2>
     <div class="report">
@@ -164,17 +170,22 @@
   </section>
 
 </div>
-<script src="core.js?v=10"></script>
-<script src="sprites.js?v=3"></script>
+<script src="core.js?v=12"></script>
+<script src="gfx.js?v=1"></script>
+<script src="sprites.js?v=14"></script>
+<script src="tiles.js?v=1"></script>
+<script src="people.js?v=1"></script>
+<script src="people_head.js?v=1"></script>
+<script src="people_draw.js?v=1"></script>
 <script src="audio.js?v=3"></script>
 <script src="world.js?v=3"></script>
 <script src="logic.js?v=10"></script>
 <script src="drugs.js?v=2"></script>
-<script src="engine.js?v=10"></script>
-<script src="ui.js?v=10"></script>
+<script src="engine.js?v=16"></script>
+<script src="ui.js?v=14"></script>
 <script src="items.js?v=3"></script>
-<script src="hud2.js?v=7"></script>
-<script src="rhythm.js?v=11"></script>
+<script src="hud2.js?v=14"></script>
+<script src="rhythm.js?v=14"></script>
 <script src="story_a.js?v=3"></script>
 <script src="story_main.js?v=3"></script>
 <script src="story_friends.js?v=3"></script>
@@ -205,6 +216,6 @@
 <script src="story_v18.js?v=9"></script>
 <script src="story_v19.js?v=10"></script>
 <script src="story_v20.js?v=2"></script>
-<script src="screens.js?v=3"></script>
+<script src="screens.js?v=16"></script>
 </body>
 </html>

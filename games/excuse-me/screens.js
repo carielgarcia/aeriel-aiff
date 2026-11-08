@@ -38,10 +38,6 @@
     final: T('FINAL BARS', 'BARRAS FINALES', 'BARRAS FINAIS'),
     withYou: T('WITH YOU', 'CONTIGO', 'COM VOCÊ'), notWith: T('NOT WITH YOU', 'NO ESTÁ CONTIGO', 'NÃO ESTÁ COM VOCÊ')
   };
-  const PARTS = [
-    ['skin', 6], ['hair', 9], ['hc', 10], ['expr', 6], ['top', 11], ['tc', 12], ['bottom', 6], ['bc', 10], ['acc', 8], ['ac', 9]
-  ];
-
 
   /* accessibility attributes are UI text: translated here (standalone games keep their own dictionary) */
   const ARIA = {
@@ -87,27 +83,74 @@
 
   /* ------------------------------------------------------------ creator */
   let cre = null;
-  const NM = function (arr) { return arr.map(function (x) { return T(x[0], x[1], x[2]); }); };
-  const PART_NAMES = {
-    skin: NM([['PORCELAIN', 'PORCELANA', 'PORCELANA'], ['SAND', 'ARENA', 'AREIA'], ['TAN', 'BRONCEADO', 'BRONZEADO'], ['CARAMEL', 'CARAMELO', 'CARAMELO'], ['BROWN', 'MARRÓN', 'MARROM'], ['DEEP', 'PROFUNDO', 'PROFUNDO']]),
-    hair: NM([['BALD', 'CALVO', 'CARECA'], ['BUZZ', 'RAPADO', 'RASPADO'], ['SHORT', 'CORTO', 'CURTO'], ['LONG', 'LARGO', 'LONGO'], ['AFRO', 'AFRO', 'AFRO'], ['MOHAWK', 'MOHAWK', 'MOHAWK'], ['BUN', 'MOÑO', 'COQUE'], ['BOB', 'BOB', 'BOB'], ['PIGTAILS', 'COLETAS', 'MARIA-CHIQUINHA']]),
-    hc: NM([['BLACK', 'NEGRO', 'PRETO'], ['DARK BROWN', 'CASTAÑO OSCURO', 'CASTANHO ESCURO'], ['BROWN', 'CASTAÑO', 'CASTANHO'], ['BLONDE', 'RUBIO', 'LOURO'], ['GINGER', 'PELIRROJO', 'RUIVO'], ['GREY', 'GRIS', 'CINZA'], ['WHITE', 'BLANCO', 'BRANCO'], ['PINK', 'ROSA', 'ROSA'], ['BLUE', 'AZUL', 'AZUL'], ['TEAL', 'TURQUESA', 'TURQUESA']]),
-    expr: NM([['NEUTRAL', 'NEUTRA', 'NEUTRO'], ['SMILE', 'SONRISA', 'SORRISO'], ['GRIN', 'SONRISOTA', 'SORRISÃO'], ['SMIRK', 'MEDIA SONRISA', 'MEIO SORRISO'], ['TIRED', 'CANSADA', 'CANSADO'], ['WIDE-EYED', 'OJOS ABIERTOS', 'OLHOS ARREGALADOS']]),
-    top: NM([['TEE', 'CAMISETA', 'CAMISETA'], ['TANK', 'MUSCULOSA', 'REGATA'], ['STRIPES', 'RAYAS', 'LISTRAS'], ['HOODIE', 'BUZO', 'MOLETOM'], ['MESH', 'MALLA', 'TELA'], ['HARNESS', 'ARNÉS', 'HARNESS'], ['CROP TOP', 'CROP TOP', 'CROPPED'], ['DRESS', 'VESTIDO', 'VESTIDO'], ['VEST', 'CHALECO', 'COLETE'], ['LEATHER JACKET', 'CHAQUETA DE CUERO', 'JAQUETA DE COURO'], ['CROSS VEST', 'CHALECO CRUZ', 'COLETE CRUZ']]),
-    tc: NM([['WHITE', 'BLANCO', 'BRANCO'], ['BLACK', 'NEGRO', 'PRETO'], ['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['LIME', 'LIMA', 'LIMA'], ['AMBER', 'ÁMBAR', 'ÂMBAR'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['RED', 'ROJO', 'VERMELHO'], ['BLUE', 'AZUL', 'AZUL'], ['TEAL', 'TURQUESA', 'TURQUESA'], ['ORANGE', 'NARANJA', 'LARANJA'], ['CREAM', 'CREMA', 'CREME']]),
-    bottom: NM([['JEANS', 'JEANS', 'JEANS'], ['PANTS', 'PANTALÓN', 'CALÇA'], ['SHORTS', 'SHORTS', 'SHORTS'], ['SKIRT', 'FALDA', 'SAIA'], ['CARGO', 'CARGO', 'CARGO'], ['LEATHER', 'CUERO', 'COURO']]),
-    bc: NM([['DENIM', 'JEAN', 'JEANS'], ['BLACK', 'NEGRO', 'PRETO'], ['GREY', 'GRIS', 'CINZA'], ['WINE', 'VINO', 'VINHO'], ['GREEN', 'VERDE', 'VERDE'], ['BROWN', 'MARRÓN', 'MARROM'], ['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['CREAM', 'CREMA', 'CREME']]),
-    acc: NM([['NONE', 'NADA', 'NADA'], ['SUNGLASSES', 'LENTES', 'ÓCULOS'], ['CAP', 'GORRA', 'BONÉ'], ['BANDANA', 'BANDANA', 'BANDANA'], ['HEADPHONES', 'AURICULARES', 'FONES'], ['CHAINS', 'CADENAS', 'CORRENTES'], ['FACE PAINT', 'PINTURA', 'PINTURA'], ['BEANIE', 'GORRO', 'TOUCA']]),
-    ac: NM([['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['LIME', 'LIMA', 'LIMA'], ['AMBER', 'ÁMBAR', 'ÂMBAR'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['ORANGE', 'NARANJA', 'LARANJA'], ['RED', 'ROJO', 'VERMELHO'], ['TEAL', 'TURQUESA', 'TURQUESA'], ['YELLOW', 'AMARILLO', 'AMARELO']])
+  const CH = EM.CHAR;
+  const GROUP_NAMES = { body: T('BODY', 'CUERPO', 'CORPO'), face: T('FACE', 'CARA', 'ROSTO'), hair: T('HAIR', 'PELO', 'CABELO'), outfit: T('OUTFIT', 'ROPA', 'ROUPA'), extras: T('EXTRAS', 'EXTRAS', 'EXTRAS') };
+  const PART_LABEL = {
+    skin: T('SKIN TONE', 'TONO DE PIEL', 'TOM DE PELE'), build: T('BUILD', 'COMPLEXIÓN', 'FÍSICO'), expr: T('EXPRESSION', 'EXPRESIÓN', 'EXPRESSÃO'),
+    eye: T('EYE COLOUR', 'COLOR DE OJOS', 'COR DOS OLHOS'), fhair: T('FACIAL HAIR', 'VELLO FACIAL', 'PELOS NO ROSTO'),
+    hair: T('HAIRSTYLE', 'PEINADO', 'PENTEADO'), hc: T('HAIR COLOUR', 'COLOR DE PELO', 'COR DO CABELO'),
+    top: T('TOP', 'ARRIBA', 'PARTE DE CIMA'), tc: T('TOP COLOUR', 'COLOR DE ARRIBA', 'COR DA PARTE DE CIMA'),
+    bottom: T('BOTTOMS', 'ABAJO', 'PARTE DE BAIXO'), bc: T('BOTTOMS COLOUR', 'COLOR DE ABAJO', 'COR DA PARTE DE BAIXO'),
+    shoes: T('SHOES', 'CALZADO', 'CALÇADOS'), ac: T('ACCENT COLOUR', 'COLOR DE DETALLES', 'COR DOS DETALHES'),
+    hat: T('HEADWEAR', 'SOMBRERO O GORRA', 'ACESSÓRIO DE CABEÇA'), face: T('FACE EXTRAS', 'EXTRAS DE CARA', 'EXTRAS NO ROSTO'),
+    neck: T('NECK', 'CUELLO', 'PESCOÇO'), ear: T('EARRINGS', 'ARETES', 'BRINCOS')
   };
-  function newLook() { return { skin: 2, hair: 2, hc: 0, expr: 1, top: 0, tc: 2, bottom: 1, bc: 1, acc: 0, ac: 1, wide: false }; }
+  const CS = { presets: T('STYLES', 'ESTILOS', 'ESTILOS'), views: T('Your character from the front, the side, the back and walking', 'Tu personaje de frente, de lado, de espaldas y caminando', 'Seu personagem de frente, de lado, de costas e andando'),
+    colour: T('colour', 'color', 'cor'), on: T('selected', 'elegido', 'selecionado') };
+  /* part -> swatch palette (hex) for the colour parts */
+  const SWATCH = { skin: function () { return EM.SKINS; }, hc: function () { return EM.HAIRS; }, tc: function () { return EM.CLOTHES; }, bc: function () { return EM.BOTTOMS; }, ac: function () { return EM.ACCENTS; }, eye: function () { return EM.EYES; } };
+  /* thumbnail crops [x, y, w, h] in sprite pixels (the sprite is 36x68) */
+  const CROP = { expr: [7, 2, 22, 22], eye: [7, 2, 22, 22], fhair: [7, 2, 22, 22], hair: [4, 0, 28, 28], hat: [4, 0, 28, 28], face: [7, 2, 22, 22], ear: [4, 2, 28, 24], neck: [6, 14, 24, 24], top: [2, 24, 32, 26], bottom: [4, 44, 28, 24], shoes: [4, 56, 28, 12], build: [0, 0, 36, 68] };
+  /* a neutral look to build thumbnails on: only the part being shown changes */
+  const THUMB_BASE = { skin: 2, build: 1, eye: 0, expr: 1, fhair: 0, hair: 2, hc: 1, top: 0, tc: 1, bottom: 1, bc: 1, shoes: 0, ac: 1, hat: 0, face: 0, neck: 0, ear: 0 };
+  const thumbCache = {};
+  function thumb(key, v) {
+    /* the thumbnail shows the option on the player's own skin and hair, so it is easy to picture */
+    const base = Object.assign({}, THUMB_BASE);
+    ['skin', 'build', 'hc', 'tc', 'bc', 'bottom', 'top', 'hair'].forEach(function (k) { if (k !== key && cre.look[k] !== undefined) base[k] = cre.look[k]; });
+    if (key === 'neck' || key === 'ear' || key === 'hat') { base.hair = cre.look.hair; base.hc = cre.look.hc; }
+    if (key === 'hat') base.hair = cre.look.hair;
+    if (key === 'tc') base.top = cre.look.top;
+    if (key === 'bc') base.bottom = cre.look.bottom;
+    if (key === 'hc') base.hair = cre.look.hair === 0 ? 2 : cre.look.hair;
+    if (key === 'shoes') base.bottom = cre.look.bottom;
+    if (key === 'eye' || key === 'expr' || key === 'fhair' || key === 'face') { base.hair = cre.look.hair; }
+    base[key] = v;
+    const ck = key + v + '|' + CH.keys.map(function (k) { return base[k]; }).join(',');
+    if (thumbCache[ck]) return thumbCache[ck];
+    const spr = EM.person(base, 'd', 0, 'stand');
+    const r = CROP[key] || CROP.top;
+    const cv = document.createElement('canvas'); cv.width = 44; cv.height = 44;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.fillStyle = '#16161C'; g.fillRect(0, 0, 44, 44);
+    const sc = Math.min(44 / r[2], 44 / r[3]);
+    const dw = r[2] * sc, dh = r[3] * sc;
+    g.drawImage(spr, r[0], r[1], r[2], r[3], (44 - dw) / 2, (44 - dh) / 2, dw, dh);
+    thumbCache[ck] = cv;
+    return cv;
+  }
+  function optName(key, v) { const nm = CH.names[key] && CH.names[key][v]; return nm ? EM.tr(nm) : (v + 1) + ''; }
+  /* presets: partial looks over a base; epicene names */
+  const PRESETS = [
+    [T('RAVER', 'RAVERO', 'RAVER'), { skin: 3, build: 1, expr: 2, hair: 11, hc: 7, top: 4, tc: 3, bottom: 7, bc: 1, shoes: 1, ac: 0, hat: 0, face: 4, neck: 1, ear: 2 }],
+    [T('EVERYDAY', 'DE TODOS LOS DÍAS', 'DO DIA A DIA'), { skin: 1, build: 1, expr: 1, hair: 2, hc: 2, top: 0, tc: 8, bottom: 0, bc: 0, shoes: 0, ac: 3, hat: 0, face: 0, neck: 0, ear: 0 }],
+    [T('SOFT', 'SUAVE', 'SUAVE'), { skin: 6, build: 0, expr: 6, hair: 19, hc: 12, top: 12, tc: 14, bottom: 8, bc: 9, shoes: 4, ac: 4, hat: 9, face: 5, neck: 0, ear: 1 }],
+    [T('PUNK', 'PUNK', 'PUNK'), { skin: 0, build: 1, expr: 9, hair: 5, hc: 7, top: 9, tc: 1, bottom: 5, bc: 1, shoes: 1, ac: 6, hat: 0, face: 0, neck: 3, ear: 2 }],
+    [T('TOURIST', 'TURISTA', 'TURISTA'), { skin: 2, build: 1, expr: 5, hair: 2, hc: 3, top: 11, tc: 11, bottom: 2, bc: 12, shoes: 4, ac: 5, hat: 7, face: 2, neck: 4, ear: 0 }],
+    [T('ARTIST', 'ARTISTA', 'ARTISTA'), { skin: 8, build: 1, expr: 3, hair: 14, hc: 16, top: 17, tc: 6, bottom: 6, bc: 8, shoes: 5, ac: 4, hat: 6, face: 3, neck: 2, ear: 1 }],
+    [T('SPORT', 'DEPORTIVO', 'ESPORTIVO'), { skin: 4, build: 2, expr: 2, hair: 10, hc: 0, top: 14, tc: 8, bottom: 7, bc: 2, shoes: 2, ac: 1, hat: 2, face: 6, neck: 0, ear: 0 }],
+    [T('GLAM', 'GLAM', 'GLAM'), { skin: 9, build: 0, expr: 3, hair: 12, hc: 13, top: 15, tc: 5, bottom: 8, bc: 10, shoes: 3, ac: 8, hat: 0, face: 4, neck: 3, ear: 3 }]
+  ];
+  function newLook() { return Object.assign({}, THUMB_BASE, { skin: 2, hair: 2, hc: 1, top: 0, tc: 8, bottom: 0, bc: 0, ac: 3 }); }
 
   U.openCreator = function () {
-    cre = { look: newLook(), gender: 'x', name: '', venue: 'club' };
+    cre = { look: newLook(), gender: 'x', name: '', venue: 'club', tab: 'body' };
     U.mode = 'creator';
     U.screen('creator');
     buildCreator();
   };
+  let walkTimer = null;
+  function stopWalk() { if (walkTimer) { clearInterval(walkTimer); walkTimer = null; } }
   function buildCreator() {
     $('#c-title').textContent = EM.tr(S.creatorTitle);
     $('#c-name-l').textContent = EM.tr(S.name);
@@ -128,39 +171,91 @@
       b.addEventListener('click', function () { cre.gender = g[0]; buildCreator(); });
       gbox.appendChild(b);
     });
-    const rows = $('#c-rows'); rows.textContent = '';
-    PARTS.forEach(function (p) {
-      const key = p[0], n = p[1];
-      const row = el('div', 'crow'); row.setAttribute('role', 'group'); row.tabIndex = 0; row.setAttribute('aria-label', EM.tr(S[key]));
-      row.appendChild(el('span', 'cl', EM.tr(S[key])));
-      const prev = el('button', '', '◀'); prev.type = 'button'; prev.setAttribute('aria-label', EM.tr(S[key]) + ' −');
-      const next = el('button', '', '▶'); next.type = 'button'; next.setAttribute('aria-label', EM.tr(S[key]) + ' +');
-      const val = el('span', 'cv', '');
-      function upd() {
-        const v = cre.look[key];
-        const nm = PART_NAMES[key][v];
-        val.textContent = (nm ? EM.tr(nm) : (v + 1) + '') + '  ' + (v + 1) + '/' + n;
-        if (key === 'skin' || key === 'hc' || key === 'tc' || key === 'bc' || key === 'ac') {
-          const hex = key === 'skin' ? EM.SKINS[v] : (key === 'hc' ? EM.HAIRS[v] : (key === 'tc' ? EM.CLOTHES[v] : (key === 'bc' ? EM.BOTTOMS[v] : [EM.NEON.mag, EM.NEON.cyn, EM.NEON.lim, EM.NEON.amb, EM.NEON.vio, EM.NEON.org, EM.NEON.red, EM.NEON.teal, EM.NEON.yel][v])));
-          val.style.borderLeft = '14px solid ' + hex;
-        }
-      }
-      function step(d) { cre.look[key] = (cre.look[key] + d + n) % n; upd(); drawPreview(); EM.audio.blip('move'); }
-      prev.addEventListener('click', function () { step(-1); }); next.addEventListener('click', function () { step(1); });
-      row.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); } else if (e.key === 'ArrowRight') { e.preventDefault(); step(1); } });
-      row.appendChild(prev); row.appendChild(val); row.appendChild(next);
-      upd(); rows.appendChild(row);
+    $('#c-presets-l').textContent = EM.tr(CS.presets);
+    const pbox = $('#c-presets'); pbox.textContent = '';
+    PRESETS.forEach(function (p) {
+      const b = el('button', 'seg', EM.tr(p[0])); b.type = 'button';
+      b.addEventListener('click', function () { cre.look = Object.assign({}, THUMB_BASE, p[1]); EM.audio.blip('move'); buildCreator(); });
+      pbox.appendChild(b);
     });
+    $('#c-pv').setAttribute('aria-label', EM.tr(CS.views));
+    buildTabs();
     $('#c-rand').textContent = EM.tr(S.rand); $('#c-go').textContent = EM.tr(S.go); $('#c-back').textContent = EM.tr(S.back);
     drawPreview();
     U.postHeight();
   }
+  function buildTabs() {
+    const tabs = $('#c-tabs'); tabs.textContent = '';
+    CH.groups.forEach(function (gr) {
+      const b = el('button', 'tab' + (cre.tab === gr[0] ? ' on' : ''), EM.tr(GROUP_NAMES[gr[0]])); b.type = 'button';
+      b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', cre.tab === gr[0] ? 'true' : 'false'); b.id = 'ctab-' + gr[0];
+      b.addEventListener('click', function () { cre.tab = gr[0]; buildTabs(); U.postHeight(); });
+      tabs.appendChild(b);
+    });
+    const panel = $('#c-panel'); panel.textContent = '';
+    panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', 'ctab-' + cre.tab);
+    const gr = CH.groups.filter(function (g) { return g[0] === cre.tab; })[0];
+    gr[1].forEach(function (key) { panel.appendChild(buildPart(key)); });
+  }
+  function buildPart(key) {
+    const sec = el('div', 'cpart');
+    const head = el('div', 'chead'); head.appendChild(el('span', 'cl', EM.tr(PART_LABEL[key])));
+    const cur = el('span', 'cv', optName(key, cre.look[key]));
+    head.appendChild(cur); sec.appendChild(head);
+    const grid = el('div', 'cgrid' + (SWATCH[key] ? ' sw' : '')); grid.setAttribute('role', 'radiogroup'); grid.setAttribute('aria-label', EM.tr(PART_LABEL[key]));
+    const n = CH.sizes[key];
+    const order = (CH.order && CH.order[key]) || Array.apply(null, { length: n }).map(function (_, i) { return i; });
+    const btns = [];
+    order.forEach(function (v) {
+      const b = el('button', 'opt' + (cre.look[key] === v ? ' sel' : '')); b.type = 'button';
+      b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', cre.look[key] === v ? 'true' : 'false');
+      b.setAttribute('aria-label', EM.tr(PART_LABEL[key]) + ': ' + optName(key, v)); b.title = optName(key, v);
+      b.tabIndex = cre.look[key] === v ? 0 : -1;
+      if (SWATCH[key]) { const hex = SWATCH[key]()[v]; b.style.background = hex; b.classList.add('swb'); }
+      else b.appendChild(thumb(key, v));
+      b.addEventListener('click', function () { choose(key, v, grid, cur); });
+      b.addEventListener('keydown', function (e) {
+        const i = btns.indexOf(b); let j = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = (i + 1) % btns.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = (i - 1 + btns.length) % btns.length;
+        if (j >= 0) { e.preventDefault(); btns[j].focus(); btns[j].click(); btns[j].focus(); }
+      });
+      btns.push(b); grid.appendChild(b);
+    });
+    sec.appendChild(grid);
+    return sec;
+  }
+  function choose(key, v, grid, cur) {
+    cre.look[key] = v;
+    cur.textContent = optName(key, v);
+    EM.audio.blip('move');
+    /* redraw thumbnails of parts that depend on this one (hair colour changes every hairstyle, etc.) */
+    buildTabs(); drawPreview();
+    const keep = $('#c-panel').querySelector('.opt.sel'); if (keep && keep.scrollIntoView) { /* keep focus on the chosen option */ keep.focus({ preventScroll: true }); }
+  }
+  const VIEWS = [['c-pv-d', 'd', 4], ['c-pv-r', 'r', 2], ['c-pv-u', 'u', 2], ['c-pv-w', 'd', 2]];
   function drawPreview() {
-    const cv = $('#c-preview'); const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
-    g.fillStyle = '#0A0A0D'; g.fillRect(0, 0, cv.width, cv.height);
-    g.fillStyle = '#16161C'; g.fillRect(0, cv.height - 22, cv.width, 22);
-    const spr = EM.person(cre.look, 'd', 0, 'stand');
-    g.drawImage(spr, 0, 0, spr.width * 8, spr.height * 8);
+    VIEWS.forEach(function (v) {
+      const cv = $('#' + v[0]); if (!cv) return; const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+      g.fillStyle = '#0A0A0D'; g.fillRect(0, 0, cv.width, cv.height);
+      g.fillStyle = '#16161C'; g.fillRect(0, cv.height - 5 * v[2], cv.width, 5 * v[2]);
+      if (v[0] === 'c-pv-w') return;
+      const spr = EM.person(cre.look, v[1], 0, 'stand');
+      g.drawImage(spr, 0, 0, spr.width * v[2], spr.height * v[2]);
+    });
+    stopWalk();
+    let f = 0; const seq = [1, 3, 2, 3];
+    const cv = $('#c-pv-w'); const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    function frame() {
+      if (U.mode !== 'creator') { stopWalk(); return; }
+      g.fillStyle = '#0A0A0D'; g.fillRect(0, 0, cv.width, cv.height);
+      g.fillStyle = '#16161C'; g.fillRect(0, cv.height - 10, cv.width, 10);
+      const fr = seq[f++ % 4];
+      const spr = EM.person(cre.look, 'r', fr, 'stand');
+      g.drawImage(spr, 0, (fr === 3 ? -2 : 0), spr.width * 2, spr.height * 2);
+    }
+    frame();
+    if (!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches) walkTimer = setInterval(frame, 220);
   }
   function cleanName(s) {
     s = (s || '').replace(/[^A-Za-zÀ-ÿ0-9 '\-.]/g, '').replace(/\s+/g, ' ').trim().slice(0, 12);
@@ -170,12 +265,13 @@
   function bindCreator() {
     $('#c-name').addEventListener('input', function (e) { cre.name = e.target.value; });
     $('#c-rand').addEventListener('click', function () {
-      PARTS.forEach(function (p) { cre.look[p[0]] = Math.floor(Math.random() * p[1]); });
+      cre.look = Object.assign({}, THUMB_BASE, CH.random());
       buildCreator();
     });
     $('#c-back').addEventListener('click', U.toTitle);
     $('#c-go').addEventListener('click', function () {
       const player = { name: cleanName($('#c-name').value), gender: cre.gender, look: Object.assign({}, cre.look) };
+      stopWalk();
       U.startNight(player, { venue: cre.venue });
     });
   }
@@ -284,14 +380,23 @@
 
   function drawEndingArt(kind) {
     const cv = $('#e-art'); const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
-    const W = cv.width, H = cv.height, N = EM.NEON;
+    const RS = EM.RS; g.setTransform(RS, 0, 0, RS, 0, 0); /* drawn in logical pixels (160x90) on a canvas RS times bigger */
+    const W = cv.width / RS, H = cv.height / RS, N = EM.NEON;
     const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
     function fill(c, x, y, w, h) { g.fillStyle = c; g.fillRect(x, y, w, h); }
-    function dither(x, y, w, h, dens, c1, c2) { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) { g.fillStyle = B[((y + j) & 3) * 4 + ((x + i) & 3)] / 16 < dens ? c1 : c2; g.fillRect(x + i, y + j, 1, 1); } }
+    function dither(x, y, w, h, dens, c1, c2) { /* in device pixels, so the dots are as fine as the characters */
+      g.save(); g.scale(1 / RS, 1 / RS);
+      for (let j = 0; j < h * RS; j++) for (let i = 0; i < w * RS; i++) { g.fillStyle = B[((y * RS + j) & 3) * 4 + ((x * RS + i) & 3)] / 16 < dens ? c1 : c2; g.fillRect(x * RS + i, y * RS + j, 1, 1); }
+      g.restore();
+    }
     function gradient(y0, y1, top, bot) { for (let y = y0; y < y1; y++) { const t = (y - y0) / Math.max(1, y1 - y0 - 1); const n = 4; const k = Math.min(n - 1, Math.floor(t * n)); const f = t * n - k; const c1 = lerp(top, bot, k / n), c2 = lerp(top, bot, (k + 1) / n); for (let x = 0; x < W; x++) { g.fillStyle = B[(y & 3) * 4 + (x & 3)] / 16 < f ? c2 : c1; g.fillRect(x, y, 1, 1); } } }
     function lerp(a, b, t) { const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16); const r = Math.round((pa >> 16 & 255) + ((pb >> 16 & 255) - (pa >> 16 & 255)) * t), gg = Math.round((pa >> 8 & 255) + ((pb >> 8 & 255) - (pa >> 8 & 255)) * t), bl = Math.round((pa & 255) + ((pb & 255) - (pa & 255)) * t); return '#' + ((1 << 24) | (r << 16) | (gg << 8) | bl).toString(16).slice(1); }
     const player = EM.state.player.look;
-    function person(look, x, feetY, dir, pose) { const sp = EM.person(look, dir || 'd', 0, pose || 'stand'); g.drawImage(sp, Math.round(x - sp.width / 2), Math.round(feetY - (pose === 'sit' ? sp.height - 2 : 32))); }
+    function person(look, x, feetY, dir, pose) {
+      const sp = EM.person(look, dir || 'd', 0, pose || 'stand'), sn = function (v) { return Math.round(v * RS) / RS; };
+      g.fillStyle = 'rgba(6,4,14,0.4)'; g.beginPath(); g.ellipse(x, feetY + 0.5, 6, 1.9, 0, 0, Math.PI * 2); g.fill();
+      g.drawImage(sp, sn(x - sp.lw / 2), sn(feetY - (pose === 'sit' ? sp.lh - 2 : 32) - 1 / RS), sp.lw, sp.lh);
+    }
     function skyline(baseY, seed) { for (let i = 0; i < 12; i++) { const w = 10 + (i * 7 + seed) % 12, h = 14 + (i * 13 + seed) % 22, x = i * 14 - 4; fill('#0B0B14', x, baseY - h, w, h); for (let k = 0; k < 6; k++) { const wx = x + 2 + (k * 5) % (w - 3), wy = baseY - h + 3 + (k * 7) % (h - 6); if (EM.hash2(i, k, seed) > 0.55) fill(N.yel, wx, wy, 1, 2); } } }
     fill('#07070C', 0, 0, W, H);
     if (kind.indexOf('sunrise') === 0) {
