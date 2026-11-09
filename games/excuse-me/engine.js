@@ -492,6 +492,16 @@
     g.drawImage(spr, bx, by, lw, lh);
   }
 
+  let seekNow = {};
+  /* the golden star: pulses above whoever you are looking for (or just found) */
+  function drawStar(cx, topY) {
+    const k = Math.floor(E.time * 5) % 4, bob = Math.sin(E.time * 4) * 1.5;
+    const ic = EM.icon('star', '#FFD23F'); g.drawImage(ic, Math.round(cx - 6.5), Math.round(topY - 3 + bob), 13, 13);
+    g.fillStyle = '#FFF2C8';
+    if (k === 0) g.fillRect(Math.round(cx + 7), Math.round(topY + bob), 1, 1);
+    if (k === 1) g.fillRect(Math.round(cx - 8), Math.round(topY + 3 + bob), 1, 1);
+    if (k === 2) g.fillRect(Math.round(cx + 6), Math.round(topY + 8 + bob), 1, 1);
+  }
   function npcDraw(e, cam, items) {
     const p = npcPos(e), d = e.def;
     const cx = p.x * TS, fy = p.y * TS + 6;
@@ -535,8 +545,12 @@
       const look = cast.look;
       items.push({ y: sy, fn: function () { drawPerson(look, dir, 0, pose, cx, sy, bob); } });
     }
+    /* the golden star for someone you are looking for (or just found) */
+    const sk = seekNow[e.friend || e.id];
+    const fnd = EM.found && EM.found.until > E.time && EM.found.id === (e.friend || e.id);
+    if ((sk && sk.zone === Z.id) || fnd) { items.push({ y: sy + 60, fn: function () { drawStar(cx, sy - 56); } }); }
     /* talk marker */
-    if (d.dlg && !d.decor && !S.res['talked_' + e.id] && !S.res[e.id] && Z.id !== 'darkroom') {
+    else if (d.dlg && !d.decor && !S.res['talked_' + e.id] && !S.res[e.id] && Z.id !== 'darkroom') {
       items.push({ y: sy + 60, fn: function () { EM.blit(g, EM.icon(d.gate ? 'exclam' : 'question'), Math.round(cx - 4), Math.round(sy - 45 + Math.sin(E.time * 4) * 1.5)); } });
     }
   }
@@ -587,6 +601,7 @@
   }
   E.draw = function () {
     g.setTransform(RS, 0, 0, RS, 0, 0); g.imageSmoothingEnabled = false; /* everything below is in logical pixels */
+    seekNow = EM.seekTargets ? EM.seekTargets(S) : {};
     if (!S || !Z) { g.fillStyle = '#0A0A0A'; g.fillRect(0, 0, VW, VH); return; }
     blurForHealth();
     const t = E.time;
@@ -667,7 +682,7 @@
       const cast = EM.CAST[f];
       const moving = E.moving && idx < trail.length - 1;
       const fr = personFrame(moving, t + i);
-      items.push({ y: p.y, fn: function () { drawPerson(cast.look, p.d, fr, 'stand', p.x, p.y, 0); } });
+      items.push({ y: p.y, fn: function () { drawPerson(cast.look, p.d, fr, 'stand', p.x, p.y, 0); if (EM.found && EM.found.id === f && EM.found.until > E.time) drawStar(p.x, p.y - 56); } });
     });
 
     /* player: the one with the white outline */
@@ -718,6 +733,8 @@
     /* light: coloured dither halos, and darkness */
     lighting(camx + shakeX, camy + shakeY);
 
+    seekArrows(camx + shakeX, camy + shakeY, list);
+
     /* the dark room: faint embers where people breathe, a thread of light under the curtain */
     if (Z.id === 'darkroom') darkroomCues(camx + shakeX, camy + shakeY, list);
 
@@ -732,6 +749,63 @@
       }
     }
   };
+
+
+  /* arrows toward the people you are looking for: to the person if they are in this room and off screen,
+     otherwise to the exit that leads toward the room they went to */
+  function zoneRoute(from, to) {
+    if (from === to) return null;
+    const prev = {}; prev[from] = null; const q = [from];
+    while (q.length) {
+      const z = q.shift();
+      const zz = EM.zones[z]; if (!zz) continue;
+      for (let i = 0; i < zz.ents.length; i++) {
+        const e = zz.ents[i];
+        if (e.type !== 'door' || prev[e.to] !== undefined) continue;
+        prev[e.to] = { z: z, door: e };
+        if (e.to === to) { let c = prev[to]; while (c.z !== from) c = prev[c.z]; return c.door; }
+        q.push(e.to);
+      }
+    }
+    return null;
+  }
+  function seekArrows(camx, camy, list) {
+    const keys = Object.keys(seekNow); if (!keys.length) return;
+    const marks = {};
+    keys.forEach(function (k, n) {
+      const sk = seekNow[k]; let wx, wy;
+      if (sk.zone === Z.id) {
+        const e = list.filter(function (x) { return (x.friend || x.id) === k; })[0];
+        if (!e) return;
+        const p = npcPos(e); wx = p.x * TS; wy = p.y * TS - 20;
+      } else {
+        const d = zoneRoute(Z.id, sk.zone); if (!d) return;
+        const r = d.rect || { x: d.x * TS, y: d.y * TS, w: d.w * TS, h: d.h * TS };
+        wx = r.x + r.w / 2; wy = r.y + r.h / 2;
+      }
+      const sx = wx - camx, sy = wy - camy, m = 14;
+      const on = sx > m && sx < VW - m && sy > m + 6 && sy < VH - m;
+      if (on && sk.zone === Z.id) return;
+      let ax, ay, ang;
+      if (on) { ax = sx; ay = sy - 18 + Math.sin(E.time * 5) * 2; ang = Math.PI / 2; }
+      else {
+        const cxm = VW / 2, cym = VH / 2, dx = sx - cxm, dy = sy - cym;
+        const kx = dx ? (VW / 2 - m) / Math.abs(dx) : 1e9, ky = dy ? (VH / 2 - m - 6) / Math.abs(dy) : 1e9, kk = Math.min(kx, ky);
+        ax = cxm + dx * kk; ay = cym + dy * kk; ang = Math.atan2(dy, dx);
+        const push = Math.sin(E.time * 5) * 1.5; ax += Math.cos(ang) * push; ay += Math.sin(ang) * push;
+      }
+      const key = Math.round(ax / 6) + ',' + Math.round(ay / 6);
+      if (marks[key]) marks[key].label += (sk.label || ''); else marks[key] = { ax: ax, ay: ay, ang: ang, label: sk.label || '' };
+    });
+    Object.keys(marks).forEach(function (mk) {
+      const m = marks[mk];
+      g.save(); g.translate(m.ax, m.ay); g.rotate(m.ang);
+      g.fillStyle = '#0A0A0A'; g.beginPath(); g.moveTo(8, 0); g.lineTo(-5, -7); g.lineTo(-2, 0); g.lineTo(-5, 7); g.closePath(); g.fill();
+      g.fillStyle = '#FFD23F'; g.beginPath(); g.moveTo(6.5, 0); g.lineTo(-3.5, -5.2); g.lineTo(-1, 0); g.lineTo(-3.5, 5.2); g.closePath(); g.fill();
+      g.restore();
+      if (m.label) EM.drawText(g, m.label, Math.round(m.ax - Math.cos(m.ang) * 11 - m.label.length * 2), Math.round(m.ay - Math.sin(m.ang) * 11 - 3), '#FFD23F');
+    });
+  }
 
   function darkroomCues(camx, camy, list) {
     list.forEach(function (e) {

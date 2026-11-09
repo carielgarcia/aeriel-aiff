@@ -63,7 +63,7 @@
     if (mode === 'open' || mode === 'deadpan' || mode === 'worry') {
       S.rect(x, y, 4, 1, DARKLASH);
       S.px(x, y + 1, W); S.px(x + 1, y + 1, I); S.px(x + 2, y + 1, I); S.px(x + 3, y + 1, W);
-      S.px(x, y + 2, W); S.px(x + 1, y + 2, Id); S.px(x + 2, y + 2, Id); S.px(x + 3, y + 2, W);
+      S.px(x, y + 2, W); S.px(x + 1, y + 2, EM.shade(I, -0.28)); S.px(x + 2, y + 2, EM.shade(I, -0.28)); S.px(x + 3, y + 2, W);
       if (mode !== 'deadpan') { S.px(x, y + 3, sk.s); S.px(x + 1, y + 3, Wd); S.px(x + 2, y + 3, Wd); S.px(x + 3, y + 3, sk.s); }
       S.px(x + (flip ? 2 : 1), y + 1, '#FFFFFF');
     } else if (mode === 'wide') {
@@ -200,8 +200,10 @@
     { cap: 1, hl: 12, sides: 1, pomp: 1 },
     { cap: 1, hl: 13, sides: 3, fringe: 'part', back: 3, bun: 'small' }
   ];
+  P.HAIR = HAIR;
   /* what each hat covers: 'full' hides the crown and the fringe, 'band' leaves hair above it, 'none' sits on top of or around the hair */
   const HATCOVER = ['none', 'full', 'full', 'band', 'none', 'full', 'none', 'full', 'none', 'none'];
+  P.HATCOVER = HATCOVER;
   P.hairParams = function (K) {
     const p = Object.assign({}, HAIR[K.hair % HAIR.length]);
     const cover = HATCOVER[K.hat] || 'none';
@@ -403,7 +405,7 @@
     } else if (h === 9) {
       const pts = view === 's' ? [[8, 13], [11, 10], [15, 9], [19, 10], [22, 12]] : [[8, 14], [10, 11], [13, 9], [16, 8], [19, 9], [22, 11], [24, 14]];
       pts.forEach(function (p, i) { const cs = ['#FF9CC4', '#FFFFFF', '#FFD23F', '#C9A0FF'][i % 4]; S.rect(p[0] - 1, p[1] - 1, 3, 3, '#2E8B4A'); S.rect(p[0], p[1], 2, 2, cs); S.px(p[0], p[1], '#FFF6D0'); });
-    }
+    } else if (P.hatExtra) P.hatExtra(S, K, G, dome);
   }
   function glasses(S, K, G) {
     const f = K.face; if (!f) return;
@@ -438,13 +440,13 @@
 
   /* ears: earrings */
   function earrings(S, K, G) {
-    const e = K.ear; if (!e || G.view === 'b' && false) return;
-    const gold = '#FFC83D', gh = '#FFF0A0';
+    const e = K.ear; if (!e) return;
+    const gold = '#FFC83D', gh = '#FFF6B8', gd = '#B8841A';
     const at = G.view === 's' ? [[12, 23]] : [[6, 23], [25, 23]];
     at.forEach(function (p) {
-      if (e === 1) { S.px(p[0], p[1], gold); S.px(p[0], p[1] - 1, gh); }
-      if (e === 2) { S.px(p[0], p[1], gold); S.px(p[0] - 1, p[1] + 1, gold); S.px(p[0] + 1, p[1] + 1, gold); S.px(p[0], p[1] + 2, gold); S.px(p[0] - 1, p[1] + 1, gh); }
-      if (e === 3) { S.px(p[0], p[1], gold); S.px(p[0], p[1] + 1, gold); S.px(p[0], p[1] + 2, K.accent); S.px(p[0], p[1] + 3, K.accent); S.px(p[0], p[1] + 2, gh); }
+      if (e === 1) { S.rect(p[0] - 1, p[1], 2, 2, gold); S.px(p[0] - 1, p[1], gh); S.px(p[0], p[1] + 1, gd); }
+      if (e === 2) { for (let a = 0; a < 16; a++) { const ang = a / 16 * Math.PI * 2; S.px(Math.round(p[0] - 0.5 + Math.cos(ang) * 2.6), Math.round(p[1] + 2.6 + Math.sin(ang) * 2.6), a < 5 ? gh : (a < 11 ? gold : gd)); } }
+      if (e === 3) { S.rect(p[0] - 1, p[1], 2, 2, gold); S.px(p[0] - 1, p[1], gh); S.rect(p[0] - 1, p[1] + 2, 2, 1, gold); S.rect(p[0] - 1, p[1] + 3, 2, 3, K.accent); S.px(p[0] - 1, p[1] + 3, '#FFFFFF'); S.rect(p[0] - 1, p[1] + 6, 2, 1, EM.shade(K.accent, -0.4)); }
     });
   }
 
@@ -453,7 +455,9 @@
     neck(S, K, G);
     skinHead(S, K, G);
     face(S, K, G);
+    if (P.makeup) P.makeup(S, K, G);
     facialHair(S, K, G);
+    if (P.pierce) P.pierce(S, K, G);
     earrings(S, K, G);
     hairFront(S, K, G);
     hat(S, K, G);

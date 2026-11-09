@@ -204,6 +204,7 @@
       case 16: { sl = { len: 8, R: ac }; base(ac); if (fr) { S.rectS(x0 + 2, 38, w - 4, 11, Rt); S.rect(x0 + 2, 31, 2, 8, Rt.b); S.rect(x1 - 3, 31, 2, 8, Rt.b); S.px(x0 + 2, 38, '#E8E8F0'); S.px(x1 - 2, 38, '#E8E8F0'); S.rect(15, 41, 3, 3, Rt.s); S.rect(15, 41, 3, 1, Rt.h); } else { S.rectS(x0 + 2, 38, w - 4, 11, Rt); S.rect(x0 + 2, 31, 2, 8, Rt.b); S.rect(x1 - 3, 31, 2, 8, Rt.b); } break; }
       case 17: { const Rc = EM.ramp('#F0E9DA'); sl = { len: 18, R: Rt, cuff: Rt.s }; base(Rt); if (fr) { S.rectS(13, 32, 6, 17, Rc); S.rect(12, 32, 1, 17, Rt.s2); S.rect(19, 32, 1, 17, Rt.s2); [36, 41].forEach(function (y) { S.px(12, y, '#E0E0E8'); S.px(19, y, '#E0E0E8'); }); } hem(Rt.s, 2); break; }
     }
+    if (P.topExtra && t >= 18) { const r = P.topExtra(S, K, G, t, { base: base, skinTorso: skinTorso }); if (r) sl = r; }
     if (view === 's') { const far = {}; }
     return sl;
   }
@@ -249,6 +250,8 @@
       arm(S, K, G, cx + G.swing, 32, sl, false);
     } else armsFront(S, K, G, sl);
     emblem(S, K, G);
+    if (P.wrist) P.wrist(S, K, G);
+    if (P.bag) P.bag(S, K, G, sl);
     neckAcc(S, K, G);
     if (view === 'b') P.hairBack(S, K, G);
     P.head(S, K, G);

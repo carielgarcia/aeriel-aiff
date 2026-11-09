@@ -32,14 +32,17 @@
     fhair: NM([['NONE', 'NADA', 'NADA'], ['STUBBLE', 'BARBA DE DÍAS', 'BARBA POR FAZER'], ['MOUSTACHE', 'BIGOTE', 'BIGODE'], ['GOATEE', 'PERILLA', 'BODE'], ['FULL BEARD', 'BARBA', 'BARBA CHEIA'], ['SOUL PATCH', 'MOSCA', 'MOSCA']]),
     hair: NM([['BALD', 'CALVO', 'CARECA'], ['BUZZ', 'RAPADO', 'RASPADO'], ['SHORT', 'CORTO', 'CURTO'], ['LONG', 'LARGO', 'LONGO'], ['AFRO', 'AFRO', 'AFRO'], ['MOHAWK', 'MOHAWK', 'MOICANO'], ['BUN', 'MOÑO', 'COQUE'], ['BOB', 'BOB', 'BOB'], ['PIGTAILS', 'COLETAS', 'MARIA-CHIQUINHA'],
       ['PONYTAIL', 'COLA DE CABALLO', 'RABO DE CAVALO'], ['CURLY CROP', 'RIZOS CORTOS', 'CACHOS CURTOS'], ['UNDERCUT', 'UNDERCUT', 'UNDERCUT'], ['WAVY LONG', 'ONDAS LARGAS', 'ONDAS LONGAS'], ['SPACE BUNS', 'DOS MOÑOS', 'DOIS COQUES'],
-      ['BRAIDS', 'TRENZAS', 'TRANÇAS'], ['SLICKED BACK', 'PEINADO ATRÁS', 'PENTEADO PRA TRÁS'], ['SHAG', 'DESFILADO', 'DESFIADO'], ['DREADS', 'DREADS', 'DREADS'], ['POMPADOUR', 'TUPÉ', 'TOPETE'], ['HALF-UP', 'MEDIO RECOGIDO', 'MEIO PRESO']]),
+      ['BRAIDS', 'TRENZAS', 'TRANÇAS'], ['SLICKED BACK', 'PEINADO ATRÁS', 'PENTEADO PRA TRÁS'], ['SHAG', 'DESFILADO', 'DESFIADO'], ['DREADS', 'DREADS', 'DREADS'], ['POMPADOUR', 'TUPÉ', 'TOPETE'], ['HALF-UP', 'MEDIO RECOGIDO', 'MEIO PRESO'],
+      ['MULLET', 'MULLET', 'MULLET'], ['BOWL CUT', 'HONGO', 'CUIA'], ['LONG STRAIGHT', 'LARGO LISO', 'LONGO LISO'], ['SIDE SWEEP', 'FLEQUILLO LATERAL', 'FRANJA DE LADO'],
+      ['TOPKNOT', 'MOÑO ALTO RAPADO', 'COQUE ALTO RAPADO'], ['CROP FRINGE', 'FLEQUILLO RECTO', 'FRANJA RETA'], ['SMALL AFRO', 'AFRO CORTO', 'AFRO CURTO'], ['LOW BUN', 'MOÑO BAJO', 'COQUE BAIXO']]),
     hc: NM([['BLACK', 'NEGRO', 'PRETO'], ['DARK BROWN', 'CASTAÑO OSCURO', 'CASTANHO ESCURO'], ['BROWN', 'CASTAÑO', 'CASTANHO'], ['BLONDE', 'RUBIO', 'LOURO'], ['GINGER', 'PELIRROJO', 'RUIVO'], ['GREY', 'GRIS', 'CINZA'], ['WHITE', 'BLANCO', 'BRANCO'], ['PINK', 'ROSA', 'ROSA'],
       ['BLUE', 'AZUL', 'AZUL'], ['TEAL', 'TURQUESA', 'TURQUESA'], ['PURPLE', 'MORADO', 'ROXO'], ['BURGUNDY', 'BORGOÑA', 'BORDÔ'], ['DIRTY BLONDE', 'RUBIO OSCURO', 'LOURO ESCURO'], ['INK', 'AZABACHE', 'AZUL-NOITE'],
       ['PASTEL PINK', 'ROSA PASTEL', 'ROSA PASTEL'], ['MINT', 'MENTA', 'MENTA'], ['COPPER', 'COBRE', 'COBRE'], ['STEEL', 'ACERO', 'AÇO']]),
     top: NM([['TEE', 'CAMISETA', 'CAMISETA'], ['TANK', 'MUSCULOSA', 'REGATA'], ['STRIPES', 'RAYAS', 'LISTRAS'], ['HOODIE', 'BUZO', 'MOLETOM'], ['MESH', 'MALLA', 'TELA'], ['HARNESS', 'ARNÉS', 'HARNESS'], ['CROP TOP', 'CROP TOP', 'CROPPED'],
       ['DRESS', 'VESTIDO', 'VESTIDO'], ['VEST', 'CHALECO', 'COLETE'], ['LEATHER JACKET', 'CHAQUETA DE CUERO', 'JAQUETA DE COURO'], ['CROSS VEST', 'CHALECO CRUZ', 'COLETE CRUZ'],
       ['BUTTON SHIRT', 'CAMISA', 'CAMISA'], ['KNIT SWEATER', 'SUÉTER', 'SUÉTER'], ['BOMBER', 'BOMBER', 'BOMBER'], ['TRACK JACKET', 'CHAQUETA DEPORTIVA', 'JAQUETA ESPORTIVA'], ['SEQUINS', 'LENTEJUELAS', 'LANTEJOULAS'],
-      ['DUNGAREES', 'OVEROL', 'MACACÃO'], ['CARDIGAN', 'CARDIGÁN', 'CARDIGÃ']]),
+      ['DUNGAREES', 'OVEROL', 'MACACÃO'], ['CARDIGAN', 'CARDIGÁN', 'CARDIGÃ'],
+      ['POLO', 'POLO', 'POLO'], ['PRINT SHIRT', 'CAMISA ESTAMPADA', 'CAMISA ESTAMPADA'], ['CORSET', 'CORSÉ', 'CORSET']]),
     tc: NM([['WHITE', 'BLANCO', 'BRANCO'], ['BLACK', 'NEGRO', 'PRETO'], ['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['LIME', 'LIMA', 'LIMA'], ['AMBER', 'ÁMBAR', 'ÂMBAR'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['RED', 'ROJO', 'VERMELHO'],
       ['BLUE', 'AZUL', 'AZUL'], ['TEAL', 'TURQUESA', 'TURQUESA'], ['ORANGE', 'NARANJA', 'LARANJA'], ['CREAM', 'CREMA', 'CREME'], ['WINE', 'VINO', 'VINHO'], ['FOREST', 'BOSQUE', 'FLORESTA'], ['PINK', 'ROSA', 'ROSA'], ['BROWN', 'MARRÓN', 'MARROM'],
       ['INDIGO', 'ÍNDIGO', 'ÍNDIGO'], ['GREY', 'GRIS', 'CINZA']]),
@@ -50,14 +53,20 @@
     shoes: NM([['SNEAKERS', 'ZAPATILLAS', 'TÊNIS'], ['BOOTS', 'BOTAS', 'BOTAS'], ['HIGH-TOPS', 'BOTINES', 'CANO ALTO'], ['PLATFORMS', 'PLATAFORMAS', 'PLATAFORMAS'], ['SANDALS', 'SANDALIAS', 'SANDÁLIAS'], ['LOAFERS', 'MOCASINES', 'MOCASSINS']]),
     ac: NM([['MAGENTA', 'MAGENTA', 'MAGENTA'], ['CYAN', 'CIAN', 'CIANO'], ['LIME', 'LIMA', 'LIMA'], ['AMBER', 'ÁMBAR', 'ÂMBAR'], ['VIOLET', 'VIOLETA', 'VIOLETA'], ['ORANGE', 'NARANJA', 'LARANJA'], ['RED', 'ROJO', 'VERMELHO'], ['TEAL', 'TURQUESA', 'TURQUESA'], ['YELLOW', 'AMARILLO', 'AMARELO']]),
     hat: NM([['NONE', 'NADA', 'NADA'], ['CAP', 'GORRA', 'BONÉ'], ['BACKWARDS CAP', 'GORRA AL REVÉS', 'BONÉ PRA TRÁS'], ['BANDANA', 'BANDANA', 'BANDANA'], ['HEADPHONES', 'AURICULARES', 'FONES'], ['BEANIE', 'GORRO', 'TOUCA'], ['HEADBAND', 'CINTA', 'FAIXA'],
-      ['BUCKET HAT', 'SOMBRERO DE PESCADOR', 'CHAPÉU BUCKET'], ['CAT EARS', 'OREJAS DE GATO', 'ORELHAS DE GATO'], ['FLOWER CROWN', 'CORONA DE FLORES', 'COROA DE FLORES']]),
+      ['BUCKET HAT', 'SOMBRERO DE PESCADOR', 'CHAPÉU BUCKET'], ['CAT EARS', 'OREJAS DE GATO', 'ORELHAS DE GATO'], ['FLOWER CROWN', 'CORONA DE FLORES', 'COROA DE FLORES'],
+      ['VISOR', 'VISERA', 'VISEIRA'], ['BERET', 'BOINA', 'BOINA'], ['HOOD UP', 'CAPUCHA PUESTA', 'CAPUZ'], ['PARTY HAT', 'GORRO DE FIESTA', 'CHAPÉU DE FESTA']]),
     face: NM([['NONE', 'NADA', 'NADA'], ['SUNGLASSES', 'LENTES', 'ÓCULOS ESCUROS'], ['ROUND GLASSES', 'LENTES REDONDOS', 'ÓCULOS REDONDOS'], ['FACE PAINT', 'PINTURA', 'PINTURA'], ['GLITTER', 'BRILLANTINA', 'GLITTER'], ['FRECKLES', 'PECAS', 'SARDAS'], ['WRAP SHADES', 'LENTES DEPORTIVOS', 'ÓCULOS ESPORTIVOS']]),
     neck: NM([['NONE', 'NADA', 'NADA'], ['CHAINS', 'CADENAS', 'CORRENTES'], ['SCARF', 'BUFANDA', 'CACHECOL'], ['CHOKER', 'GARGANTILLA', 'GARGANTILHA'], ['LANYARD', 'CORDÓN', 'CORDÃO'], ['NECK BANDANA', 'BANDANA AL CUELLO', 'BANDANA NO PESCOÇO']]),
-    ear: NM([['NONE', 'NADA', 'NADA'], ['STUDS', 'ARETES', 'BRINCOS'], ['HOOPS', 'ARGOLLAS', 'ARGOLAS'], ['DANGLES', 'COLGANTES', 'PENDENTES']])
+    ear: NM([['NONE', 'NADA', 'NADA'], ['STUDS', 'ARETES', 'BRINCOS'], ['HOOPS', 'ARGOLLAS', 'ARGOLAS'], ['DANGLES', 'COLGANTES', 'PENDENTES']]),
+    makeup: NM([['NONE', 'NADA', 'NADA'], ['RED LIPS', 'LABIOS ROJOS', 'LÁBIOS VERMELHOS'], ['DARK LIPS', 'LABIOS OSCUROS', 'LÁBIOS ESCUROS'], ['WINGED LINER', 'DELINEADO GRÁFICO', 'DELINEADO GRÁFICO'],
+      ['EYESHADOW', 'SOMBRA DE OJOS', 'SOMBRA'], ['GLITTER LIDS', 'PÁRPADOS CON BRILLO', 'PÁLPEBRAS COM GLITTER'], ['FULL GLAM', 'MAQUILLAJE COMPLETO', 'MAQUIAGEM COMPLETA']]),
+    pierce: NM([['NONE', 'NADA', 'NADA'], ['NOSE STUD', 'ARETE EN LA NARIZ', 'PIERCING NO NARIZ'], ['SEPTUM', 'SEPTUM', 'SEPTO'], ['LIP RING', 'ARO EN EL LABIO', 'ARGOLA NO LÁBIO'], ['BROW BAR', 'BARRA EN LA CEJA', 'BARRA NA SOBRANCELHA']]),
+    wrist: NM([['NONE', 'NADA', 'NADA'], ['WRISTBANDS', 'MUÑEQUERAS', 'PULSEIRAS DE PANO'], ['BANGLES', 'PULSERAS', 'PULSEIRAS'], ['WATCH', 'RELOJ', 'RELÓGIO'], ['GLOW BANDS', 'PULSERAS NEÓN', 'PULSEIRAS NEON'], ['FINGERLESS GLOVES', 'GUANTES SIN DEDOS', 'LUVAS SEM DEDOS']]),
+    bag: NM([['NONE', 'NADA', 'NADA'], ['FANNY PACK', 'RIÑONERA', 'POCHETE'], ['CROSSBODY BAG', 'BOLSO CRUZADO', 'BOLSA TRANSVERSAL'], ['BACKPACK', 'MOCHILA', 'MOCHILA'], ['TOTE BAG', 'TOTE BAG', 'TOTE BAG']])
   };
   /* groups for the creator (the order shown on screen): [group id, [part keys]] */
-  C.groups = [['body', ['skin', 'build']], ['face', ['expr', 'eye', 'fhair']], ['hair', ['hair', 'hc']], ['outfit', ['top', 'tc', 'bottom', 'bc', 'shoes', 'ac']], ['extras', ['hat', 'face', 'neck', 'ear']]];
-  C.sizes = { skin: 10, build: 3, eye: 8, expr: 10, fhair: 6, hair: 20, hc: 18, top: 18, tc: 18, bottom: 11, bc: 14, shoes: 6, ac: 9, hat: 10, face: 7, neck: 6, ear: 4 };
+  C.groups = [['body', ['skin', 'build']], ['face', ['expr', 'eye', 'fhair', 'makeup', 'pierce']], ['hair', ['hair', 'hc']], ['outfit', ['top', 'tc', 'bottom', 'bc', 'shoes', 'ac']], ['extras', ['hat', 'face', 'neck', 'ear', 'wrist', 'bag']]];
+  C.sizes = { skin: 10, build: 3, eye: 8, expr: 10, fhair: 6, makeup: 7, pierce: 5, hair: 28, hc: 18, top: 21, tc: 18, bottom: 11, bc: 14, shoes: 6, ac: 9, hat: 14, face: 7, neck: 6, ear: 4, wrist: 6, bag: 5 };
   /* the creator shows skin tones from light to deep, not in storage order */
   C.order = { skin: [6, 0, 1, 7, 2, 3, 8, 4, 5, 9] };
   /* the keys a look can carry (everything else, like tee and ol, is passed through) */
@@ -82,7 +91,7 @@
     K.hat = L.hat !== undefined ? n('hat', 0) : (a.hat || 0);
     K.face = L.face !== undefined ? n('face', 0) : (a.face || 0);
     K.neck = L.neck !== undefined ? n('neck', 0) : (a.neck || 0);
-    K.ear = n('ear', 0);
+    K.ear = n('ear', 0); K.makeup = n('makeup', 0); K.pierce = n('pierce', 0); K.wrist = n('wrist', 0); K.bag = n('bag', 0);
     K.ac = L.ac === undefined ? (K.tc + 3) % 9 : (L.ac | 0) % 9;
     K.accent = L.accentHex || EM.ACCENTS[K.ac];
     K.tee = L.tee || null; K.teeC = L.teeC || null; K.ol = L.ol || null;
@@ -101,6 +110,10 @@
     look.neck = rnd() < 0.6 ? 0 : 1 + pick(C.sizes.neck - 1);
     look.ear = rnd() < 0.5 ? 0 : 1 + pick(C.sizes.ear - 1);
     look.fhair = rnd() < 0.7 ? 0 : 1 + pick(C.sizes.fhair - 1);
+    look.makeup = rnd() < 0.7 ? 0 : 1 + pick(C.sizes.makeup - 1);
+    look.pierce = rnd() < 0.8 ? 0 : 1 + pick(C.sizes.pierce - 1);
+    look.wrist = rnd() < 0.6 ? 0 : 1 + pick(C.sizes.wrist - 1);
+    look.bag = rnd() < 0.7 ? 0 : 1 + pick(C.sizes.bag - 1);
     /* a top and bottom that are not the same colour, and a bottom colour that is not the skin */
     if (look.bc === 9 && look.tc === 11) look.bc = 1;
     if (look.tc === look.bc) look.bc = (look.bc + 1) % C.sizes.bc;

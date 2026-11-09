@@ -8,9 +8,9 @@
   /* ------------------------------------------------------------ strings */
   const S = EM.SCR = {
     sub: T('A NIGHT AT LA GRIETA // 22:00 — 08:00', 'UNA NOCHE EN LA GRIETA // 22:00 — 08:00', 'UMA NOITE NA GRIETA // 22:00 — 08:00'),
-    tag: T('Cross the crowd. Take care of your people. Don\'t get thrown out. An 8-bit role-playing game about moving through a club, one "excuse me" at a time.',
-      'Cruza la multitud. Cuida a tu gente. Que no te echen. Un juego de rol de 8 bits sobre moverse por un club, un «con permiso» a la vez.',
-      'Atravesse a multidão. Cuide da sua gente. Não se deixe expulsar. Um RPG de 8 bits sobre se mover por um club, um «com licença» de cada vez.'),
+    tag: T('Cross the crowd. Take care of your people. Don\'t get thrown out. An 16-bit role-playing game about moving through a club, one "excuse me" at a time.',
+      'Cruza la multitud. Cuida a tu gente. Que no te echen. Un juego de rol de 16 bits sobre moverse por un club, un «con permiso» a la vez.',
+      'Atravesse a multidão. Cuide da sua gente. Não se deixe expulsar. Um RPG de 16 bits sobre se mover por um club, um «com licença» de cada vez.'),
     notice: T('18+ // Drugs, alcohol, sex and strong language. Fiction, written for people who have been there. No fast flashing lights; sway and shake can be switched off in SETTINGS.',
       '18+ // Drogas, alcohol, sexo y lenguaje fuerte. Ficción, escrita para gente que ya estuvo ahí. Sin luces parpadeantes rápidas; el vaivén y el temblor se desactivan en AJUSTES.',
       '18+ // Drogas, álcool, sexo e linguagem forte. Ficção, escrita para quem já esteve lá. Sem luzes piscando rápido; o balanço e o tremor se desligam em AJUSTES.'),
@@ -47,7 +47,7 @@
     up: T('Up', 'Arriba', 'Cima'), down: T('Down', 'Abajo', 'Baixo'), left: T('Left', 'Izquierda', 'Esquerda'), right: T('Right', 'Derecha', 'Direita'),
     back: T('Back or walk away', 'Atrás o alejarse', 'Voltar ou se afastar'), action: T('Action: talk, use, or say excuse me', 'Acción: hablar, usar o decir con permiso', 'Ação: falar, usar ou dizer com licença')
   };
-  const PAGE_TITLE = T('EXCUSE ME — 8-bit night-out RPG', 'EXCUSE ME — RPG de 8 bits de una noche de club', 'EXCUSE ME — RPG de 8 bits de uma noite de club');
+  const PAGE_TITLE = T('EXCUSE ME — 16-bit night-out RPG', 'EXCUSE ME — RPG de 16 bits de una noche de club', 'EXCUSE ME — RPG de 16 bits de uma noite de club');
   function applyAria() {
     $$('[data-aria]').forEach(function (e) { const k = e.getAttribute('data-aria'); if (ARIA[k]) { e.setAttribute('aria-label', EM.tr(ARIA[k])); if (k === 'water') e.setAttribute('title', EM.tr(ARIA[k])); } });
     document.title = EM.tr(PAGE_TITLE);
@@ -84,37 +84,39 @@
   /* ------------------------------------------------------------ creator */
   let cre = null;
   const CH = EM.CHAR;
-  const GROUP_NAMES = { body: T('BODY', 'CUERPO', 'CORPO'), face: T('FACE', 'CARA', 'ROSTO'), hair: T('HAIR', 'PELO', 'CABELO'), outfit: T('OUTFIT', 'ROPA', 'ROUPA'), extras: T('EXTRAS', 'EXTRAS', 'EXTRAS') };
+  const GROUP_NAMES = { who: T('YOU', 'TÚ', 'VOCÊ'), styles: T('STYLES', 'ESTILOS', 'ESTILOS'), body: T('BODY', 'CUERPO', 'CORPO'), face: T('FACE', 'CARA', 'ROSTO'), hair: T('HAIR', 'PELO', 'CABELO'), outfit: T('OUTFIT', 'ROPA', 'ROUPA'), extras: T('EXTRAS', 'EXTRAS', 'EXTRAS') };
   const PART_LABEL = {
     skin: T('SKIN TONE', 'TONO DE PIEL', 'TOM DE PELE'), build: T('BUILD', 'COMPLEXIÓN', 'FÍSICO'), expr: T('EXPRESSION', 'EXPRESIÓN', 'EXPRESSÃO'),
     eye: T('EYE COLOUR', 'COLOR DE OJOS', 'COR DOS OLHOS'), fhair: T('FACIAL HAIR', 'VELLO FACIAL', 'PELOS NO ROSTO'),
+    makeup: T('MAKEUP', 'MAQUILLAJE', 'MAQUIAGEM'), pierce: T('PIERCINGS', 'PIERCINGS', 'PIERCINGS'),
     hair: T('HAIRSTYLE', 'PEINADO', 'PENTEADO'), hc: T('HAIR COLOUR', 'COLOR DE PELO', 'COR DO CABELO'),
     top: T('TOP', 'ARRIBA', 'PARTE DE CIMA'), tc: T('TOP COLOUR', 'COLOR DE ARRIBA', 'COR DA PARTE DE CIMA'),
     bottom: T('BOTTOMS', 'ABAJO', 'PARTE DE BAIXO'), bc: T('BOTTOMS COLOUR', 'COLOR DE ABAJO', 'COR DA PARTE DE BAIXO'),
     shoes: T('SHOES', 'CALZADO', 'CALÇADOS'), ac: T('ACCENT COLOUR', 'COLOR DE DETALLES', 'COR DOS DETALHES'),
     hat: T('HEADWEAR', 'SOMBRERO O GORRA', 'ACESSÓRIO DE CABEÇA'), face: T('FACE EXTRAS', 'EXTRAS DE CARA', 'EXTRAS NO ROSTO'),
-    neck: T('NECK', 'CUELLO', 'PESCOÇO'), ear: T('EARRINGS', 'ARETES', 'BRINCOS')
+    neck: T('NECK', 'CUELLO', 'PESCOÇO'), ear: T('EARRINGS', 'ARETES', 'BRINCOS'),
+    wrist: T('WRISTS AND HANDS', 'MUÑECAS Y MANOS', 'PULSOS E MÃOS'), bag: T('BAG', 'BOLSO', 'BOLSA')
   };
-  const CS = { presets: T('STYLES', 'ESTILOS', 'ESTILOS'), views: T('Your character from the front, the side, the back and walking', 'Tu personaje de frente, de lado, de espaldas y caminando', 'Seu personagem de frente, de lado, de costas e andando'),
-    colour: T('colour', 'color', 'cor'), on: T('selected', 'elegido', 'selecionado') };
-  /* part -> swatch palette (hex) for the colour parts */
+  const PART_NOTE = {
+    ac: T('Colours the details: shoe soles, hair ties, bags, makeup, headwear and wrist wear.', 'Da color a los detalles: suelas, ligas del pelo, bolsos, maquillaje, gorros y muñequeras.', 'Dá cor aos detalhes: solas, elásticos de cabelo, bolsas, maquiagem, chapéus e pulseiras.'),
+    eye: T('Look at the FACE close-up to see the colour.', 'Mira el primer plano de la CARA para ver el color.', 'Olhe o close do ROSTO para ver a cor.')
+  };
+  const CS = { views: T('Your character: close-up, front, side, back and walking', 'Tu personaje: primer plano, de frente, de lado, de espaldas y caminando', 'Seu personagem: close, de frente, de lado, de costas e andando'),
+    closeup: T('Face close-up', 'Primer plano de la cara', 'Close do rosto'), none: T('none', 'ninguno', 'nenhum') };
   const SWATCH = { skin: function () { return EM.SKINS; }, hc: function () { return EM.HAIRS; }, tc: function () { return EM.CLOTHES; }, bc: function () { return EM.BOTTOMS; }, ac: function () { return EM.ACCENTS; }, eye: function () { return EM.EYES; } };
-  /* thumbnail crops [x, y, w, h] in sprite pixels (the sprite is 36x68) */
-  const CROP = { expr: [7, 2, 22, 22], eye: [7, 2, 22, 22], fhair: [7, 2, 22, 22], hair: [4, 0, 28, 28], hat: [4, 0, 28, 28], face: [7, 2, 22, 22], ear: [4, 2, 28, 24], neck: [6, 14, 24, 24], top: [2, 24, 32, 26], bottom: [4, 44, 28, 24], shoes: [4, 56, 28, 12], build: [0, 0, 36, 68] };
+  /* thumbnail crops [x, y, w, h] in sprite pixels (the sprite is 36x68): each option is shown where it appears on the body */
+  const CROP = { expr: [8, 12, 20, 20], fhair: [8, 12, 20, 20], hair: [4, 0, 28, 28], hat: [4, 0, 28, 28], face: [8, 12, 20, 20], ear: [2, 12, 32, 20], neck: [6, 22, 24, 24],
+    makeup: [8, 12, 20, 20], pierce: [8, 12, 20, 20], top: [2, 24, 32, 26], bottom: [4, 44, 28, 24], shoes: [4, 56, 28, 12], build: [0, 0, 36, 68], wrist: [0, 46, 36, 20], bag: [0, 24, 36, 34] };
   /* a neutral look to build thumbnails on: only the part being shown changes */
-  const THUMB_BASE = { skin: 2, build: 1, eye: 0, expr: 1, fhair: 0, hair: 2, hc: 1, top: 0, tc: 1, bottom: 1, bc: 1, shoes: 0, ac: 1, hat: 0, face: 0, neck: 0, ear: 0 };
+  const THUMB_BASE = { skin: 2, build: 1, eye: 0, expr: 1, fhair: 0, makeup: 0, pierce: 0, hair: 2, hc: 1, top: 0, tc: 8, bottom: 0, bc: 0, shoes: 0, ac: 3, hat: 0, face: 0, neck: 0, ear: 0, wrist: 0, bag: 0 };
   const thumbCache = {};
   function thumb(key, v) {
-    /* the thumbnail shows the option on the player's own skin and hair, so it is easy to picture */
+    /* the thumbnail shows the option on the player's own skin, build and hair, so it is easy to picture */
     const base = Object.assign({}, THUMB_BASE);
-    ['skin', 'build', 'hc', 'tc', 'bc', 'bottom', 'top', 'hair'].forEach(function (k) { if (k !== key && cre.look[k] !== undefined) base[k] = cre.look[k]; });
-    if (key === 'neck' || key === 'ear' || key === 'hat') { base.hair = cre.look.hair; base.hc = cre.look.hc; }
-    if (key === 'hat') base.hair = cre.look.hair;
-    if (key === 'tc') base.top = cre.look.top;
-    if (key === 'bc') base.bottom = cre.look.bottom;
-    if (key === 'hc') base.hair = cre.look.hair === 0 ? 2 : cre.look.hair;
-    if (key === 'shoes') base.bottom = cre.look.bottom;
-    if (key === 'eye' || key === 'expr' || key === 'fhair' || key === 'face') { base.hair = cre.look.hair; }
+    ['skin', 'build', 'hc', 'tc', 'bc', 'bottom', 'top', 'hair', 'ac', 'shoes'].forEach(function (k) { if (k !== key && cre.look[k] !== undefined) base[k] = cre.look[k]; });
+    if (key === 'wrist' && (base.top === 1 || base.top === 7 || base.top === 0)) base.top = 1;
+    if (key === 'wrist' && base.top !== 1) base.top = 1;
+    if (key === 'hc' && cre.look.hair === 0) base.hair = 2;
     base[key] = v;
     const ck = key + v + '|' + CH.keys.map(function (k) { return base[k]; }).join(',');
     if (thumbCache[ck]) return thumbCache[ck];
@@ -132,25 +134,40 @@
   function optName(key, v) { const nm = CH.names[key] && CH.names[key][v]; return nm ? EM.tr(nm) : (v + 1) + ''; }
   /* presets: partial looks over a base; epicene names */
   const PRESETS = [
-    [T('RAVER', 'RAVERO', 'RAVER'), { skin: 3, build: 1, expr: 2, hair: 11, hc: 7, top: 4, tc: 3, bottom: 7, bc: 1, shoes: 1, ac: 0, hat: 0, face: 4, neck: 1, ear: 2 }],
-    [T('EVERYDAY', 'DE TODOS LOS DÍAS', 'DO DIA A DIA'), { skin: 1, build: 1, expr: 1, hair: 2, hc: 2, top: 0, tc: 8, bottom: 0, bc: 0, shoes: 0, ac: 3, hat: 0, face: 0, neck: 0, ear: 0 }],
-    [T('SOFT', 'SUAVE', 'SUAVE'), { skin: 6, build: 0, expr: 6, hair: 19, hc: 12, top: 12, tc: 14, bottom: 8, bc: 9, shoes: 4, ac: 4, hat: 9, face: 5, neck: 0, ear: 1 }],
-    [T('PUNK', 'PUNK', 'PUNK'), { skin: 0, build: 1, expr: 9, hair: 5, hc: 7, top: 9, tc: 1, bottom: 5, bc: 1, shoes: 1, ac: 6, hat: 0, face: 0, neck: 3, ear: 2 }],
-    [T('TOURIST', 'TURISTA', 'TURISTA'), { skin: 2, build: 1, expr: 5, hair: 2, hc: 3, top: 11, tc: 11, bottom: 2, bc: 12, shoes: 4, ac: 5, hat: 7, face: 2, neck: 4, ear: 0 }],
-    [T('ARTIST', 'ARTISTA', 'ARTISTA'), { skin: 8, build: 1, expr: 3, hair: 14, hc: 16, top: 17, tc: 6, bottom: 6, bc: 8, shoes: 5, ac: 4, hat: 6, face: 3, neck: 2, ear: 1 }],
-    [T('SPORT', 'DEPORTIVO', 'ESPORTIVO'), { skin: 4, build: 2, expr: 2, hair: 10, hc: 0, top: 14, tc: 8, bottom: 7, bc: 2, shoes: 2, ac: 1, hat: 2, face: 6, neck: 0, ear: 0 }],
-    [T('GLAM', 'GLAM', 'GLAM'), { skin: 9, build: 0, expr: 3, hair: 12, hc: 13, top: 15, tc: 5, bottom: 8, bc: 10, shoes: 3, ac: 8, hat: 0, face: 4, neck: 3, ear: 3 }]
+    [T('RAVER', 'RAVERO', 'RAVER'), { skin: 3, build: 1, expr: 2, hair: 11, hc: 7, top: 4, tc: 3, bottom: 7, bc: 1, shoes: 1, ac: 0, hat: 0, face: 4, neck: 1, ear: 2, makeup: 5, wrist: 4, pierce: 0, bag: 0 }],
+    [T('EVERYDAY', 'DE TODOS LOS DÍAS', 'DO DIA A DIA'), { skin: 1, build: 1, expr: 1, hair: 2, hc: 2, top: 18, tc: 8, bottom: 0, bc: 0, shoes: 0, ac: 3, hat: 0, face: 0, neck: 0, ear: 0, wrist: 3, bag: 3 }],
+    [T('SOFT', 'SUAVE', 'SUAVE'), { skin: 6, build: 0, expr: 6, hair: 19, hc: 12, top: 12, tc: 14, bottom: 8, bc: 9, shoes: 4, ac: 4, hat: 9, face: 5, neck: 0, ear: 1, makeup: 1, bag: 4 }],
+    [T('PUNK', 'PUNK', 'PUNK'), { skin: 0, build: 1, expr: 9, hair: 5, hc: 7, top: 9, tc: 1, bottom: 5, bc: 1, shoes: 1, ac: 6, hat: 0, face: 0, neck: 3, ear: 2, makeup: 3, pierce: 4, wrist: 5 }],
+    [T('TOURIST', 'TURISTA', 'TURISTA'), { skin: 2, build: 1, expr: 5, hair: 2, hc: 3, top: 19, tc: 11, bottom: 2, bc: 12, shoes: 4, ac: 5, hat: 7, face: 2, neck: 4, ear: 0, bag: 2 }],
+    [T('ARTIST', 'ARTISTA', 'ARTISTA'), { skin: 8, build: 1, expr: 3, hair: 14, hc: 16, top: 17, tc: 6, bottom: 6, bc: 8, shoes: 5, ac: 4, hat: 11, face: 3, neck: 2, ear: 1, makeup: 4, pierce: 2 }],
+    [T('SPORT', 'DEPORTIVO', 'ESPORTIVO'), { skin: 4, build: 2, expr: 2, hair: 10, hc: 0, top: 14, tc: 8, bottom: 7, bc: 2, shoes: 2, ac: 1, hat: 10, face: 6, neck: 0, ear: 0, wrist: 1, bag: 1 }],
+    [T('GLAM', 'GLAM', 'GLAM'), { skin: 9, build: 0, expr: 3, hair: 22, hc: 13, top: 20, tc: 5, bottom: 8, bc: 10, shoes: 3, ac: 8, hat: 0, face: 4, neck: 3, ear: 3, makeup: 6, wrist: 2 }],
+    [T('PARTY', 'FIESTA', 'FESTA'), { skin: 5, build: 1, expr: 7, hair: 13, hc: 14, top: 15, tc: 2, bottom: 9, bc: 7, shoes: 3, ac: 1, hat: 13, face: 3, neck: 0, ear: 2, makeup: 5, wrist: 4 }],
+    [T('COSY', 'ACOGEDOR', 'ACONCHEGANTE'), { skin: 7, build: 2, expr: 6, hair: 16, hc: 17, top: 3, tc: 15, bottom: 7, bc: 5, shoes: 1, ac: 7, hat: 12, face: 2, neck: 2, ear: 0 }]
   ];
   function newLook() { return Object.assign({}, THUMB_BASE, { skin: 2, hair: 2, hc: 1, top: 0, tc: 8, bottom: 0, bc: 0, ac: 3 }); }
 
   U.openCreator = function () {
-    cre = { look: newLook(), gender: 'x', name: '', venue: 'club', tab: 'body' };
+    cre = { look: newLook(), gender: 'x', name: '', venue: 'club', tab: 'who' };
     U.mode = 'creator';
     U.screen('creator');
     buildCreator();
   };
   let walkTimer = null;
   function stopWalk() { if (walkTimer) { clearInterval(walkTimer); walkTimer = null; } }
+  function creatorRoomH() {
+    if (window.parent !== window) { try { return Math.max(320, window.parent.innerHeight - 72); } catch (e) { /* cross-origin */ } }
+    return window.innerHeight;
+  }
+  /* the options panel is as tall as the screen allows, so the character and the options are always on screen together */
+  function fitCreator() {
+    const panel = $('#c-panel'); if (!panel || $('#screen-creator').hidden) return;
+    panel.style.maxHeight = 'none';
+    const top = panel.getBoundingClientRect().top + (window.scrollY || 0);
+    const rest = ($('#c-actions') ? $('#c-actions').offsetHeight : 60) + 60;
+    panel.style.maxHeight = Math.max(240, Math.floor(creatorRoomH() - top - rest)) + 'px';
+    U.postHeight();
+  }
   function buildCreator() {
     $('#c-title').textContent = EM.tr(S.creatorTitle);
     $('#c-name-l').textContent = EM.tr(S.name);
@@ -171,7 +188,6 @@
       b.addEventListener('click', function () { cre.gender = g[0]; buildCreator(); });
       gbox.appendChild(b);
     });
-    $('#c-presets-l').textContent = EM.tr(CS.presets);
     const pbox = $('#c-presets'); pbox.textContent = '';
     PRESETS.forEach(function (p) {
       const b = el('button', 'seg', EM.tr(p[0])); b.type = 'button';
@@ -179,29 +195,41 @@
       pbox.appendChild(b);
     });
     $('#c-pv').setAttribute('aria-label', EM.tr(CS.views));
+    $('#c-pv-h').setAttribute('aria-label', EM.tr(CS.closeup));
     buildTabs();
     $('#c-rand').textContent = EM.tr(S.rand); $('#c-go').textContent = EM.tr(S.go); $('#c-back').textContent = EM.tr(S.back);
     drawPreview();
-    U.postHeight();
+    fitCreator();
   }
+  const TAB_ORDER = ['who', 'styles', 'body', 'face', 'hair', 'outfit', 'extras'];
   function buildTabs() {
     const tabs = $('#c-tabs'); tabs.textContent = '';
-    CH.groups.forEach(function (gr) {
-      const b = el('button', 'tab' + (cre.tab === gr[0] ? ' on' : ''), EM.tr(GROUP_NAMES[gr[0]])); b.type = 'button';
-      b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', cre.tab === gr[0] ? 'true' : 'false'); b.id = 'ctab-' + gr[0];
-      b.addEventListener('click', function () { cre.tab = gr[0]; buildTabs(); U.postHeight(); });
+    TAB_ORDER.forEach(function (id) {
+      const b = el('button', 'tab' + (cre.tab === id ? ' on' : ''), EM.tr(GROUP_NAMES[id])); b.type = 'button';
+      b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', cre.tab === id ? 'true' : 'false'); b.id = 'ctab-' + id;
+      b.addEventListener('click', function () { cre.tab = id; buildTabs(); fitCreator(); });
+      b.addEventListener('keydown', function (e) {
+        const i = TAB_ORDER.indexOf(id); let j = -1;
+        if (e.key === 'ArrowRight') j = (i + 1) % TAB_ORDER.length; else if (e.key === 'ArrowLeft') j = (i - 1 + TAB_ORDER.length) % TAB_ORDER.length;
+        if (j >= 0) { e.preventDefault(); cre.tab = TAB_ORDER[j]; buildTabs(); $('#ctab-' + cre.tab).focus(); fitCreator(); }
+      });
       tabs.appendChild(b);
     });
-    const panel = $('#c-panel'); panel.textContent = '';
+    const panel = $('#c-panel');
     panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', 'ctab-' + cre.tab);
+    $('#c-sec-who').hidden = cre.tab !== 'who'; $('#c-sec-styles').hidden = cre.tab !== 'styles';
+    const parts = $('#c-parts'); parts.textContent = '';
     const gr = CH.groups.filter(function (g) { return g[0] === cre.tab; })[0];
-    gr[1].forEach(function (key) { panel.appendChild(buildPart(key)); });
+    parts.hidden = !gr;
+    if (gr) gr[1].forEach(function (key) { parts.appendChild(buildPart(key)); });
+    panel.scrollTop = 0;
   }
   function buildPart(key) {
     const sec = el('div', 'cpart');
     const head = el('div', 'chead'); head.appendChild(el('span', 'cl', EM.tr(PART_LABEL[key])));
     const cur = el('span', 'cv', optName(key, cre.look[key]));
     head.appendChild(cur); sec.appendChild(head);
+    if (PART_NOTE[key]) sec.appendChild(el('p', 'note', EM.tr(PART_NOTE[key])));
     const grid = el('div', 'cgrid' + (SWATCH[key] ? ' sw' : '')); grid.setAttribute('role', 'radiogroup'); grid.setAttribute('aria-label', EM.tr(PART_LABEL[key]));
     const n = CH.sizes[key];
     const order = (CH.order && CH.order[key]) || Array.apply(null, { length: n }).map(function (_, i) { return i; });
@@ -211,38 +239,47 @@
       b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', cre.look[key] === v ? 'true' : 'false');
       b.setAttribute('aria-label', EM.tr(PART_LABEL[key]) + ': ' + optName(key, v)); b.title = optName(key, v);
       b.tabIndex = cre.look[key] === v ? 0 : -1;
-      if (SWATCH[key]) { const hex = SWATCH[key]()[v]; b.style.background = hex; b.classList.add('swb'); }
+      if (SWATCH[key]) { b.style.background = SWATCH[key]()[v]; b.classList.add('swb'); }
       else b.appendChild(thumb(key, v));
-      b.addEventListener('click', function () { choose(key, v, grid, cur); });
+      b.addEventListener('click', function () { choose(key, v); });
       b.addEventListener('keydown', function (e) {
         const i = btns.indexOf(b); let j = -1;
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = (i + 1) % btns.length;
         else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = (i - 1 + btns.length) % btns.length;
-        if (j >= 0) { e.preventDefault(); btns[j].focus(); btns[j].click(); btns[j].focus(); }
+        if (j >= 0) { e.preventDefault(); btns[j].click(); }
       });
       btns.push(b); grid.appendChild(b);
     });
     sec.appendChild(grid);
     return sec;
   }
-  function choose(key, v, grid, cur) {
+  function choose(key, v) {
     cre.look[key] = v;
-    cur.textContent = optName(key, v);
     EM.audio.blip('move');
-    /* redraw thumbnails of parts that depend on this one (hair colour changes every hairstyle, etc.) */
-    buildTabs(); drawPreview();
-    const keep = $('#c-panel').querySelector('.opt.sel'); if (keep && keep.scrollIntoView) { /* keep focus on the chosen option */ keep.focus({ preventScroll: true }); }
+    const panel = $('#c-panel'), keep = panel.scrollTop;
+    /* thumbnails of other parts depend on this one (hair colour changes every hairstyle), so the grids are redrawn */
+    const gr = CH.groups.filter(function (g) { return g[0] === cre.tab; })[0];
+    const parts = $('#c-parts'); parts.textContent = '';
+    if (gr) gr[1].forEach(function (k) { parts.appendChild(buildPart(k)); });
+    panel.scrollTop = keep;
+    drawPreview();
+    const sel = parts.querySelector('.cpart .opt.sel[data-k="' + key + '"]') || (function () { const all = parts.querySelectorAll('.cgrid'); const i = gr ? gr[1].indexOf(key) : -1; return i >= 0 && all[i] ? all[i].querySelector('.opt.sel') : null; })();
+    if (sel) sel.focus({ preventScroll: true });
   }
-  const VIEWS = [['c-pv-d', 'd', 4], ['c-pv-r', 'r', 2], ['c-pv-u', 'u', 2], ['c-pv-w', 'd', 2]];
+  const VIEWS = [['c-pv-d', 'd', 4], ['c-pv-r', 'r', 2], ['c-pv-u', 'u', 2]];
   function drawPreview() {
     VIEWS.forEach(function (v) {
       const cv = $('#' + v[0]); if (!cv) return; const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
       g.fillStyle = '#0A0A0D'; g.fillRect(0, 0, cv.width, cv.height);
       g.fillStyle = '#16161C'; g.fillRect(0, cv.height - 5 * v[2], cv.width, 5 * v[2]);
-      if (v[0] === 'c-pv-w') return;
       const spr = EM.person(cre.look, v[1], 0, 'stand');
       g.drawImage(spr, 0, 0, spr.width * v[2], spr.height * v[2]);
     });
+    /* the face close-up: the head, six times larger, so eyes, makeup and piercings can be seen */
+    const hv = $('#c-pv-h'), hg = hv.getContext('2d'); hg.imageSmoothingEnabled = false;
+    hg.fillStyle = '#0A0A0D'; hg.fillRect(0, 0, hv.width, hv.height);
+    const sp = EM.person(cre.look, 'd', 0, 'stand');
+    hg.drawImage(sp, 3, 0, 30, 32, 0, 0, hv.width, hv.height);
     stopWalk();
     let f = 0; const seq = [1, 3, 2, 3];
     const cv = $('#c-pv-w'); const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
@@ -268,7 +305,8 @@
       cre.look = Object.assign({}, THUMB_BASE, CH.random());
       buildCreator();
     });
-    $('#c-back').addEventListener('click', U.toTitle);
+    $('#c-back').addEventListener('click', function () { stopWalk(); U.toTitle(); });
+    window.addEventListener('resize', fitCreator);
     $('#c-go').addEventListener('click', function () {
       const player = { name: cleanName($('#c-name').value), gender: cre.gender, look: Object.assign({}, cre.look) };
       stopWalk();

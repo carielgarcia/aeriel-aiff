@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EXCUSE ME — 8-bit Night Out RPG by ÆRIEL</title>
-  <meta name="description" content="One night at club LA GRIETA. Cross the crowd with your friends, say excuse me, dance, and make it to sunrise. 8-bit RPG by ÆRIEL. 18+.">
+  <title>EXCUSE ME — 16-bit Night Out RPG by ÆRIEL</title>
+  <meta name="description" content="One night at club LA GRIETA. Cross the crowd with your friends, say excuse me, dance, and make it to sunrise. 16-bit RPG by ÆRIEL. 18+.">
   <meta name="author" content="ÆRIEL">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ÆRIEL">
-  <meta property="og:title" content="EXCUSE ME — 8-bit Night Out RPG by ÆRIEL">
+  <meta property="og:title" content="EXCUSE ME — 16-bit Night Out RPG by ÆRIEL">
   <meta property="og:description" content="One night at club LA GRIETA. Cross the crowd with your friends, say excuse me, dance, and make it to sunrise. 18+.">
   <meta property="og:url" content="https://aeriel.net/games/excuse-me/">
   <meta property="og:image" content="https://aeriel.net/og-image.jpg">
   <meta property="og:image:width" content="1024">
   <meta property="og:image:height" content="1024">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="EXCUSE ME — 8-bit Night Out RPG by ÆRIEL">
+  <meta name="twitter:title" content="EXCUSE ME — 16-bit Night Out RPG by ÆRIEL">
   <meta name="twitter:description" content="One night at club LA GRIETA. Cross the crowd with your friends, say excuse me, dance, and make it to sunrise. 18+.">
   <meta name="twitter:image" content="https://aeriel.net/og-image.jpg">
   <link rel="canonical" href="https://aeriel.net/games/excuse-me/">
   <link rel="alternate" hreflang="es" href="https://aeriel.net/juegos/excuse-me">
   <link rel="alternate" hreflang="pt" href="https://aeriel.net/jogos/excuse-me">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230A0A0A'/><text y='70' x='50' font-size='65' text-anchor='middle' fill='%23FFFFFF' font-family='monospace' font-weight='bold'>Æ</text></svg>">
-  <link rel="stylesheet" href="excuse.css?v=17">
+  <link rel="stylesheet" href="excuse.css?v=19">
 </head>
 <body>
 <div id="app">
@@ -58,24 +58,28 @@
     <div class="creator">
       <div class="preview" id="c-pv" role="img">
         <canvas id="c-pv-d" width="144" height="272"></canvas>
+        <canvas id="c-pv-h" width="144" height="154" role="img"></canvas>
         <div class="pv-small"><canvas id="c-pv-r" width="72" height="136"></canvas><canvas id="c-pv-u" width="72" height="136"></canvas><canvas id="c-pv-w" width="72" height="136"></canvas></div>
       </div>
       <div class="fields">
-        <span id="c-venue-l" class="label"></span>
-        <div id="c-venue" class="segs"></div>
-        <p id="c-vnote" class="note"></p>
-        <label id="c-name-l" for="c-name"></label>
-        <input id="c-name" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" enterkeyhint="done" spellcheck="false">
-        <span id="c-gender-l" class="label"></span>
-        <div id="c-gender" class="segs"></div>
-        <p id="c-gnote" class="note"></p>
-        <span id="c-presets-l" class="label"></span>
-        <div id="c-presets" class="segs"></div>
         <div id="c-tabs" class="tabs" role="tablist"></div>
-        <div id="c-panel"></div>
+        <div id="c-panel">
+          <div id="c-sec-who">
+            <span id="c-venue-l" class="label"></span>
+            <div id="c-venue" class="segs"></div>
+            <p id="c-vnote" class="note"></p>
+            <label id="c-name-l" for="c-name"></label>
+            <input id="c-name" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" enterkeyhint="done" spellcheck="false">
+            <span id="c-gender-l" class="label"></span>
+            <div id="c-gender" class="segs"></div>
+            <p id="c-gnote" class="note"></p>
+          </div>
+          <div id="c-sec-styles" hidden><div id="c-presets" class="segs"></div></div>
+          <div id="c-parts" hidden></div>
+        </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="c-actions">
       <button id="c-back" type="button"></button>
       <button id="c-rand" type="button"></button>
       <button id="c-go" class="primary" type="button"></button>
@@ -174,14 +178,15 @@
 <script src="gfx.js?v=1"></script>
 <script src="sprites.js?v=14"></script>
 <script src="tiles.js?v=1"></script>
-<script src="people.js?v=1"></script>
-<script src="people_head.js?v=1"></script>
-<script src="people_draw.js?v=1"></script>
+<script src="people.js?v=2"></script>
+<script src="people_head.js?v=2"></script>
+<script src="people_draw.js?v=2"></script>
+<script src="people_extra.js?v=2"></script>
 <script src="audio.js?v=3"></script>
 <script src="world.js?v=3"></script>
 <script src="logic.js?v=10"></script>
 <script src="drugs.js?v=2"></script>
-<script src="engine.js?v=18"></script>
+<script src="engine.js?v=22"></script>
 <script src="ui.js?v=14"></script>
 <script src="items.js?v=3"></script>
 <script src="hud2.js?v=14"></script>
@@ -216,6 +221,7 @@
 <script src="story_v18.js?v=9"></script>
 <script src="story_v19.js?v=10"></script>
 <script src="story_v20.js?v=2"></script>
-<script src="screens.js?v=16"></script>
+<script src="seek.js?v=1"></script>
+<script src="screens.js?v=18"></script>
 </body>
 </html>
