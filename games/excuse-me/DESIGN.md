@@ -245,3 +245,29 @@ Whoever the current objective sends you to wears a golden star above their head 
 - **Cruising words are a roll** (`vp` per person): Diego and Ingrid prefer silence or trust, so asking aloud can end in a courteous no.
 - **Continuity facts** (keep consistent when writing): Rosa has worked here fourteen years; the main floor holds about four hundred people (the roof the same); the closing set is at 06:00 and the roof opens at 05:30.
 
+---
+
+## Voice guide (v2.2): who sounds like what
+
+The writing used to put the same figure of speech in everyone's mouth: a simile, an epigram, a closing button joke. People now talk the way their job and temperament make them talk. Figures of speech are rationed, and `scripts/excuse-me-lint.js` enforces the budgets.
+
+**Registers**
+- **Door and staff** (Dragan, Luca, Nico, Mika, Dario, Ofelia, Bruce, Beatriz, Teo): procedural, short, concrete. One dry joke at most, no similes. They say what happens next.
+- **Rosa**: blunt imperatives and objects (mop, bucket, keys, floor). No metaphors; her warmth shows in what she does.
+- **Harm reduction** (Isi, Camilo, the RD crew): plain and informational. No figurative language.
+- **Rave crew**: Maya (stressed logistics), Sub (technical, terse), Bea (literal, legal), Pip (laconic), Juniper (committee jargon, the joke is the jargon), Klaus and Madison (the joke is name-dropped specifics, never imagery).
+- **Friends**: Maru organises and texts in lower case, Dani exclaims and tells stories, Tato is halting and understated, Vale handles logistics, Alex notices colours and textures (the one friend allowed synaesthesia).
+- **Strangers**: speak like people. Incomplete sentences, one specific detail, no sign-off line.
+- **Aphorists, and only them**: Dante, Hugo, Ximena, Hazel, Ruth and Sia may say something quotable, once per scene. Everyone else is not a proverb.
+- **Narration**: concrete and tactile. At most one figurative device per node.
+
+**Hard rules (the lint counts these)**
+- No `like a/an/the …`, `the way a …`, `as if …` in speech. In narration spend them sparingly.
+- No `a very [adjective]`. Pick the adjective, or cut the sentence.
+- No personification gags: things that "have opinions", "file complaints", or act "with great ceremony".
+- No "Nobody asks / Nobody knows" stinger to close a line.
+- No `a person who …` / `a man who …` as a character sketch; say what they do.
+- One recurring gag per character, and it must change what it says each time it appears. The `Æ000.X` list jokes are the only running gag that escalates.
+
+**Dev note**: run `node scripts/excuse-me-lint.js` before committing story text. It also checks Spanish for voseo, Portuguese for European forms, « » quotes, `…` and placeholder parity.
+
