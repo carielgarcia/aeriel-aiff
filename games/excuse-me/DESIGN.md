@@ -240,4 +240,7 @@ Whoever the current objective sends you to wears a golden star above their head 
 - **Flirts read your pockets.** The six people you can ask each weigh something different when you ask to kiss them (`READS` in `story_v16.js`; `L.makeoutChance(base, who)`): Vera your accessories (one helps, two do not), Ines your drinks and your water, Rafa your sunglasses (he cannot read you), Mina your earplugs (she approves), Nox your earplugs (he cannot tell if you hear), Ludo your HEALTH (dizzy is not a good moment). The ask scene shows a tell as an extra page, never a number. A no is still complete, and each person refuses in their own voice (`AGAIN` in `story_v5.js`).
 - **Dealer stamps carry a rumour.** Each stamp comes with one line from the seller (`IMPRINT_LINE` in `story_v8.js`) that is true to the hidden odds without quoting them.
 - **Mambo's pilot programme.** Saying excuse me to Mambo, once, gets you one sip of water (`EM.water.addSip`).
+- **The night wears on.** From 04:30 (`s.time >= 390`) Nico, Rosa, Isi, Mina and Kai open with a late line (`story_v21.js`, `late()`); choices are unchanged. Isi's greeting, including the alcohol reminder, always plays first.
+- **Petition signatures cost different things** (see AGENTS.md): Bea needs WEIRDNESS under 40, Sub 8 min on the cable, Juniper SOCIAL -5, Klaus SOCIAL -3, Madison FUN -2.
+- **Cruising words are a roll** (`vp` per person): Diego and Ingrid prefer silence or trust, so asking aloud can end in a courteous no.
 

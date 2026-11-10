@@ -157,7 +157,7 @@
         ]
       },
       b: {
-        text: T('"Toilets: a queue with its own weather. Sala 2 upstairs opens at one in the morning. The tunnel on the right goes to the smoking area. And if you ever need a door the public doesn\'t know about, find Rosa. Rosa has keys the building forgot it had."', '«Baños: una fila con clima propio. La Sala 2, arriba, abre a la una de la mañana. El túnel de la derecha va a la zona de fumar. Y si algún día necesitas una puerta que el público no conoce, busca a Rosa. Rosa tiene llaves que el edificio se olvidó que tenía».', '«Banheiros: uma fila com clima próprio. A Sala 2, lá em cima, abre à uma da manhã. O túnel da direita vai pra área de fumantes. E se um dia precisar de uma porta que o público não conhece, procure a Rosa. A Rosa tem chaves que o prédio esqueceu que tinha».'),
+        text: T(`"Toilets: a queue with its own weather. Sala 2 opens at one. The tunnel on the right goes to the smoking area." He glances at the door. "Rosa has keys the building forgot it had."`, `«Los baños: una fila con clima propio. La Sala 2 abre a la una. El túnel de la derecha lleva a la zona de fumadores». Mira hacia la puerta. «Rosa tiene llaves que el edificio olvidó que tenía».`, `«Banheiros: uma fila com clima próprio. A Sala 2 abre à uma. O túnel da direita vai pra área de fumantes». Ele olha pra porta. «A Rosa tem chaves que o prédio esqueceu que tinha».`),
         do: { flag: 'luca_tips' }
       },
       c: {
