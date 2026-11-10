@@ -55,6 +55,6 @@
     if (!near) { warn = Math.max(0, warn - dt); return; }
     L.stat('hp', -0.18 * dt); L.stat('weird', 0.1 * dt, true);
     warn -= dt;
-    if (warn <= 0) { warn = 30; U.toast({ icon: 'cig', kind: 'bad', ms: 5200, text: t(`Smoke right in your face. Your lungs file a complaint, and your head goes a little strange. Step away from the cigarettes.`, `Humo directo a la cara. Tus pulmones presentan una queja y la cabeza se pone un poco rara. Aléjate de los cigarros.`, `Fumaça direto na cara. Seus pulmões registram uma reclamação e a cabeça fica meio estranha. Se afaste dos cigarros.`) }); }
+    if (warn <= 0) { warn = 30; U.toast({ icon: 'cig', kind: 'bad', ms: 5200, text: t(`Smoke right in your face. Your lungs object, and your head goes a little strange. Step away from the cigarettes.`, `Humo directo a la cara. Tus pulmones protestan y la cabeza se pone un poco rara. Aléjate de los cigarros.`, `Fumaça direto na cara. Seus pulmões reclamam e a cabeça fica meio estranha. Se afaste dos cigarros.`) }); }
   };
 })();

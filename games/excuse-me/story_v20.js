@@ -16,7 +16,7 @@
     /* Dani's reaction to a pill that is MDA: same choices and consequences as the mixed pill */
     if (N.decide_mix) {
       N.decide_mda = Object.assign({}, N.decide_mix, {
-        text: t('DANI: "…MDA. Not MDMA. So it is a cousin? It still works like the good thing, right? RIGHT?" He holds the pill like it just changed its name.', 'DANI: «…MDA. No es MDMA. ¿O sea que es un primo? ¿Igual funciona como la cosa buena, no? ¿¿NO??» Sostiene la pastilla como si acabara de cambiar de nombre.', 'DANI: «…MDA. Não é MDMA. Então é um primo? Mesmo assim funciona como a coisa boa, né? NÉ?» Ele segura o comprimido como se ele tivesse acabado de mudar de nome.'),
+        text: t(`DANI: "…MDA. Not MDMA. So it is a cousin? It still works like the good thing, right? RIGHT?" He holds the pill in both hands.`, `DANI: «…MDA. No es MDMA. ¿O sea que es un primo? ¿Igual funciona como la cosa buena, no? ¿¿NO??» Sostiene la pastilla con las dos manos.`, `DANI: «…MDA. Não é MDMA. Então é um primo? Mesmo assim funciona como a coisa boa, né? NÉ?» Ele segura o comprimido com as duas mãos.`),
         choices: N.decide_mix.choices.map(function (c) { return Object.assign({}, c); })
       });
     }

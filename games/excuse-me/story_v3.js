@@ -21,7 +21,7 @@
       },
       ae: {
         text: [
-          T('"Allegedly." They take a sip of tea with the dignity of a person who has been recognised in a corridor. "Æ000.X is a party. I say \'curated dancefloor\' the way other people say \'friends\'. Don\'t tell anyone I know how it sounds."', '«Presuntamente». Toma un sorbo de té con la dignidad de quien oyó su propio nombre en un pasillo. «Æ000.X es una fiesta. Yo digo “pista curada” como otra gente dice “amigos”. No le digas a nadie que sé cómo suena».', '«Supostamente». Toma um gole de chá com a dignidade de quem ouviu o próprio nome num corredor. «A Æ000.X é uma festa. Eu digo “pista curada” do jeito que as outras pessoas dizem “amigos”. Não conta pra ninguém que eu sei como isso soa».')
+          T(`"Allegedly." They take a sip of tea. "Æ000.X is a party. I say 'curated dancefloor' with a straight face. Don't tell anyone I know how it sounds."`, `«Presuntamente». Toma un sorbo de té. «Æ000.X es una fiesta. Digo “pista curada” con la cara seria. No le digas a nadie que sé cómo suena».`, `«Supostamente». Toma um gole de chá. «A Æ000.X é uma festa. Eu digo “pista curada” com a cara séria. Não conta pra ninguém que eu sei como isso soa».`)
         ],
         choices: [
           { tone: 'ask', t: T('"How do I get on the list?"', '«¿Cómo entro a la lista?»', '«Como eu entro na lista?»'), next: 'list' },
@@ -72,7 +72,7 @@
         ]
       },
       noted: {
-        text: T('"Noted." ÆRIEL closes their eyes for a second, like someone filing a thing in the most careful drawer. "Go find your people. See you at sunrise. And a vouching is a serious thing. Don\'t set it on fire in the toilets."', '«Anotado». ÆRIEL cierra los ojos un segundo, como quien archiva algo en el cajón más cuidadoso. «Ve a buscar a tu gente. Nos vemos al amanecer. Y avalar a alguien es algo serio. No lo incendies en los baños».', '«Anotado». ÆRIEL fecha os olhos por um segundo, como quem arquiva algo na gaveta mais cuidadosa. «Vai buscar sua galera. A gente se vê no amanhecer. E avalizar alguém é coisa séria. Não incendeia isso nos banheiros».'),
+        text: T(`"Noted." ÆRIEL closes their eyes for a second. "Go find your people. See you at sunrise. And a vouching is a serious thing. Don't set it on fire in the toilets."`, `«Anotado». ÆRIEL cierra los ojos un segundo. «Ve a buscar a tu gente. Nos vemos al amanecer. Y un aval es algo serio. No lo incendies en los baños».`, `«Anotado». A ÆRIEL fecha os olhos por um segundo. «Vai atrás da sua galera. A gente se vê no nascer do sol. E um aval é coisa séria. Não bota fogo nele nos banheiros».`),
         do: { flag: 'resident_met', fun: 3, soc: 3 }
       }
     }
@@ -88,7 +88,7 @@
   };
   D.luca.nodes.a.choices.push({ tone: 'joke', t: T('"Is this coat check also invitation only?"', '«¿Este guardarropa también es solo por invitación?»', '«Essa chapelaria também é só por convite?»'), next: 'ae' });
   D.luca.nodes.ae = {
-    text: T('"Only at the Æ000.X ones. They call it a trust-based jacket ecosystem. I\'m on the team. It was not my idea. I hang a lot of jackets and pretend it\'s deeply meaningful." He hands you a ticket with a very small flourish. "It is a little meaningful."', '«Solo en las de Æ000.X. Lo llaman un ecosistema de abrigos basado en la confianza. Estoy en el equipo. No fue idea mía. Cuelgo muchos abrigos y finjo que es profundamente significativo». Te da un ticket con un floreo mínimo. «Es un poco significativo».', '«Só nas da Æ000.X. Eles chamam de ecossistema de casacos baseado em confiança. Eu tô na equipe. Não foi ideia minha. Penduro muitos casacos e finjo que é profundamente significativo». Ele te entrega uma ficha com um floreio mínimo. «É um pouquinho significativo».'),
+    text: T(`"Only at the Æ000.X ones. They call it a trust-based jacket ecosystem. I'm on the team. It was not my idea. I hang a lot of jackets and pretend it's deeply meaningful." He hands you a ticket with a small flourish. "It is a little meaningful."`, `«Solo en las de Æ000.X. Lo llaman un ecosistema de abrigos basado en la confianza. Estoy en el equipo. No fue idea mía. Cuelgo muchos abrigos y finjo que es profundamente significativo». Te da un ticket con un pequeño floreo. «Es un poco significativo».`, `«Só nas da Æ000.X. Eles chamam de ecossistema de casacos baseado em confiança. Eu tô na equipe. Não foi ideia minha. Penduro muitos casacos e finjo que é profundamente significativo». Ele te entrega uma ficha com um pequeno floreio. «É um pouquinho significativo».`),
     do: { fun: 3, soc: 1 }
   };
   D.hazel.nodes.a.choices.push({ tone: 'joke', t: T('"Did you ever go to an Æ000.X?"', '«¿Alguna vez fuiste a una Æ000.X?»', '«Você já foi numa Æ000.X?»'), next: 'ae' });
@@ -114,7 +114,7 @@
       a: {
         text: T('POSTER: "Æ000.X. Access by invitation. Request access online. Every submission is reviewed one by one. Explanations for admission decisions are not provided." Underneath, in smaller print: "Vibes: required. Self-seriousness: capped at forty percent."', 'AFICHE: «Æ000.X. Acceso por invitación. Solicita acceso en nuestra web. Cada registro se revisa uno por uno. No se entregan explicaciones sobre las decisiones de admisión». Más abajo, en letra chica: «Vibras: requeridas. Seriedad: limitada al cuarenta por ciento».', 'CARTAZ: «Æ000.X. Acesso por convite. Solicite acesso no site. Cada cadastro é analisado um a um. Não damos explicações sobre decisões de admissão». Embaixo, em letra miúda: «Vibes: obrigatórias. Seriedade: limitada a quarenta por cento».'),
         choices: [
-          { tone: 'joke', t: T('Mentally request access.', 'Solicitar acceso mentalmente.', 'Solicitar acesso mentalmente.'), do: { fun: 2 }, free: true, next: null, react: T('Form received. You are number 4,812 in a very kind queue. A confirmation email you will never receive arrives in your heart.', 'Formulario recibido. Eres el número 4.812 de una fila muy amable. Un correo de confirmación que nunca recibirás llega a tu corazón.', 'Formulário recebido. Você é o número 4.812 numa fila muito gentil. Um e-mail de confirmação que você nunca vai receber chega ao seu coração.') },
+          { tone: 'joke', t: T('Mentally request access.', 'Solicitar acceso mentalmente.', 'Solicitar acesso mentalmente.'), do: { fun: 2 }, free: true, next: null, react: T(`Form received. You are number 4,812 in a kind queue. A confirmation email you will never receive arrives in your heart.`, `Formulario recibido. Eres el número 4.812 de una fila amable. Un correo de confirmación que nunca recibirás llega a tu corazón.`, `Formulário recebido. Você é o número 4.812 numa fila gentil. Um e-mail de confirmação que você nunca vai receber chega ao seu coração.`) },
           { tone: 'ask', t: T('Read the fine print.', 'Leer la letra chica.', 'Ler a letra miúda.'), do: { fun: 1 }, free: true, next: null, react: T('"An invitation grants you access to purchase a ticket." You read it three times. You admire the nerve.', '«Una invitación te habilita a comprar una entrada». Lo lees tres veces. Admiras el descaro.', '«Um convite concede a você o acesso para comprar um ingresso». Você lê três vezes. Admira a coragem.') }
         ]
       }
@@ -131,7 +131,7 @@
   D.poster_court = {
     start: 'a', nodes: {
       a: {
-        text: T('A flyer zip-tied to the fence. "ÆRIEL // THE CLOSING SET. 06:00. THE ROOF. Curated by ÆRIEL." Someone has drawn a very small, very accurate cat in the corner. Underneath: "ask first. drink water. be kind to Rosa."', 'Un flyer atado a la reja con precintos. «ÆRIEL // EL SET DE CIERRE. 06:00. EL TECHO. Curado por ÆRIEL». Alguien dibujó un gato muy pequeño y muy preciso en la esquina. Debajo: «pregunta primero. toma agua. sé amable con Rosa».', 'Um flyer preso na grade com abraçadeira. «ÆRIEL // O SET DE ENCERRAMENTO. 06:00. O TERRAÇO. Curadoria de ÆRIEL». Alguém desenhou um gato bem pequeno e bem preciso no canto. Embaixo: «pergunte primeiro. beba água. seja gentil com a Rosa».'),
+        text: T(`A flyer zip-tied to the fence. "ÆRIEL // THE CLOSING SET. 06:00. THE ROOF. Curated by ÆRIEL." Someone has drawn a tiny, accurate cat in the corner. Underneath: "ask first. drink water. be kind to Rosa."`, `Un flyer atado a la reja con precintos. «ÆRIEL // EL SET DE CIERRE. 06:00. EL TECHO. Curado por ÆRIEL». Alguien dibujó un gato diminuto y preciso en la esquina. Debajo: «pregunta primero. toma agua. sé amable con Rosa».`, `Um flyer preso na grade com abraçadeira. «ÆRIEL // O SET DE ENCERRAMENTO. 06:00. O TERRAÇO. Curadoria de ÆRIEL». Alguém desenhou um gato minúsculo e preciso no canto. Embaixo: «pergunte primeiro. beba água. seja gentil com a Rosa».`),
         do: { soc: 2, fun: 1 }
       }
     }
@@ -207,7 +207,7 @@
       U.toast({ icon: 'star', text: T('They stare at you. Then they laugh, loudly, and spin you once. "One song." You dance for a bar and a half and slip through, grinning.', 'Te miran fijo. Luego se ríen, fuerte, y te giran una vez. «Una canción». Bailas compás y medio y te cuelas, sonriendo.', 'Eles te encaram. Depois riem, alto, e giram você uma vez. «Uma música». Você dança um compasso e meio e passa, sorrindo.'), kind: 'good', ms: 5200 });
     } else {
       L.apply({ weird: 3, soc: -3, bad: 1 });
-      U.toast({ text: T('"Absolutely not." A look like a closed door. Somebody nearby snickers. You go around, face hot.', '«Absolutamente no». Una mirada como una puerta cerrada. Alguien cerca se ríe por lo bajo. Das la vuelta, con la cara caliente.', '«De jeito nenhum». Um olhar como uma porta fechada. Alguém por perto dá risada. Você dá a volta, com o rosto quente.'), kind: 'bad', ms: 5200 });
+      U.toast({ text: T(`"Absolutely not." A shut face. Somebody nearby snickers. You go around, face hot.`, `«Absolutamente no». Una cara cerrada. Alguien cerca se ríe por lo bajo. Das la vuelta, con la cara caliente.`, `«De jeito nenhum». Um rosto fechado. Alguém por perto dá risada. Você dá a volta, com o rosto quente.`), kind: 'bad', ms: 5200 });
     }
   };
 
@@ -246,7 +246,7 @@
       },
       group: {
         text: [
-          T('Maru says your name softly, the way you say a name to someone standing near an edge. "I love you. I can\'t do this tonight."', 'Maru dice tu nombre bajito, como se dice un nombre a alguien parado cerca de un borde. «Te quiero. No puedo con esto esta noche».', 'A Maru diz seu nome baixinho, do jeito que se diz um nome pra alguém parado perto de uma beira. «Eu te amo. Eu não consigo com isso hoje».'),
+          T(`Maru says your name softly. "I love you. I can't do this tonight."`, `Maru dice tu nombre bajito. «Te quiero. No puedo con esto esta noche».`, `A Maru diz seu nome baixinho. «Eu te amo. Eu não consigo com isso hoje».`),
           T('Dani looks at his shoes. Tato has already put his hood up. Nobody shouts. They go out through the foyer, in a line, with the dignity of people leaving a theatre. Maru looks back once, and her face says: call me when you are yourself again.', 'Dani mira sus zapatos. Tato ya se puso la capucha. Nadie grita. Salen por el foyer, en fila, con la dignidad de quienes dejan un teatro. Maru mira atrás una vez, y su cara dice: llámame cuando vuelvas a ser tú.', 'O Dani olha pros sapatos. O Tato já pôs o capuz. Ninguém grita. Eles saem pelo foyer, em fila, com a dignidade de quem deixa um teatro. A Maru olha pra trás uma vez, e o rosto dela diz: me liga quando você voltar a ser você.')
         ]
       },
@@ -290,7 +290,7 @@
     lesson: T('Last time your friends left. The night is long; goodwill is not.', 'La última vez tus amigos se fueron. La noche es larga; la buena voluntad no.', 'Da última vez seus amigos foram embora. A noite é longa; a boa vontade não é.'),
     text: [
       T('Nobody raised their voice. Over three hours you spent more goodwill than the night could print, and at four in the morning the people who love you looked at the account and found it empty.', 'Nadie levantó la voz. En tres horas gastaste más buena voluntad de la que la noche podía imprimir, y a las cuatro de la mañana las personas que te quieren miraron la cuenta y la encontraron vacía.', 'Ninguém levantou a voz. Em três horas você gastou mais boa vontade do que a noite podia imprimir, e às quatro da manhã as pessoas que te amam olharam a conta e encontraram vazia.'),
-      T('You stand on the pavement outside LA GRIETA watching a taxi light turn the corner with three of the people you love in it. The neon crack buzzes behind you. It is a very long time until morning. It is also, somehow, 22:00.', 'Estás en la acera afuera de LA GRIETA viendo cómo una luz de taxi dobla la esquina con tres de las personas que quieres adentro. La grieta de neón zumba detrás de ti. Falta muchísimo para la mañana. Y también, de algún modo, son las 22:00.', 'Você está na calçada fora da LA GRIETA vendo a luz de um táxi dobrar a esquina com três das pessoas que você ama dentro. A rachadura de neon zumbe atrás de você. Falta muito tempo pra manhã. E também, de algum jeito, são 22:00.')
+      T(`You stand on the pavement outside LA GRIETA watching a taxi light turn the corner with three of the people you love in it. The neon crack buzzes behind you. It is a long time until morning. It is also, somehow, 22:00.`, `Estás en la acera afuera de LA GRIETA viendo cómo una luz de taxi dobla la esquina con tres de las personas que quieres adentro. La grieta de neón zumba detrás de ti. Falta mucho para la mañana. Y también, de algún modo, son las 22:00.`, `Você está na calçada fora da LA GRIETA vendo a luz de um táxi dobrar a esquina com três das pessoas que você ama dentro. A rachadura de neon zumbe atrás de você. Falta muito pra manhã. E também, de algum jeito, são 22:00.`)
     ]
   };
 

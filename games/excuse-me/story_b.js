@@ -21,11 +21,11 @@
   D.marga = {
     who: 'marga', role: T('IN LINE', 'EN LA FILA', 'NA FILA'), start: 'a', nodes: {
       a: {
-        text: T('"I am going to PEE ON THE FLOOR. I am telling you now. As a courtesy." She is bouncing from one foot to the other like a kettle about to sing.', '«Voy a HACERME PIPÍ EN EL PISO. Te lo digo desde ahora. Como cortesía». Salta de un pie al otro como una tetera a punto de silbar.', '«Vou fazer XIXI NO CHÃO. Tô avisando agora. Por cortesia». Ela pula de um pé pro outro como uma chaleira prestes a apitar.'),
+        text: T(`"I am going to PEE ON THE FLOOR. I am telling you now. As a courtesy." She is bouncing from one foot to the other.`, `«Me voy a HACER PIS EN EL PISO. Te aviso ahora. Por cortesía». Salta de un pie al otro.`, `«Eu vou FAZER XIXI NO CHÃO. Tô avisando agora. Por cortesia». Ela pula de um pé pro outro.`),
         choices: [
           { tone: 'care', t: T('"Go ahead of us. Seriously. Go."', '«Pasa antes que nosotros. En serio. Ve».', '«Vai na nossa frente. Sério. Vai».'), do: { flag: ['marga_helped', 'marga_done'], care: 1, fun: 1 }, next: null, react: T('She grabs your face with both hands and kisses the air next to your cheek. "You are a SAINT." The host looks over, notes it, says nothing.', 'Te agarra la cara con las dos manos y besa el aire junto a tu mejilla. «Eres un SANTO». El encargado mira, lo anota, no dice nada.', 'Ela agarra seu rosto com as duas mãos e beija o ar ao lado da sua bochecha. «Você é uma SANTA PESSOA». O responsável olha, registra, não diz nada.') },
           { tone: 'blunt', t: T('"We\'re all waiting."', '«Todos estamos esperando».', '«Todo mundo tá esperando».'), do: { soc: -1 }, next: null },
-          { tone: 'joke', t: T('"Have you tried not being thirsty?"', '«¿Probaste no tener sed?»', '«Já tentou não sentir sede?»'), do: { soc: -2, weird: 2 }, next: null, bad: true, react: T('She looks at you the way people look at a pothole.', 'Te mira como se mira un bache.', 'Ela te olha como as pessoas olham um buraco na rua.') }
+          { tone: 'joke', t: T('"Have you tried not being thirsty?"', '«¿Probaste no tener sed?»', '«Já tentou não sentir sede?»'), do: { soc: -2, weird: 2 }, next: null, bad: true, react: T(`She gives you a flat look.`, `Te lanza una mirada plana.`, `Ela te lança um olhar seco.`) }
         ]
       }
     }
@@ -42,7 +42,7 @@
         ]
       },
       b: {
-        text: T('"Gossip, since you were kind. Rosa, the cleaning lady, has been here fourteen years. She knows every door in this building and has opinions about all of them. And she has a thing about the third stall. Do NOT make the third stall weird."', '«Chisme, ya que fuiste amable. Rosa, la señora de la limpieza, lleva catorce años aquí. Se sabe todas las puertas de este edificio y tiene opiniones sobre cada una. Y tiene algo con la tercera cabina. NO hagas rara la tercera cabina».', '«Fofoca, já que você foi gentil. A Rosa, a faxineira, tá aqui faz catorze anos. Ela conhece todas as portas deste prédio e tem opinião sobre cada uma. E tem uma coisa com a terceira cabine. NÃO deixe a terceira cabine esquisita».'),
+        text: T(`"Gossip, since you were kind. Rosa, the cleaning lady, has been here fourteen years. She knows every door in this building. And she has a thing about the third stall. Do NOT make the third stall weird."`, `«Chisme, ya que fuiste amable. Rosa, la señora de la limpieza, lleva catorce años aquí. Se sabe todas las puertas de este edificio. Y tiene algo con la tercera cabina. NO hagas rara la tercera cabina».`, `«Fofoca, já que você foi gentil. A Rosa, a faxineira, tá aqui faz catorze anos. Conhece todas as portas deste prédio. E tem uma coisa com a terceira cabine. NÃO deixe a terceira cabine esquisita».`),
         do: { flag: 'ezra_tip' }
       }
     }
@@ -60,7 +60,7 @@
   D.broh_queue = {
     who: 'broh', role: T('GRUDGE', 'RENCOR', 'RANCOR'), start: 'a', nodes: {
       a: {
-        text: T('"Oh. It\'s you." Broh and a friend are three people ahead of you in the line, looking at you the way people look at a parking ticket. "Hey, host! This guy shoved me!"', '«Ah. Eres tú». Broh y un amigo están tres personas delante de ti, mirándote como se mira una multa de estacionamiento. «¡Eh, encargado! ¡Este tipo me empujó!»', '«Ah. É você». O Broh e um amigo estão três pessoas na sua frente na fila, te olhando como se olha uma multa de estacionamento. «Ei, responsável! Esse cara me empurrou!»'),
+        text: T(`"Oh. It's you." Broh and a friend are three people ahead of you in the line, staring. "Hey, host! This guy shoved me!"`, `«Ah. Eres tú». Broh y un amigo están tres personas delante de ti en la fila, mirándote fijo. «¡Oye, anfitrión! ¡Este tipo me empujó!»`, `«Ah. É você». O Broh e um amigo estão três pessoas na sua frente na fila, te encarando. «Ei, anfitrião! Esse cara me empurrou!»`),
         do: { flag: 'broh_snitch' },
         choices: [
           { tone: 'sorry', t: T('"I lost my temper earlier. I\'m sorry. For real."', '«Perdí la paciencia antes. Perdón. De verdad».', '«Perdi a paciência antes. Desculpa. De verdade».'), do: { flag: 'broh_forgiven', unflag: ['broh_hostile', 'broh_snitch'], soc: -1 }, next: null, react: T('He chews on it. "…It\'s fine. Whatever. Sofi said you were polite." The friend deflates. The host looks up, notes it, looks down.', 'Lo mastica. «…Está bien. Da igual. Sofi dijo que fuiste amable». El amigo se desinfla. El encargado levanta la vista, lo anota, la baja.', 'Ele rumina. «…Tá tranquilo. Tanto faz. A Sofi disse que você foi educado». O amigo murcha. O responsável olha, registra, desvia.') },
@@ -110,7 +110,7 @@
         ]
       },
       honest_meh: {
-        text: T('MIKA looks up for the first time. "I believe you. Belief is not a stall. Give me one reason to think you are the kind of people I would want in my room."', 'MIKA levanta la vista por primera vez. «Te creo. Creer no es una cabina. Dame una razón para pensar que son el tipo de gente que quiero en mi baño».', 'O MIKA levanta o olhar pela primeira vez. «Acredito em você. Acreditar não é uma cabine. Me dê um motivo pra achar que vocês são o tipo de gente que eu quero na minha sala».'),
+        text: T(`MIKA looks up for the first time. "I believe you. That doesn't get you a stall. Give me one reason."`, `MIKA levanta la vista por primera vez. «Te creo. Eso no te da una cabina. Dame una razón».`, `MIKA levanta os olhos pela primeira vez. «Eu acredito. Isso não te dá uma cabine. Me dá um motivo».`),
         choices: [
           { tone: 'honest', t: T('"We\'ll leave it cleaner than we found it. And if anybody is sick, you hear it from us first."', '«La dejamos más limpia que como la encontramos. Y si alguien se siente mal, lo sabes por nosotros primero».', '«A gente deixa mais limpa do que encontrou. E se alguém passar mal, você ouve de nós primeiro».'), do: { soc: -1 }, next: 'ok_group' },
           { tone: 'blunt', t: T('"It\'s a toilet, not a job interview."', '«Es un baño, no una entrevista de trabajo».', '«É um banheiro, não uma entrevista de emprego».'), do: { soc: -3, weird: 4 }, next: 'fail', bad: true }
@@ -123,7 +123,7 @@
         ]
       },
       ok_group: {
-        text: T('MIKA uncaps a pen with a click like a verdict. "Stall three. Locked, not bolted. If I hear anything I would not explain to my mother, you are out and the line gets a speech. Two minutes."', 'MIKA destapa una lapicera con un clic como un veredicto. «Cabina tres. Con traba, sin cerrojo. Si escucho algo que no le explicaría a mi madre, se van y la fila recibe un discurso. Dos minutos».', 'O MIKA destampa uma caneta com um clique feito veredito. «Cabine três. Trancada, sem trinco. Se eu ouvir algo que não explicaria pra minha mãe, vocês estão fora e a fila ganha um discurso. Dois minutos».'),
+        text: T(`MIKA uncaps a pen. "Stall three. Locked, not bolted. If I hear anything I would not explain to my mother, you are out and the line gets a speech. Two minutes."`, `MIKA destapa un bolígrafo. «Cabina tres. Cerrada, no atrancada. Si oigo algo que no le explicaría a mi madre, quedan fuera y la fila recibe un discurso. Dos minutos».`, `MIKA destampa uma caneta. «Cabine três. Trancada, sem aferrolhar. Se eu ouvir qualquer coisa que não explicaria pra minha mãe, vocês estão fora e a fila ganha um discurso. Dois minutos».`),
         do: { open: 'host', flag: 'host_ok_group', soc: 2 }
       },
       ok_lie: {
@@ -161,7 +161,7 @@
     forced: true, who: 'maru', start: 'a', nodes: {
       a: {
         text: [
-          T('Maru goes in. You, Dani and Tato stand against the wall, looking at the ceiling like adults. Behind the door: relief like a small choir.', 'Maru entra. Tú, Dani y Tato esperan contra la pared, mirando al techo como adultos. Detrás de la puerta: un alivio como un pequeño coro.', 'A Maru entra. Você, o Dani e o Tato ficam encostados na parede, olhando pro teto feito adultos. Atrás da porta: um alívio como um pequeno coro.'),
+          T(`Maru goes in. You, Dani and Tato stand against the wall, looking at the ceiling. Behind the door: a long, grateful sigh.`, `Maru entra. Tú, Dani y Tato esperan contra la pared, mirando al techo. Detrás de la puerta: un suspiro largo y agradecido.`, `A Maru entra. Você, o Dani e o Tato esperam encostados na parede, olhando pro teto. Atrás da porta: um suspiro longo e agradecido.`),
           T('DANI, whispering, grinning, bouncing on his heels: "Okay okay okay. Look what I got."', 'DANI, susurrando, sonriendo, rebotando en los talones: «Ok ok ok. Mira lo que conseguí».', 'DANI, sussurrando, sorrindo, quicando nos calcanhares: «Tá tá tá. Olha o que eu consegui».')
         ],
         do: { call: 'stall_pill_node' },
@@ -190,7 +190,7 @@
       },
       agree: {
         who: 'dani',
-        text: T('"Checked. Okay. Yes. Responsible. We are responsible people!" He pockets the pill very carefully, like a tiny, expensive bird.', '«Chequeada. Ok. Sí. Responsables. ¡Somos gente responsable!» Se guarda la pastilla con muchísimo cuidado, como un pajarito caro.', '«Checado. Tá. Sim. Responsáveis. A gente é gente responsável!» Ele guarda o comprimido com muito cuidado, como um passarinho caro.'),
+        text: T(`"Checked. Okay. Yes. Responsible. We are responsible people!" He pockets the pill very carefully.`, `«Revisada. Bien. Sí. Responsables. ¡Somos gente responsable!» Guarda la pastilla con mucho cuidado.`, `«Checado. Tá. Sim. Responsáveis. Somos pessoas responsáveis!» Ele guarda o comprimido com muito cuidado.`),
         do: { quest: { q3: 'done', q4: 'done', q5: 'active' }, at: 200, flag: ['pill_known'] }
       },
       no: {
@@ -238,11 +238,11 @@
       },
       tato: {
         who: 'tato',
-        text: T('In the corner by the bin, Tato has stopped breathing the way people breathe. Quick, shallow, his hand flat on his chest. "I\'m fine. I\'m fine. It\'s just— small. And loud. And I can\'t—"', 'En la esquina junto al bote de basura, Tato dejó de respirar como respira la gente. Rápido, corto, la mano plana en el pecho. «Estoy bien. Estoy bien. Es solo… chico. Y ruidoso. Y no puedo—»', 'No canto perto da lixeira, o Tato parou de respirar como as pessoas respiram. Rápido, curto, a mão espalmada no peito. «Tô bem. Tô bem. É só… pequeno. E barulhento. E eu não consigo—»'),
+        text: T(`In the corner by the bin, Tato is breathing fast and shallow, his hand flat on his chest. "I'm fine. I'm fine. It's just— small. And loud. And I can't—"`, `En la esquina junto al basurero, Tato respira rápido y poco, con la mano plana sobre el pecho. «Estoy bien. Estoy bien. Es solo… chico. Y fuerte. Y no puedo…»`, `No canto, perto da lixeira, o Tato respira rápido e raso, com a mão aberta no peito. «Tô bem. Tô bem. É só… pequeno. E alto. E eu não consigo…»`),
         choices: [
           { tone: 'care', t: T('Breathe with him. In, out. Slow. "Follow me."', 'Respirar con él. Adentro, afuera. Lento. «Sígueme».', 'Respirar com ele. Entra, sai. Devagar. «Me acompanha».'), call: 'stall_breath', do: { flag: 'breath_pending' }, next: null, free: true },
-          { tone: 'water', t: T('Hand him your water bottle.', 'Darle tu botella de agua.', 'Passar sua garrafa de água pra ele.'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, bond: { tato: 1 }, flag: 'tato_water' }, next: 'tato2', react: T('He drinks, holds the bottle with both hands like a warm cup. Some of the shaking leaves his shoulders.', 'Toma, sostiene la botella con las dos manos como una taza tibia. Parte del temblor sale de sus hombros.', 'Ele bebe, segura a garrafa com as duas mãos como uma xícara quente. Parte do tremor sai dos ombros.') },
-          { tone: 'blunt', t: T('"Relax, bro. It\'s a toilet."', '«Relájate, bro. Es un baño».', '«Relaxa, mano. É um banheiro».'), do: { bond: { tato: -2 }, soc: -2, flag: 'tato_rough' }, next: 'knock', bad: true, react: T('Tato\'s face closes like a shop at night. "…Right. Sorry."', 'La cara de Tato se cierra como un local de noche. «…Claro. Perdón».', 'O rosto do Tato fecha como uma loja à noite. «…Certo. Desculpa».') }
+          { tone: 'water', t: T('Hand him your water bottle.', 'Darle tu botella de agua.', 'Passar sua garrafa de água pra ele.'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, bond: { tato: 1 }, flag: 'tato_water' }, next: 'tato2', react: T(`He drinks, holding the bottle with both hands. Some of the shaking leaves his shoulders.`, `Bebe, sosteniendo la botella con las dos manos. Parte del temblor sale de sus hombros.`, `Ele bebe, segurando a garrafa com as duas mãos. Parte do tremor sai dos ombros dele.`) },
+          { tone: 'blunt', t: T('"Relax, bro. It\'s a toilet."', '«Relájate, bro. Es un baño».', '«Relaxa, mano. É um banheiro».'), do: { bond: { tato: -2 }, soc: -2, flag: 'tato_rough' }, next: 'knock', bad: true, react: T(`Tato's face closes. "…Right. Sorry."`, `La cara de Tato se cierra. «…Cierto. Perdón».`, `O rosto do Tato se fecha. «…Certo. Desculpa».`) }
         ]
       },
       tato2: {
@@ -309,7 +309,7 @@
   D.rosa_wait = {
     who: 'rosa', role: T('CLEANING', 'LIMPIEZA', 'LIMPEZA'), start: 'a', nodes: {
       a: {
-        text: T('"Mind the wet floor." Rosa works the mop in slow figure eights, the way a person does a thing they have done ten thousand times. She does not look up, but she is aware of everything in the room.', '«Cuidado con el piso mojado». Rosa pasa el trapeador en ochos lentos, como quien hace algo que ya hizo diez mil veces. No levanta la vista, pero está consciente de todo en el cuarto.', '«Cuidado com o piso molhado». A Rosa passa o esfregão em oitos lentos, do jeito de quem fez algo dez mil vezes. Não levanta o olhar, mas percebe tudo na sala.'),
+        text: T(`"Mind the wet floor." Rosa works the mop in slow figure eights. She does not look up, but she is aware of everything in the room.`, `«Cuidado con el piso mojado». Rosa pasa el trapeador en ochos lentos. No levanta la vista, pero sabe todo lo que pasa en el cuarto.`, `«Cuidado com o chão molhado». A Rosa passa o esfregão em oitos lentos. Não levanta os olhos, mas sabe tudo o que acontece na sala.`),
         choices: [
           { tone: 'chill', t: T('"Thank you for doing this. This room would not survive without you."', '«Gracias por hacer esto. Este baño no sobreviviría sin ti».', '«{Obrigado|Obrigada|Valeu} por fazer isso. Este banheiro não sobreviveria sem você».'), do: { soc: 2, flag: 'rosa_thanked', care: 0 }, next: null, react: T('She stops mopping for half a second. "Nobody says that." Then she continues, and the speed of the mop is a little different.', 'Deja de trapear medio segundo. «Nadie dice eso». Luego sigue, y la velocidad del trapeador es un poco distinta.', 'Ela para de esfregar por meio segundo. «Ninguém diz isso». Depois continua, e a velocidade do esfregão fica um pouco diferente.') },
           { tone: 'silent', t: T('Step around the wet patch.', 'Esquivar el charco.', 'Desviar da poça.'), free: true, next: null }
@@ -336,7 +336,7 @@
         ]
       },
       help: {
-        text: T('She almost smiles. "There is a bucket by the third stall. If somebody out there is sick, you tell me first. That is the whole job: tell me first."', 'Casi sonríe. «Hay un balde junto a la tercera cabina. Si alguien allá afuera se siente mal, me avisas primero. Ese es todo el trabajo: avísame primero».', 'Ela quase sorri. «Tem um balde perto da terceira cabine. Se alguém lá fora passar mal, você me avisa primeiro. Esse é o trabalho todo: me avisa primeiro».'),
+        text: T(`She almost smiles. "There's a bucket by the third stall. If somebody out there is sick, tell me first. Before anyone else."`, `Casi sonríe. «Hay un balde junto a la tercera cabina. Si alguien ahí afuera se siente mal, avísame a mí primero. Antes que a nadie».`, `Ela quase sorri. «Tem um balde perto da terceira cabine. Se alguém lá fora passar mal, avisa a mim primeiro. Antes de qualquer pessoa».`),
         do: { fun: 1, soc: 2 }
       },
       angry: {
@@ -356,7 +356,7 @@
     forced: true, who: 'rosa', role: T('CLEANING', 'LIMPIEZA', 'LIMPEZA'), start: 'a', nodes: {
       a: {
         text: [
-          T('You file out in order. Rosa is holding the mop like a staff, one eyebrow at the height of an interrogation. She counts you with her chin.', 'Salen en fila. Rosa sostiene el trapeador como un cayado, una ceja a la altura de un interrogatorio. Los cuenta con el mentón.', 'Vocês saem em fila. A Rosa segura o esfregão como um cajado, uma sobrancelha na altura de um interrogatório. Ela conta vocês com o queixo.'),
+          T(`You file out in order. Rosa holds the mop upright, one eyebrow raised. She counts you with her chin.`, `Salen en fila. Rosa sostiene el trapeador en vertical, con una ceja alzada. Los cuenta con la barbilla.`, `Vocês saem em fila. A Rosa segura o esfregão em pé, uma sobrancelha erguida. Ela conta vocês com o queixo.`),
           T('"Three. Four? I stopped counting. I have been in this room for nine hours. I have found everything in these stalls. EVERYTHING. A first today: a family reunion."', '«Tres. ¿Cuatro? Dejé de contar. Llevo nueve horas en este baño. He encontrado de todo en estas cabinas. DE TODO. Hoy, una primera vez: una reunión familiar».', '«Três. Quatro? Parei de contar. Tô há nove horas nesta sala. Já encontrei de tudo nessas cabines. DE TUDO. Hoje, uma estreia: reunião de família».')
         ],
         do: { flag: 'rosa_met' },
@@ -382,7 +382,7 @@
         ]
       },
       warm: {
-        text: T('Rosa looks at you for a long time, the way you look at a plant that surprised you. "…Fourteen years of this. You know how many people ask how I am? Come here. Don\'t touch anything that isn\'t yours."', 'Rosa te mira un buen rato, como se mira una planta que te sorprendió. «…Catorce años de esto. ¿Sabes cuánta gente pregunta cómo estoy? Ven. No toques nada que no sea tuyo».', 'A Rosa te olha por muito tempo, do jeito que se olha uma planta que te surpreendeu. «…Catorze anos disso. Sabe quanta gente pergunta como eu estou? Vem. Não toque em nada que não seja seu».'),
+        text: T(`Rosa looks at you for a long time. "…Fourteen years of this. You know how many people ask how I am? Come here. Don't touch anything that isn't yours."`, `Rosa te mira un buen rato. «…Catorce años de esto. ¿Sabes cuánta gente pregunta cómo estoy? Ven. No toques nada que no sea tuyo».`, `A Rosa te olha por muito tempo. «…Catorze anos disso. Sabe quanta gente pergunta como eu estou? Vem. Não toque em nada que não seja seu».`),
         do: { flag: ['rosa_ally', 'rosa_warm'], soc: 4, fun: 3 },
         next: 'ally'
       },
@@ -391,7 +391,7 @@
         do: { flag: ['rosa_ally', 'quiet_known'], quest: { q4: 'done', q5: 'active' }, at: 215 }
       },
       ok: {
-        text: T('"Good. Then we are done." She holds the door open for you with her mop like a velvet rope. "And do not tell me anything I would have to unhear."', '«Bien. Entonces terminamos». Te sostiene la puerta con el trapeador como a un cordón de terciopelo. «Y no me cuenten nada que luego tenga que desoír».', '«Bom. Então terminamos». Ela segura a porta pra você com o esfregão feito um cordão de veludo. «E não me contem nada que eu depois precise desouvir».'),
+        text: T(`"Good. Then we are done." She holds the door open with her mop. "And do not tell me anything I would have to unhear."`, `«Bien. Entonces terminamos». Sostiene la puerta abierta con el trapeador. «Y no me cuentes nada que después tenga que desoír».`, `«Bom. Então terminamos». Ela segura a porta aberta com o esfregão. «E não me conte nada que eu depois tenha que desouvir».`),
         do: { quest: { q4: 'done', q5: 'active' }, at: 212 }
       },
       joke: {

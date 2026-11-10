@@ -614,7 +614,7 @@
   D0.obj_rest_strong = {
     start: 'a', nodes: {
       a: {
-        text: T('Mattresses on the floor. Low light. Someone has left a blanket folded like an offering.', 'Colchones en el piso. Luz baja. Alguien dejó una manta doblada como una ofrenda.', 'Colchões no chão. Luz baixa. Alguém deixou um cobertor dobrado como oferenda.'),
+        text: T(`Mattresses on the floor. Low light. Someone has left a folded blanket.`, `Colchones en el piso. Luz baja. Alguien dejó una manta doblada.`, `Colchões no chão. Luz baixa. Alguém deixou um cobertor dobrado.`),
         choices: [
           { t: T('Lie down for 30 minutes.', 'Acostarse 30 minutos.', 'Deitar por 30 minutos.'), free: true, do: { time: 30, hp: 10, soc: 14, fun: -3, weird: -3 }, call: 'mark_rest', next: null },
           { t: T('Sleep it off for 90 minutes.', 'Dormir 90 minutos.', 'Dormir por 90 minutos.'), free: true, do: { time: 90, hp: 24, soc: 30, fun: -12, weird: -8 }, call: 'mark_rest', next: null, react: T('You wake up with a blanket you do not remember. The bass is still there, patient as a dog.', 'Despiertas con una manta que no recuerdas. El bajo sigue ahí, paciente como un perro.', 'Você acorda com um cobertor de que não lembra. O grave ainda está lá, paciente como um cachorro.') },

@@ -62,7 +62,7 @@
         ]
       },
       b: {
-        text: T('"Melody is a promise. This music doesn\'t promise anything. It just continues." She uncrosses one arm. "ÆRIEL, the closing DJ upstairs, is the only one who understands that. They\'ll open the roof at half past five. They like people who bring water. Don\'t tell anyone I said that."', '«La melodía es una promesa. Esta música no promete nada. Solo continúa». Descruza un brazo. «ÆRIEL, la DJ del cierre, arriba, es la única que entiende eso. Abrirá el techo a las cinco y media. Le caen bien las personas que traen agua. No le digas a nadie que te lo dije».', '«Melodia é uma promessa. Essa música não promete nada. Só continua». Ela descruza um braço. «ÆRIEL, a DJ do encerramento, lá em cima, é a única que entende isso. Vai abrir o terraço às cinco e meia. Ela gosta de gente que traz água. Não conta pra ninguém que eu disse».'),
+        text: T(`"Melody is a promise. This music just continues." She uncrosses one arm. "ÆRIEL, the closing DJ upstairs, understands that. They'll open the roof at half past five. They like people who bring water. Don't tell anyone I said that."`, `«La melodía es una promesa. Esta música solo continúa». Descruza un brazo. «ÆRIEL, la DJ de cierre de arriba, lo entiende. Van a abrir la azotea a las cinco y media. Les caen bien los que traen agua. No le digas a nadie que te lo dije».`, `«Melodia é uma promessa. Essa música só continua». Ela descruza um braço. «A ÆRIEL, a DJ do fechamento lá em cima, entende isso. Vão abrir o terraço às cinco e meia. Eles gostam de quem leva água. Não conta pra ninguém que fui eu que falei».`),
         do: { flag: ['hazel_tip', 'resident_water_tip'], fun: 2 }
       }
     }
@@ -71,7 +71,7 @@
   D.cult = {
     who: 'stomp3', role: T('THE FLOW', 'EL FLUJO', 'O FLUXO'), start: 'a', nodes: {
       a: {
-        text: T('Five people in a loose, swaying ring in the middle of Sala 2 are dancing with their eyes closed and their palms open. A rhythm moves through them like a rumour. The ring opens a little. One of them nods without opening his eyes.', 'Cinco personas en un anillo suelto y oscilante en el centro de la Sala 2 bailan con los ojos cerrados y las palmas abiertas. Un ritmo pasa entre ellos como un rumor. El anillo se abre un poco. Uno asiente sin abrir los ojos.', 'Cinco pessoas num anel solto e oscilante no meio da Sala 2 dançam de olhos fechados e palmas abertas. Um ritmo passa entre elas feito boato. O anel se abre um pouco. Uma delas assente sem abrir os olhos.'),
+        text: T(`Five people in a loose, swaying ring in the middle of Sala 2 are dancing with their eyes closed and their palms open. A rhythm passes between them. The ring opens a little. One of them nods without opening his eyes.`, `Cinco personas en un círculo flojo y ondulante en medio de la Sala 2 bailan con los ojos cerrados y las palmas abiertas. Un ritmo pasa entre ellas. El círculo se abre un poco. Una asiente sin abrir los ojos.`, `Cinco pessoas numa roda frouxa e ondulante no meio da Sala 2 dançam de olhos fechados e palmas abertas. Um ritmo passa entre elas. A roda se abre um pouco. Uma delas assente sem abrir os olhos.`),
         choices: [
           { tone: 'dance', t: T('Step into the ring. Follow the flow.', 'Entrar al anillo. Seguir el flujo.', 'Entrar no anel. Seguir o fluxo.'), call: 'cult_dance', next: null, free: true },
           { tone: 'chill', t: T('Watch for a minute.', 'Mirar un minuto.', 'Olhar por um minuto.'), do: { fun: 1, time: 2 }, next: null }
@@ -105,7 +105,7 @@
   D.beatriz_catch = {
     who: 'beatriz', role: T('MANAGER', 'GERENTE', 'GERENTE'), forced: true, start: 'a', nodes: {
       a: {
-        text: T('A woman with a clipboard and the stillness of a person who has never lost an argument at a door looks up. "Staff only."', 'Una mujer con una carpeta y la quietud de alguien que nunca perdió una discusión en una puerta levanta la vista. «Solo personal».', 'Uma mulher com uma prancheta e a quietude de quem nunca perdeu uma discussão numa porta levanta o olhar. «Só staff».'),
+        text: T(`A woman with a clipboard looks up. "Staff only."`, `Una mujer con una tablilla levanta la vista. «Solo personal».`, `Uma mulher com uma prancheta levanta os olhos. «Só funcionários».`),
         choices: [
           { tone: 'honest', t: T('"I got turned around looking for somewhere quiet."', '«Me desorienté buscando un lugar tranquilo».', '«Me perdi procurando um lugar quieto».'), do: { soc: -1 }, next: null, react: T('"Quiet is left of the foyer. The room with the mattresses. Go." Not unkind. Final.', '«Lo tranquilo está a la izquierda del foyer. El cuarto de los colchones. Ve». No es antipática. Es definitiva.', '«O quieto é à esquerda do foyer. A sala dos colchões. Vai». Não é antipática. É definitiva.') },
           { tone: 'smooth', t: T('"Hugo sent me. He said you\'d understand."', '«Hugo me mandó. Dijo que entenderías».', '«O Hugo me mandou. Disse que você entenderia».'), req: { flag: 'hugo_friend' }, do: { soc: -1, flag: 'backstage_access' }, next: null, react: T('Her eyebrow drops a centimetre. "Hugo." A sigh. "Fine. Ten minutes. Touch nothing."', 'Su ceja baja un centímetro. «Hugo». Un suspiro. «Bien. Diez minutos. No toques nada».', 'A sobrancelha dela desce um centímetro. «Hugo». Um suspiro. «Tá. Dez minutos. Não toque em nada».') },
@@ -157,7 +157,7 @@
         ]
       },
       noted: {
-        text: T('"Noted." ÆRIEL closes their eyes for a second, like someone filing a thing away in the most careful drawer. "Go find your people. See you at sunrise."', '«Anotado». ÆRIEL cierra los ojos un segundo, como quien archiva algo en el cajón más cuidadoso. «Ve a buscar a tu gente. Nos vemos al amanecer».', '«Anotado». ÆRIEL fecha os olhos por um segundo, como quem guarda algo na gaveta mais cuidadosa. «Vai buscar sua galera. A gente se vê no amanhecer».'),
+        text: T(`"Noted." ÆRIEL closes their eyes for a second. "Go find your people. See you at sunrise."`, `«Anotado». ÆRIEL cierra los ojos un segundo. «Ve a buscar a tu gente. Nos vemos al amanecer».`, `«Anotado». A ÆRIEL fecha os olhos por um segundo. «Vai atrás da sua galera. A gente se vê no nascer do sol».`),
         do: { flag: 'resident_met', fun: 3, soc: 3 }
       }
     }
@@ -247,11 +247,11 @@
         ]
       },
       warm: {
-        text: T('ÆRIEL plays something warm: a long chord, then a second chord, then a kick so far away it sounds like somebody else\'s heartbeat. People start to sway before they know it. Somebody puts a head on someone\'s shoulder. Somebody hands a stranger a half-sandwich. The light comes up slowly.', 'ÆRIEL toca algo cálido: un acorde largo, luego otro, luego un bombo tan lejano que suena como el latido de alguien más. La gente empieza a mecerse antes de saberlo. Alguien apoya la cabeza en el hombro de otro. Alguien le pasa a un desconocido medio sándwich. La luz sube despacio.', 'ÆRIEL toca algo quente: um acorde longo, depois outro, depois um bumbo tão distante que parece o coração de outra pessoa. As pessoas começam a balançar antes de perceber. Alguém apoia a cabeça no ombro de outro. Alguém passa meio sanduíche pra um desconhecido. A luz sobe devagar.'),
+        text: T(`ÆRIEL plays something warm: a long chord, then a second chord, then a kick so far away it could be next door. People start to sway before they know it. Somebody puts a head on someone's shoulder. Somebody hands a stranger a half-sandwich. The light comes up slowly.`, `ÆRIEL pone algo cálido: un acorde largo, luego otro, luego un bombo tan lejano que podría venir del cuarto de al lado. La gente empieza a mecerse sin darse cuenta. Alguien apoya la cabeza en el hombro de alguien. Alguien le pasa medio sándwich a un desconocido. La luz sube despacio.`, `A ÆRIEL toca algo quente: um acorde longo, depois outro, depois um bumbo tão distante que podia ser do cômodo ao lado. As pessoas começam a balançar sem perceber. Alguém apoia a cabeça no ombro de alguém. Alguém passa meio sanduíche pra um desconhecido. A luz sobe devagar.`),
         next: 'mine'
       },
       wild: {
-        text: T('ÆRIEL plays something wild: the kick comes in like a door kicked open, and four hundred people who have not slept shout at the sky. The dancing is ugly and joyful. Somebody is on somebody\'s shoulders, again. A stranger is crying and laughing at the same time. The sun comes up behind the speakers.', 'ÆRIEL toca algo salvaje: el bombo entra como una puerta pateada y cuatrocientas personas que no durmieron le gritan al cielo. El baile es feo y alegre. Alguien va sobre los hombros de alguien, otra vez. Un desconocido llora y ríe a la vez. El sol sale detrás de los parlantes.', 'ÆRIEL toca algo selvagem: o bumbo entra feito uma porta chutada e quatrocentas pessoas que não dormiram gritam pro céu. A dança é feia e alegre. Alguém tá nos ombros de alguém, de novo. Um desconhecido chora e ri ao mesmo tempo. O sol nasce atrás das caixas.'),
+        text: T(`ÆRIEL plays something wild: the kick comes in hard, and four hundred people who have not slept shout at the sky. The dancing is ugly and joyful. Somebody is on somebody's shoulders, again. A stranger is crying and laughing at the same time. The sun comes up behind the speakers.`, `ÆRIEL pone algo salvaje: el bombo entra con fuerza y cuatrocientas personas que no han dormido le gritan al cielo. El baile es feo y feliz. Alguien va sobre los hombros de alguien, otra vez. Un desconocido llora y ríe a la vez. El sol sale detrás de los parlantes.`, `A ÆRIEL toca algo selvagem: o bumbo entra pesado, e quatrocentas pessoas que não dormiram gritam pro céu. A dança é feia e feliz. Alguém tá nos ombros de alguém, de novo. Um desconhecido chora e ri ao mesmo tempo. O sol nasce atrás das caixas de som.`),
         next: 'mine'
       },
       soft: {
@@ -272,7 +272,7 @@
         next: 'allthree'
       },
       allthree: {
-        text: T('Maru is on your left, Dani on your right, Tato in front, one hand on the rail. Nobody says anything for a very long time. At some point, Dani whispers "I love everyone," and nobody laughs, because he means it.', 'Maru está a tu izquierda, Dani a tu derecha, Tato adelante, una mano en la baranda. Nadie dice nada por mucho tiempo. En algún momento, Dani susurra «amo a todos», y nadie se ríe, porque lo dice en serio.', 'A Maru tá à sua esquerda, o Dani à direita, o Tato na frente, uma mão no parapeito. Ninguém diz nada por muito tempo. Em algum momento, o Dani sussurra «amo todo mundo», e ninguém ri, porque ele fala sério.'),
+        text: T(`Maru is on your left, Dani on your right, Tato in front, one hand on the rail. Nobody says anything for a long time. At some point, Dani whispers "I love everyone," and nobody laughs, because he means it.`, `Maru está a tu izquierda, Dani a tu derecha, Tato delante, con una mano en la baranda. Nadie dice nada durante un buen rato. En algún momento Dani susurra «quiero a todos» y nadie se ríe, porque lo dice en serio.`, `A Maru está à sua esquerda, o Dani à direita, o Tato na frente, com uma mão no parapeito. Ninguém diz nada por um bom tempo. Em algum momento o Dani sussurra «eu amo todo mundo» e ninguém ri, porque ele fala sério.`),
         do: { flag: 'sunrise_all', fun: 10, soc: 6 },
         next: 'end'
       },

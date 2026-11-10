@@ -33,7 +33,7 @@
     crown: t(`"Crowns are boring. Boring sells."`, `«Las coronas son aburridas. Lo aburrido se vende».`, `«Coroas são chatas. O chato vende».`),
     heart: t(`"Hearts are boring. Boring sells."`, `«Los corazones son aburridos. Lo aburrido se vende».`, `«Corações são chatos. O chato vende».`),
     bolt: t(`"Bolts hit harder. Sometimes in the wrong direction."`, `«Los rayos pegan más fuerte. A veces para el lado equivocado».`, `«Raios batem mais forte. Às vezes pro lado errado».`),
-    skull: t(`"Skulls are for people who like surprises. Isi has opinions."`, `«Las calaveras son para quien disfruta las sorpresas. Isi tiene opiniones».`, `«Caveiras são pra quem gosta de surpresa. A Isi tem opiniões».`),
+    skull: t(`"Skulls are for people who like surprises. Ask Isi."`, `«Las calaveras son para quien disfruta las sorpresas. Pregúntale a Isi».`, `«Caveiras são pra quem gosta de surpresa. Pergunta pra Isi».`),
     smile: t(`"A smiley could be anything. That's the charm."`, `«Una carita puede ser cualquier cosa. Ese es el encanto».`, `«Uma carinha pode ser qualquer coisa. Esse é o charme».`),
     ae: t(`"An Æ? Could be anything. The nerds' lottery."`, `«¿Una Æ? Puede ser cualquier cosa. La lotería de los nerds».`, `«Um Æ? Pode ser qualquer coisa. A loteria dos nerds».`)
   };
@@ -45,7 +45,7 @@
   D.tico = {
     who: 'tico', role: t('IN THE QUEUE', 'EN LA FILA', 'NA FILA'), start: 'a', nodes: {
       a: {
-        text: t(`The person at the back of the queue has a very big jacket with a lot of small pockets. "Psst. Don't look at the pockets. Look at me. I'm a menu, standing up. Say a word and I'll pretend it was your idea."`, `La persona del final de la fila lleva una chaqueta enorme con muchísimos bolsillitos. «Psst. No mires los bolsillos. Mírame a mí. Soy un menú de pie. Di una palabra y voy a fingir que fue idea tuya».`, `A pessoa no fim da fila usa uma jaqueta enorme com muitos bolsinhos. «Psiu. Não olha os bolsos. Olha pra mim. Eu sou um cardápio em pé. Fala uma palavra e eu finjo que foi ideia sua».`),
+        text: t(`The person at the back of the queue has a big jacket with a lot of small pockets. "Psst. Don't look at the pockets. Look at me. I'm a menu, standing up. Say a word and I'll pretend it was your idea."`, `La persona del final de la fila lleva una chaqueta grande con muchísimos bolsillitos. «Psst. No mires los bolsillos. Mírame a mí. Soy un menú de pie. Di una palabra y voy a fingir que fue idea tuya».`, `A pessoa no fim da fila usa uma jaqueta grande com muitos bolsinhos. «Psiu. Não olha os bolsos. Olha pra mim. Eu sou um cardápio em pé. Fala uma palavra e eu finjo que foi ideia sua».`),
         choices: [
           K('bold', t(`"MDMA. Pills."`, `«MDMA. Pastillas».`, `«MDMA. Comprimidos».`), { req: function (s) { return !story.hasStash('mdma'); }, next: 'shape', free: true }),
           K('bold', t(`"Coke."`, `«Coca».`, `«Coca».`), { req: function (s) { return !story.hasStash('coke'); }, call: 'buy_coke', next: null, free: true }),
@@ -97,7 +97,7 @@
   /* ------------------------------------------------------------ taking what you carry (MENU > STATUS) */
   const FAKE_TOAST = {
     faint: t('Something is wrong. The edges of the room are leaving.', 'Algo anda mal. Los bordes del cuarto se están yendo.', 'Algo está errado. As bordas da sala estão indo embora.'),
-    nothing: t('Nothing happens. Nothing keeps happening. You paid for a very expensive mint.', 'No pasa nada. Nada sigue pasando. Pagaste una menta carísima.', 'Nada acontece. Nada continua acontecendo. Você pagou por uma bala de menta caríssima.'),
+    nothing: t(`Nothing happens. Nothing keeps happening. You paid good money for a mint.`, `No pasa nada. Y sigue sin pasar nada. Pagaste buen dinero por una menta.`, `Não acontece nada. E continua não acontecendo nada. Você pagou um bom dinheiro por uma bala de menta.`),
     glitch: t('Static. Everything arrives half a second late and a little wrong.', 'Estática. Todo llega medio segundo tarde y un poco mal.', 'Estática. Tudo chega meio segundo atrasado e um pouco errado.')
   };
   const LEV = t('Something cheap is in there. Your gums sting and a flu-like ache starts behind your eyes.', 'Hay algo barato ahí adentro. Te arden las encías y un malestar como de gripe empieza detrás de los ojos.', 'Tem algo barato aí dentro. Suas gengivas ardem e um mal-estar de gripe começa atrás dos olhos.');
@@ -119,7 +119,7 @@
       U.toast({ icon: 'heart', text: t('Twenty minutes later: a warm tide. Everyone\'s hands look kind.', 'Veinte minutos después: una marea tibia. Las manos de todos se ven amables.', 'Vinte minutos depois: uma maré morna. As mãos de todo mundo parecem gentis.'), kind: 'good', ms: 5000 });
     } else if (comp === 'mix') {
       L.apply({ fx: ['mdma', 'meth'], fun: 8, hp: -6, weird: 20, flag: ['rolling', 'wired', 'drug_taken'] });
-      U.toast({ icon: 'spark', text: t('A warm wave with a wire running through it. Your jaw and your pulse have opinions.', 'Una ola tibia con un cable adentro. Tu mandíbula y tu pulso tienen opiniones.', 'Uma onda morna com um fio dentro. Sua mandíbula e seu pulso têm opiniões.'), kind: 'bad', ms: 5000 });
+      U.toast({ icon: 'spark', text: t(`A warm wave with a wire running through it. Your jaw is tight and your pulse is loud.`, `Una ola tibia con un cable atravesándola. La mandíbula tensa, el pulso fuerte.`, `Uma onda quente com um fio elétrico no meio. A mandíbula tensa, o pulso alto.`), kind: 'bad', ms: 5000 });
     } else if (comp === 'mda') {
       L.apply({ fx: 'mdma', fun: 9, hp: -4, weird: 14, flag: ['rolling', 'drug_taken', 'took_mda'] });
       s.fx.mdma = Math.round((s.fx.mdma || 240) * 1.5);
