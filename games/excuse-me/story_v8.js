@@ -28,6 +28,15 @@
     bolt: { g: '⚡', n: t('LIGHTNING BOLT', 'RAYO', 'RAIO') }, skull: { g: '☠', n: t('SKULL', 'CALAVERA', 'CAVEIRA') },
     smile: { g: '☺', n: t('SMILEY', 'CARITA', 'CARINHA') }, ae: { g: 'Æ', n: t('Æ', 'Æ', 'Æ') }
   };
+  /* a word from the seller with each stamp: a rumour, not a lab report (the odds in drugs.js stay hidden numbers) */
+  const IMPRINT_LINE = {
+    crown: t(`"Crowns are boring. Boring sells."`, `«Las coronas son aburridas. Lo aburrido se vende».`, `«Coroas são chatas. O chato vende».`),
+    heart: t(`"Hearts are boring. Boring sells."`, `«Los corazones son aburridos. Lo aburrido se vende».`, `«Corações são chatos. O chato vende».`),
+    bolt: t(`"Bolts hit harder. Sometimes in the wrong direction."`, `«Los rayos pegan más fuerte. A veces para el lado equivocado».`, `«Raios batem mais forte. Às vezes pro lado errado».`),
+    skull: t(`"Skulls are for people who like surprises. Isi has opinions."`, `«Las calaveras son para quien disfruta las sorpresas. Isi tiene opiniones».`, `«Caveiras são pra quem gosta de surpresa. A Isi tem opiniões».`),
+    smile: t(`"A smiley could be anything. That's the charm."`, `«Una carita puede ser cualquier cosa. Ese es el encanto».`, `«Uma carinha pode ser qualquer coisa. Esse é o charme».`),
+    ae: t(`"An Æ? Could be anything. The nerds' lottery."`, `«¿Una Æ? Puede ser cualquier cosa. La lotería de los nerds».`, `«Um Æ? Pode ser qualquer coisa. A loteria dos nerds».`)
+  };
   function stash() { const s = EM.state; s.stash = s.stash || []; return s.stash; }
   story.hasStash = function (kind, untestedOnly) { return stash().some(function (e) { return e.kind === kind && (!untestedOnly || !e.tested); }); };
 
@@ -51,7 +60,7 @@
       },
       imprint: {
         text: t(`"And the stamp. Everyone wants a stamp. A crown, a heart, a bolt, a skull, a smiley, an Æ for the nerds. The stamp tells a story. The story is not a lab report. Don't tell Isi I said that."`, `«Y el sello. Todos quieren un sello. Una corona, un corazón, un rayo, una calavera, una carita, una Æ para los nerds. El sello cuenta una historia. La historia no es un análisis de laboratorio. No le digas a Isi que dije eso».`, `«E o carimbo. Todo mundo quer um carimbo. Uma coroa, um coração, um raio, uma caveira, uma carinha, um Æ pros nerds. O carimbo conta uma história. A história não é um laudo de laboratório. Não conta pra Isi que eu disse isso».`),
-        choices: Object.keys(IMPRINTS).map(function (k) { return K('bold', t(`${IMPRINTS[k].g}  ${IMPRINTS[k].n.en}`, `${IMPRINTS[k].g}  ${IMPRINTS[k].n.es}`, `${IMPRINTS[k].g}  ${IMPRINTS[k].n.pt}`), { call: 'pi_' + k, next: null, free: true }); })
+        choices: Object.keys(IMPRINTS).map(function (k) { return K('bold', t(`${IMPRINTS[k].g}  ${IMPRINTS[k].n.en}`, `${IMPRINTS[k].g}  ${IMPRINTS[k].n.es}`, `${IMPRINTS[k].g}  ${IMPRINTS[k].n.pt}`), { call: 'pi_' + k, next: null, free: true, react: IMPRINT_LINE[k] }); })
       },
       honest: {
         text: t(`"You don't." He says it with real warmth. "Nobody does. Not me. I buy from a guy who buys from a guy. That's why there's a table in the quiet room with a woman who will tell you what it looks like, for free, no names. Go see her before you put anything in you. I mean it. I make money and I like being alive."`, `«No sabes». Lo dice con calidez de verdad. «Nadie sabe. Ni yo. Le compro a un tipo que le compra a un tipo. Por eso hay una mesa en la sala tranquila con una mujer que te dice a qué se parece, gratis, sin nombres. Ve con ella antes de ponerte nada. En serio. Yo gano plata y me gusta estar vivo».`, `«Não sabe». Ele fala com calor de verdade. «Ninguém sabe. Nem eu. Compro de um cara que compra de um cara. Por isso tem uma mesa na sala de calma com uma mulher que te diz com o que se parece, de graça, sem nomes. Vai lá antes de colocar qualquer coisa em você. Falo sério. Eu ganho dinheiro e gosto de estar vivo».`),

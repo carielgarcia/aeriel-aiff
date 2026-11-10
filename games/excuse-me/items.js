@@ -20,7 +20,14 @@
 
   EM.water = {
     SIPS: SIPS, MAX: MAX_SIPS,
-    sips: function (s) { const b = s.items.water || 0; return Math.max(0, b * SIPS - (s.sipsUsed || 0)); }
+    sips: function (s) { const b = s.items.water || 0; return Math.max(0, b * SIPS - (s.sipsUsed || 0)); },
+    /* one extra sip (a sachet someone hands you): refills the open bottle, or starts a new one with a sip in it. False when full. */
+    addSip: function (s) {
+      if (EM.water.sips(s) >= MAX_SIPS) return false;
+      if ((s.sipsUsed || 0) > 0) s.sipsUsed -= 1;
+      else { s.items.water = (s.items.water || 0) + 1; s.sipsUsed = SIPS - 1; }
+      return true;
+    }
   };
 
   /* drink a sip, whenever you like */

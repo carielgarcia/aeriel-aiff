@@ -231,3 +231,13 @@ The game renders at **2x** (`EM.RS = 2` in `gfx.js`): logical coordinates are un
 
 ## Finding people (seek.js)
 Whoever the current objective sends you to wears a golden star above their head (`drawStar()` in `engine.js`): your three friends during FIND YOUR PEOPLE, Dani and Tato after the scattering, any friend who wanders off on their own (Benjamin, or Fernando/Feña in the dark room), and the host and Rosa during their missions. Gold arrows at the edge of the screen point to them in the same room; when they are in another room the arrow points to the exit that leads toward it (`zoneRoute()` breadth-first over the door graph), with the friend's initial next to it. Clues come when they leave (a toast per friend and room, `CLUE` in `seek.js`), when you enter the next room along, and when you enter their room. Finding one (`L.join`) shows the star for four seconds and a FOUND toast. To add a target, push a function onto `EM.seekers` that returns `{ key, zone, label }` (key = friend id or NPC id).
+
+---
+
+## Dialogue economy rules (audit, v2.1)
+
+- **Repeatable nodes pay once.** A node that loops back to its menu and carries gains (`talk`, `joke`, trivia, "tell me more") is marked `once: true`; its `do` runs the first time it is reached in a run (`state.once`, key `dialogueId.nodeId`) and never again. Its text can still be read again. Services (water, items, drinks) stay repeatable.
+- **Flirts read your pockets.** The six people you can ask each weigh something different when you ask to kiss them (`READS` in `story_v16.js`; `L.makeoutChance(base, who)`): Vera your accessories (one helps, two do not), Ines your drinks and your water, Rafa your sunglasses (he cannot read you), Mina your earplugs (she approves), Nox your earplugs (he cannot tell if you hear), Ludo your HEALTH (dizzy is not a good moment). The ask scene shows a tell as an extra page, never a number. A no is still complete, and each person refuses in their own voice (`AGAIN` in `story_v5.js`).
+- **Dealer stamps carry a rumour.** Each stamp comes with one line from the seller (`IMPRINT_LINE` in `story_v8.js`) that is true to the hidden odds without quoting them.
+- **Mambo's pilot programme.** Saying excuse me to Mambo, once, gets you one sip of water (`EM.water.addSip`).
+
