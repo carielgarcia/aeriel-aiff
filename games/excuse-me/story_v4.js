@@ -59,7 +59,7 @@
       if (c.tone === 'sorry') { c.do = Object.assign({}, c.do, { time: 2, rep: -0.3, hp: -1, pb: { tato: 1 }, flag: 'hostile_kind' }); }
       else if (c.tone === 'chill') { c.do = Object.assign({}, c.do, { rep: -0.6, pb: { tato: 1 }, flag: 'hostile_kind' }); }
       else if (c.tone === 'blunt') { c.do = Object.assign({}, c.do, { rep: 0.5, pb: { maru: -1, tato: -1 }, flag: 'hostile_rude' }); }
-      else if (c.tone === 'care') { c.do = Object.assign({}, c.do, { rep: -1.2, pb: { maru: 1, dani: 1, tato: 1 }, flag: 'hostile_kind' }); }
+      else if (c.tone === 'care') { c.do = Object.assign({}, c.do, c.do && c.do.care ? { rep: -1.2, pb: { maru: 1, dani: 1, tato: 1 }, flag: 'hostile_kind' } : { rep: -0.2, flag: 'hostile_kind' }); } /* a sip they did not need earns only a nod */
     });
     esc.forEach(function (c) {
       if (c.tone === 'sorry') { c.do = Object.assign({}, c.do, { rep: -0.3, time: 3, pb: { tato: 1 }, flag: 'hostile_kind' }); }

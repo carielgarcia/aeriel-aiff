@@ -151,12 +151,36 @@
     blunt: { tone: 'blunt', t: T('"I\'m asking for a gap. It\'s a nightclub."', '«Pido un hueco. Es un club».', '«Tô pedindo uma brecha. É um club».'), do: { soc: -3, weird: 3, bad: 1 }, next: 'esc', bad: true },
     water: { tone: 'care', t: T('Offer them your water. "You look like you need this more than I do."', 'Ofrecerles tu agua. «Parece que la necesitas más que yo».', 'Oferecer sua água. «Parece que você precisa mais do que eu».'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1 }, call: 'hostile_ok', next: null, react: T('They look at the bottle like it is a foreign object, drink half in one pull, and say, in a completely different voice: "…oh. Sorry. It\'s been a long night." They move.', 'Miran la botella como si fuera un objeto extranjero, toman la mitad de un trago y dicen, con una voz completamente distinta: «…ay. Perdón. Fue una noche larga». Se mueven.', 'Eles olham a garrafa como se fosse um objeto estrangeiro, bebem metade num gole e dizem, com uma voz completamente diferente: «…ai. Desculpa. Foi uma noite longa». Eles saem do caminho.') }
   };
+  /* Each opener is a different grievance, so the same five answers cost and pay differently.
+     kind 0: the square metre. 1: THE PART. 2: my spot. 3: drunk and baiting. */
+  function hch(kind) {
+    const o = Object.assign({}, HCH);
+    o.sorry = Object.assign({}, HCH.sorry, [
+      { do: { soc: -2 } },
+      { do: { soc: -3, weird: 1 }, react: T('They do not open their eyes. "You did it again." You go around, quieter.', 'No abren los ojos. «Lo hiciste otra vez». Das la vuelta, más callado.', 'Eles não abrem os olhos. «Você fez de novo». Você dá a volta, mais quieto.') },
+      {},
+      { do: { soc: -1 }, call: undefined, next: 'esc', react: T('"Sorry." They say it back to you in your own voice. "Sorry. Sorry." Somebody lifts a phone.', '«Perdón». Te lo repiten con tu propia voz. «Perdón. Perdón». Alguien levanta un celular.', '«Desculpa». Eles repetem na sua própria voz. «Desculpa. Desculpa». Alguém levanta um celular.') }
+    ][kind]);
+    o.chill = Object.assign({}, HCH.chill, [
+      { do: { time: 4 } },
+      { do: { time: 8, fun: 2 }, react: T('You wait through THE PART with them, eyes shut, until the drop lands. For eight minutes it is the only room in the world.', 'Esperas LA PARTE con ellos, ojos cerrados, hasta que cae el drop. Durante ocho minutos es el único lugar del mundo.', 'Você espera A PARTE com eles, olhos fechados, até o drop cair. Por oito minutos é o único lugar do mundo.') },
+      { do: { time: 6 }, react: T('You take the long way round their spot. It takes a while. The spot does not notice.', 'Das la vuelta larga a su lugar. Tarda. El lugar no se da cuenta.', 'Você dá a volta longa no lugar deles. Demora. O lugar nem percebe.') },
+      { do: { time: 4 }, react: T('You stand still and study your shoes. They get bored before you do.', 'Te quedas quieto mirando tus zapatos. Se aburren antes que tú.', 'Você fica parado olhando os sapatos. Eles enjoam antes de você.') }
+    ][kind]);
+    o.water = Object.assign({}, HCH.water, [
+      {},
+      { do: { item: { water: -1 } }, react: T('They drink without opening their eyes and hand it back. It was not the water they wanted. They shift anyway, to be rid of you.', 'Toman sin abrir los ojos y te la devuelven. No era agua lo que querían. Se mueven igual, para sacarte de encima.', 'Eles bebem sem abrir os olhos e devolvem. Não era água que queriam. Mesmo assim saem do lugar, pra se livrar de você.') },
+      { do: { item: { water: -1 } }, react: T('"I\'m not thirsty. I\'m located." They sip anyway and move one step, as a favour.', '«No tengo sed. Estoy ubicado». Toman igual y se mueven un paso, como favor.', '«Não tô com sede. Tô posicionado». Eles bebem mesmo assim e dão um passo, como favor.') },
+      {}
+    ][kind]);
+    return [o.sorry, o.chill, o.bold, o.blunt, o.water];
+  }
   function hostile(kind, line) {
     D['hostile_' + kind] = {
       who: 'hostile', role: T('YOU ASKED THEM TO MOVE', 'LES PEDISTE QUE SE MOVIERAN', 'VOCÊ PEDIU PRA ELES SE MOVEREM'), start: 'a', nodes: {
-        a: { text: line, choices: [HCH.sorry, HCH.chill, HCH.bold, HCH.blunt, HCH.water] },
+        a: { text: line, choices: hch(kind) },
         esc: {
-          text: T('They square up. The three people around them stop dancing to watch. "Oh, NOW it\'s a nightclub." Somebody films. Somebody else says "ey, ey, ey."', 'Se plantan frente a ti. Las tres personas a su alrededor dejan de bailar para mirar. «Ah, AHORA es un club». Alguien filma. Otra persona dice «ey, ey, ey».', 'Eles se plantam na sua frente. As três pessoas em volta param de dançar pra olhar. «Ah, AGORA é um club». Alguém filma. Outra pessoa diz «ei, ei, ei».'),
+          text: kind === 3 ? T('They square up. "Sorry. SORRY. Louder." The three people around them stop dancing to watch. Somebody films.', 'Se plantan frente a ti. «Perdón. PERDÓN. Más fuerte». Las tres personas a su alrededor dejan de bailar para mirar. Alguien filma.', 'Eles se plantam na sua frente. «Desculpa. DESCULPA. Mais alto». As três pessoas em volta param de dançar pra olhar. Alguém filma.') : T('They square up. The three people around them stop dancing to watch. "Oh, NOW it\'s a nightclub." Somebody films. Somebody else says "ey, ey, ey."', 'Se plantan frente a ti. Las tres personas a su alrededor dejan de bailar para mirar. «Ah, AHORA es un club». Alguien filma. Otra persona dice «ey, ey, ey».', 'Eles se plantam na sua frente. As três pessoas em volta param de dançar pra olhar. «Ah, AGORA é um club». Alguém filma. Outra pessoa diz «ei, ei, ei».'),
           choices: [
             { tone: 'sorry', t: T('"You\'re right. I was rude. I\'m sorry. Truly."', '«Tienes razón. Fui grosero. Perdón. De verdad».', '«Você tem razão. Fui grosseiro. Desculpa. De verdade».'), do: { soc: -2, weird: -1 }, call: 'hostile_ok', next: null, react: T('The air goes out of them. "…Whatever. Go." The people around them resume dancing as if nothing happened.', 'Se les va el aire. «…Da igual. Pasa». Las personas alrededor vuelven a bailar como si nada.', 'O ar sai deles. «…Tanto faz. Vai». As pessoas em volta voltam a dançar como se nada tivesse acontecido.') },
             { tone: 'push', t: T('Shove them out of the way.', 'Empujarlos para pasar.', 'Empurrar pra passar.'), do: { weird: 12, hp: -5, soc: -4, bad: 2, flag: 'shoved_dancer' }, call: 'hostile_ok', next: null, bad: true, react: T('It works for exactly one second. Then somebody shoves back, somebody shouts for security, and you leave through the gap with your ribs ringing and your name in a very small book.', 'Funciona exactamente un segundo. Luego alguien empuja de vuelta, alguien grita por seguridad, y sales por el hueco con las costillas zumbando y tu nombre en un libro muy pequeño.', 'Funciona por exatamente um segundo. Depois alguém empurra de volta, alguém grita pela segurança, e você sai pela brecha com as costelas zunindo e seu nome num livro bem pequeno.') },
@@ -166,14 +190,17 @@
       }
     };
   }
-  hostile(0, T('"EXCUSE ME? Excuse YOU. I paid to be here, you paid to be here, and we are both exactly as entitled to this square metre." A shoulder rises to meet yours like a drawbridge.', '«¿CON PERMISO? Con permiso TÚ. Yo pagué para estar aquí, tú pagaste para estar aquí, y los dos tenemos exactamente el mismo derecho a este metro cuadrado». Un hombro sube para recibir el tuyo como un puente levadizo.', '«COM LICENÇA? Com licença VOCÊ. Eu paguei pra estar aqui, você pagou pra estar aqui, e nós dois temos exatamente o mesmo direito a esse metro quadrado». Um ombro sobe pra encontrar o seu como uma ponte levadiça.'));
-  hostile(1, T('"Did you just say \'excuse me\' during THE PART? Do you know what you interrupted? This is the part. I have been waiting for this part for eleven minutes." Their eyes are closed again. They are speaking through a trance and a grievance.', '«¿Acabas de decir “con permiso” durante LA PARTE? ¿Sabes lo que interrumpiste? Esta es la parte. Llevo once minutos esperando esta parte». Tienen los ojos cerrados otra vez. Hablan a través de un trance y un agravio.', '«Você acabou de dizer “com licença” durante A PARTE? Sabe o que interrompeu? Essa é a parte. Eu espero essa parte faz onze minutos». Os olhos já estão fechados de novo. Falam através de um transe e de um ressentimento.'));
-  hostile(2, T('"I was here first. I\'ve been here since eleven. This is MY spot. I have a feeling about this spot." They have planted their feet like a person who has read a book about boundaries and misunderstood the title.', '«Yo estaba primero. Estoy aquí desde las once. Este es MI lugar. Tengo un presentimiento sobre este lugar». Han plantado los pies como alguien que leyó un libro sobre límites y entendió mal el título.', '«Eu cheguei primeiro. Tô aqui desde as onze. Esse é o MEU lugar. Eu tenho um sentimento sobre esse lugar». Eles plantaram os pés como quem leu um livro sobre limites e entendeu errado o título.'));
-  hostile(3, T('"You think you\'re better than me because you\'re POLITE? Say it again. Say it ONE more time." They sway gently, a glass of something at an angle that suggests physics is optional tonight.', '«¿Crees que eres mejor que yo porque eres EDUCADO? Dilo otra vez. Dilo UNA vez más». Se mecen con suavidad, un vaso de algo en un ángulo que sugiere que la física es opcional esta noche.', '«Você acha que é melhor que eu porque é EDUCADO? Fala de novo. Fala MAIS uma vez». Eles balançam de leve, um copo de algo num ângulo que sugere que a física é opcional hoje.'));
+  hostile(0, T('"Excuse YOU. I paid. You paid. Same square metre." A shoulder rises to meet yours.', '«Con permiso TÚ. Yo pagué. Tú pagaste. El mismo metro cuadrado». Un hombro sube a recibir el tuyo.', '«Com licença VOCÊ. Eu paguei. Você pagou. O mesmo metro quadrado». Um ombro sobe pra encontrar o seu.'));
+  hostile(1, T('"You said excuse me during THE PART. Eleven minutes I\'ve waited for this." Eyes shut again.', '«Dijiste con permiso durante LA PARTE. Llevo once minutos esperándola». Ojos cerrados otra vez.', '«Você disse com licença durante A PARTE. Faz onze minutos que eu espero». Olhos fechados de novo.'));
+  hostile(2, T('"I\'ve been here since eleven. This is my spot." They plant their feet like they misread a book on boundaries.', '«Llevo aquí desde las once. Este es mi lugar». Plantan los pies como quien entendió mal un libro sobre límites.', '«Tô aqui desde as onze. Esse é o meu lugar». Plantam os pés como quem entendeu errado um livro sobre limites.'));
+  hostile(3, T('"Polite. You think you\'re better than me? Say it again." The glass tilts like physics is optional.', '«Educado. ¿Te crees mejor que yo? Dilo otra vez». El vaso se inclina como si la física fuera opcional.', '«Educado. Você se acha melhor que eu? Fala de novo». O copo inclina como se a física fosse opcional.'));
   S.hostile_ok = function () { const h = EM.state.hostile; if (h) E.settle(h.id); };
-  S.hostile_gamble = function () {
+  S.hostile_gamble = function (ctx) {
     const h = EM.state.hostile;
-    const ok = Math.random() < 0.55 || L.hasFriend('dani');
+    /* the part-lover is easier to dance with, the drunk one is not */
+    const hk = parseInt(String(ctx && ctx.dialogue || '').replace('hostile_', ''), 10);
+    const odds = hk === 1 ? 0.70 : hk === 3 ? 0.35 : 0.55;
+    const ok = Math.random() < odds || L.hasFriend('dani');
     if (h) E.settle(h.id);
     if (ok) {
       L.apply({ fun: 4, soc: 1 });
