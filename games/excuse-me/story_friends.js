@@ -61,12 +61,20 @@
     if (s.quests.q1 === 'active' && z === 'main') return 'friends_meet';
     return 'found_generic_' + id;
   };
+  /* each friend greets you in their own voice when you find them */
+  const GEN = {
+    maru: T(`"There you are. I counted you in my head. Twice."`, `«Ahí estás. Te conté en la cabeza. Dos veces».`, `«Aí está você. Eu te contei de cabeça. Duas vezes».`),
+    dani: T(`"I was gone eleven minutes and met nine people. Where were YOU?"`, `«Estuve fuera once minutos y conocí a nueve personas. ¿Y TÚ dónde estabas?»`, `«Fiquei sumido onze minutos e conheci nove pessoas. E VOCÊ, onde tava?»`),
+    tato: T(`"I stood by a wall. The wall was nice."`, `«Me quedé junto a una pared. La pared era amable».`, `«Fiquei perto de uma parede. A parede era legal».`),
+    vale: T(`"Got you. I had a route planned and everything."`, `«Te encontré. Tenía una ruta planeada y todo».`, `«Te achei. Eu já tinha até uma rota planejada».`),
+    alex: T(`"You! I got lost staring at a light, and the light had a friend."`, `«¡Tú! Me perdí mirando una luz, y la luz tenía una amiga».`, `«Você! Me perdi olhando uma luz, e a luz tinha uma amiga».`)
+  };
   EM.FRIENDS.forEach(function (f) {
     const names = { maru: 'MARU', dani: 'DANI', tato: 'TATO' };
     D['found_generic_' + f] = {
       who: f, start: 'a', nodes: {
         a: {
-          text: T('"There you are. I got turned around." The relief on the face is complete.', '«Ahí estás. Me desorienté». El alivio en la cara es total.', '«Aí está você. Me perdi». O alívio no rosto é completo.'),
+          text: GEN[f] || T('"There you are. I got turned around." The relief on the face is complete.', '«Ahí estás. Me desorienté». El alivio en la cara es total.', '«Aí está você. Me perdi». O alívio no rosto é completo.'),
           choices: [
             { tone: 'chill', t: T('"Come on. We stay together from here."', '«Vamos. Desde aquí nos quedamos juntos».', '«Vem. A gente fica junto daqui pra frente».'), do: { join: f, bond: (function () { const o = {}; o[f] = 1; return o; })(), soc: 3 }, next: null },
             { tone: 'blunt', t: T('"Where were you? We said together."', '«¿Dónde estabas? Dijimos juntos».', '«Onde você estava? A gente combinou junto».'), do: { join: f, soc: -2, bond: (function () { const o = {}; o[f] = -1; return o; })() }, next: null, bad: false }
