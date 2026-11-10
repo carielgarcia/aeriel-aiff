@@ -62,9 +62,9 @@
             LEAVE()
           ]
         },
-        talk: { text: c.talk, do: { soc: 2, fun: 1 }, next: 'a' },
-        joke: { text: c.joke, do: { fun: 3, flag: warm }, next: 'a' },
-        dance: { text: c.dance, do: { fun: 4, soc: -1, time: 6, flag: warm }, next: 'a' },
+        talk: { text: c.talk, once: true, do: { soc: 2, fun: 1 }, next: 'a' },
+        joke: { text: c.joke, once: true, do: { fun: 3, flag: warm }, next: 'a' },
+        dance: { text: c.dance, once: true, do: { fun: 4, soc: -1, time: 6, flag: warm }, next: 'a' },
         ask: {
           text: c.ask,
           choices: [
@@ -170,7 +170,7 @@
       },
       complaint: {
         text: t(`Kai holds out a palm. "Two euros." You pay in compliments. Kai considers the currency and nods. "The exchange rate is terrible, but I'm a romantic." The complaint is accepted, and immediately lost.`, `Kai extiende la palma. «Dos euros». Pagas en cumplidos. Kai considera la moneda y asiente. «El tipo de cambio es terrible, pero soy romántico». La queja es aceptada y perdida de inmediato.`, `O Kai estende a palma. «Dois euros». Você paga em elogios. O Kai considera a moeda e assente. «A taxa de câmbio é péssima, mas sou romântico». A reclamação é aceita e imediatamente perdida.`),
-        do: { fun: 3, soc: 1 }, next: 'a'
+        once: true, do: { fun: 3, soc: 1 }, next: 'a'
       }
     }
   };
@@ -345,7 +345,7 @@
       },
       honest: {
         text: t(`Otto lowers his voice. "Honestly? It's a rock. But I've sold four hundred rocks and nobody's ever asked for a refund. Do you know why? Because holding a thing and deciding you're okay is a technology." He is, a little, right.`, `Otto baja la voz. «¿De verdad? Es una piedra. Pero vendí cuatrocientas piedras y nadie pidió reembolso. ¿Sabes por qué? Porque sostener algo y decidir que estás bien es una tecnología». Tiene, un poco, razón.`, `O Otto baixa a voz. «Sinceramente? É uma pedra. Mas já vendi quatrocentas pedras e ninguém nunca pediu reembolso. Sabe por quê? Porque segurar uma coisa e decidir que você está bem é uma tecnologia». Ele tem, um pouco, razão.`),
-        do: { soc: 2, fun: 1 }, next: 'a'
+        once: true, do: { soc: 2, fun: 1 }, next: 'a'
       }
     }
   };

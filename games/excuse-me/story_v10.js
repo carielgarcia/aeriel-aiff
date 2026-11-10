@@ -115,7 +115,7 @@
       },
       like: {
         text: t(`"Slow. Talking. Hands that ask. Somebody who laughs when it's awkward, because it will be awkward, and that's the best part." A pause. "And you? What do you like? What is a no?"`, `«Lento. Hablar. Manos que preguntan. Alguien que se ría cuando se ponga raro, porque se va a poner raro, y esa es la mejor parte». Una pausa. «¿Y tú? ¿Qué te gusta? ¿Qué es un no?»`, `«Devagar. Conversa. Mãos que perguntam. Alguém que ri quando fica esquisito, porque vai ficar esquisito, e essa é a melhor parte». Uma pausa. «E você? Do que você gosta? O que é um não?»`),
-        do: { soc: 2, fun: 1, flag: 'dpair_warm' }, next: 'a'
+        once: true, do: { soc: 2, fun: 1, flag: 'dpair_warm' }, next: 'a'
       },
       rules: {
         text: t(`"One: anyone can say stop and everyone stops, without a reason. Two: nothing is a promise. Three: afterwards, water and a joke. Four: if any of us has a bad feeling at any point, we all get dressed and eat toast. Is that all right?"`, `«Una: cualquiera puede decir para y todos paramos, sin motivo. Dos: nada es una promesa. Tres: después, agua y un chiste. Cuatro: si alguno tiene mala sensación en cualquier momento, nos vestimos todos y comemos tostadas. ¿Está bien?»`, `«Uma: qualquer um pode dizer pare e todos param, sem motivo. Duas: nada é promessa. Três: depois, água e uma piada. Quatro: se algum de nós tiver má sensação a qualquer momento, todo mundo se veste e come torrada. Tudo bem?»`),

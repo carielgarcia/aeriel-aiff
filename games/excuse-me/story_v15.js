@@ -22,7 +22,7 @@
     text: [
       t(`"${RD} is who we are. We're here so people can check what they have and decide with more information, with no judgement and nobody taking names. The black T-shirts are us. Ask any of us."`, `«${RD} es quienes somos. Estamos para que la gente pueda revisar lo que tiene y decidir con más información, sin juicios y sin que nadie anote nombres. Las camisetas negras somos nosotres. Pregúntale a cualquiera».`, `«${RD} é quem a gente é. Estamos aqui pra que as pessoas possam conferir o que têm e decidir com mais informação, sem julgamento e sem ninguém anotar nome. As camisetas pretas somos nós. Pergunta pra qualquer um».`),
       t(`She tilts her head toward the left. "And the man in the black T-shirt over there, Camilo, is the founder of the real foundation, the one in Chile. We borrowed his name for tonight. Go say hi. He loves it."`, `Inclina la cabeza hacia la izquierda. «Y el señor de la camiseta negra de allá, Camilo, es el fundador de la fundación de verdad, la de Chile. Le pedimos prestado el nombre por esta noche. Ve a saludarlo. Le encanta».`, `Ela inclina a cabeça pra esquerda. «E o cara de camiseta preta ali, o Camilo, é o fundador da fundação de verdade, a do Chile. A gente pegou o nome dele emprestado por essa noite. Vai lá dar um oi. Ele adora».`)
-    ], do: { soc: 1, flag: 'rd_known' }, next: 'a'
+    ], once: true, do: { soc: 1, flag: 'rd_known' }, next: 'a'
   };
   D.nuri.nodes.a.choices.splice(1, 0, K('ask', t(`"Who is ${RD}?"`, `«¿Quiénes son ${RD}?»`, `«Quem é a ${RD}?»`), { next: 'rd', free: true }));
 

@@ -284,7 +284,11 @@
     const n = D.def.nodes[nid];
     if (!n) { endDialogue(); return; }
     D.node = n; D.nid = nid; D.page = 0; D.state = 'text';
-    if (n.do && !n.__applied) { applyDo(n.do); }
+    /* a node marked once:true pays its effects only the first time it is reached in a run (no farming a loop) */
+    if (n.do) {
+      const onceKey = D.id + '.' + nid, seen = (s.once = s.once || {});
+      if (!(n.once && seen[onceKey])) { if (n.once) seen[onceKey] = 1; applyDo(n.do); }
+    }
     if (s.ended && !D.def.endingScene) return;
     const pages = [].concat(typeof n.text === 'function' ? n.text(s) : (n.text || []));
     D.pages = pages.length ? pages : [];

@@ -33,12 +33,12 @@
       },
       list: {
         text: T('"You register. Registration does not guarantee an invitation. An invitation does not guarantee a ticket: it guarantees the right to buy one. Yes. I know. We are the only people in the world who made paying feel like winning." A pause. "And we don\'t explain decisions. Partly principle. Partly I lost the spreadsheet."', '«Te registras. El registro no garantiza una invitación. Una invitación no garantiza una entrada: garantiza el derecho a comprarla. Sí. Lo sé. Somos las únicas personas del mundo que hicieron que pagar se sienta como ganar». Una pausa. «Y no explicamos las decisiones. En parte por principio. En parte porque perdí la planilla».', '«Você se cadastra. O cadastro não garante convite. Um convite não garante ingresso: garante o direito de comprar um. Sim. Eu sei. Somos as únicas pessoas do mundo que fizeram pagar parecer ganhar». Uma pausa. «E a gente não explica as decisões. Em parte por princípio. Em parte porque eu perdi a planilha».'),
-        do: { fun: 3, soc: 1, flag: 'ae_list' },
+        once: true, do: { fun: 3, soc: 1, flag: 'ae_list' },
         next: 'ae'
       },
       sheet: {
         text: T('"We read every single one. By \'we\' I mean one very tired person with a spreadsheet and half a sandwich. By \'read\' I mean: I read. I truly read. I read at three in the morning, with feelings." They look at the middle distance. "Somebody once wrote us a poem. We said yes. It was a good poem."', '«Leemos cada una. Por “leemos” quiero decir: una persona muy cansada con una planilla y medio sándwich. Por “leer” quiero decir: leo. De verdad leo. Leo a las tres de la mañana, con sentimientos». Mira un punto lejano. «Una vez nos escribieron un poema. Dijimos que sí. Era un buen poema».', '«A gente lê cada uma. Por “a gente” quero dizer: uma pessoa muito cansada com uma planilha e meio sanduíche. Por “lê” quero dizer: eu leio. Leio de verdade. Leio às três da manhã, com sentimentos». Olha pro vazio. «Uma vez alguém nos mandou um poema. A gente disse sim. Era um bom poema».'),
-        do: { fun: 3, soc: 1, flag: 'ae_sheet' },
+        once: true, do: { fun: 3, soc: 1, flag: 'ae_sheet' },
         next: 'ae'
       },
       rules: {
@@ -46,12 +46,12 @@
           T('"Rule one: no photos. Rule two: we do not discuss the no-photo rule on the dancefloor. Rule three: drink water. I will know." They lift the thermos like evidence.', '«Regla uno: sin fotos. Regla dos: no discutimos la regla de las fotos en la pista. Regla tres: toma agua. Lo voy a saber». Levanta el termo como evidencia.', '«Regra um: sem fotos. Regra dois: a gente não discute a regra das fotos na pista. Regra três: beba água. Eu vou saber». Levanta a garrafa térmica como prova.'),
           T('"The FAQ is longer than some constitutions. Nobody has ever read it start to finish. I wrote it. I have not read it start to finish." A beat. "We call it sonic inquiry. It is a kick drum. The inquiry is whether you\'ll dance."', '«El FAQ es más largo que algunas constituciones. Nadie lo ha leído de principio a fin. Lo escribí yo. No lo he leído de principio a fin». Un momento. «Lo llamamos indagación sonora. Es un bombo. La indagación es si vas a bailar».', '«O FAQ é maior do que algumas constituições. Ninguém nunca leu do começo ao fim. Fui eu que escrevi. Eu não li do começo ao fim». Um instante. «A gente chama de investigação sonora. É um bumbo. A investigação é se você vai dançar».')
         ],
-        do: { fun: 3, soc: 1, flag: 'ae_rules' },
+        once: true, do: { fun: 3, soc: 1, flag: 'ae_rules' },
         next: 'ae'
       },
       love: {
         text: T('"Stop. I\'ll cry into my tea." They do not stop looking pleased. "One more secret, since you\'re kind: we take the dancing seriously and ourselves lightly. Mostly. In theory. On good nights."', '«Para. Voy a llorar en mi té». No dejan de verse contentes. «Un secreto más, ya que eres amable: nos tomamos la pista en serio y a nosotros mismos a la ligera. Casi siempre. En teoría. En las buenas noches».', '«Para. Vou chorar no meu chá». Não param de parecer contentes. «Mais um segredo, já que você é gentil: a gente leva a dança a sério e a si mesmo de leve. Quase sempre. Em teoria. Nas boas noites».'),
-        do: { soc: 4, fun: 3, flag: 'ae_love' },
+        once: true, do: { soc: 4, fun: 3, flag: 'ae_love' },
         next: 'ae'
       },
       play: {
