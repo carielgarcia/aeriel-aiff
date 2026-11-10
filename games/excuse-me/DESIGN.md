@@ -30,7 +30,7 @@ Files live in `games/excuse-me/`. It is embedded from the `/games` hub (a card p
 | **WEIRDNESS** | starts at 0. Rises with alcohol, drugs, bumping into people, shoving, filming people, pushing past a "no", lying to staff | slowly, only while sober; sitting; apologising; **care** (staff notice who looks after people) | **full: you are walked out.** Ending **THE LONG WALK TO THE DOOR**. At 70 security starts watching, at 88 you get a last warning |
 
 ### The care dividend
-Any choice tagged `care` (water, sitting someone down, finding their people, a gentle ask) gives: SOCIAL +3, WEIRDNESS −5, FUN +2, a small sound, and a tally the game keeps privately. The Night Report does not list a care count. It only shows up as moments ("you sat with Juno until her friends found her") and, at the very top, as the condition for the **LEGEND** ending.
+Any choice tagged `care` (water, sitting someone down, finding their people, a gentle ask) gives: SOCIAL +3, WEIRDNESS −5, FUN +2, a small sound, and a tally the game keeps privately. The dividend **decays inside a rolling game hour**: the first care pays in full, the second half, the third and later a quarter (`s.careLog` in `logic.js`). The private tally still counts every one. The Night Report does not list a care count. It only shows up as moments ("you sat with Juno until her friends found her") and, at the very top, as the condition for the **LEGEND** ending.
 
 Water is deliberately scarce. You start with one bottle. Tobi, Tato, Rosa, Juno, Kiki, the Resident and your own thirst can each use it. Taps and the bar jug refill it.
 

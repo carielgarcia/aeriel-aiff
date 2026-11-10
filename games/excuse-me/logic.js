@@ -392,10 +392,16 @@
     if (e.pb) for (const k in e.pb) if (L.hasFriend(k)) s.bond[k] = (s.bond[k] || 0) + e.pb[k];
     if (e.gag) [].concat(e.gag).forEach(function (k) { s.gags = s.gags || {}; s.gags[k] = (s.gags[k] || 0) + 1; });
     if (e.care) {
+      /* the dividend shrinks when kindness comes in a run: full, then half, then a quarter, inside a rolling game hour */
+      s.careLog = (s.careLog || []).filter(function (m) { return s.time - m < 60; });
+      const kc = [1, 0.5, 0.25][Math.min(s.careLog.length, 2)];
+      s.careLog.push(s.time);
       s.care = (s.care || 0) + e.care;
-      L.stat('soc', 3 * e.care); L.stat('weird', -5 * e.care); L.stat('fun', 2 * e.care);
+      L.stat('soc', 3 * e.care * kc); L.stat('weird', -5 * e.care * kc); L.stat('fun', 2 * e.care * kc);
       EM.hooks.sfx('care');
-      EM.hooks.toast({ icon: 'heart', text: T('You looked after someone. The room notices.', 'Cuidaste a alguien. El lugar lo nota.', 'Você cuidou de alguém. O lugar percebe.'), kind: 'good' });
+      EM.hooks.toast(kc === 1
+        ? { icon: 'heart', text: T('You looked after someone. The room notices.', 'Cuidaste a alguien. El lugar lo nota.', 'Você cuidou de alguém. O lugar percebe.'), kind: 'good' }
+        : { icon: 'heart', text: T('They are glad. The room has seen a lot of kindness from you tonight.', 'Se alegran. El lugar ya vio mucha amabilidad tuya esta noche.', 'Ficam felizes. O lugar já viu muita gentileza sua esta noite.'), kind: 'good' });
     }
     if (e.drink) {
       s.drinks += e.drink; s.impaired = true; L.stat('weird', 4 * e.drink); L.stat('hp', -2 * e.drink); L.stat('fun', 4 * e.drink); s.thirst += 10 * e.drink;
