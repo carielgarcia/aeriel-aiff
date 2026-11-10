@@ -3,8 +3,9 @@
       sits on its own passage. engine.js draws them into the static zone canvas.
    2. Discovery: EM.state.disc records visited rooms and every door seen (with its last observed state).
       It lives on the state object, so the normal save carries it.
-   3. The map overlay (key M, menu button): only what the player has seen, doors open or closed, ??? for
-      rooms behind doors that have not been walked through. */
+   3. The map overlay (key M, menu button): rooms drawn to scale from their real size, doors at their real
+      positions, only what the player has seen, ??? for rooms behind doors that have not been walked through.
+   Discovery is also kept in localStorage, so a new night (BEGIN AGAIN or a new character) keeps the map. */
 'use strict';
 (function () {
   const EM = window.EM, U = EM.ui, E = EM.engine, T = EM.T;
@@ -69,40 +70,74 @@
   EM.passage = { side: side, tags: tags, isSign: function (s) { return OLD_SIGN.test(s); } };
 
   /* ============================================================ discovery */
+  const STORE = 'excuse-me-map-v1';
+  const stored = function () {
+    try { const d = JSON.parse(localStorage.getItem(STORE) || 'null'); return d && d.rooms && d.doors ? d : null; } catch (e) { return null; }
+  };
+  const persist = function (d) { try { localStorage.setItem(STORE, JSON.stringify(d)); } catch (e) { /* ignore */ } };
   function observe(z) {
     const s = EM.state; if (!s || !z) return;
     const d = disc(s);
+    let changed = !d.rooms[z.id];
     d.rooms[z.id] = 1;
     z.ents.forEach(function (e) {
       if (e.type !== 'door' || !EM.zones[e.to]) return;
-      const open = !e.when || !!e.when(s);
+      const open = !e.when || !!e.when(s) ? 1 : 0;
       const r = d.doors[e.id];
-      if (r) r.open = open ? 1 : 0; else d.doors[e.id] = { from: z.id, to: e.to, open: open ? 1 : 0 };
+      if (r) { if (r.open !== open) { r.open = open; changed = true; } } else { d.doors[e.id] = { from: z.id, to: e.to, open: open }; changed = true; }
     });
+    if (changed) persist(d);
   }
   function disc(s) {
     if (s.disc && s.disc.rooms && s.disc.doors) return s.disc;
-    s.disc = { rooms: {}, doors: {} };
-    /* a save from before the map: rebuild what we can from the rooms already visited */
+    /* a save from before the map: start from the remembered map, then add the rooms already visited */
+    s.disc = stored() || { rooms: {}, doors: {} };
     Object.keys(s.seenZones || {}).forEach(function (id) { if (EM.zones[id]) observe(EM.zones[id]); });
     return s.disc;
   }
+  /* a new night starts with the map the player already drew */
+  const newState0 = EM.newState;
+  EM.newState = function () { const s = newState0.apply(this, arguments); const d = stored(); if (d) s.disc = d; return s; };
   const zoneEntered0 = EM.hooks.zoneEntered;
   EM.hooks.zoneEntered = function (z) { if (zoneEntered0) zoneEntered0.apply(this, arguments); observe(z); };
   /* a door that changes while you are standing in the room (the closing set, a flag) updates the memory */
   setInterval(function () { if (EM.state && (U.mode === 'play' || U.mode === 'dialog') && E.zone()) observe(E.zone()); }, 500);
 
   /* ============================================================ map layout */
-  const POS = {
-    rooftop: [2, 0], attic: [0, 1], backstage: [4, 1], darkroom: [0, 2], main: [2, 2], restrooms: [4, 2],
-    welfare: [0, 3], foyer: [2, 3], tunnel: [4, 3], doors: [2, 4], courtyard: [4, 4]
+  /* top-left corner of every room on the plan, in tiles; rooms are drawn at their real size (z.w x z.h)
+     and never overlap, with a gap of at least four tiles for the corridors between them */
+  const PLAN = {
+    attic: [0, 0], rooftop: [45, 0], backstage: [80, 0],
+    main: [42, 19], restrooms: [91, 26], darkroom: [12, 33],
+    welfare: [28, 57], foyer: [50, 56], tunnel: [84, 58],
+    doors: [48, 75], courtyard: [99, 73]
   };
-  const CW = 170, CH = 100, BW = 142, BH = 48, PAD = 24;
-  const at = function (id) {
-    let p = POS[id];
-    if (!p) { const extra = Object.keys(EM.zones).filter(function (k) { return !POS[k]; }); p = [extra.indexOf(id), 5]; }
-    return { x: PAD + BW / 2 + p[0] * CW, y: PAD + BH / 2 + p[1] * CH };
+  const SC = 6.5, PAD = 26, OUT = 3;
+  const origin = function (id) {
+    let p = PLAN[id];
+    if (!p) { const extra = Object.keys(EM.zones).filter(function (k) { return !PLAN[k]; }); p = [extra.indexOf(id) * 34, 96]; }
+    return p;
   };
+  const OUTV = { u: [0, -1], d: [0, 1], l: [-1, 0], r: [1, 0] };
+  /* where a door sits on the plan (px), and the point just outside it */
+  function doorPt(zid, e) {
+    const z = EM.zones[zid], o = origin(zid), sd = EM.passage.side(z, e), v = OUTV[sd];
+    const x = (o[0] + e.x + e.w / 2) * SC, y = (o[1] + e.y + e.h / 2) * SC;
+    return { x: x, y: y, ox: x + v[0] * OUT * SC, oy: y + v[1] * OUT * SC, side: sd };
+  }
+  const centre = function (id) { const z = EM.zones[id], o = origin(id); return { x: (o[0] + z.w / 2) * SC, y: (o[1] + z.h / 2) * SC }; };
+  const doorEnt = function (zid, id) { return EM.zones[zid].ents.filter(function (e) { return e.id === id; })[0]; };
+  /* the door on the far side: the one in the destination room nearest to where this door arrives */
+  function partner(zid, e) {
+    const to = EM.zones[e.to], a = EM.compactPt(e.to, e.tx, e.ty);
+    let best = null, bd = 1e9;
+    to.ents.forEach(function (d) {
+      if (d.type !== 'door' || d.to !== zid) return;
+      const dd = Math.hypot(d.x + d.w / 2 - a[0], d.y + d.h / 2 - a[1]);
+      if (dd < bd) { bd = dd; best = d; }
+    });
+    return best;
+  }
 
   const S = {
     title: T('CLUB MAP // LA GRIETA', 'MAPA DEL CLUB // LA GRIETA', 'MAPA DO CLUB // LA GRIETA'),
@@ -150,44 +185,66 @@
     root.querySelector('#map-close').textContent = tr('close');
     root.querySelector('#map-note').textContent = tr('note');
     const rooms = {};
-    Object.keys(g.d.rooms).forEach(function (id) { rooms[id] = 'seen'; });
+    Object.keys(g.d.rooms).forEach(function (id) { if (EM.zones[id]) rooms[id] = 'seen'; });
     Object.keys(g.edges).forEach(function (k) { const e = g.edges[k]; if (!rooms[e.a]) rooms[e.a] = 'stub'; if (!rooms[e.b]) rooms[e.b] = 'stub'; });
-    let mx = 0, my = 0;
-    Object.keys(rooms).forEach(function (id) { const p = at(id); mx = Math.max(mx, p.x + BW / 2 + PAD); my = Math.max(my, p.y + BH / 2 + PAD); });
-    const svg = svgEl('svg', { viewBox: '0 0 ' + mx + ' ' + my, role: 'img', 'aria-label': tr('aria'), class: 'map-svg' });
+    /* the frame is the whole plan, so the map does not jump around as it fills in */
+    let x1 = 0, y1 = 0;
+    Object.keys(EM.zones).forEach(function (id) { const o = origin(id), z = EM.zones[id]; x1 = Math.max(x1, (o[0] + z.w) * SC); y1 = Math.max(y1, (o[1] + z.h) * SC); });
+    const svg = svgEl('svg', { viewBox: (-PAD) + ' ' + (-PAD - 12) + ' ' + (x1 + PAD * 2) + ' ' + (y1 + PAD * 2 + 12), role: 'img', 'aria-label': tr('aria'), class: 'map-svg' });
     const lines = svgEl('g'), boxes = svgEl('g'), marks = svgEl('g');
     svg.appendChild(lines); svg.appendChild(boxes); svg.appendChild(marks);
     const sr = document.createElement('ul'); sr.className = 'map-sr';
 
-    Object.keys(g.edges).forEach(function (k) {
-      const e = g.edges[k], a = at(e.a), b = at(e.b), mxp = a.x + (b.x - a.x) * 0.3, myp = a.y + (b.y - a.y) * 0.3; /* marker near the room it was seen from, so crossing edges do not stack markers */
-      lines.appendChild(svgEl('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, class: 'map-edge ' + (e.open ? 'open' : 'closed') }));
-      if (e.open) marks.appendChild(svgEl('rect', { x: mxp - 6, y: myp - 6, width: 12, height: 12, class: 'map-door open' }));
+    /* one corridor per door pair: from this door, out into the gap, across, and into the door on the far side */
+    const runs = {};
+    Object.keys(g.d.doors).forEach(function (id) {
+      const r = g.d.doors[id]; if (!EM.zones[r.from] || !EM.zones[r.to]) return;
+      const e = doorEnt(r.from, id); if (!e) return;
+      const A = doorPt(r.from, e);
+      let B, key = id;
+      if (rooms[r.to] === 'seen') { const pe = partner(r.from, e); if (pe) { B = doorPt(r.to, pe); key = [id, pe.id].sort().join('|'); } }
+      const run = runs[key] || (runs[key] = { A: A, B: B, open: false, stub: !B, to: r.to });
+      if (r.open) run.open = true;
+      /* door marker, in its own state, at its real place on the wall */
+      if (r.open) marks.appendChild(svgEl('rect', { x: A.x - 4.5, y: A.y - 4.5, width: 9, height: 9, class: 'map-door open' }));
       else {
-        marks.appendChild(svgEl('rect', { x: mxp - 8, y: myp - 8, width: 16, height: 16, class: 'map-door closed' }));
-        marks.appendChild(svgEl('path', { d: 'M' + (mxp - 4) + ' ' + (myp - 4) + 'L' + (mxp + 4) + ' ' + (myp + 4) + 'M' + (mxp + 4) + ' ' + (myp - 4) + 'L' + (mxp - 4) + ' ' + (myp + 4), class: 'map-x' }));
+        marks.appendChild(svgEl('rect', { x: A.x - 6.5, y: A.y - 6.5, width: 13, height: 13, class: 'map-door closed' }));
+        marks.appendChild(svgEl('path', { d: 'M' + (A.x - 3) + ' ' + (A.y - 3) + 'L' + (A.x + 3) + ' ' + (A.y + 3) + 'M' + (A.x + 3) + ' ' + (A.y - 3) + 'L' + (A.x - 3) + ' ' + (A.y + 3), class: 'map-x' }));
       }
     });
+    Object.keys(runs).forEach(function (k) {
+      const r = runs[k], A = r.A, B = r.B, c = r.stub ? centre(r.to) : null;
+      /* elbow in the gap: leave along the wall's normal, turn once, arrive along the far door's normal */
+      const tx = B ? B.ox : c.x, ty = B ? B.oy : c.y, vert = A.side === 'u' || A.side === 'd';
+      const pts = [A.x, A.y, A.ox, A.oy].concat(vert ? [A.ox, ty] : [tx, A.oy]).concat(B ? [B.ox, B.oy, B.x, B.y] : [c.x, c.y]);
+      const d = pts.map(function (v, i) { return (i % 2 ? '' : (i ? 'L' : 'M')) + v + (i % 2 ? '' : ' '); }).join('');
+      lines.appendChild(svgEl('path', { d: d, class: 'map-edge ' + (r.open ? 'open' : 'closed') }));
+    });
+
     Object.keys(rooms).forEach(function (id) {
-      const p = at(id), seen = rooms[id] === 'seen', here = id === cur, zn = EM.zones[id];
+      const z = EM.zones[id], o = origin(id), seen = rooms[id] === 'seen', here = id === cur;
+      const rx = o[0] * SC, ry = o[1] * SC, rw = z.w * SC, rh = z.h * SC, cx = rx + rw / 2, cy = ry + rh / 2;
       const grp = svgEl('g', { class: 'map-room ' + (seen ? 'seen' : 'stub') + (here ? ' here' : '') });
-      grp.appendChild(svgEl('rect', { x: p.x - BW / 2, y: p.y - BH / 2, width: BW, height: BH }));
+      grp.appendChild(svgEl('rect', { x: rx, y: ry, width: rw, height: rh }));
       if (seen) {
-        const parts = EM.tr(zn.name).split('//').map(function (x) { return x.trim().toUpperCase(); });
-        grp.appendChild(svgEl('text', { x: p.x, y: p.y + (parts[1] ? -4 : 5), 'text-anchor': 'middle', class: 'n1' }, parts[0]));
-        if (parts[1]) grp.appendChild(svgEl('text', { x: p.x, y: p.y + 12, 'text-anchor': 'middle', class: 'n2' }, parts[1]));
-        if (here) grp.appendChild(svgEl('text', { x: p.x, y: p.y - BH / 2 - 5, 'text-anchor': 'middle', class: 'you' }, '▼ ' + tr('you')));
-      } else grp.appendChild(svgEl('text', { x: p.x, y: p.y + 5, 'text-anchor': 'middle', class: 'n1' }, '???'));
+        const parts = EM.tr(z.name).split('//').map(function (x) { return x.trim().toUpperCase(); });
+        grp.appendChild(svgEl('text', { x: cx, y: cy + (parts[1] ? -2 : 4), 'text-anchor': 'middle', class: 'n1' }, parts[0]));
+        if (parts[1]) grp.appendChild(svgEl('text', { x: cx, y: cy + 13, 'text-anchor': 'middle', class: 'n2' }, parts[1]));
+        if (here) {
+          grp.appendChild(svgEl('text', { x: cx, y: ry - 5, 'text-anchor': 'middle', class: 'you' }, '▼ ' + tr('you')));
+          grp.appendChild(svgEl('rect', { x: rx + (s.x / 16) * SC - 4, y: ry + (s.y / 16 - 0.5) * SC - 4, width: 8, height: 8, class: 'map-me' }));
+        }
+      } else grp.appendChild(svgEl('text', { x: cx, y: cy + 5, 'text-anchor': 'middle', class: 'n1' }, '???'));
       boxes.appendChild(grp);
       /* screen-reader list */
       const li = document.createElement('li');
       const conn = [];
       Object.keys(g.edges).forEach(function (k) {
         const e = g.edges[k]; if (e.a !== id && e.b !== id) return;
-        const o = e.a === id ? e.b : e.a;
-        conn.push(tr(e.open ? 'sOpen' : 'sClosed') + ' ' + (rooms[o] === 'seen' ? EM.tr(EM.zones[o].name).split('//')[0].trim() : tr('unkName')));
+        const q = e.a === id ? e.b : e.a;
+        conn.push(tr(e.open ? 'sOpen' : 'sClosed') + ' ' + (rooms[q] === 'seen' ? EM.tr(EM.zones[q].name).split('//')[0].trim() : tr('unkName')));
       });
-      li.textContent = (seen ? EM.tr(zn.name) : '???') + (here ? ' (' + tr('sHere') + ')' : '') + (conn.length ? ': ' + conn.join(', ') : '');
+      li.textContent = (seen ? EM.tr(z.name) : '???') + (here ? ' (' + tr('sHere') + ')' : '') + (conn.length ? ': ' + conn.join(', ') : '');
       sr.appendChild(li);
     });
 
@@ -196,7 +253,8 @@
       const i = document.createElement('span'); i.className = 'lg ' + p[1]; i.textContent = tr(p[0]); lg.appendChild(i);
     });
     body.textContent = '';
-    body.appendChild(svg); body.appendChild(lg); body.appendChild(sr);
+    const wrap = document.createElement('div'); wrap.className = 'map-wrap'; wrap.appendChild(svg);
+    body.appendChild(wrap); body.appendChild(lg); body.appendChild(sr);
   }
 
   /* ============================================================ open / close */
@@ -251,15 +309,15 @@
     '#map .map-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--fg); padding-bottom: 8px; }' +
     '#map h2 { font-size: 14px; }' +
     '#map-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }' +
-    '.map-svg { display: block; width: 100%; flex: 1 1 auto; min-height: 0; }' +
-    '.map-edge { stroke-width: 3; } .map-edge.open { stroke: var(--fg); } .map-edge.closed { stroke: var(--red); stroke-dasharray: 6 5; }' +
+    '.map-wrap { flex: 1 1 auto; min-height: 0; overflow: auto; } .map-svg { display: block; width: 100%; min-width: 680px; height: auto; max-height: 100%; }' +
+    '.map-edge { fill: none; stroke-width: 2.5; } .map-edge.open { stroke: var(--fg); } .map-edge.closed { stroke: var(--red); stroke-dasharray: 6 5; }' +
     '.map-door { stroke-width: 2; } .map-door.open { fill: #08080C; stroke: var(--grn); } .map-door.closed { fill: #08080C; stroke: var(--red); }' +
-    '.map-x { stroke: var(--red); stroke-width: 2; fill: none; }' +
+    '.map-x { stroke: var(--red); stroke-width: 2; fill: none; } .map-me { fill: var(--yel); stroke: #08080C; stroke-width: 1; }' +
     '.map-room rect { fill: var(--panel); stroke: var(--fg); stroke-width: 1; }' +
     '.map-room.stub rect { fill: #08080C; stroke: var(--muted); stroke-dasharray: 5 4; }' +
     '.map-room.here rect { stroke: var(--yel); stroke-width: 3; }' +
     '.map-room text { fill: var(--fg); font-family: var(--font); letter-spacing: 1px; }' +
-    '.map-room .n1 { font-size: 12px; font-weight: bold; } .map-room .n2 { font-size: 10px; fill: var(--muted); }' +
+    '.map-room .n1 { font-size: 13px; font-weight: bold; } .map-room .n2 { font-size: 10px; fill: var(--muted); }' +
     '.map-room.stub text { fill: var(--muted); font-size: 14px; } .map-room .you { fill: var(--yel); font-size: 10px; font-weight: bold; }' +
     '.map-legend { flex: none; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }' +
     '.map-legend .lg::before { content: ""; display: inline-block; width: 14px; height: 0; border-top: 3px solid var(--fg); vertical-align: middle; margin-right: 6px; }' +

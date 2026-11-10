@@ -338,6 +338,7 @@
   };
   U.continueNight = function () {
     const s = EM.load(); if (!s) return;
+    if (EM.compactSave) EM.compactSave(s);
     EM.state = s;
     U.screen('game'); U.mode = 'play';
     U.renderLog();

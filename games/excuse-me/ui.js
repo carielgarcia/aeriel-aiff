@@ -560,7 +560,8 @@
     const prevPaused = E.paused;
     E.paused = true; E.input.x = E.input.y = 0;
     E.fadeOut(function () {
-      E.enter(spec.zone || spec.to, spec.tx !== undefined ? spec.tx : spec.x, spec.ty !== undefined ? spec.ty : spec.y, spec.dir);
+      const zid = spec.zone || spec.to, at = EM.compactPt ? EM.compactPt(zid, spec.tx !== undefined ? spec.tx : spec.x, spec.ty !== undefined ? spec.ty : spec.y) : [spec.tx !== undefined ? spec.tx : spec.x, spec.ty !== undefined ? spec.ty : spec.y]; /* arrivals are authored on the original room sizes (compact.js) */
+      E.enter(zid, at[0], at[1], spec.dir);
       U.travelling = false;
       E.fadeIn();
       if (U.mode === 'play') E.paused = false; else E.paused = prevPaused;
