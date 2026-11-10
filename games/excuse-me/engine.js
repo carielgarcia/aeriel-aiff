@@ -63,12 +63,22 @@
     if (EM.decorateZone) EM.decorateZone(z, cg);
     /* signs: drawn in logical units under the render scale, so the text is the smooth font */
     z.signs.forEach(function (sg, i) {
+      if (EM.passage && EM.passage.isSign(sg.text)) return; /* passage signs are generated from the doors below */
       const w = EM.textWidth(sg.text) + 4, h = 9, colr = i % 2 ? z.theme.b : z.theme.a;
       cg.save(); cg.scale(RS, RS); cg.translate(sg.x * TS + 1, sg.y * TS + 3); cg.scale(sg.scale, sg.scale);
       cg.fillStyle = '#07070A'; cg.fillRect(0, 0, w, h);
       cg.fillStyle = colr; cg.fillRect(0, 0, w, 1); cg.fillRect(0, h - 1, w, 1); cg.fillRect(0, 0, 1, h); cg.fillRect(w - 1, 0, 1, h);
       cg.fillStyle = 'rgba(255,255,255,0.10)'; cg.fillRect(1, 1, w - 2, 1);
       EM.drawText(cg, sg.text, 2, 2, EM.shade(colr, 0.45));
+      cg.restore();
+    });
+    /* passage tags: one per doorway, centred on it, with an arrow towards the exit (map.js) */
+    if (EM.passage) EM.passage.tags(z).forEach(function (tg, i) {
+      const colr = i % 2 ? z.theme.b : z.theme.a;
+      cg.save(); cg.scale(RS, RS); cg.translate(tg.x, tg.y);
+      cg.fillStyle = '#07070A'; cg.fillRect(0, 0, tg.w, tg.h);
+      cg.fillStyle = colr; cg.fillRect(0, 0, tg.w, 1); cg.fillRect(0, tg.h - 1, tg.w, 1); cg.fillRect(0, 0, 1, tg.h); cg.fillRect(tg.w - 1, 0, 1, tg.h);
+      EM.drawText(cg, tg.text, 2, 2, EM.shade(colr, 0.45));
       cg.restore();
     });
     return c;
