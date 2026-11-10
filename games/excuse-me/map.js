@@ -149,6 +149,7 @@
     note: T('Only what you have seen is drawn. Doors show the state you last saw.', 'Solo se dibuja lo que has visto. Las puertas muestran el estado de la última vez que las viste.', 'Só o que você viu é desenhado. As portas mostram o estado da última vez que você viu.'),
     aria: T('Club map', 'Mapa del club', 'Mapa do club'),
     sOpen: T('open to', 'abierta a', 'aberta para'), sClosed: T('closed to', 'cerrada a', 'fechada para'), sHere: T('you are here', 'estás aquí', 'você está aqui'),
+    goal: T('OBJECTIVE', 'OBJETIVO', 'OBJETIVO'), sGoal: T('objective here', 'objetivo aquí', 'objetivo aqui'),
     unkName: T('an unexplored room', 'una sala sin explorar', 'uma sala não explorada')
   };
   const tr = function (k) { return EM.tr(S[k]); };
@@ -187,6 +188,9 @@
     const rooms = {};
     Object.keys(g.d.rooms).forEach(function (id) { if (EM.zones[id]) rooms[id] = 'seen'; });
     Object.keys(g.edges).forEach(function (k) { const e = g.edges[k]; if (!rooms[e.a]) rooms[e.a] = 'stub'; if (!rooms[e.b]) rooms[e.b] = 'stub'; });
+    /* a mission can point at a room you have not found yet: it shows as ??? with its star */
+    const goals = EM.goalSpots ? EM.goalSpots(s) : [];
+    goals.forEach(function (gl) { if (!rooms[gl.zone]) rooms[gl.zone] = 'stub'; });
     /* the frame is the whole plan, so the map does not jump around as it fills in */
     let x1 = 0, y1 = 0;
     Object.keys(EM.zones).forEach(function (id) { const o = origin(id), z = EM.zones[id]; x1 = Math.max(x1, (o[0] + z.w) * SC); y1 = Math.max(y1, (o[1] + z.h) * SC); });
@@ -234,7 +238,7 @@
           grp.appendChild(svgEl('text', { x: cx, y: ry - 5, 'text-anchor': 'middle', class: 'you' }, '▼ ' + tr('you')));
           grp.appendChild(svgEl('rect', { x: rx + (s.x / 16) * SC - 4, y: ry + (s.y / 16 - 0.5) * SC - 4, width: 8, height: 8, class: 'map-me' }));
         }
-      } else grp.appendChild(svgEl('text', { x: cx, y: cy + 5, 'text-anchor': 'middle', class: 'n1' }, '???'));
+      } else grp.appendChild(svgEl('text', { x: cx, y: goals.some(function (gl) { return gl.zone === id; }) ? ry + 15 : cy + 5, 'text-anchor': 'middle', class: 'n1' }, '???')); /* top of the box when a star may sit in the middle */
       boxes.appendChild(grp);
       /* screen-reader list */
       const li = document.createElement('li');
@@ -244,12 +248,19 @@
         const q = e.a === id ? e.b : e.a;
         conn.push(tr(e.open ? 'sOpen' : 'sClosed') + ' ' + (rooms[q] === 'seen' ? EM.tr(EM.zones[q].name).split('//')[0].trim() : tr('unkName')));
       });
-      li.textContent = (seen ? EM.tr(z.name) : '???') + (here ? ' (' + tr('sHere') + ')' : '') + (conn.length ? ': ' + conn.join(', ') : '');
+      li.textContent = (seen ? EM.tr(z.name) : '???') + (here ? ' (' + tr('sHere') + ')' : '') + (goals.some(function (gl) { return gl.zone === id; }) ? ' (' + tr('sGoal') + ')' : '') + (conn.length ? ': ' + conn.join(', ') : '');
       sr.appendChild(li);
     });
 
+    /* a star on every active objective, at the spot inside its room */
+    const starPts = function (cx, cy) { const pts = []; for (let i = 0; i < 10; i++) { const r = i % 2 ? 4 : 9, a = -Math.PI / 2 + i * Math.PI / 5; pts.push((cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1)); } return pts.join(' '); };
+    goals.forEach(function (gl) {
+      const o = origin(gl.zone);
+      marks.appendChild(svgEl('polygon', { points: starPts((o[0] + gl.x) * SC, (o[1] + gl.y) * SC), class: 'map-star' }));
+    });
+
     const lg = document.createElement('div'); lg.className = 'map-legend';
-    [['open', 'open'], ['closed', 'closed'], ['unk', 'stub'], ['you', 'here']].forEach(function (p) {
+    [['open', 'open'], ['closed', 'closed'], ['unk', 'stub'], ['you', 'here']].concat(goals.length ? [['goal', 'goal']] : []).forEach(function (p) {
       const i = document.createElement('span'); i.className = 'lg ' + p[1]; i.textContent = tr(p[0]); lg.appendChild(i);
     });
     body.textContent = '';
@@ -312,7 +323,7 @@
     '.map-wrap { flex: 1 1 auto; min-height: 0; overflow: auto; } .map-svg { display: block; width: 100%; min-width: 680px; height: auto; max-height: 100%; }' +
     '.map-edge { fill: none; stroke-width: 2.5; } .map-edge.open { stroke: var(--fg); } .map-edge.closed { stroke: var(--red); stroke-dasharray: 6 5; }' +
     '.map-door { stroke-width: 2; } .map-door.open { fill: #08080C; stroke: var(--grn); } .map-door.closed { fill: #08080C; stroke: var(--red); }' +
-    '.map-x { stroke: var(--red); stroke-width: 2; fill: none; } .map-me { fill: var(--yel); stroke: #08080C; stroke-width: 1; }' +
+    '.map-x { stroke: var(--red); stroke-width: 2; fill: none; } .map-star { fill: var(--yel); stroke: #08080C; stroke-width: 1; } .map-me { fill: var(--yel); stroke: #08080C; stroke-width: 1; }' +
     '.map-room rect { fill: var(--panel); stroke: var(--fg); stroke-width: 1; }' +
     '.map-room.stub rect { fill: #08080C; stroke: var(--muted); stroke-dasharray: 5 4; }' +
     '.map-room.here rect { stroke: var(--yel); stroke-width: 3; }' +
@@ -321,7 +332,7 @@
     '.map-room.stub text { fill: var(--muted); font-size: 14px; } .map-room .you { fill: var(--yel); font-size: 10px; font-weight: bold; }' +
     '.map-legend { flex: none; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }' +
     '.map-legend .lg::before { content: ""; display: inline-block; width: 14px; height: 0; border-top: 3px solid var(--fg); vertical-align: middle; margin-right: 6px; }' +
-    '.map-legend .lg.closed::before { border-top: 3px dashed var(--red); } .map-legend .lg.stub::before { border-top: 3px dashed var(--muted); } .map-legend .lg.here::before { border-top: 3px solid var(--yel); }' +
+    '.map-legend .lg.closed::before { border-top: 3px dashed var(--red); } .map-legend .lg.stub::before { border-top: 3px dashed var(--muted); } .map-legend .lg.here::before { border-top: 3px solid var(--yel); } .map-legend .lg.goal::before { content: "★"; display: inline; border: 0; width: auto; vertical-align: baseline; color: var(--yel); }' +
     '.map-note { color: var(--muted); font-size: 12px; }' +
     '.map-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }' +
     '@media (max-width: 700px) { #map { position: fixed; inset: 0; height: min(100dvh, var(--real-h, 100dvh)); z-index: 20; padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left)); } }';
