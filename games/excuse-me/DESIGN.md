@@ -243,4 +243,5 @@ Whoever the current objective sends you to wears a golden star above their head 
 - **The night wears on.** From 04:30 (`s.time >= 390`) Nico, Rosa, Isi, Mina and Kai open with a late line (`story_v21.js`, `late()`); choices are unchanged. Isi's greeting, including the alcohol reminder, always plays first.
 - **Petition signatures cost different things** (see AGENTS.md): Bea needs WEIRDNESS under 40, Sub 8 min on the cable, Juniper SOCIAL -5, Klaus SOCIAL -3, Madison FUN -2.
 - **Cruising words are a roll** (`vp` per person): Diego and Ingrid prefer silence or trust, so asking aloud can end in a courteous no.
+- **Continuity facts** (keep consistent when writing): Rosa has worked here fourteen years; the main floor holds about four hundred people (the roof the same); the closing set is at 06:00 and the roof opens at 05:30.
 

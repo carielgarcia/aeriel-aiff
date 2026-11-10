@@ -171,7 +171,7 @@
   /* breathing (calm someone, or yourself): alternate U / D every 2 beats */
   U.breathing = function (cb, who) {
     const seq = []; for (let i = 0; i < 10; i++) seq.push(i % 2 ? 'D' : 'U');
-    U.followRhythm({ seq: seq, step: 2, window: 0.42, title: T('BREATHE IN (↑) ... OUT (↓). Slow. On the beat.', 'INHALA (↑) ... EXHALA (↓). Lento. Al ritmo.', 'INSPIRE (↑) ... EXPIRE (↓). Devagar. No ritmo.') }, function (res) { cb(res.hits >= 6 ? 'calm' : 'rough', res); });
+    U.followRhythm({ seq: seq, step: 2, window: 0.42, title: T('BREATHE IN (↑) … OUT (↓). Slow. On the beat.', 'INHALA (↑) … EXHALA (↓). Lento. Al ritmo.', 'INSPIRE (↑) … EXPIRE (↓). Devagar. No ritmo.') }, function (res) { cb(res.hits >= 6 ? 'calm' : 'rough', res); });
   };
 
   /* reagent test: a 3-stage animation, 7 seconds */

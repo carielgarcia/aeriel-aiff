@@ -42,7 +42,7 @@
         ]
       },
       b: {
-        text: T('"Gossip, since you were kind. Rosa, the cleaning lady, has been here since 2009. She knows every door in this building and has opinions about all of them. And she has a thing about the third stall. Do NOT make the third stall weird."', '«Chisme, ya que fuiste amable. Rosa, la señora de la limpieza, está aquí desde 2009. Se sabe todas las puertas de este edificio y tiene opiniones sobre cada una. Y tiene algo con la tercera cabina. NO hagas rara la tercera cabina».', '«Fofoca, já que você foi gentil. A Rosa, a faxineira, tá aqui desde 2009. Ela conhece todas as portas deste prédio e tem opinião sobre cada uma. E tem uma coisa com a terceira cabine. NÃO deixe a terceira cabine esquisita».'),
+        text: T('"Gossip, since you were kind. Rosa, the cleaning lady, has been here fourteen years. She knows every door in this building and has opinions about all of them. And she has a thing about the third stall. Do NOT make the third stall weird."', '«Chisme, ya que fuiste amable. Rosa, la señora de la limpieza, lleva catorce años aquí. Se sabe todas las puertas de este edificio y tiene opiniones sobre cada una. Y tiene algo con la tercera cabina. NO hagas rara la tercera cabina».', '«Fofoca, já que você foi gentil. A Rosa, a faxineira, tá aqui faz catorze anos. Ela conhece todas as portas deste prédio e tem opinião sobre cada uma. E tem uma coisa com a terceira cabine. NÃO deixe a terceira cabine esquisita».'),
         do: { flag: 'ezra_tip' }
       }
     }
@@ -382,7 +382,7 @@
         ]
       },
       warm: {
-        text: T('Rosa looks at you for a long time, the way you look at a plant that surprised you. "…Twenty years of this. You know how many people ask how I am? Come here. Don\'t touch anything that isn\'t yours."', 'Rosa te mira un buen rato, como se mira una planta que te sorprendió. «…Veinte años de esto. ¿Sabes cuánta gente pregunta cómo estoy? Ven. No toques nada que no sea tuyo».', 'A Rosa te olha por muito tempo, do jeito que se olha uma planta que te surpreendeu. «…Vinte anos disso. Sabe quanta gente pergunta como eu estou? Vem. Não toque em nada que não seja seu».'),
+        text: T('Rosa looks at you for a long time, the way you look at a plant that surprised you. "…Fourteen years of this. You know how many people ask how I am? Come here. Don\'t touch anything that isn\'t yours."', 'Rosa te mira un buen rato, como se mira una planta que te sorprendió. «…Catorce años de esto. ¿Sabes cuánta gente pregunta cómo estoy? Ven. No toques nada que no sea tuyo».', 'A Rosa te olha por muito tempo, do jeito que se olha uma planta que te surpreendeu. «…Catorze anos disso. Sabe quanta gente pergunta como eu estou? Vem. Não toque em nada que não seja seu».'),
         do: { flag: ['rosa_ally', 'rosa_warm'], soc: 4, fun: 3 },
         next: 'ally'
       },

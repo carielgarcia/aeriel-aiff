@@ -284,7 +284,7 @@
     const a = RD.nodes.a;
     a.choices.splice(1, 0,
       K('ask', t(`"How long is your shift?"`, `«¿Cuánto dura tu turno?»`, `«Quanto tempo dura seu turno?»`), { next: 'shift' }),
-      K('care', t(`Offer your water. "You must be thirsty."`, `Ofrecerle tu agua. «Debes tener sed».`, `Oferecer sua água. «Você deve estar com sede».`), { req: { item: 'water' }, do: { item: { water: -1 }, care: 1, soc: 2, flag: 'rosa_t2' }, next: 'water' }),
+      K('care', t(`Offer your water. "You must be thirsty."`, `Ofrecerle tu agua. «Debes tener sed».`, `Oferecer sua água. «Você deve estar com sede».`), { req: { item: 'water', no: 'rosa_t2' }, do: { item: { water: -1 }, care: 1, soc: 2, flag: 'rosa_t2' }, next: 'water' }),
       K('ask', t(`"Is there anything I can do to help?"`, `«¿Hay algo que pueda hacer para ayudar?»`, `«Tem algo que eu possa fazer pra ajudar?»`), { req: function (s) { return !s.flags.rosa_met; }, next: 'trust_check' })
     );
     RD.nodes.shift = { text: t(`"Since eight. Nine hours? I stopped counting at the third bucket." She wrings the mop. "Nobody asks. Usually people ask where the toilet is."`, `«Desde las ocho. ¿Nueve horas? Dejé de contar en el tercer balde». Exprime el trapeador. «Nadie pregunta. Normalmente preguntan dónde está el baño».`, `«Desde as oito. Nove horas? Parei de contar no terceiro balde». Ela torce o esfregão. «Ninguém pergunta. Normalmente perguntam onde é o banheiro».`), once: true, do: { soc: 1, flag: 'rosa_t1' }, next: 'a' };
