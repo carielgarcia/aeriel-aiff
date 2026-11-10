@@ -37,6 +37,15 @@
   cast('ludo', 'LUDO', { skin: 5, hair: 5, hc: 6, expr: 1, top: 4, tc: 3, bottom: 1, bc: 5, acc: 0 });
 
   /* ============================================================ FLIRTS (and making out, always after asking) */
+  /* a no is a complete answer, in each person's own voice */
+  const AGAIN = {
+    vera: t(`Vera shakes her head, not unkindly. "Six out of ten for the try. Not again tonight."`, `Vera niega con la cabeza, sin dureza. «Seis de diez por intentarlo. Esta noche no más».`, `A Vera nega com a cabeça, sem dureza. «Seis de dez pela tentativa. Hoje não de novo».`),
+    ines: t(`Ines closes the notebook. "I'm off shift, not on offer. Not again tonight."`, `Inés cierra el cuaderno. «Estoy fuera de turno, no en oferta. Esta noche no más».`, `A Ines fecha o caderno. «Tô fora do turno, não em promoção. Hoje não de novo».`),
+    rafa: t(`Rafa studies his shoes. "I think I said no. Sorry. I'm bad at this. Not again."`, `Rafa mira sus zapatos. «Creo que dije que no. Perdón. Soy malo en esto. No otra vez».`, `O Rafa olha os sapatos. «Acho que eu disse não. Desculpa. Sou ruim nisso. De novo não».`),
+    mina: t(`Mina holds up one hand, listening to something else. "That was a no. Don't make me hear it twice."`, `Mina levanta una mano, escuchando otra cosa. «Eso fue un no. No me lo hagas oír dos veces».`, `A Mina levanta uma mão, ouvindo outra coisa. «Isso foi um não. Não me faz ouvir duas vezes».`),
+    nox: t(`Out of the dark, level and kind: "One tap was no. I haven't changed my mind. Thanks for hearing me."`, `Desde la oscuridad, parejo y amable: «Un toque fue no. No cambié de idea. Gracias por escucharme».`, `Do escuro, firme e gentil: «Um toque foi não. Não mudei de ideia. Valeu por me ouvir».`),
+    ludo: t(`Ludo smiles at the horizon. "No. Still no. Eat your croissant."`, `Ludo sonríe al horizonte. «No. Sigue siendo no. Cómete tu croissant».`, `O Ludo sorri pro horizonte. «Não. Continua não. Come seu croissant».`)
+  };
   function flirt(id, role, c) {
     const warm = id + '_warm', done = id + '_done';
     D[id] = {
@@ -45,6 +54,7 @@
         again: {
           text: function () {
             const n = EM.CAST[id].name;
+            if (AGAIN[id]) return AGAIN[id];
             return t(`${n} gives you a kind, steady look. "We tried. It wasn't it. I'd like to keep liking you, so: not again right now. Okay?"`, `${n} te mira con calma y cariño. «Lo intentamos. No era. Quiero seguir cayéndote bien, así que: ahora no otra vez. ¿Vale?»`, `${n} te olha com calma e carinho. «A gente tentou. Não era. Quero continuar gostando de você, então: agora não de novo. Tá?»`);
           },
           choices: [
@@ -66,7 +76,7 @@
         joke: { text: c.joke, once: true, do: { fun: 3, flag: warm }, next: 'a' },
         dance: { text: c.dance, once: true, do: { fun: 4, soc: -1, time: 6, flag: warm }, next: 'a' },
         ask: {
-          text: c.ask,
+          text: function () { const tl = EM.flirtTell && EM.flirtTell(id); return tl ? [c.ask, tl] : c.ask; },
           choices: [
             K('makeout', c.go, { req: { flag: id + '_dwin' }, do: { makeout: { p: 0.82, time: 7, who: id } }, next: null }),
             K('makeout', c.go, { req: { flag: warm, no: id + '_dwin' }, do: { makeout: { p: 0.68, time: 7, who: id } }, next: null }),

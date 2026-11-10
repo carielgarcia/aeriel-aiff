@@ -73,6 +73,23 @@
   };
 
   /* ============================================================ THEY COME BACK, LATER THE SAME NIGHT */
+  /* the shared callback reactions, one per person */
+  const RET_DANCE = {
+    vera: t(`She keeps one hand on your sleeve the whole song. A nine, apparently.`, `Mantiene una mano en tu manga toda la canción. Un nueve, al parecer.`, `Ela mantém uma mão na sua manga a música inteira. Um nove, pelo visto.`),
+    ines: t(`Her feet are wrecked and she dances anyway. The notebook stays in her pocket.`, `Tiene los pies destrozados y baila igual. El cuaderno se queda en el bolsillo.`, `Os pés dela estão destruídos e ela dança mesmo assim. O caderno fica no bolso.`),
+    rafa: t(`He gets four steps in, then a fifth: he stops thinking. It looks good on him.`, `Llega a cuatro pasos y luego a un quinto: deja de pensar. Le queda bien.`, `Ele chega a quatro passos e depois a um quinto: para de pensar. Fica bem nele.`),
+    mina: t(`She puts your hand on the wall for the kick, then away for the bass. You feel both.`, `Te pone la mano en la pared para el bombo, luego la aparta para el bajo. Sientes los dos.`, `Ela põe sua mão na parede pro bumbo, depois afasta pro baixo. Você sente os dois.`),
+    nox: t(`Slow, in the black, hands where they said. The song takes its time. So do you.`, `Lento, en lo negro, las manos donde dijeron. La canción se toma su tiempo. Tú también.`, `Devagar, no escuro, mãos onde disseram. A música leva o tempo dela. Você também.`),
+    ludo: t(`The sky goes from violet to peach over his shoulder. Neither of you checks the time.`, `El cielo pasa de violeta a durazno sobre su hombro. Ninguno de los dos mira la hora.`, `O céu vai de violeta a pêssego por cima do ombro dele. Nenhum dos dois olha a hora.`)
+  };
+  const RET_TEETH = {
+    vera: t(`"Technique, four. The laugh, nine." She puts the jacket back on.`, `«Técnica, cuatro. La risa, nueve». Se vuelve a poner la chaqueta.`, `«Técnica, quatro. A risada, nove». Ela veste a jaqueta de novo.`),
+    ines: t(`"Teeth sold separately." She slides you an imaginary two limes.`, `«Los dientes se venden aparte». Te desliza dos limones imaginarios.`, `«Os dentes são vendidos à parte». Ela te passa dois limões imaginários.`),
+    rafa: t(`He laughs so hard he has to hold the wall. "That's step six."`, `Se ríe tanto que tiene que apoyarse en la pared. «Ese es el paso seis».`, `Ele ri tanto que precisa se apoiar na parede. «Esse é o passo seis».`),
+    mina: t(`She laughs so loudly three people turn. "Resonance," she says, wiping an eye.`, `Se ríe tan fuerte que tres personas voltean. «Resonancia», dice, secándose un ojo.`, `Ela ri tão alto que três pessoas viram. «Ressonância», diz, enxugando um olho.`),
+    nox: t(`A soft laugh in the dark, closer than before. "I'll remember the teeth fondly."`, `Una risa suave en lo oscuro, más cerca que antes. «Voy a recordar los dientes con cariño».`, `Uma risada suave no escuro, mais perto que antes. «Vou lembrar dos dentes com carinho».`),
+    ludo: t(`He tears the croissant in two and hands you the bigger half. "No refunds on teeth."`, `Parte el croissant en dos y te da la mitad más grande. «No hay devoluciones de dientes».`, `Ele parte o croissant ao meio e te dá a metade maior. «Sem reembolso de dentes».`)
+  };
   function back(id, zone, x, y, okText, flopText, okReact, ctx) {
     const nm = EM.CAST[id].name;
     const ret = id + '_ret';
@@ -83,7 +100,7 @@
           choices: [
             K('makeout', t(`Ask: "Round two?"`, `Preguntar: «¿Segunda ronda?»`, `Perguntar: «Segunda rodada?»`), { do: { makeout: { p: 0.8, time: 6, who: id }, flag: ret }, next: null }),
             K('smooth', t(`"Can I get your number?"`, `«¿Me das tu número?»`, `«Me passa seu número?»`), { do: { fun: 3, soc: 2, flag: ['number_' + id, ret] }, next: null, react: okReact }),
-            K('dance', t(`"One slow song?"`, `«¿Una canción lenta?»`, `«Uma música lenta?»`), { do: { fun: 5, soc: 2, time: 5, flag: ret }, next: null, react: t(`You dance like the club has been emptied for you. It hasn't, and it is the only thing you're able to think about.`, `Bailan como si hubieran vaciado el club para ustedes. No lo han hecho, y es lo único en lo que logras pensar.`, `Vocês dançam como se o club tivesse sido esvaziado pra vocês. Não foi, e é a única coisa em que você consegue pensar.`) }),
+            K('dance', t(`"One slow song?"`, `«¿Una canción lenta?»`, `«Uma música lenta?»`), { do: { fun: 5, soc: 2, time: 5, flag: ret }, next: null, react: RET_DANCE[id] || t(`You dance like the club has been emptied for you. It hasn't, and it is the only thing you're able to think about.`, `Bailan como si hubieran vaciado el club para ustedes. No lo han hecho, y es lo único en lo que logras pensar.`, `Vocês dançam como se o club tivesse sido esvaziado pra vocês. Não foi, e é a única coisa em que você consegue pensar.`) }),
             K('chill', t(`"Just wanted to say hi. Have a lovely night."`, `«Solo quería saludar. Que tengas una linda noche».`, `«Só queria dar um oi. Tenha uma noite linda».`), { do: { soc: 2, flag: ret }, next: null })
           ]
         }
@@ -94,7 +111,7 @@
         a: {
           text: flopText,
           choices: [
-            K('joke', t(`"So. Teeth."`, `«Entonces. Dientes».`, `«Então. Dentes».`), { do: { fun: 4, weird: -2, flag: ret }, next: null, react: t(`You both laugh until it hurts. It was worth the teeth.`, `Los dos se ríen hasta que duele. Valieron la pena los dientes.`, `Vocês dois riem até doer. Valeram os dentes.`) }),
+            K('joke', t(`"So. Teeth."`, `«Entonces. Dientes».`, `«Então. Dentes».`), { do: { fun: 4, weird: -2, flag: ret }, next: null, react: RET_TEETH[id] || t(`You both laugh until it hurts. It was worth the teeth.`, `Los dos se ríen hasta que duele. Valieron la pena los dientes.`, `Vocês dois riem até doer. Valeram os dentes.`) }),
             K('makeout', t(`Ask: "One more go? Only if you want to."`, `Preguntar: «¿Un intento más? Solo si quieres».`, `Perguntar: «Mais uma tentativa? Só se você quiser».`), { do: { makeout: { p: 0.35, time: 6, who: id }, flag: ret }, next: null }),
             K('sorry', t(`"I'm sorry about before. No hard feelings?"`, `«Perdón por lo de antes. ¿Sin resentimientos?»`, `«Desculpa pelo que rolou. Sem ressentimentos?»`), { do: { soc: 2, weird: -1, flag: ret }, next: null }),
             K('hug', t(`"Friends? Numbers?"`, `«¿Amigos? ¿Números?»`, `«Amigos? Números?»`), { do: { fun: 2, soc: 2, flag: ['number_' + id, ret] }, next: null })

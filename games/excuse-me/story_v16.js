@@ -94,14 +94,41 @@
     return apply0.call(this, e);
   };
   /* kissing: gum, sunglasses and a necklace each help */
+  /* each person you can ask reads something different in your pockets (the game never shows these numbers;
+     the ask scene gives a tell instead, see EM.flirtTell) */
+  const READS = {
+    vera: function (s) { const n = wornAccCount(s); return n === 1 ? 0.08 : n >= 2 ? -0.10 : 0; },
+    ines: function (s) { return (s.drinks >= 1 ? -0.08 : 0) + (L.req({ item: 'water' }) ? 0.06 : 0); },
+    rafa: function (s) { return sun(s) ? -0.15 : 0; },
+    mina: function (s) { return plugs(s) ? 0.08 : 0; },
+    nox: function (s) { return plugs(s) ? -0.20 : 0; },
+    ludo: function (s) { return L.dizzy() > 0 ? -0.12 : 0; }
+  };
+  const TELLS = {
+    vera: function (s) {
+      const n = wornAccCount(s);
+      return n >= 2 ? t(`Her eyes travel over your jewellery. "That's a lot of opinion."`, `Su mirada recorre tus accesorios. «Eso es mucha opinión».`, `O olhar dela passa pelos seus acessórios. «Isso é muita opinião».`)
+        : n === 1 ? t(`She approves of exactly one accessory. You can tell.`, `Aprueba exactamente un accesorio. Se nota.`, `Ela aprova exatamente um acessório. Dá pra perceber.`) : null;
+    },
+    ines: function (s) {
+      return s.drinks >= 1 ? t(`She glances at your cup, then away.`, `Mira tu vaso y luego a otro lado.`, `Ela olha seu copo e depois pro lado.`)
+        : L.req({ item: 'water' }) ? t(`She notices the bottle in your hand. Her shoulders drop a little.`, `Nota la botella en tu mano. Se le bajan un poco los hombros.`, `Ela repara na garrafa na sua mão. Os ombros dela relaxam um pouco.`) : null;
+    },
+    rafa: function (s) { return sun(s) ? t(`He looks at your sunglasses. "I can't tell if you're joking."`, `Mira tus lentes de sol. «No sé si estás bromeando».`, `Ele olha seus óculos escuros. «Não sei se você tá brincando».`) : null; },
+    mina: function (s) { return plugs(s) ? t(`She spots the foam in your ears and nods once, approving.`, `Ve la espuma en tus oídos y asiente una vez, aprobando.`, `Ela vê a espuma nos seus ouvidos e assente uma vez, aprovando.`) : null; },
+    nox: function (s) { return plugs(s) ? t(`"I can't tell if you hear me." A hand hovers near your ear. "Take them out?"`, `«No sé si me oyes». Una mano flota cerca de tu oído. «¿Te los quitas?»`, `«Não sei se você me ouve». Uma mão paira perto do seu ouvido. «Tira eles?»`) : null; },
+    ludo: function () { return L.dizzy() > 0 ? t(`He watches you steady yourself on the rail. "Sit first?"`, `Te ve apoyarte en la baranda. «¿Te sientas primero?»`, `Ele te vê se apoiar no parapeito. «Senta primeiro?»`) : null; }
+  };
+  EM.flirtTell = function (id) { const s = EM.state, f = TELLS[id]; return s && f ? f(s) : null; };
   const mc0 = L.makeoutChance;
-  L.makeoutChance = function (base) {
-    const p = mc0(base), s = EM.state; if (!s) return p;
+  L.makeoutChance = function (base, who) {
+    const p = mc0(base, who), s = EM.state; if (!s) return p;
     let add = 0;
     if (s.fx.gum) add += 0.08;
     if (sun(s)) add += 0.08;
     if (worn(s).acc.necklace) add += 0.05;
-    return Math.min(0.97, p + add);
+    if (who && READS[who]) add += READS[who](s);
+    return Math.max(0.12, Math.min(0.97, p + add));
   };
   /* the engine asks how often a glare turns into a scene */
   EM.hostileMul = function () { return sun(EM.state) ? 0.5 : 1; };

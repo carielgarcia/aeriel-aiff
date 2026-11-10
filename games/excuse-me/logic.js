@@ -87,7 +87,7 @@
   };
   /* ------------------------------------------------------------ MAKING OUT */
   /* Always after asking. It works out (FUN up) or it does not (FUN down, and half the time WEIRDNESS up). */
-  L.makeoutChance = function (base) {
+  L.makeoutChance = function (base, who) { /* who: the person being asked; story_v16 lets each one read your pockets */
     const s = EM.state; let p = base === undefined ? 0.6 : base;
     if (s.fx.mdma || s.fx.ket) p += 0.12;
     if (s.drinks >= 3) p -= 0.18; else if (s.drinks >= 1) p += 0.06;
@@ -114,7 +114,7 @@
   L.makeOut = function (o) {
     o = o || {};
     const s = EM.state;
-    const p = L.makeoutChance(o.p);
+    const p = L.makeoutChance(o.p, o.who);
     const ok = Math.random() < p;
     s.makeouts = (s.makeouts || 0) + 1;
     L.spend(o.time || 6);
