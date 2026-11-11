@@ -256,7 +256,7 @@
     const starPts = function (cx, cy) { const pts = []; for (let i = 0; i < 10; i++) { const r = i % 2 ? 4 : 9, a = -Math.PI / 2 + i * Math.PI / 5; pts.push((cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1)); } return pts.join(' '); };
     goals.forEach(function (gl) {
       const o = origin(gl.zone);
-      marks.appendChild(svgEl('polygon', { points: starPts((o[0] + gl.x) * SC, (o[1] + gl.y) * SC), class: 'map-star' }));
+      marks.appendChild(svgEl('polygon', { points: starPts((o[0] + gl.x) * SC, (o[1] + gl.y) * SC), class: 'map-star' + (/^(sq_|rv_)/.test(gl.quest) ? ' side' : '') }));
     });
 
     const lg = document.createElement('div'); lg.className = 'map-legend';
@@ -323,7 +323,7 @@
     '.map-wrap { flex: 1 1 auto; min-height: 0; overflow: auto; } .map-svg { display: block; width: 100%; min-width: 680px; height: auto; max-height: 100%; }' +
     '.map-edge { fill: none; stroke-width: 2.5; } .map-edge.open { stroke: var(--fg); } .map-edge.closed { stroke: var(--red); stroke-dasharray: 6 5; }' +
     '.map-door { stroke-width: 2; } .map-door.open { fill: #08080C; stroke: var(--grn); } .map-door.closed { fill: #08080C; stroke: var(--red); }' +
-    '.map-x { stroke: var(--red); stroke-width: 2; fill: none; } .map-star { fill: var(--yel); stroke: #08080C; stroke-width: 1; } .map-me { fill: var(--yel); stroke: #08080C; stroke-width: 1; }' +
+    '.map-x { stroke: var(--red); stroke-width: 2; fill: none; } .map-star.side { fill: var(--blu); } .map-star { fill: var(--yel); stroke: #08080C; stroke-width: 1; } .map-me { fill: var(--yel); stroke: #08080C; stroke-width: 1; }' +
     '.map-room rect { fill: var(--panel); stroke: var(--fg); stroke-width: 1; }' +
     '.map-room.stub rect { fill: #08080C; stroke: var(--muted); stroke-dasharray: 5 4; }' +
     '.map-room.here rect { stroke: var(--yel); stroke-width: 3; }' +

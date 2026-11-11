@@ -502,12 +502,13 @@
     g.drawImage(spr, bx, by, lw, lh);
   }
 
-  let seekNow = {};
+  let seekNow = {}, sideNow = [], sideAt = 0;
+  const BLUE = '#3D8BFF', BLUE_SPARK = '#CFE2FF';
   /* the golden star: pulses above whoever you are looking for (or just found) */
-  function drawStar(cx, topY) {
+  function drawStar(cx, topY, col, spark) {
     const k = Math.floor(E.time * 5) % 4, bob = Math.sin(E.time * 4) * 1.5;
-    const ic = EM.icon('star', '#FFD23F'); g.drawImage(ic, Math.round(cx - 6.5), Math.round(topY - 3 + bob), 13, 13);
-    g.fillStyle = '#FFF2C8';
+    const ic = EM.icon('star', col || '#FFD23F'); g.drawImage(ic, Math.round(cx - 6.5), Math.round(topY - 3 + bob), 13, 13);
+    g.fillStyle = spark || '#FFF2C8';
     if (k === 0) g.fillRect(Math.round(cx + 7), Math.round(topY + bob), 1, 1);
     if (k === 1) g.fillRect(Math.round(cx - 8), Math.round(topY + 3 + bob), 1, 1);
     if (k === 2) g.fillRect(Math.round(cx + 6), Math.round(topY + 8 + bob), 1, 1);
@@ -612,6 +613,7 @@
   E.draw = function () {
     g.setTransform(RS, 0, 0, RS, 0, 0); g.imageSmoothingEnabled = false; /* everything below is in logical pixels */
     seekNow = EM.seekTargets ? EM.seekTargets(S) : {};
+    if (S && performance.now() - sideAt > 300) { sideAt = performance.now(); sideNow = EM.sideSpots ? EM.sideSpots(S) : []; } /* side-quest guidance, refreshed a few times a second */
     if (!S || !Z) { g.fillStyle = '#0A0A0A'; g.fillRect(0, 0, VW, VH); return; }
     blurForHealth();
     const t = E.time;
@@ -738,12 +740,15 @@
       g.fillStyle = N.yel; g.fillRect(Math.round(hx - 5), Math.round(hy - 1 + Math.sin(t * 6)), 10, 9);
       EM.drawText(g, 'Z', Math.round(hx - 1), Math.round(hy + 1 + Math.sin(t * 6)), '#0A0A0A');
     }
+    /* blue stars over the people and places side quests send you to */
+    sideNow.forEach(function (sp) { if (sp.zone === Z.id) drawStar(sp.x * TS, sp.y * TS - (sp.npc ? 50 : 26), BLUE, BLUE_SPARK); });
     g.restore();
 
     /* light: coloured dither halos, and darkness */
     lighting(camx + shakeX, camy + shakeY);
 
     seekArrows(camx + shakeX, camy + shakeY, list);
+    sideArrows(camx + shakeX, camy + shakeY);
 
     /* the dark room: faint embers where people breathe, a thread of light under the curtain */
     if (Z.id === 'darkroom') darkroomCues(camx + shakeX, camy + shakeY, list);
@@ -814,6 +819,39 @@
       g.fillStyle = '#FFD23F'; g.beginPath(); g.moveTo(6.5, 0); g.lineTo(-3.5, -5.2); g.lineTo(-1, 0); g.lineTo(-3.5, 5.2); g.closePath(); g.fill();
       g.restore();
       if (m.label) EM.drawText(g, m.label, Math.round(m.ax - Math.cos(m.ang) * 11 - m.label.length * 2), Math.round(m.ay - Math.sin(m.ang) * 11 - 3), '#FFD23F');
+    });
+  }
+
+  /* blue arrows for side quests: the same idea as the golden ones, pointing at the spot, or at the door that leads to its room */
+  function sideArrows(camx, camy) {
+    const marks = {};
+    sideNow.forEach(function (sp) {
+      let wx, wy;
+      if (sp.zone === Z.id) { wx = sp.x * TS; wy = sp.y * TS - 20; }
+      else {
+        const d = zoneRoute(Z.id, sp.zone); if (!d) return;
+        const r = d.rect || { x: d.x * TS, y: d.y * TS, w: d.w * TS, h: d.h * TS };
+        wx = r.x + r.w / 2; wy = r.y + r.h / 2;
+      }
+      const sx = wx - camx, sy = wy - camy, m = 14;
+      const on = sx > m && sx < VW - m && sy > m + 6 && sy < VH - m;
+      if (on && sp.zone === Z.id) return;
+      let ax, ay, ang;
+      if (on) { ax = sx; ay = sy - 18 + Math.sin(E.time * 5) * 2; ang = Math.PI / 2; }
+      else {
+        const cxm = VW / 2, cym = VH / 2, dx = sx - cxm, dy = sy - cym;
+        const kx = dx ? (VW / 2 - m) / Math.abs(dx) : 1e9, ky = dy ? (VH / 2 - m - 6) / Math.abs(dy) : 1e9, kk = Math.min(kx, ky);
+        ax = cxm + dx * kk; ay = cym + dy * kk; ang = Math.atan2(dy, dx);
+        const push = Math.sin(E.time * 5) * 1.5; ax += Math.cos(ang) * push; ay += Math.sin(ang) * push;
+      }
+      marks[Math.round(ax / 6) + ',' + Math.round(ay / 6)] = { ax: ax, ay: ay, ang: ang };
+    });
+    Object.keys(marks).forEach(function (mk) {
+      const m = marks[mk];
+      g.save(); g.translate(m.ax, m.ay); g.rotate(m.ang);
+      g.fillStyle = '#0A0A0A'; g.beginPath(); g.moveTo(8, 0); g.lineTo(-5, -7); g.lineTo(-2, 0); g.lineTo(-5, 7); g.closePath(); g.fill();
+      g.fillStyle = BLUE; g.beginPath(); g.moveTo(6.5, 0); g.lineTo(-3.5, -5.2); g.lineTo(-1, 0); g.lineTo(-3.5, 5.2); g.closePath(); g.fill();
+      g.restore();
     });
   }
 

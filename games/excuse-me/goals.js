@@ -67,11 +67,14 @@
       if (mv) { x = mv.x; y = mv.y; }
       else if (e.type === 'npc') { x = e.box || e.x !== Math.floor(e.x) ? e.x : e.x + 0.5; y = e.box || e.y !== Math.floor(e.y) ? e.y : e.y + 0.5; }
       else { x = e.x + e.w / 2; y = e.y + e.h / 2; }
-      return { zone: hit.z.id, x: x, y: y, quest: quest };
+      return { zone: hit.z.id, x: x, y: y, quest: quest, npc: e.type === 'npc' };
     }
     const z = EM.zones[spec.zone]; if (!z) return null;
     return { zone: z.id, x: spec.x !== undefined ? spec.x : z.w / 2, y: spec.y !== undefined ? spec.y : z.h / 2, quest: quest };
   }
+
+  /* side quests only (sq_ and rv_ ids): these get the blue stars and arrows in the game world */
+  EM.sideSpots = function (s) { return EM.goalSpots(s).filter(function (g) { return /^(sq_|rv_)/.test(g.quest); }); };
 
   EM.goalSpots = function (s) {
     const out = [];

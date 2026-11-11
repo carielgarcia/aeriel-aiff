@@ -21,6 +21,15 @@
     }
   };
 
+  /* the SIDE QUESTS button: opens the mission log on the side quests, from whatever the game is doing */
+  U.openSideQuests = function () {
+    if (U.mode === 'map' && U.closeMap) U.closeMap();
+    if (U.mode === 'pause') U.resume();
+    if (U.mode === 'menu') U.closeMenu();
+    if (U.mode === 'play') { U.questFocus = 'side'; U.openMenu('quests'); return; }
+    U.toast({ icon: 'exclam', kind: 'info', ms: 4500, text: t('Finish this first. Side quests are in MENU > MISSIONS.', 'Termina esto primero. Las misiones secundarias están en MENÚ > MISIONES.', 'Termine isso primeiro. As missões secundárias estão em MENU > MISSÕES.') });
+  };
+
   /* pause: stops everything, with a clear way back */
   U.paused = false;
   U.pause = function () {
@@ -95,7 +104,7 @@
     const dx = $('dlg-x'), dz = $('dlg-z');
     if (dx) dx.addEventListener('click', function () { U.dlgLeave(); });
     if (dz) dz.addEventListener('click', function () { U.dlgConfirm(); });
-    const gsb = $('goal-side'); if (gsb) gsb.addEventListener('click', function () { U.openMenu('quests'); });
+    const gsb = $('goal-side'); if (gsb) gsb.addEventListener('click', function () { U.openSideQuests(); });
     if (bp) bp.addEventListener('click', function () { if (U.mode === 'pause') U.resume(); else U.pause(); });
     if (pb) pb.addEventListener('click', U.resume);
     if (be) be.addEventListener('click', function () { U.openMenu('nightlog'); });
@@ -115,6 +124,7 @@
     '#goal-l { background: var(--yel); color: #0A0A0A; padding: 3px 8px; font-size: 12px; flex: none; }' +
     '#goal-t { color: #FFFFFF; font-weight: bold; }' +
     '#goal-side { margin-left: auto; flex: none; min-height: 30px; padding: 2px 8px; font-size: 11px; border-color: var(--yel); color: var(--yel); }' +
+    '.qwhere { margin-top: 3px; color: #3D8BFF; font-size: 12px; letter-spacing: 1px; font-weight: bold; }' +
     '.qhead { margin: 10px 0 4px; font-size: 12px; letter-spacing: 1px; color: var(--yel); border-bottom: 1px solid #4A4A5A; padding-bottom: 2px; }' +
     '#goal.flash { background: var(--yel); } #goal.flash #goal-t { color: #0A0A0A; } #goal.flash #goal-l { background: #0A0A0A; color: var(--yel); }' +
     '#log-expand { position: absolute; top: 4px; right: 6px; min-height: 28px; padding: 2px 8px; font-size: 11px; z-index: 2; }' +

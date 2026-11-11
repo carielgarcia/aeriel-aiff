@@ -661,6 +661,7 @@
     show('menu', true); renderMenu(); postHeight();
   };
   U.closeMenu = function () {
+    U.questFocus = null;
     show('menu', false); U.mode = 'play'; E.paused = false; postHeight();
   };
   U.renderMenu = function () { renderMenu(); };
@@ -705,6 +706,12 @@
       if (!list.length) box.appendChild(el('p', 'mnote', EM.tr(UI.none)));
       const side = function (id) { return /^sq_/.test(id); };
       const sections = [[T('MAIN MISSIONS', 'MISIONES PRINCIPALES', 'MISSÕES PRINCIPAIS'), list.filter(function (id) { return !side(id); })], [T('SIDE QUESTS', 'MISIONES SECUNDARIAS', 'MISSÕES SECUNDÁRIAS'), list.filter(side)]];
+      /* opened from the SIDE QUESTS button: side quests first, and a line on how the blue guides work */
+      if (U.questFocus === 'side') {
+        sections.reverse();
+        if (!sections[0][1].length) box.appendChild(el('p', 'mnote', EM.tr(T('No side quests yet. Talk to people: some of them need a favour.', 'Todavía no hay misiones secundarias. Habla con la gente: algunos necesitan un favor.', 'Ainda não há missões secundárias. Fale com as pessoas: algumas precisam de um favor.'))));
+        else box.appendChild(el('p', 'mnote dim', EM.tr(T('Blue stars and blue arrows in the club point to the next step of each side quest. [M] shows them on the map.', 'Las estrellas y flechas azules del club señalan el siguiente paso de cada misión secundaria. [M] las muestra en el mapa.', 'As estrelas e setas azuis do club apontam o próximo passo de cada missão secundária. [M] mostra elas no mapa.'))));
+      }
       sections.forEach(function (sec) {
         if (!sec[1].length) return;
         box.appendChild(el('h3', 'qhead', EM.tr(sec[0])));
@@ -715,6 +722,12 @@
         r.appendChild(el('strong', '', ' ' + EM.tr(q.title)));
         const qd = s.quests[id] === 'done' && q.doneText ? q.doneText : q.desc;
         r.appendChild(el('div', 'qd', EM.tr(typeof qd === 'function' ? qd(s) : qd)));
+        if (s.quests[id] === 'active' && side(id) && EM.goalSpots) {
+          /* where the next step is, by room */
+          const rooms = [];
+          EM.goalSpots(s).forEach(function (g) { if (g.quest !== id) return; const nm = EM.tr(EM.zones[g.zone].name).split('//')[0].trim(); if (rooms.indexOf(nm) === -1) rooms.push(nm); });
+          if (rooms.length) r.appendChild(el('div', 'qwhere', '★ ' + EM.tr(T('GO TO', 'VE A', 'VÁ PARA')) + ': ' + rooms.join(' · ')));
+        }
         box.appendChild(r);
         });
       });
