@@ -430,6 +430,7 @@
     EM.audio.blip('select');
     if (!c.free) { L.stat('soc', -1 - (c.bad ? 2 : 0)); L.spend(1); }
     if (L.isRude(c) && EM.STAFF[curWho()]) L.staffRude();
+    else if (L.isRude(c) && EM.HOSTS && EM.HOSTS[curWho()]) L.hostRude();
     if (c.bad) { L.addBad(1); L.rep(1); }
     else if (c.tone === 'care' || c.tone === 'sorry' || c.tone === 'hug') L.rep(-0.4);
     if (c.do) applyDo(c.do);

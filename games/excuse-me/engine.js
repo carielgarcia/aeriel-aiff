@@ -880,6 +880,8 @@
     const shades = !!(S.worn && S.worn.sunglasses);
     const dark = Z.id === 'darkroom' ? 0.985 : (shades ? Math.max(Z.dark, 0.96) : Z.dark);
     const lights = shades ? [] : Z.lights;
+    /* daylight rooms (THE AFTER): lift the whole picture with a warm wash instead of dimming it */
+    if (Z.day) { g.save(); g.globalCompositeOperation = 'lighter'; g.fillStyle = Z.day; g.fillRect(0, 0, VW, VH); g.restore(); }
     if (dark <= 0 && !lights.length) return;
     if (!maskCanvas || maskCanvas.width !== VW || maskCanvas.height !== VH) { maskCanvas = EM.mkCanvas(VW, VH); maskData = maskCanvas.getContext('2d').createImageData(VW, VH); glowCanvas = EM.mkCanvas(VW, VH); glowData = glowCanvas.getContext('2d').createImageData(VW, VH); }
     const d = maskData.data, gd = glowData.data;

@@ -124,6 +124,7 @@
   P.trig = function (d) { d.type = 'trig'; this.ents.push(d); return this; };
   P.friend = function (zoneKey, x, y) { this.friendAt[zoneKey] = { x: x, y: y }; return this; };
 
+  EM.Zone = Zone; /* story files that add rooms (THE AFTER) build them with the same DSL */
   const F = function (f) { return function (s) { return !!s.flags[f]; }; };
   const NF = function (f) { return function (s) { return !s.flags[f]; }; };
   EM.F = F; EM.NF = NF;
