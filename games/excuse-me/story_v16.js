@@ -58,7 +58,7 @@
       w.acc[kind] = !w.acc[kind];
       if (w.acc[kind] && wornAccCount(s) > 1 && !s.flags.acc_warn) {
         s.flags.acc_warn = true;
-        U.toast({ icon: 'eyes', kind: 'bad', ms: 6000, text: t(`That is a lot of jewellery. People look twice. WEIRDNESS will creep up while you wear more than one.`, `Eso es mucha joyería. La gente mira dos veces. La RAREZA va a subir mientras lleves más de una cosa.`, `Isso é muita bijuteria. As pessoas olham duas vezes. A ESTRANHEZA vai subir enquanto você usar mais de uma peça.`) });
+        U.toast({ icon: 'spark', kind: 'good', ms: 5000, text: t(`All of it, at once. Nobody here is grading. Wear what you like.`, `Todo junto. Aquí nadie califica. Usa lo que quieras.`, `Tudo junto. Aqui ninguém dá nota. Use o que quiser.`) });
       }
     }
     if (U.hud) U.hud();
@@ -97,7 +97,7 @@
   /* each person you can ask reads something different in your pockets (the game never shows these numbers;
      the ask scene gives a tell instead, see EM.flirtTell) */
   const READS = {
-    vera: function (s) { const n = wornAccCount(s); return n === 1 ? 0.08 : n >= 2 ? -0.10 : 0; },
+    vera: function (s) { const n = wornAccCount(s); return n === 1 ? 0.08 : n >= 2 ? 0.12 : 0; },
     ines: function (s) { return (s.drinks >= 1 ? -0.08 : 0) + (L.req({ item: 'water' }) ? 0.06 : 0); },
     rafa: function (s) { return sun(s) ? -0.15 : 0; },
     mina: function (s) { return plugs(s) ? 0.08 : 0; },
@@ -107,7 +107,7 @@
   const TELLS = {
     vera: function (s) {
       const n = wornAccCount(s);
-      return n >= 2 ? t(`Her eyes travel over your jewellery. "That's a lot of opinion."`, `Su mirada recorre tus accesorios. «Eso es mucha opinión».`, `O olhar dela passa pelos seus acessórios. «Isso é muita opinião».`)
+      return n >= 2 ? t(`Her eyes travel over your jewellery. "That's a lot of opinion. I like opinions."`, `Su mirada recorre tus accesorios. «Eso es mucha opinión. Me gustan las opiniones».`, `O olhar dela passa pelos seus acessórios. «Isso é muita opinião. Eu gosto de opinião».`)
         : n === 1 ? t(`She approves of exactly one accessory. You can tell.`, `Aprueba exactamente un accesorio. Se nota.`, `Ela aprova exatamente um acessório. Dá pra perceber.`) : null;
     },
     ines: function (s) {
@@ -143,8 +143,6 @@
     if (w.chain) L.stat('soc', 0.05);
     if (w.bracelet) L.stat('hp', 0.05);
     if (w.earrings) L.stat('weird', -0.04);
-    const n = wornAccCount(s);
-    if (n > 1) L.stat('weird', 0.12 * (n - 1), true);
   };
 
   /* speakers, crowds with sunglasses */
@@ -172,9 +170,9 @@
     }
     /* sunglasses in a crowd read as strange */
     if (sun(s) && E.moving && (E.crowdAt(s.x, s.y) > 0 || E.crowdAt(s.x + 12, s.y) > 0 || E.crowdAt(s.x - 12, s.y) > 0 || E.crowdAt(s.x, s.y + 12) > 0 || E.crowdAt(s.x, s.y - 12) > 0)) {
-      L.stat('weird', 0.2 * dt * (EM.bumpMul ? EM.bumpMul() : 1), true);
+      L.stat('soc', -0.08 * dt * (EM.bumpMul ? EM.bumpMul() : 1));
       sunCrowd -= dt;
-      if (sunCrowd <= 0) { sunCrowd = 60; U.toast({ icon: 'eyes', kind: 'info', ms: 4200, text: t(`You bump into people you cannot see coming. They notice the sunglasses.`, `Chocas con gente que no ves venir. Notan los lentes.`, `Você esbarra em gente que não vê chegar. Eles notam os óculos.`) }); }
+      if (sunCrowd <= 0) { sunCrowd = 60; U.toast({ icon: 'eyes', kind: 'info', ms: 4200, text: t(`You bump into people you cannot see coming. Sorry, sorry, sorry.`, `Chocas con gente que no ves venir. Perdón, perdón, perdón.`, `Você esbarra em gente que não vê chegar. Desculpa, desculpa, desculpa.`) }); }
     }
   };
   /* the player wears them on screen too (engine.js reads s.worn) */
@@ -313,7 +311,7 @@
       K('ask', t(`"How did you end up here?"`, `«¿Cómo llegaste aquí?»`, `«Como você veio parar aqui?»`), { next: 'story' }),
       K('ask', t(`"Is the music always this loud?"`, `«¿La música siempre suena tan fuerte?»`, `«A música é sempre tão alta?»`), { next: 'loud' })
     );
-    RA.tips = { text: t(`"Things get left behind in places people sit. Sunglasses, rings, a chain once. Smoking area, the foyer, the attic, the sink in here. Don't put on a whole jewellery shop: people stare." She taps the side of her head. "And don't wear the sunglasses in a crowd unless you like walking into people."`, `«Las cosas se quedan donde la gente se sienta. Lentes de sol, anillos, una vez una cadena. La zona de fumar, el foyer, el ático, el lavamanos de aquí. No te pongas una joyería entera: la gente mira». Se golpea la sien. «Y no uses los lentes entre la multitud, a menos que te guste chocar con gente».`, `«As coisas ficam onde as pessoas sentam. Óculos escuros, anéis, uma vez uma corrente. Área de fumantes, foyer, sótão, a pia daqui. Não coloque uma joalheria inteira: o povo olha». Ela bate na lateral da cabeça. «E não use óculos escuros no meio da multidão, a menos que goste de esbarrar nas pessoas».`), once: true, do: { soc: 1, flag: 'rosa_tips' }, next: 'after' };
+    RA.tips = { text: t(`"Things get left behind in places people sit. Sunglasses, rings, a chain once. Smoking area, the foyer, the attic, the sink in here. Wear the whole jewellery shop if you like." She taps the side of her head. "And don't wear the sunglasses in a crowd unless you like walking into people."`, `«Las cosas se quedan donde la gente se sienta. Lentes de sol, anillos, una vez una cadena. La zona de fumar, el foyer, el ático, el lavamanos de aquí. No te pongas una joyería entera: la gente mira». Se golpea la sien. «Y no uses los lentes entre la multitud, a menos que te guste chocar con gente».`, `«As coisas ficam onde as pessoas sentam. Óculos escuros, anéis, uma vez uma corrente. Área de fumantes, foyer, sótão, a pia daqui. Não coloque uma joalheria inteira: o povo olha». Ela bate na lateral da cabeça. «E não use óculos escuros no meio da multidão, a menos que goste de esbarrar nas pessoas».`), once: true, do: { soc: 1, flag: 'rosa_tips' }, next: 'after' };
     RA.story = { text: t(`"I came for a night job to pay for night school. Nobody told me the toilets would become my university." She almost smiles. "Fourteen years. Every bucket taught me something about people."`, `«Vine por un trabajo nocturno para pagar la escuela nocturna. Nadie me dijo que los baños serían mi universidad». Casi sonríe. «Catorce años. Cada balde me enseñó algo sobre la gente».`, `«Vim por um emprego noturno pra pagar a escola noturna. Ninguém me disse que o banheiro ia virar minha universidade». Ela quase sorri. «Quatorze anos. Cada balde me ensinou algo sobre as pessoas».`), once: true, do: { soc: 2, fun: 1, flag: 'rosa_story' }, next: 'after' };
     RA.loud = { text: t(`"Louder than it should be. Your ears will tell you tomorrow. The harm reduction table has earplugs: ask for them. Wear them to dance, take them out to talk, or you'll nod at everything like a pigeon."`, `«Más fuerte de lo que debería. Tus oídos te lo dirán mañana. La mesa de reducción de daños tiene tapones: pídelos. Úsalos para bailar, quítatelos para hablar o asentirás a todo como una paloma».`, `«Mais alta do que devia. Seus ouvidos vão te contar amanhã. A mesa de redução de danos tem protetor de ouvido: pede. Usa pra dançar, tira pra conversar, ou vai concordar com tudo feito pombo».`), once: true, do: { soc: 1, flag: 'earplugs_known' }, next: 'after' };
   }

@@ -231,7 +231,7 @@
     s.drinks = Math.max(0, s.drinks - 1 / 40);
     if (L.guarded() && st.weird >= 35) {
       L.stat('weird', 0.05 + (st.weird - 35) / 65 * 0.15, true);
-      if (!s.flags.guard_eye) { s.flags.guard_eye = true; EM.hooks.toast({ icon: 'eyes', text: T('A guard\'s eyes find you. Strange people get looked at. Quiet rooms are not watched.', 'Los ojos de un guardia te encuentran. A la gente rara la miran. Las salas tranquilas no están vigiladas.', 'Os olhos de um segurança te encontram. Gente estranha é observada. Salas calmas não são vigiadas.'), kind: 'bad', ms: 6500 }); }
+      if (!s.flags.guard_eye) { s.flags.guard_eye = true; EM.hooks.toast({ icon: 'eyes', text: T('A guard\'s eyes find you. Loud, out-of-control people get looked at. Quiet rooms are not watched.', 'Los ojos de un guardia te encuentran. A quien se descontrola lo miran. Las salas tranquilas no están vigiladas.', 'Os olhos de um segurança te encontram. Quem perde o controle é observado. Salas calmas não são vigiadas.'), kind: 'bad', ms: 6500 }); }
     }
     if (s.fx.mdma) { L.stat('fun', 0.22); L.stat('hp', -0.05); L.stat('soc', 0.08); }
     if (s.fx.meth) { L.stat('fun', 0.15); L.stat('hp', -0.1); L.stat('soc', -0.03); }
