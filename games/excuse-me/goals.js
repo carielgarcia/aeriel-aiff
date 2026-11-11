@@ -48,6 +48,16 @@
     sq_honey: function (s) {
       if (!F(s, 'fran_met')) return [{ ent: 'fran' }];
       return [{ ent: F(s, 'have_honeygum') ? 'lalo' : 'rumi' }];
+    },
+    sq_queue: function () { return [{ ent: 'rosario_q' }]; },
+    sq_roots: function () { return [{ ent: 'hugo' }]; },
+    sq_licence: function (s) {
+      if (!F(s, 'lic_open')) return [{ ent: 'ofelia' }];
+      const out = [];
+      if (!F(s, 'lic_hugo')) out.push({ ent: 'hugo' });
+      if (!F(s, 'lic_luca')) out.push({ ent: 'luca' });
+      if (!F(s, 'lic_neigh')) out.push({ ent: 'valdes' });
+      return out.length ? out : [{ ent: 'ofelia' }];
     }
   };
 
