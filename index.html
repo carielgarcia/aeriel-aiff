@@ -78,6 +78,7 @@
           <span class="header-crumb-sep" aria-hidden="true">/</span>
           <span class="header-crumb-label" data-crumb="ae000x">Æ000.X</span>
           <span class="header-crumb-label" data-crumb="writing"><span lang="en">ESSAYS</span><span lang="es">ENSAYOS</span><span lang="pt">ENSAIOS</span></span>
+          <span class="header-crumb-label" data-crumb="games"><span lang="en">GAMES</span><span lang="es">JUEGOS</span><span lang="pt">JOGOS</span></span>
           <span class="header-crumb-label" data-crumb="message"><span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span></span>
         </span>
       </div>
@@ -90,6 +91,11 @@
           <span lang="en">ESSAYS</span>
           <span lang="es">ENSAYOS</span>
           <span lang="pt">ENSAIOS</span>
+        </a>
+        <a href="/games" class="nav-link" id="nav-games" data-nav-view="games" onclick="openGamesSubsite(event);">
+          <span lang="en">GAMES</span>
+          <span lang="es">JUEGOS</span>
+          <span lang="pt">JOGOS</span>
         </a>
         <a href="/message" class="nav-link" id="nav-message" data-nav-view="message" onclick="openMessageSubsite(event);">
           <span lang="en">MESSAGE</span>
@@ -2433,6 +2439,13 @@
           </a>
         </li>
         <li>
+          <a href="/games" class="footer-nav-link" onclick="openGamesSubsite(event)">
+            <span lang="en">GAMES</span>
+            <span lang="es">JUEGOS</span>
+            <span lang="pt">JOGOS</span>
+          </a>
+        </li>
+        <li>
           <a href="/message" class="footer-nav-link" onclick="openMessageSubsite(event)">
             <span lang="en">MESSAGE</span>
             <span lang="es">MENSAJE</span>
@@ -2475,6 +2488,9 @@
     <a href="/ae000x" class="tab-link" data-tab="ae000x" onclick="tabNav(event, 'ae000x')">Æ000.X</a>
     <a href="/writing" class="tab-link" data-tab="writing" onclick="tabNav(event, 'writing')">
       <span lang="en">ESSAYS</span><span lang="es">ENSAYOS</span><span lang="pt">ENSAIOS</span>
+    </a>
+    <a href="/games" class="tab-link" data-tab="games" onclick="tabNav(event, 'games')">
+      <span lang="en">GAMES</span><span lang="es">JUEGOS</span><span lang="pt">JOGOS</span>
     </a>
     <a href="/message" class="tab-link" data-tab="message" onclick="tabNav(event, 'message')">
       <span lang="en">MESSAGE</span><span lang="es">MENSAJE</span><span lang="pt">MENSAGEM</span>
@@ -2639,7 +2655,7 @@
       window.addEventListener('resize', apply);
     })();
 
-    // Mobile bottom tab bar: four destinations, active state, auto-hide on scroll, keyboard-aware hiding
+    // Mobile bottom tab bar: six destinations, active state, auto-hide on scroll, keyboard-aware hiding
     function tabNav(event, tab) {
       const view = document.body.getAttribute('data-view') || 'main';
       const readerEl = document.getElementById('article-reader-container');
@@ -2651,6 +2667,7 @@
         return openWritingSubsite(event);
       }
       if (tab === 'ae000x') return view === 'ae000x' ? toTop() : openAe000xSubsite(event);
+      if (tab === 'games') return view === 'games' ? toTop() : openGamesSubsite(event);
       if (tab === 'message') return view === 'message' ? toTop() : openMessageSubsite(event);
       if (view === 'main') return toTop();
       return openMainPortfolio(event);
@@ -3817,7 +3834,7 @@
       });
       const crumb = document.getElementById('header-crumb');
       if (crumb) {
-        const known = ['ae000x', 'writing', 'message'].includes(view);
+        const known = ['ae000x', 'writing', 'games', 'message'].includes(view);
         crumb.hidden = !known;
         crumb.querySelectorAll('[data-crumb]').forEach(el => { el.hidden = el.getAttribute('data-crumb') !== view; });
       }
@@ -4257,112 +4274,6 @@
     // No hace nada si el contador no está cargado.
     function contar(clave) { try { if (window.aerielContar) window.aerielContar(clave); } catch (_) {} }
 
-    let easterEggTimer = null;
-    let easterEggHideTimer = null;
-    let easterEggBtn = null;
-
-    function initEasterEggController() {
-      // Clean up any existing timers or button
-      if (easterEggTimer) clearInterval(easterEggTimer);
-      if (easterEggHideTimer) clearTimeout(easterEggHideTimer);
-      if (easterEggBtn && easterEggBtn.parentNode) {
-        easterEggBtn.parentNode.removeChild(easterEggBtn);
-      }
-
-      easterEggBtn = document.createElement('button');
-      easterEggBtn.type = 'button';
-      easterEggBtn.className = 'easter-egg-btn';
-      easterEggBtn.innerHTML = '🎮';
-      easterEggBtn.setAttribute('aria-label', 'Easter Egg: Play Games');
-      easterEggBtn.style.display = 'none';
-
-      easterEggBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        contar('easter_egg');
-        hideEasterEgg();
-        openGamesSubsite(e);
-      });
-
-      document.body.appendChild(easterEggBtn);
-
-      // Schedule random appearance every 30 seconds
-      scheduleNextEasterEgg();
-    }
-
-    function scheduleNextEasterEgg() {
-      if (easterEggTimer) clearTimeout(easterEggTimer);
-      // Pops up at random every 30 seconds (25s - 35s jitter centered around 30 seconds)
-      const nextDelay = 25000 + Math.floor(Math.random() * 10000);
-      easterEggTimer = setTimeout(() => {
-        showEasterEgg();
-      }, nextDelay);
-    }
-
-    function showEasterEgg() {
-      if (!easterEggBtn) return;
-      // Do not popup if the user is already on the games subsite
-      const currentView = document.body.getAttribute('data-view');
-      if (currentView === 'games') {
-        scheduleNextEasterEgg();
-        return;
-      }
-
-      // Pick a random edge of the screen: 0: top, 1: bottom, 2: left, 3: right
-      const edge = Math.floor(Math.random() * 4);
-      // Reset all positioning styles
-      easterEggBtn.style.top = '';
-      easterEggBtn.style.bottom = '';
-      easterEggBtn.style.left = '';
-      easterEggBtn.style.right = '';
-
-      // Margin from exact viewport edge
-      const edgeOffset = '18px';
-      // Random position along the edge (between 10% and 80% to avoid extreme corners)
-      const randomAlong = (10 + Math.floor(Math.random() * 70)) + '%';
-
-      if (edge === 0) {
-        // Top edge
-        easterEggBtn.style.top = edgeOffset;
-        easterEggBtn.style.left = randomAlong;
-      } else if (edge === 1) {
-        // Bottom edge
-        easterEggBtn.style.bottom = edgeOffset;
-        easterEggBtn.style.left = randomAlong;
-      } else if (edge === 2) {
-        // Left edge
-        easterEggBtn.style.left = edgeOffset;
-        easterEggBtn.style.top = randomAlong;
-      } else {
-        // Right edge
-        easterEggBtn.style.right = edgeOffset;
-        easterEggBtn.style.top = randomAlong;
-      }
-
-      easterEggBtn.style.display = 'flex';
-
-      // Remains visible for exactly 5 seconds
-      if (easterEggHideTimer) clearTimeout(easterEggHideTimer);
-      easterEggHideTimer = setTimeout(() => {
-        hideEasterEgg();
-        scheduleNextEasterEgg();
-      }, 5000);
-    }
-
-    function hideEasterEgg() {
-      if (easterEggBtn) {
-        easterEggBtn.style.display = 'none';
-      }
-      if (easterEggHideTimer) {
-        clearTimeout(easterEggHideTimer);
-        easterEggHideTimer = null;
-      }
-    }
-
-    window.initEasterEggController = initEasterEggController;
-    window.showEasterEgg = showEasterEgg;
-    window.hideEasterEgg = hideEasterEgg;
-
     function detectInitialLanguage() {
       // 1. Check URL query parameters (e.g. ?lang=es) from search or hash
       const searchParams = new URLSearchParams(window.location.search);
@@ -4521,7 +4432,6 @@
       });
 
       // Easter Egg Controller Setup: pops up at random every 30 seconds for 5 seconds on the edge of the screen
-      initEasterEggController();
 
       // Listen for dynamic iframe resizing from the Techno Variants Engine web app
       window.addEventListener('message', (e) => {

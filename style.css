@@ -2222,35 +2222,6 @@ body[data-view="games"] #games-subsite {
   display: block !important;
 }
 
-/* Easter Egg Game-Control Button */
-.easter-egg-btn {
-  position: fixed;
-  z-index: 9999;
-  font-size: 28px;
-  line-height: 1;
-  background: #0A0A0A;
-  color: #FFFFFF;
-  border: 2px solid #FFFFFF;
-  padding: 8px 10px;
-  cursor: pointer;
-  border-radius: 0 !important;
-  box-shadow: none;
-  transition: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  touch-action: manipulation;
-}
-
-.easter-egg-btn:hover,
-.easter-egg-btn:focus-visible {
-  background: #FFFFFF;
-  color: #0A0A0A;
-  outline: 2px solid #FFFFFF;
-  outline-offset: 2px;
-}
-
 /* Games Subsite Layout */
 .games-hero-section {
   padding-top: var(--spacing-xl);
@@ -4480,7 +4451,7 @@ body[data-view="message"] #message-subsite {
 
   .tab-bar {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     position: fixed;
     left: 0;
     right: 0;

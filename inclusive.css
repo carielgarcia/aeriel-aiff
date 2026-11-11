@@ -116,8 +116,7 @@ html.inclusive-mode .sc-credit-bar { font-size: 0.9rem; color: var(--text-muted)
 
 /* ---- Distractions off ---- */
 html.inclusive-mode .genre-button-strip,
-html.inclusive-mode .easter-egg-trigger,
-html.inclusive-mode .easter-egg-btn { display: none !important; }
+html.inclusive-mode .easter-egg-trigger { display: none !important; }
 
 /* ---- Links ---- */
 html.inclusive-mode .reader-body a,
