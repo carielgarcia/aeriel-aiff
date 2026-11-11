@@ -33,7 +33,7 @@
       },
       c: {
         text: T('The three of them fall in behind you like ducklings with eyeliner. Time to get across the main floor to the toilets.', 'Los tres se ponen detrás de ti como patitos con delineador. Hora de cruzar la pista principal hacia los baños.', 'Os três se enfileiram atrás de você como patinhos de delineador. Hora de cruzar a pista principal até os banheiros.'),
-        do: { join: ['maru', 'dani', 'tato', 'vale', 'alex'], quest: { q1: 'done', q2: 'active' }, at: 150, call: 'q2_start', fun: 4 }
+        do: { join: ['maru', 'dani', 'tato'], quest: { q1: 'done', q2: 'active' }, at: 150, call: 'q2_start', fun: 4 }
       }
     }
   };
@@ -66,8 +66,6 @@
     maru: T(`"There you are. I counted you in my head. Twice."`, `«Ahí estás. Te conté en la cabeza. Dos veces».`, `«Aí está você. Eu te contei de cabeça. Duas vezes».`),
     dani: T(`"I was gone eleven minutes and met nine people. Where were YOU?"`, `«Estuve fuera once minutos y conocí a nueve personas. ¿Y TÚ dónde estabas?»`, `«Fiquei sumido onze minutos e conheci nove pessoas. E VOCÊ, onde tava?»`),
     tato: T(`"I stood by a wall. The wall was nice."`, `«Me quedé junto a una pared. La pared era amable».`, `«Fiquei perto de uma parede. A parede era legal».`),
-    vale: T(`"Got you. I had a route planned and everything."`, `«Te encontré. Tenía una ruta planeada y todo».`, `«Te achei. Eu já tinha até uma rota planejada».`),
-    alex: T(`"You! I got lost staring at a light, and the light had a friend."`, `«¡Tú! Me perdí mirando una luz, y la luz tenía una amiga».`, `«Você! Me perdi olhando uma luz, e a luz tinha uma amiga».`)
   };
   EM.FRIENDS.forEach(function (f) {
     const names = { maru: 'MARU', dani: 'DANI', tato: 'TATO' };

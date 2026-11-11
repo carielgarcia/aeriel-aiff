@@ -15,7 +15,7 @@
     return out;
   };
   function lostFriend(s, f) { return !!s.away[f] && s.party.indexOf(f) === -1; }
-  const FR_NAME = { maru: 'M', dani: 'B', tato: 'F', vale: 'V', alex: 'A' };
+  const FR_NAME = { maru: 'M', dani: 'B', tato: 'F' };
   /* your group: the first mission (all three), the scattering, and the friends who wander off on their own */
   EM.seekers.push(function (s) {
     const q = s.quests, res = [];

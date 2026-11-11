@@ -1,4 +1,4 @@
-/* EXCUSE ME — story v14: a bigger entourage. Vale (a woman) and Alex (non-binary) join Maru, Benjamin and Fernando/Feña.
+/* EXCUSE ME — story v14: the entourage is Maru, Benjamin and Fernando/Feña.
    Feña gets very excited at the dark room and half the time stays there (he only kisses men; he is in a threesome with two guys,
    implied). Benjamin is very social: 25% per hour he goes on his own adventure and comes back two hours later as a capybara. */
 'use strict';
@@ -11,52 +11,11 @@
   const BUSY = ['q2', 'q3', 'q4', 'q5', 'q7', 'q8', 'q10', 'q11', 'q12', 'q9'];
   const busy = function (s) { return BUSY.some(function (q) { return s.quests[q] === 'active'; }); };
 
-  /* ============================================================ VALE AND ALEX: first meeting, intro, barks */
-  const meet = D.friends_meet.nodes;
-  meet.a.text = [].concat(meet.a.text,
-    t(`VALE: "Finally. I've been guarding the group's bag like it's a newborn. Please tell me you brought water, because I brought a plan and nothing else."`, `VALE: «Por fin. He cuidado la bolsa del grupo como a un recién nacido. Dime que trajiste agua, porque yo traje un plan y nada más».`, `VALE: «Finalmente. Eu tava protegendo a bolsa do grupo feito recém-nascido. Me diz que você trouxe água, porque eu trouxe um plano e mais nada».`),
-    t(`ALEX: "Hi! I'm so glad it's you. I've been hugging the same pillar for forty minutes. We're very close now. I think it likes me."`, `ALEX: «¡Hola! Qué bueno que eres tú. Llevo cuarenta minutos abrazando el mismo pilar. Ya somos muy cercanes. Creo que le caigo bien».`, `ALEX: «Oi! Que bom que é você. Tô abraçando o mesmo pilar faz quarenta minutos. A gente já tá muito próximes. Acho que ele gosta de mim».`));
-  meet.c.text = t(`The five of them fall in behind you like ducklings with eyeliner. Time to get across the main floor to the toilets.`, `Los cinco se ponen detrás de ti como patitos con delineador. Hora de cruzar la pista principal hacia los baños.`, `Os cinco se enfileiram atrás de você como patinhos de delineador. Hora de cruzar a pista principal até os banheiros.`);
-  const intro = D.intro.nodes.a, prevText = intro.text;
-  const FIVE = t(`Maru, Dani, Tato, Vale and Alex are in there somewhere. Your phone is at 9%. You have one bottle of water and a good feeling about tonight.`, `Maru, Dani, Tato, Vale y Alex están ahí adentro, en algún lado. Tu celular tiene 9%. Tienes una botella de agua y un buen presentimiento sobre esta noche.`, `Maru, Dani, Tato, Vale e Alex estão lá dentro, em algum lugar. Seu celular está com 9%. Você tem uma garrafa de água e um bom pressentimento sobre esta noite.`);
-  intro.text = function (s) {
-    const a = [].concat(typeof prevText === 'function' ? prevText(s) : prevText);
-    return a.map(function (x) { return x && x.en && /Maru, Dani and Tato/.test(x.en) ? FIVE : x; });
-  };
-
-  story.barks.vale = [
-    t(`VALE: "Hydration check. Everybody. Now. I can see your faces."`, `VALE: «Chequeo de hidratación. Todos. Ahora. Les veo la cara».`, `VALE: «Checagem de hidratação. Todo mundo. Agora. Eu tô vendo a cara de vocês».`),
-    t(`VALE: "I know where the exits are. I know where the exits' exits are."`, `VALE: «Sé dónde están las salidas. Y las salidas de las salidas».`, `VALE: «Eu sei onde ficam as saídas. E as saídas das saídas».`),
-    t(`VALE: "It's fine. It's a vibe. It's also a fire hazard. Both."`, `VALE: «Está bien. Es un vibe. También es un riesgo de incendio. Ambos».`, `VALE: «Tá tranquilo. É uma vibe. Também é risco de incêndio. Os dois».`),
-    t(`VALE: "Whoever's phone is at 4%, come stand next to the charger I smuggled in."`, `VALE: «A quien le quede 4% de batería, que se pare junto al cargador que metí de contrabando».`, `VALE: «Quem tá com 4% de bateria vem ficar do lado do carregador que eu contrabandeei».`)
-  ];
-  story.barks.alex = [
-    t(`ALEX: "Is it weird that I can taste the bass? It tastes purple."`, `ALEX: «¿Es raro que pueda saborear el bajo? Sabe morado».`, `ALEX: «É estranho que eu consiga sentir o gosto do grave? Tem gosto de roxo».`),
-    t(`ALEX: "I made a new friend. I don't know their name. We've decided that's the bit."`, `ALEX: «Hice une amigue nueve. No sé cómo se llama. Decidimos que ese es el chiste».`, `ALEX: «Fiz ume amigue nove. Não sei o nome. A gente decidiu que essa é a graça».`),
-    t(`ALEX: "I love everyone and I'm also a little bit tired. Both are true."`, `ALEX: «Quiero a todo el mundo y también estoy un poquito cansade. Las dos cosas son ciertas».`, `ALEX: «Eu amo todo mundo e também tô um pouquinho cansade. As duas coisas são verdade».`),
-    t(`ALEX: "Somebody tell the floor it's doing great."`, `ALEX: «Que alguien le diga a la pista que lo está haciendo muy bien».`, `ALEX: «Alguém avisa a pista que ela tá indo muito bem».`)
-  ];
+  /* the entourage is three people (Maru, Benjamin, Fernando/Feña); Vale and Alex were cut. */
   story.barks.tato = story.barks.tato.concat([
     t(`TATO: "Is it me or is the dark room calling my name? It's me. It's me calling."`, `TATO: «¿Soy yo o el cuarto oscuro me está llamando? Soy yo. Yo lo estoy llamando».`, `TATO: «Sou eu ou a dark room tá me chamando? Sou eu. Eu que tô chamando».`)
   ]);
 
-  /* little perks for the two new friends */
-  const lastPerk = { vale: 0, alex: 0 };
-  const minute0 = L.minute;
-  L.minute = function () {
-    minute0();
-    const s = EM.state; if (!s || s.ended) return;
-    if (s.party.indexOf('vale') !== -1 && s.time - lastPerk.vale >= 45 && (s.items.water || 0) < 2) {
-      lastPerk.vale = s.time;
-      L.apply({ item: { water: 1 }, soc: 1 });
-      U.toast({ icon: 'cross', kind: 'good', ms: 5000, text: t(`Vale presses a cold bottle into your hand without looking at you. "Drink. I'm not asking."`, `Vale te pone en la mano una botella fría sin mirarte. «Toma. No es una pregunta».`, `A Vale enfia uma garrafa gelada na sua mão sem olhar pra você. «Bebe. Não tô perguntando».`) });
-    }
-    if (s.party.indexOf('alex') !== -1 && s.time - lastPerk.alex >= 50 && Math.random() < 0.08) {
-      lastPerk.alex = s.time;
-      L.apply({ fun: 3, soc: 2 });
-      U.toast({ icon: 'heart', kind: 'good', ms: 5000, text: t(`Alex pulls you into a ridiculous slow dance in the middle of a fast song. Nobody minds. Two strangers join the dance.`, `Alex te jala a un baile lento ridículo en medio de una canción rápida. A nadie le importa. Dos desconocidos se unen al baile.`, `Alex te puxa pra uma dança lenta ridícula no meio de uma música rápida. Ninguém liga. Dois desconhecidos entram na dança.`) });
-    }
-  };
 
   /* the dark room has its own spot for a friend who stays: away from the regulars */
   EM.zones.darkroom.friendAt.darkroom = { x: 7, y: 9 };
@@ -107,7 +66,8 @@
   };
 
   /* ============================================================ BENJAMIN, THE CAPYBARA */
-  const ZONES = ['main', 'courtyard', 'attic', 'rooftop', 'tunnel'];
+  /* only rooms you can walk into right now: never the roof (closed until the closing set), the attic only once SALA 2 is open */
+  const wanderZones = function (s) { return s.time >= 180 ? ['main', 'courtyard', 'attic', 'tunnel'] : ['main', 'courtyard', 'tunnel']; };
   const minute2 = L.minute;
   L.minute = function () {
     minute2();
@@ -117,7 +77,7 @@
     if (hour > (s.benjiHour || 0)) {
       s.benjiHour = hour;
       if (s.party.indexOf('dani') !== -1 && !s.flags.benji_out && !busy(s) && !s.flags.friends_stick && !s.away.dani && Math.random() < 0.25) {
-        const z = ZONES[Math.floor(Math.random() * ZONES.length)];
+        const zs = wanderZones(s), z = zs[Math.floor(Math.random() * zs.length)];
         s.flags.benji_out = true; s.benjiBack = s.time + 120; s.benjiZone = z;
         L.leave('dani', z);
         U.toast({ icon: 'heart', kind: 'info', ms: 7000, text: t(`Dani spots a stranger with a good hat across the room, says "BRB, I'm going to meet everyone," and is gone. He will be back in a couple of hours. (He will.)`, `Dani ve a un desconocido con un buen sombrero al otro lado del cuarto, dice «ya vengo, voy a conocer a todos» y desaparece. Volverá en un par de horas. (Volverá).`, `O Dani vê um desconhecido com um bom chapéu do outro lado da sala, diz «já volto, vou conhecer todo mundo» e some. Ele volta em umas duas horas. (Ele volta.)`) });
