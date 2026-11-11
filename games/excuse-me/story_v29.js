@@ -39,7 +39,6 @@
   const WARM = { a: '#FFB020', b: '#FF7AB8' };
   const mk = function (id, w, h, name, extra) {
     const z = new Zone(id, w, h, Object.assign({ theme: WARM, name: name, audio: { lp: 1500, wet: 0.1, style: 'closing' }, dark: 0 }, extra || {}));
-    z.day = id === 'a_balcony' ? '#5E5846' : '#4F4838'; /* the daylight wash (engine.js lighting) */
     return z;
   };
   const NAME = {
@@ -50,19 +49,20 @@
     a_balcony: t('THE FLAT // BALCONY', 'EL DEPARTAMENTO // BALCÓN', 'O APÊ // VARANDA'),
     a_master: t('THE FLAT // MASTER BEDROOM', 'EL DEPARTAMENTO // DORMITORIO PRINCIPAL', 'O APÊ // QUARTO PRINCIPAL')
   };
+  /* walls, then the floor: a home, in daylight (the home tileset in tiles.js; no neon, no dim lights) */
+  const home = function (Z, w, h, floor) { Z.fill(0, 0, w, h, TL.HWALL); Z.fill(1, 2, w - 2, h - 3, floor); return Z; };
   const FLAT = ['a_living', 'a_kitchen', 'a_bedroom', 'a_bath', 'a_balcony', 'a_master'];
   AF.isFlat = function (z) { return FLAT.indexOf(z) !== -1; };
 
   /* living room: records, sofa, rug, the front door, five doors in the walls */
   (function () {
     const Z = mk('a_living', 28, 16, NAME.a_living);
-    Z.room(0, 0, 28, 16, TL.FLOOR);
-    Z.fill(6, 6, 14, 6, TL.RUG);
-    Z.fill(3, 3, 5, 1, TL.COUCH); Z.fill(20, 3, 4, 1, TL.TABLE); Z.set(19, 3, TL.SPEAKER); Z.set(24, 3, TL.SPEAKER);
-    Z.set(1, 13, TL.PLANT); Z.set(26, 13, TL.PLANT);
-    Z.set(27, 8, TL.DOORF); Z.set(8, 1, TL.DOORF); Z.set(14, 1, TL.DOORF); Z.set(22, 1, TL.DOORF); Z.set(0, 8, TL.DOORF); Z.set(13, 15, TL.DOORF);
+    home(Z, 28, 16, TL.HFLOOR);
+    Z.fill(6, 6, 14, 6, TL.HRUG);
+    Z.fill(3, 3, 5, 1, TL.HCOUCH); Z.fill(20, 3, 4, 1, TL.HTABLE); Z.set(19, 3, TL.HSPEAKER); Z.set(24, 3, TL.HSPEAKER);
+    Z.set(1, 13, TL.HPLANT); Z.set(26, 13, TL.HPLANT);
+    Z.set(27, 8, TL.HDOOR); Z.set(8, 1, TL.HDOOR); Z.set(14, 1, TL.HDOOR); Z.set(22, 1, TL.HDOOR); Z.set(0, 8, TL.HDOOR); Z.set(13, 15, TL.HDOOR);
     Z.sign(12, 14, 'SHOES OFF', 1).sign(2, 7, '< BALCONY', 1).sign(23, 2, 'MASTER', 1).sign(26, 7, 'KITCHEN >', 1).sign(7, 2, 'COATS', 1).sign(14, 2, 'WC', 1);
-    Z.light(21, 4, 60, '#FFD58A').light(6, 8, 50, '#FFE8B0');
     Z.door(27, 8, 1, 1, 'a_kitchen', 1, 8, 'r', { id: 'ad_kit' });
     Z.door(8, 1, 1, 1, 'a_bedroom', 7, 7, 'u', { id: 'ad_bed' });
     Z.door(14, 1, 1, 1, 'a_bath', 3, 5, 'u', { id: 'ad_bath' });
@@ -72,7 +72,7 @@
     Z.door(13, 15, 1, 1, 'a_living', 13, 13, 'u', { id: 'ad_front', when: function () { return false; }, caught: 'af_front' });
     Z.obj({ id: 'af_records', kind: 'afrecords', x: 20, y: 3, w: 4, h: 1, label: t('THE RECORDS', 'LOS DISCOS', 'OS DISCOS') });
     Z.obj({ id: 'af_basket', kind: 'afbasket', x: 11, y: 13, w: 2, h: 1, label: t('PHONE BASKET', 'CANASTA DE CELULARES', 'CESTA DE CELULARES') });
-    [[10, 8], [15, 8], [12, 10]].forEach(function (p, i) { Z.obj({ id: 'af_dance_' + i, kind: 'dance', x: p[0], y: p[1], w: 1, h: 1, label: t('DANCE', 'BAILAR', 'DANÇAR') }); });
+    [[10, 8], [15, 8], [12, 10]].forEach(function (p, i) { Z.obj({ id: 'af_dance_' + i, kind: 'afdance', x: p[0], y: p[1], w: 1, h: 1, label: t('DANCE', 'BAILAR', 'DANÇAR') }); });
     Z.trig({ id: 'af_rules_trig', x: 12, y: 12, w: 3, h: 2, script: 'af_rules', when: function (s) { return !!s.flags.after_go && !s.flags.af_rules; } });
     Z.npc({ id: 'anselm', x: 21.5, y: 4.6, dlg: 'af_anselm', dir: 'd', reach: 16, when: F('after_go') });
     Z.npc({ id: 'dot_a', cast: 'dot', x: 15.5, y: 12.6, dlg: 'af_dot_door', dir: 'l', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.af_rules; } });
@@ -84,11 +84,10 @@
   /* kitchen: the aftercare, with no stand and no table of reagents */
   (function () {
     const Z = mk('a_kitchen', 14, 10, NAME.a_kitchen);
-    Z.room(0, 0, 14, 10, TL.TILE);
-    Z.fill(3, 2, 9, 1, TL.BAR); Z.fill(6, 5, 3, 1, TL.TABLE); Z.set(12, 7, TL.PLANT);
-    Z.set(0, 8, TL.DOORF);
+    home(Z, 14, 10, TL.HTILE);
+    Z.fill(3, 2, 9, 1, TL.HCOUNTER); Z.fill(6, 5, 3, 1, TL.HTABLE); Z.set(12, 7, TL.HPLANT);
+    Z.set(0, 8, TL.HDOOR);
     Z.sign(5, 1, 'TOAST', 1);
-    Z.light(7, 4, 60, '#FFE8B0');
     Z.door(0, 8, 1, 1, 'a_living', 26, 8, 'l', { id: 'ad_kit_back' });
     Z.obj({ id: 'af_tap', kind: 'water', x: 3, y: 3, w: 2, h: 1, label: t('THE TAP', 'LA LLAVE', 'A TORNEIRA') });
     Z.obj({ id: 'af_toast', kind: 'aftoast', x: 9, y: 3, w: 3, h: 1, label: t('TOAST AND TEA', 'TOSTADAS Y TÉ', 'TORRADAS E CHÁ') });
@@ -103,11 +102,10 @@
   /* the coats */
   (function () {
     const Z = mk('a_bedroom', 14, 10, NAME.a_bedroom, { quiet: 0.03 });
-    Z.room(0, 0, 14, 10, TL.RUG);
-    Z.fill(2, 3, 6, 3, TL.MATT); Z.fill(10, 3, 3, 2, TL.CRATE);
-    Z.set(7, 9, TL.DOORF);
+    home(Z, 14, 10, TL.HFLOOR);
+    Z.fill(2, 3, 6, 3, TL.HBED); Z.fill(10, 3, 3, 2, TL.HCOATS);
+    Z.set(7, 9, TL.HDOOR);
     Z.sign(10, 2, 'COATS', 1);
-    Z.light(5, 4, 44, '#FFE8B0');
     Z.door(7, 9, 1, 1, 'a_living', 8, 3, 'd', { id: 'ad_bed_back' });
     Z.npc({ id: 'lio', x: 3.4, y: 4.6, dlg: 'af_lio', dir: 'd', pose: 'lie', reach: 18, when: function (s) { return !!s.flags.after_go && !s.flags.lio_done; } });
     Z.obj({ id: 'rest_bed', kind: 'rest', x: 6, y: 4, w: 2, h: 1, label: t('LIE DOWN ON THE COATS', 'ACOSTARSE SOBRE LOS ABRIGOS', 'DEITAR NOS CASACOS') });
@@ -117,8 +115,8 @@
   /* one toilet, one queue, one joke */
   (function () {
     const Z = mk('a_bath', 8, 8, NAME.a_bath);
-    Z.room(0, 0, 8, 8, TL.TILE);
-    Z.set(3, 2, TL.STALL); Z.set(5, 2, TL.SINK); Z.set(3, 7, TL.DOORF);
+    home(Z, 8, 8, TL.HTILE);
+    Z.set(3, 2, TL.HTOILET); Z.set(5, 2, TL.HSINK); Z.set(3, 7, TL.HDOOR);
     Z.sign(2, 1, 'ONE TOILET', 1);
     Z.door(3, 7, 1, 1, 'a_living', 14, 3, 'd', { id: 'ad_bath_back' });
     Z.npc({ id: 'af_queue', cast: 'noor', x: 3.5, y: 4.6, dlg: 'af_queue', dir: 'u', reach: 18, when: F('after_go') });
@@ -127,10 +125,9 @@
 
   /* the balcony: the neighbours */
   (function () {
-    const Z = mk('a_balcony', 16, 8, NAME.a_balcony, { sky: true, outdoor: true, audio: { lp: 2400, wet: 0.2, style: 'closing' } });
-    Z.fill(0, 0, 16, 8, TL.VOID); Z.fill(0, 0, 16, 2, TL.SKY); Z.fill(0, 2, 16, 1, TL.RAIL); Z.fill(1, 3, 14, 4, TL.CONC);
-    Z.fill(0, 3, 1, 4, TL.RAIL); Z.fill(0, 7, 16, 1, TL.RAIL); Z.fill(15, 3, 1, 4, TL.RAIL); Z.set(15, 5, TL.DOORF);
-    Z.light(8, 5, 70, '#FFE8B0');
+    const Z = mk('a_balcony', 16, 8, NAME.a_balcony, { outdoor: true, audio: { lp: 2400, wet: 0.2, style: 'closing' } });
+    Z.fill(0, 0, 16, 8, TL.VOID); Z.fill(0, 0, 16, 2, TL.HSKY); Z.fill(0, 2, 16, 1, TL.HRAIL); Z.fill(1, 3, 14, 4, TL.HBALC);
+    Z.fill(0, 3, 1, 4, TL.HRAIL); Z.fill(0, 7, 16, 1, TL.HRAIL); Z.fill(15, 3, 1, 4, TL.HRAIL); Z.set(15, 5, TL.HDOOR);
     Z.door(15, 5, 1, 1, 'a_living', 1, 8, 'r', { id: 'ad_balc_back' });
     Z.npc({ id: 'remedios', x: 4.5, y: 3.6, dlg: 'af_remedios', dir: 'd', reach: 22, when: F('after_go') });
     Z.obj({ id: 'rest_balc', kind: 'rest', x: 10, y: 6, w: 2, h: 1, label: t('SIT ON THE FLOOR', 'SENTARSE EN EL PISO', 'SENTAR NO CHÃO') });
@@ -140,11 +137,10 @@
   /* the master bedroom (designed in story_v29c.js) */
   (function () {
     const Z = mk('a_master', 14, 10, NAME.a_master, { quiet: 0.03, audio: { lp: 900, wet: 0.15, style: 'closing' } });
-    Z.room(0, 0, 14, 10, TL.RUG);
-    Z.fill(8, 3, 4, 3, TL.MATT); Z.fill(2, 3, 2, 1, TL.COUCH);
-    Z.set(3, 9, TL.DOORF);
+    home(Z, 14, 10, TL.HFLOOR);
+    Z.fill(8, 3, 4, 3, TL.HBED); Z.fill(2, 3, 2, 1, TL.HCOUCH);
+    Z.set(3, 9, TL.HDOOR);
     Z.sign(5, 2, 'ASK FIRST', 1).sign(6, 8, 'EVERYONE USES PROTECTION', 1);
-    Z.light(9, 4, 40, '#FFD58A');
     Z.door(3, 9, 1, 1, 'a_living', 22, 2, 'd', { id: 'ad_master_back' });
     Z.obj({ id: 'af_bowl', kind: 'afbowl', x: 1, y: 7, w: 2, h: 1, label: t('THE BOWL BY THE DOOR', 'EL BOL JUNTO A LA PUERTA', 'A TIGELA NA PORTA') });
     Z.npc({ id: 'pax', x: 7.5, y: 4.5, dlg: 'af_enc_pax', dir: 'r', reach: 14, when: function (s) { return !s.flags.pax_done; } });
@@ -384,6 +380,7 @@
 
   /* ============================================================ objects, entering rooms, objectives, quests */
   const O = EM.objects;
+  O.afdance = function (ent) { O.dance(ent); };
   O.afrecords = function () { U.startDialogue('af_records', {}); };
   O.afbasket = function () { U.startDialogue('af_basket', {}); };
   O.aftoast = function () { U.startDialogue('af_toast', {}); };

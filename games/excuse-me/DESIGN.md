@@ -317,7 +317,7 @@ The next chapter of the same night, on the same save: after the sunrise the host
 
 **The choice.** `SD.af_ask` (end of the sunrise): go to the after (`after_go`) or go home (`after_home`, the old ending, unchanged; no payoff either way). `S.final_ending` is wrapped: `after_go` starts `S.af_begin` instead of an ending. `logic.js` `L.check`: with `after_go` the night ends at `EM.AFTER_END` (840, noon) with the new ending `after`; otherwise at 600 with `closing` as before.
 
-**Rooms** (`EM.Zone` is exported from `world.js`): `a_living`, `a_kitchen`, `a_bedroom` (the coats), `a_bath`, `a_balcony`, `a_master`. Daylight is a warm wash (`Z.day`, `engine.js` `lighting()`), not dimming. Arrival is dialogue only (`af_travel`).
+**Rooms** (`EM.Zone` is exported from `world.js`): `a_living`, `a_kitchen`, `a_bedroom` (the coats), `a_bath`, `a_balcony`, `a_master`. Daylight is a home tileset (`TL.H*` in `tiles.js`: wood, plaster, cream rug, kitchen tile, daylight sky), with no neon and no dim lights. Arrival is dialogue only (`af_travel`).
 
 **Hosts are not staff.** `EM.HOSTS` (logic.js): Anselm, Dot and every resident (ÆRIEL, FRAMES SHELL). `L.hostRude()`: the first rude move (a `tone: push` choice, `bad: true`, a photo, touching the records unasked, pushing someone too high) is a warning that costs WEIRDNESS +30 (raw), SOCIAL −15 and FUN −10; the next one is OUT (ending `after` with `after_out`, or `banned`/`frozenout` in the club). The ending is deferred one beat so the scene that caused it can close.
 
