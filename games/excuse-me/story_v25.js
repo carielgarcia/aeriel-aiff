@@ -69,7 +69,7 @@
         text: t(`A man in a good coat stands in the middle of the foyer, looking at the ceiling. "Is this the function room? I'm meeting Keith. Keith said function room."`, `Un hombre con un buen abrigo está parado en medio del foyer, mirando el techo. «¿Es este el salón de eventos? Me reúno con Keith. Keith dijo salón de eventos».`, `Um homem de casaco bom tá parado no meio do foyer, olhando o teto. «Aqui é o salão de festas? Vou encontrar o Keith. O Keith disse salão de festas».`),
         choices: [
           K('blunt', t(`"It's a club. The pub is next door, left."`, `«Es un club. El pub está al lado, a la izquierda».`, `«É um clube. O pub é aqui do lado, à esquerda».`), { do: { flag: 'dennis_met' }, next: null, react: t(`He nods slowly and does not go anywhere. "Right. Next door. Left." He stays exactly where he is.`, `Asiente despacio y no se mueve. «Claro. Al lado. A la izquierda». Se queda exactamente donde está.`, `Ele assente devagar e não vai a lugar nenhum. «Certo. Aqui do lado. À esquerda». Fica exatamente onde está.`) }),
-          K('care', t(`"Who's Keith?"`, `«¿Quién es Keith?»`, `«Quem é o Keith?»`), { do: { flag: 'dennis_met', fun: 2 }, next: 'keith' }),
+          K('care', t(`"Who's Keith?"`, `«¿Quién es Keith?»`, `«Quem é o Keith?»`), { do: { flag: ['dennis_met', 'dennis_keith'], fun: 2 }, next: 'keith' }),
           K('chill', t(`Leave him to it.`, `Dejarlo con lo suyo.`, `Deixar ele aí.`), { free: true, do: { flag: 'dennis_met' }, next: null, react: t(`He drifts toward the toilet queue with the air of a man following the only sign he can read.`, `Se va hacia la fila del baño con aire de hombre que sigue el único letrero que sabe leer.`, `Ele segue em direção à fila do banheiro com ar de quem acompanha a única placa que sabe ler.`) })
         ]
       },
@@ -82,21 +82,23 @@
   D.dennis_q = {
     who: 'dennis', role: t('IN THE QUEUE', 'EN LA FILA', 'NA FILA'), start: 'a', nodes: {
       a: {
-        text: t(`Dennis, to the woman ahead of him: "Sorry, love — sir — love. I'd rather not share. Not being funny. There should be a different one for you lot."`, `Dennis, a la mujer que está delante: «Perdón, cariño, señor, cariño. Prefiero no compartir. No es por molestar. Debería haber otro para ustedes».`, `O Dennis, pra mulher que tá na frente: «Desculpa, querida, senhor, querida. Prefiro não dividir. Não é por nada, mas devia ter outro pra vocês».`),
-        next: 'b'
-      },
-      b: { who: 'rosario', text: t(`"It's one toilet with a door on every stall. Nobody here is sharing anything but a sink."`, `«Es un solo baño con una puerta en cada cubículo. Aquí nadie comparte nada salvo el lavabo».`, `«É um banheiro só, com porta em cada cabine. Aqui ninguém divide nada além da pia».`), next: 'c' },
-      c: {
-        text: [t(`"That's what I'm saying. It's the sink."`, `«Eso digo yo. Es el lavabo».`, `«É isso que eu digo. É a pia».`), t(`He turns to you, hopeful. "You look sensible. Back me up. I'm not going in there with him. Someone say it."`, `Se vuelve hacia ti, esperanzado. «Tú pareces sensato. Apóyame. No pienso entrar ahí con él. Alguien que lo diga».`, `Ele se vira pra você, esperançoso. «Você parece sensato. Me apoia. Eu não vou entrar aí com ele. Alguém diz».`)],
+        text: [
+          t(`Dennis, to the woman ahead of him: "Sorry, love — sir — love. I'd rather not share. Not being funny. There should be a different one for you lot." She doesn't turn round. "It's one toilet with a door on every stall. Nobody here is sharing anything but a sink." "That's what I'm saying. It's the sink."`, `Dennis, a la mujer que está delante: «Perdón, cariño, señor, cariño. Prefiero no compartir. No es por molestar. Debería haber otro para ustedes». Ella no se da vuelta. «Es un solo baño con una puerta en cada cubículo. Aquí nadie comparte nada salvo el lavabo». «Eso digo yo. Es el lavabo».`, `O Dennis, pra mulher que tá na frente: «Desculpa, querida, senhor, querida. Prefiro não dividir. Não é por nada, mas devia ter outro pra vocês». Ela não se vira. «É um banheiro só, com porta em cada cabine. Aqui ninguém divide nada além da pia». «É isso que eu digo. É a pia».`),
+          t(`He turns to you, hopeful. "You look sensible. Back me up. I'm not going in there with him. Someone say it."`, `Se vuelve hacia ti, esperanzado. «Tú pareces sensato. Apóyame. No pienso entrar ahí con él. Alguien que lo diga».`, `Ele se vira pra você, esperançoso. «Você parece sensato. Me apoia. Eu não vou entrar aí com ele. Alguém diz».`)
+        ],
         choices: [
+          K('honest', t(`"There's no ladies'. This room is for everyone."`, `«No hay baño de mujeres. Este lugar es para todos».`, `«Não tem banheiro feminino. Esse lugar é pra todo mundo».`), { do: { soc: 6, weird: -6, fun: 8, flag: ['dennis_plain', 'dennis_done'] }, next: 'r3' }),
+          K('joke', t(`"Dennis, good news. Nobody here shares anything with anybody except a sink and a bass line. Raves are for everyone. You're included. You'll hate it."`, `«Dennis, buenas noticias. Aquí nadie comparte nada con nadie salvo un lavabo y una línea de bajo. Las raves son para todos. Tú estás incluido. Lo vas a odiar».`, `«Dennis, boa notícia. Aqui ninguém divide nada com ninguém além de uma pia e uma linha de baixo. Rave é pra todo mundo. Você tá incluído. Vai odiar».`), { do: { soc: 6, weird: -3, fun: 14, flag: ['dennis_joke', 'dennis_done'] }, next: 'r4' }),
           K('chill', t(`Say nothing. Look at your shoes.`, `No decir nada. Mirar tus zapatos.`, `Não dizer nada. Olhar pros sapatos.`), { do: { soc: -15, fun: -8, flag: ['dennis_quiet', 'dennis_done'] }, call: 'dennis_quiet', next: null, react: t(`"See? Somebody sensible." Dennis claps your shoulder. Rosario looks at you for one second longer than she needed to, and turns away.`, `«¿Ves? Alguien sensato». Dennis te palmea el hombro. Rosario te mira un segundo más de lo necesario y se da la vuelta.`, `«Viu? Alguém sensato». O Dennis bate no seu ombro. A Rosario te olha um segundo a mais do que precisava e se vira.`) }),
-          K('push', t(`"He's right. Find another toilet."`, `«Tiene razón. Busquen otro baño».`, `«Ele tem razão. Procurem outro banheiro».`), { bad: true, call: 'dennis_out', next: null }),
-          K('honest', t(`"There's no ladies'. The toilets are for everyone and so is this room. Raves have always been for everyone. Rosario is in the right queue. You're in the wrong building."`, `«No hay baño de mujeres. Los baños son para todos y este lugar también. Las raves siempre fueron para todos. Rosario está en la fila correcta. Tú estás en el edificio equivocado».`, `«Não tem banheiro feminino. Os banheiros são pra todo mundo e esse lugar também. Rave sempre foi pra todo mundo. A Rosario tá na fila certa. Você que tá no prédio errado».`), { do: { soc: 6, weird: -6, fun: 8, flag: ['dennis_plain', 'dennis_done'] }, next: 'r3' }),
-          K('joke', t(`"Dennis, good news. Nobody here shares anything with anybody except a sink and a bass line. Raves are for everyone. You're included. You'll hate it."`, `«Dennis, buenas noticias. Aquí nadie comparte nada con nadie salvo un lavabo y una línea de bajo. Las raves son para todos. Tú estás incluido. Lo vas a odiar».`, `«Dennis, boa notícia. Aqui ninguém divide nada com ninguém além de uma pia e uma linha de baixo. Rave é pra todo mundo. Você tá incluído. Vai odiar».`), { do: { soc: 6, weird: -3, fun: 14, flag: ['dennis_joke', 'dennis_done'] }, next: 'r4' })
+          K('push', t(`"He's right. Find another toilet."`, `«Tiene razón. Busquen otro baño».`, `«Ele tem razão. Procurem outro banheiro».`), { bad: true, call: 'dennis_out', next: null })
         ]
       },
       r3: {
-        text: [t(`He opens his mouth and finds nothing in it. "…It's a function room."`, `Abre la boca y no encuentra nada dentro. «…Es un salón de eventos».`, `Ele abre a boca e não encontra nada dentro. «…É um salão de festas».`), t(`"It's a rave." A pause that goes on a while. "…Is Keith in it?"`, `«Es una rave». Una pausa que se alarga. «…¿Keith está ahí?»`, `«É uma rave». Uma pausa que se alonga. «…O Keith tá aí?»`)],
+        text: function (s) {
+          return s.flags.dennis_keith
+            ? [t(`He opens his mouth and finds nothing in it. "…It's a function room."`, `Abre la boca y no encuentra nada dentro. «…Es un salón de eventos».`, `Ele abre a boca e não encontra nada dentro. «…É um salão de festas».`), t(`"It's a rave." A pause. "Keith did say it'd be loud." He looks at Rosario. "Sorry, love. Sorry. Rosario."`, `«Es una rave». Una pausa. «Keith sí dijo que habría ruido». Mira a Rosario. «Perdón, cariño. Perdón. Rosario».`, `«É uma rave». Uma pausa. «O Keith disse mesmo que ia ter barulho». Ele olha pra Rosario. «Desculpa, querida. Desculpa. Rosario».`)]
+            : [t(`He opens his mouth and finds nothing in it. "…It's a function room."`, `Abre la boca y no encuentra nada dentro. «…Es un salón de eventos».`, `Ele abre a boca e não encontra nada dentro. «…É um salão de festas».`), t(`"It's a rave." A pause that goes on a while. "…Is Keith in it?"`, `«Es una rave». Una pausa que se alarga. «…¿Keith está ahí?»`, `«É uma rave». Uma pausa que se alonga. «…O Keith tá aí?»`)];
+        },
         choices: [K('care', t(`Turn to Rosario.`, `Volverte hacia Rosario.`, `Virar pra Rosario.`), { free: true, call: 'dennis_care', next: null })]
       },
       r4: {
@@ -129,19 +131,12 @@
     }
   };
   S.dennis_expel = function () { L.stat('weird', 100, true); L.check(); };
-  Z.restrooms.npc({ id: 'dennisq', pair: ['dennis', 'rosario'], x: 6.5, y: 13.5, dlg: 'dennis_q', dir: 'r', reach: 18, when: function (s) { return s.time >= 150 && s.time <= 330 && !s.flags.dennis_done; } });
+  Z.restrooms.npc({ id: 'dennisq', pair: ['dennis', 'rosario'], x: 3, y: 10.5, box: { w: 2, h: 1 }, gate: true, dlg: 'dennis_q', dir: 'r', reach: 24, when: function (s) { return s.time >= 150 && s.time <= 330 && !s.flags.dennis_done; } });
 
   /* ---- the aftercare: Rosario decides ---- */
   S.dennis_care = function () { const s = EM.state; if (!s.ended) U.startDialogue('rosario_care', { npc: 'rosario' }); };
   D.rosario_care = {
-    who: 'rosario', role: t('IN THE QUEUE', 'EN LA FILA', 'NA FILA'), forced: true, start: 'a', nodes: {
-      a: {
-        text: t(`Rosario folds her arms, not unfriendly. She was fine before you arrived and she will be fine after. She waits to see what you do next.`, `Rosario cruza los brazos, sin hostilidad. Estaba bien antes de que llegaras y estará bien después. Espera a ver qué haces ahora.`, `A Rosario cruza os braços, sem hostilidade. Ela tava bem antes de você chegar e vai ficar bem depois. Espera pra ver o que você faz agora.`),
-        choices: [
-          K('care', t(`"Rosario, what would you like?"`, `«Rosario, ¿qué te gustaría?»`, `«Rosario, o que você gostaria?»`), { next: 'decide' }),
-          K('chill', t(`Give her room. Say nothing more.`, `Darle espacio. No decir más.`, `Dar espaço. Não dizer mais nada.`), { free: true, next: null })
-        ]
-      },
+    who: 'rosario', role: t('IN THE QUEUE', 'EN LA FILA', 'NA FILA'), forced: true, start: 'decide', nodes: {
       decide: {
         branch: [
           { req: function (s) { const p = s.flags.dennis_joke ? 0.6 : 0.4; return coin(s, 5531) < p; }, to: 'eject' },
@@ -189,8 +184,9 @@
     const s = EM.state, i = IT.inv(s);
     if (i.acc.pin) return;
     i.acc.pin = 1;
+    const w = IT.worn(s); if (!IT.count(s)) w.acc.pin = true;
     s.rosGiftAt = s.time + 60;
-    U.toast({ icon: 'star', kind: 'good', ms: 6000, text: t(`You got: ROSARIO'S PIN. (ITEMS: I) Hostile scenes are 40% less likely and cost less SOCIAL. Everyone will ask about it.`, `Conseguiste: EL PIN DE ROSARIO. (OBJETOS: I) Las escenas hostiles son 40% menos probables y cuestan menos SOCIAL. Todos van a preguntar por él.`, `Você ganhou: O PIN DA ROSARIO. (ITENS: I) As cenas hostis são 40% menos prováveis e custam menos SOCIAL. Todo mundo vai perguntar dele.`) });
+    U.toast({ icon: 'star', kind: 'good', ms: 6000, text: t(`You got: ROSARIO'S PIN. (ITEMS: I) Hostile scenes are 40% less likely and cost less SOCIAL. Everyone will ask about it. It is pinned on you; take it off in ITEMS.`, `Conseguiste: EL PIN DE ROSARIO. (OBJETOS: I) Las escenas hostiles son 40% menos probables y cuestan menos SOCIAL. Todos van a preguntar por él. Ya lo llevas puesto; quítatelo en OBJETOS.`, `Você ganhou: O PIN DA ROSARIO. (ITENS: I) As cenas hostis são 40% menos prováveis e custam menos SOCIAL. Todo mundo vai perguntar dele. Ele já tá no seu peito; tire em ITENS.`) });
   };
 
   /* ---- Rosario returns with a gift (70%, an hour later) ---- */
