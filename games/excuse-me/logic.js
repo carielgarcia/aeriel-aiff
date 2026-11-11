@@ -214,10 +214,8 @@
     const n = Math.floor(s.timeFrac); s.timeFrac -= n;
     if (n) L.addTime(n);
   };
-  L.clockFloor = function (t) {
-    const s = EM.state;
-    if (s.time < t) L.addTime(t - s.time);
-  };
+  /* clock floors are retired: the story never jumps the clock forward (`at:` in a dialogue effect does nothing). The night is as long as you make it. */
+  L.clockFloor = function () {};
 
   L.minute = function () {
     const s = EM.state, z = EM.zones[s.zone];

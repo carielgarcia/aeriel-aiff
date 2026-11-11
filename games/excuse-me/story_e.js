@@ -62,7 +62,7 @@
         ]
       },
       b: {
-        text: T(`"Melody is a promise. This music just continues." She uncrosses one arm. "ÆRIEL, the closing DJ upstairs, understands that. They'll open the roof at half past five. They like people who bring water. Don't tell anyone I said that."`, `«La melodía es una promesa. Esta música solo continúa». Descruza un brazo. «ÆRIEL, la DJ de cierre de arriba, lo entiende. Van a abrir la azotea a las cinco y media. Les caen bien los que traen agua. No le digas a nadie que te lo dije».`, `«Melodia é uma promessa. Essa música só continua». Ela descruza um braço. «A ÆRIEL, a DJ do fechamento lá em cima, entende isso. Vão abrir o terraço às cinco e meia. Eles gostam de quem leva água. Não conta pra ninguém que fui eu que falei».`),
+        text: T(`"Melody is a promise. This music just continues." She uncrosses one arm. "ÆRIEL, in the booth on the main floor, understands that. They'll open the roof at half past five. They like people who bring water. Don't tell anyone I said that."`, `«La melodía es una promesa. Esta música solo continúa». Descruza un brazo. «ÆRIEL, en la cabina de la pista principal, lo entiende. Van a abrir la azotea a las cinco y media. Les caen bien los que traen agua. No le digas a nadie que te lo dije».`, `«Melodia é uma promessa. Essa música só continua». Ela descruza um braço. «A ÆRIEL, na cabine da pista principal, entende isso. Vão abrir o terraço às cinco e meia. Eles gostam de quem leva água. Não conta pra ninguém que fui eu que falei».`),
         do: { flag: ['hazel_tip', 'resident_water_tip'], fun: 2 }
       }
     }
