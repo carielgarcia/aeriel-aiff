@@ -20,7 +20,7 @@
     on: T('ON', 'SÍ', 'LIGADO'), off: T('OFF', 'NO', 'DESLIGADO'),
     items: T('ITEMS', 'OBJETOS', 'ITENS'), nightlog: T('NIGHT LOG', 'REGISTRO', 'REGISTRO'), water: T('WATER BOTTLE', 'BOTELLA DE AGUA', 'GARRAFA DE ÁGUA'),
     fxNone: T('NOTHING IN YOUR SYSTEM BUT THE MUSIC', 'NADA EN TU CUERPO SALVO LA MÚSICA', 'NADA NO CORPO ALÉM DA MÚSICA'),
-    effects: T('RIGHT NOW', 'AHORA MISMO', 'AGORA'), keysHelp: T('ARROWS move // Z talk / confirm // X leave // C drink // I items // O pause // P menu // Z in a crowd = EXCUSE ME', 'FLECHAS mover // Z hablar / confirmar // X salir // C beber // I objetos // O pausa // P menú // Z en la multitud = CON PERMISO', 'SETAS mover // Z falar / confirmar // X sair // C beber // I itens // O pausa // P menu // Z na multidão = COM LICENÇA'),
+    effects: T('RIGHT NOW', 'AHORA MISMO', 'AGORA'), keysHelp: T('ARROWS move // Z talk / confirm // X leave // C drink // I items // M map // O pause // P menu // Z in a crowd = EXCUSE ME', 'FLECHAS mover // Z hablar / confirmar // X salir // C beber // I objetos // M mapa // O pausa // P menú // Z en la multitud = CON PERMISO', 'SETAS mover // Z falar / confirmar // X sair // C beber // I itens // M mapa // O pausa // P menu // Z na multidão = COM LICENÇA'),
     leave: T('[X] WALK AWAY', '[X] ALEJARSE', '[X] SE AFASTAR'), more: T('Z ▼', 'Z ▼', 'Z ▼'), drained: T('TOO DRAINED', 'SIN BATERÍA', 'SEM BATERIA'),
     silent: T('Say nothing. Back away.', 'No decir nada. Retroceder.', 'Não dizer nada. Recuar.'),
     time: T('TIME', 'HORA', 'HORA'), night: T('NIGHT', 'NOCHE', 'NOITE'), none: T('nothing yet', 'nada todavía', 'nada ainda'),
@@ -174,7 +174,7 @@
       if (dir) { U.keys[dir] = true; updateInput(); }
       else if (e.code === 'KeyZ' || e.code === 'Enter' || e.code === 'Space') { if (!e.repeat) E.interact(); }
       else if (e.code === 'Escape' || e.code === 'KeyP' || e.code === 'Tab') U.openMenu();
-      else if (e.code === 'KeyM') U.toggleMute();
+      /* M opens the club map (map.js); sound stays on the SOUND button and in settings */
     } else if (U.mode === 'dialog') {
       if (U.D && U.D.def && U.D.def.nodes && U.D.node && U.D.node.pd) {
         if (dir && !e.repeat && U.pdKey) U.pdKey(dir.toUpperCase()); else if (e.code === 'KeyX' || e.code === 'Escape') U.pdBail();
@@ -560,7 +560,8 @@
     const prevPaused = E.paused;
     E.paused = true; E.input.x = E.input.y = 0;
     E.fadeOut(function () {
-      E.enter(spec.zone || spec.to, spec.tx !== undefined ? spec.tx : spec.x, spec.ty !== undefined ? spec.ty : spec.y, spec.dir);
+      const zid = spec.zone || spec.to, at = EM.compactPt ? EM.compactPt(zid, spec.tx !== undefined ? spec.tx : spec.x, spec.ty !== undefined ? spec.ty : spec.y) : [spec.tx !== undefined ? spec.tx : spec.x, spec.ty !== undefined ? spec.ty : spec.y]; /* arrivals are authored on the original room sizes (compact.js) */
+      E.enter(zid, at[0], at[1], spec.dir);
       U.travelling = false;
       E.fadeIn();
       if (U.mode === 'play') E.paused = false; else E.paused = prevPaused;
