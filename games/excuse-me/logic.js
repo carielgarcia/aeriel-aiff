@@ -10,9 +10,9 @@
   EM.scripts = {};
 
   /* PACE: how fast the night goes. 1 = the old speed (a full night about 50 real minutes). The real-time clock and every
-     time cost of talking, kissing and dancing are multiplied by it, so 0.5 doubles the room for missions and side quests.
+     time cost of talking, kissing and dancing are multiplied by it, so 0.25 quadruples the room for missions and side quests.
      Story skips (passing out, set pieces at a fixed hour) are not scaled. */
-  EM.PACE = 0.5;
+  EM.PACE = 0.25;
 
   /* every HEALTH loss is multiplied by this: thirst, drugs, smoke, speakers and rough choices all hurt twice as much */
   EM.HP_LOSS = 2;
