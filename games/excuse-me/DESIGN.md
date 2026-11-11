@@ -293,3 +293,20 @@ The writing used to put the same figure of speech in everyone's mouth: a simile,
 
 **How the chain keeps you alive.** The first five missions keep your people together and safe while the night is loud. THE DROP and NOBODY LEFT BEHIND test whether you can hold them through the peak. The last three turn the dancing you did into something you give back: you learn what each person needs, thank the person who held the floor, and hand the room's needs to the person who can play them. The sunrise is the answer to how you looked after people, not a prize for the number of bars you filled.
 
+
+## Fifteen people (v2.4): `story_v23.js`, `story_v24.js`, `story_v25.js`
+Fifteen characters with three or more steps each, every step paid in the bars and pockets the game already has. No new currency.
+
+| File | People | Reward |
+|---|---|---|
+| `story_v23.js` | COLIN (main floor, finds the sweet spot), GRETCHEN (foyer, exchanges bars once per game hour), BARNABY (courtyard, a trick that goes wrong), TEODORA (courtyard, a dancefloor wedding; IKER is the second witness), HENRIK (bar, the jug) | SWEET SPOT TAPE, STAMPED RECEIPT, TRICK COIN, VOW SLIP, ELECTROLYTE SACHET ×2 |
+| `story_v24.js` | Flirts: SOLEDAD (attic, reads sunglasses), KAZ (courtyard, argues, reads gum), ODALYS (main floor, dances alone, reads water), BART and TILDA (bad at flirting, read earplugs and rings) | THE PAPERBACK, KAZ'S TIN, HAND FAN, LAMINATED LINE, BLISTER PLASTERS ×3 |
+| `story_v25.js` | Hostile, to be navigated: DENNIS and ROSARIO, CHEMA (tunnel, a seller who pushes), NEIL and MINA (foyer, a payment), SHANE (a jacket he is wearing), GAV and a stag party (dark room curtain) | ROSARIO'S PIN, NOTCH FILTERS, LOST PROPERTY CLAIM, ASK FIRST STICKER |
+
+**Items** live in `s.inv23` (counts) and `s.on23` (switches: tape position, fan open, filters in). Accessories (the pin) use the v16 `acc` list. `EM.items16` exports the v16 helpers. Rules: the tape cancels the speaker drain around it and pays FUN +3 once; the fan halves HEALTH loss while dancing and breaks on its third dance; plasters cancel it for three dances; filters drop speech misfires from 25% to 8% and flatten dancing a little; the coin gives one missed kiss a second flip; the laminated line adds +0.15 to the next ask; the tin makes gum last 45 minutes; the sticker halves WEIRDNESS from bumping people; the pin makes hostile scenes 40% less likely, takes 2 SOCIAL off their cost and charges SOCIAL −1 for a first hello; the paperback gives three four-minute reads (HEALTH +3, SOCIAL +6).
+
+**Flirts** each have their own refusal line and tell, and their read of your pockets lives in `READS` in `story_v23.js`.
+
+**DENNIS and ROSARIO.** The toilets are for everyone (the sign says ALL GENDERS), so Dennis, who is lost and wants Keith and the function room, objects to sharing a sink and misgenders Rosario. Four answers: say nothing (SOCIAL −15, WEIRDNESS +20 raw, FUN −8), support Dennis (WEIRDNESS +100 raw: both are removed, `banned` or `frozenout`), correct him aloud, correct him with a joke (both pay SOCIAL, FUN, WEIRDNESS down). After a correction Rosario chooses what happens to him (a seeded coin: 60% she lets it pass after the plain answer, 60% she asks for him to go after the joke). Overriding her costs SOCIAL −6. Respecting her gives ROSARIO'S PIN and, an hour later (70%, seeded), a random gift in the main hall or the courtyard. If you said nothing, random people ask about it (25% per talk, once per person, six at most): WEIRDNESS +4, FUN −8, SOCIAL −8 each. The first one opens the side quest THE RIGHT QUEUE: find Rosario, apologise plainly (excuses and asking forgiveness cost and can be retried after an hour), ask her permission, hear three short answers and say which you will do. Reward: the questions stop and the next hostile scene has a free plain SAY IT NOW option. Rosario never thanks anyone for being an ally and is never made to teach.
+
+**CHEMA.** Buying always costs raw WEIRDNESS (+12 club, +10 rave) and gives cocaine cut with levamisole: taking it costs HEALTH −8 (doubled), a one-in-three bad mix adds −6 and a glitch for 20 minutes, FUN +4 then −6 in the comedown.

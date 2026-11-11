@@ -365,7 +365,7 @@
         if (E.parting <= 0) {
           E.bumpAcc += dt * d * 0.7;
           if (E.bumpAcc >= 2.0) {
-            E.bumpAcc = 0; L.stat('soc', -1); L.stat('weird', 0.4); EM.hooks.bark(EM.pick(BUMPS), 'bad'); EM.hooks.sfx('warn');
+            E.bumpAcc = 0; L.stat('soc', -1); L.stat('weird', 0.4 * (EM.bumpMul ? EM.bumpMul() : 1)); EM.hooks.bark(EM.pick(BUMPS), 'bad'); EM.hooks.sfx('warn');
             /* bump a hostile one and they notice */
             for (let i = 0; i < R.dancers.length; i++) {
               const dn = R.dancers[i];

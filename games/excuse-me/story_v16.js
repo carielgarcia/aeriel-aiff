@@ -161,7 +161,7 @@
     if (tick0) tick0(dt);
     const s = EM.state, E = EM.engine; if (!s || s.ended || !E) return;
     /* dancing next to the speakers hurts, and the closer the worse */
-    if (E.dancing && !plugs(s)) {
+    if (E.dancing && !plugs(s) && !(EM.noSpeakerDrain && EM.noSpeakerDrain())) {
       const list = speakers(s.zone); let d = 99;
       list.forEach(function (p) { d = Math.min(d, Math.hypot(p[0] * 16 - s.x, p[1] * 16 - s.y) / 16); });
       if (d < 8) {
@@ -172,7 +172,7 @@
     }
     /* sunglasses in a crowd read as strange */
     if (sun(s) && E.moving && (E.crowdAt(s.x, s.y) > 0 || E.crowdAt(s.x + 12, s.y) > 0 || E.crowdAt(s.x - 12, s.y) > 0 || E.crowdAt(s.x, s.y + 12) > 0 || E.crowdAt(s.x, s.y - 12) > 0)) {
-      L.stat('weird', 0.2 * dt, true);
+      L.stat('weird', 0.2 * dt * (EM.bumpMul ? EM.bumpMul() : 1), true);
       sunCrowd -= dt;
       if (sunCrowd <= 0) { sunCrowd = 60; U.toast({ icon: 'eyes', kind: 'info', ms: 4200, text: t(`You bump into people you cannot see coming. They notice the sunglasses.`, `Chocas con gente que no ves venir. Notan los lentes.`, `Você esbarra em gente que não vê chegar. Eles notam os óculos.`) }); }
     }
@@ -201,7 +201,7 @@
   U.startDialogue = function (id, opts) {
     const s = EM.state, def = D[id];
     if (s && opts && opts.npc && def && !def.forced && id !== 'pickpocket' && id !== 'earplug_fail' && s.stats) {
-      if (plugs(s) && Math.random() < 0.25) { retry = { id: id, opts: opts }; sd0('earplug_fail', { npc: opts.npc }); return; }
+      if (plugs(s) && Math.random() < (EM.misfireP ? EM.misfireP() : 0.25)) { retry = { id: id, opts: opts }; sd0('earplug_fail', { npc: opts.npc }); return; }
       s.gumOffered = s.gumOffered || {};
       if (!s.gumOffered[opts.npc] && Math.random() < 0.10 && inv(s).gum < 5) {
         s.gumOffered[opts.npc] = true;
@@ -211,6 +211,9 @@
     }
     sd0(id, opts);
   };
+
+  /* story_v23 adds its own accessories and reads the same helpers */
+  EM.items16 = { ACC: ACC, NAMES: NAMES, inv: inv, worn: worn, count: wornAccCount, sun: sun, plugs: plugs };
 
   EM.objects.find = EM.objects.talk || function (ent) { U.startDialogue(ent.def.dlg, {}); };
 
