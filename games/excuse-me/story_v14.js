@@ -8,7 +8,7 @@
   const D = EM.DIALOGUES, S = EM.scripts, story = EM.story;
   const t = function (en, es, pt) { return T(en, es, pt); };
   const K = function (tone, tx, o) { return Object.assign({ tone: tone, t: tx }, o || {}); };
-  const BUSY = ['q2', 'q3', 'q4', 'q5', 'q7', 'q8', 'q9'];
+  const BUSY = ['q2', 'q3', 'q4', 'q5', 'q7', 'q8', 'q10', 'q11', 'q12', 'q9'];
   const busy = function (s) { return BUSY.some(function (q) { return s.quests[q] === 'active'; }); };
 
   /* ============================================================ VALE AND ALEX: first meeting, intro, barks */

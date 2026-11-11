@@ -304,7 +304,7 @@
   S.regroup_check = function () {
     const s = EM.state;
     if (s.quests.q8 === 'active' && s.party.indexOf('dani') !== -1 && s.party.indexOf('tato') !== -1) {
-      L.apply({ quest: { q8: 'done', q9: 'active' }, at: 400 });
+      L.apply({ quest: { q8: 'done', q10: 'active' }, at: 400 });
       s.flags.regrouped = true;
     }
   };

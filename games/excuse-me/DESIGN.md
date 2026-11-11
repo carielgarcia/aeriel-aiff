@@ -271,3 +271,25 @@ The writing used to put the same figure of speech in everyone's mouth: a simile,
 
 **Dev note**: run `node scripts/excuse-me-lint.js` before committing story text. It also checks Spanish for voseo, Portuguese for European forms, « » quotes, `…` and placeholder parity.
 
+---
+
+## Main missions (v2.3), in play order
+
+1. **FIND YOUR PEOPLE** (`q1`): reach the pillar by the left speaker. You are not alone in the night; this is who you are responsible for.
+2. **MARU HAS TO PEE** (`q2`): get all three across the floor to the toilets, together.
+3. **ONE STALL, THREE PEOPLE** (`q3`): argue your case to the host, or split up.
+4. **EXPLAIN YOURSELVES** (`q4`): Rosa saw three people leave one stall. Honesty opens the staff corridor.
+5. **THE PILL** (`q5`): get Dani's pill looked at in the quiet room, then decide what happens with it.
+6. **THE DROP** (`q7`): take the group to the centre mark for the peak. The first time the night is about the floor.
+7. **NOBODY LEFT BEHIND** (`q8`): the group scatters after the drop; find Dani and Tato.
+8. **THE SET FOR YOUR PEOPLE** (`q10`): back on the main floor, Maru, Dani and Tato each ask you for one song. Dance well and they say what they need from the last hour (Maru warm, Dani wild, Tato soft). "Not tonight" skips them and you will have to guess.
+9. **THANK ÆRIEL** (`q11`): the DJ is in the booth at the top of the main floor, behind the crowd. Say thank you, and tell ÆRIEL what each of your people needs. Telling is where a guess can be wrong.
+10. **THE REQUEST LINE** (`q12`): backstage, FRAMES SHELL (one of ÆRIEL's people, holds the crate) takes the requests. Tell them what the room needs and carry up to two requests (Cleo's napkin, Isi's wobble, Hazel's no-melody, Kai's song for somebody nervous). Water to ÆRIEL, Rosa's lanyard or Rosa's alliance opens the staff door.
+11. **THE CLOSING SET** (`q9`): the roof opens at 05:30 (minute 450). Everything you carried decides the set.
+
+**Who ÆRIEL listens to.** If you both reported to ÆRIEL and pitched FRAMES SHELL, a seeded coin (`s.seed + 7731`, so BEGIN AGAIN repeats it) picks 50% FRAMES SHELL's pitch and 50% what you told ÆRIEL about your people. With only one of the two, that one wins. With neither, the set is warm. Reports and pitches are never checked in the open: you find out on the roof (`src_frames`, `src_friends`, `hit_*` and `miss_*` flags, `story_v22.js`).
+
+**Time.** `q10` to `q12` open at the regroup (about 04:40) and close when the roof opens. There is room for about two of the three: that is deliberate. Whatever is unfinished stays unfinished and the set is made from what you have.
+
+**How the chain keeps you alive.** The first five missions keep your people together and safe while the night is loud. THE DROP and NOBODY LEFT BEHIND test whether you can hold them through the peak. The last three turn the dancing you did into something you give back: you learn what each person needs, thank the person who held the floor, and hand the room's needs to the person who can play them. The sunrise is the answer to how you looked after people, not a prize for the number of bars you filled.
+

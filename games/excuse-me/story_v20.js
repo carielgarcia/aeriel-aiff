@@ -70,7 +70,7 @@
     do: { soc: 2, fun: 2, flag: 'isi_chatted' },
     choices: [
       K('ask', t(`"Skrillex? Really?"`, `«¿Skrillex? ¿En serio?»`, `«Skrillex? Sério?»`), { next: 'skrillex', free: true }),
-      K('yes', t(`"I'll tell them."`, `«Se lo digo».`, `«Eu falo com ela».`), { do: { fun: 3, soc: 3 }, next: null, react: t(`"Thank you. Say it was me. Say Isi, quiet room, one wobble."`, `«Gracias. Diles que fui yo. Di Isi, sala tranquila, un wobble».`, `«Valeu. Diz que fui eu. Diz Isi, sala de calma, um wobble».`) }),
+      K('yes', t(`"I'll tell them."`, `«Se lo digo».`, `«Eu falo com ela».`), { do: { fun: 3, soc: 3, flag: 'req_wobble' }, next: null, react: t(`"Thank you. Say it was me. Say Isi, quiet room, one wobble."`, `«Gracias. Diles que fui yo. Di Isi, sala tranquila, un wobble».`, `«Valeu. Diz que fui eu. Diz Isi, sala de calma, um wobble».`) }),
       K('chill', t(`"Maybe later."`, `«Quizás más tarde».`, `«Talvez mais tarde».`), { next: null, free: true })
     ]
   };

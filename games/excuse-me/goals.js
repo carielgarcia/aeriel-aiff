@@ -17,8 +17,9 @@
     q4: function () { return [{ ent: 'rosa' }]; },
     q5: function (s) { return s.pill && s.pill.tested ? [{ zone: 'main' }] : [{ ent: 'nuri' }]; },
     q7: function () { return [{ ent: 'peak_spot' }]; },
+    q10: function () { return [{ zone: 'main' }]; }, /* dance with your people on the main floor */
     q9: function () { return [{ ent: 'sunrise_spot' }]; },
-    /* q8 (find Benjamin and Fernando) is covered by the seekers */
+    /* q8 (find Benjamin and Fernando), q11 (the DJ) and q12 (FRAMES SHELL) are covered by the seekers */
     sq_rosa: function (s) {
       const out = [];
       if (!F(s, 'rosa_e1')) out.push({ ent: 'tavi' });

@@ -442,7 +442,7 @@
         ]
       },
       ask2: { text: t(`"It's a REQUEST. That is a different genre. Please."`, `«Es un PEDIDO. Es otro género. Por favor».`, `«É um PEDIDO. É outro gênero. Por favor».`), next: 'ask' },
-      waiting: { text: t(`"Did you find them? No? That's fine. That's FINE. Backstage, probably. Past the staff door. Look sad and confident."`, `«¿Los encontraste? ¿No? Está bien. Está BIEN. Backstage, probablemente. Pasando la puerta de staff. Pon cara triste y segura».`, `«Você achou? Não? Tudo bem. Tá TUDO BEM. Backstage, provavelmente. Passando a porta do staff. Faz cara triste e confiante».`) },
+      waiting: { text: t(`"Did you find them? No? That's fine. That's FINE. In the booth, probably. Top of the main floor. Look sad and confident."`, `«¿Los encontraste? ¿No? Está bien. Está BIEN. En la cabina, probablemente. Al fondo de la pista principal. Pon cara triste y segura».`, `«Você achou? Não? Tudo bem. Tá TUDO BEM. Na cabine, provavelmente. No fundo da pista principal. Faz cara triste e confiante».`) },
       after: {
         text: t(`"You DID it?! They READ it?! What did they SAY?" You tell her. She sits down on the floor, very slowly, and puts her hands on her face. Whatever you said, it was enough.`, `«¡¿LO HICISTE?! ¡¿LA LEYERON?! ¡¿QUÉ DIJERON?!» Se lo cuentas. Se sienta en el piso, muy despacio, y se tapa la cara con las manos. Lo que fuera que dijiste, alcanzó.`, `«Você FEZ?! Eles LERAM?! O que eles DISSERAM?» Você conta. Ela se senta no chão, bem devagar, e cobre o rosto com as mãos. O que quer que você tenha dito, foi o bastante.`),
         do: { fun: 5, soc: 4, flag: 'cleo_happy' }
