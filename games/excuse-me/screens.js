@@ -301,6 +301,7 @@
 
   function bindCreator() {
     $('#c-name').addEventListener('input', function (e) { cre.name = e.target.value; });
+    $('#c-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); $('#c-go').focus(); } }); /* Enter confirms the name; the next Enter starts */
     $('#c-rand').addEventListener('click', function () {
       cre.look = Object.assign({}, THUMB_BASE, CH.random());
       buildCreator();

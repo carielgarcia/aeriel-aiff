@@ -169,7 +169,7 @@
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) { if (e.key === 'Enter' && U.mode === 'creator') return; if (e.key !== 'Escape') return; }
     const dir = KEYMAP[e.code];
     const inGame = U.mode === 'play' || U.mode === 'dialog' || U.mode === 'rhythm' || U.mode === 'menu' || U.mode === 'tutorial';
-    if (inGame && (dir || e.code === 'Space' || e.code === 'Tab')) e.preventDefault();
+    if (inGame && U.mode !== 'menu' && (dir || e.code === 'Space' || e.code === 'Tab')) e.preventDefault(); /* the menu keeps Tab and Space for its buttons */
     if (U.mode === 'play') {
       if (dir) { U.keys[dir] = true; updateInput(); }
       else if (e.code === 'KeyZ' || e.code === 'Enter' || e.code === 'Space') { if (!e.repeat) E.interact(); }
@@ -193,8 +193,18 @@
     } else if (U.mode === 'tutorial') {
       if (U.tutKey) U.tutKey(e);
     } else if (U.mode === 'menu') {
-      if (e.code === 'Escape' || e.code === 'KeyP') U.closeMenu();
+      /* e.emHandled tells the later key listeners (items.js, hud2.js, map.js) that this press is spent */
+      if (e.code === 'Escape' || e.code === 'KeyP') { e.emHandled = true; U.closeMenu(); }
+      else if (e.code === 'KeyI' && !e.repeat) { e.emHandled = true; U.menuToggle('items'); }
+      else if (e.code === 'KeyL' && !e.repeat) { e.emHandled = true; U.menuToggle('nightlog'); }
+      else if (e.code === 'KeyM' && !e.repeat) { e.emHandled = true; U.closeMenu(); if (U.openMap) U.openMap(); }
+      else if ((e.code === 'ArrowLeft' || e.code === 'ArrowRight') && !(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))) { e.emHandled = true; e.preventDefault(); U.menuStep(e.code === 'ArrowRight' ? 1 : -1); }
     }
+  });
+  /* a clicked HUD button gives focus back to the game, so Enter, Space and Z keep meaning "interact" */
+  document.addEventListener('click', function (e) {
+    const b = e.target && e.target.closest ? e.target.closest('#hud button, #goal button, #logbox button, #pause button') : null;
+    if (b && e.detail > 0 && b.blur) b.blur();
   });
   window.addEventListener('keyup', function (e) {
     const dir = KEYMAP[e.code];
@@ -658,13 +668,20 @@
     if (U.mode !== 'play') return;
     if (typeof tab === 'string') menuTab = tab;
     U.mode = 'menu'; E.paused = true; E.input.x = E.input.y = 0; U.keys = {};
-    show('menu', true); renderMenu(); postHeight();
+    show('menu', true); renderMenu(); focusTab(); postHeight();
   };
   U.closeMenu = function () {
     U.questFocus = null;
     show('menu', false); U.mode = 'play'; E.paused = false; postHeight();
   };
   U.renderMenu = function () { renderMenu(); };
+  /* the same key that opened a tab closes the menu; any other tab key switches to it */
+  U.menuToggle = function (tab) { if (menuTab === tab) U.closeMenu(); else { menuTab = tab; U.questFocus = null; renderMenu(); focusTab(); } };
+  U.menuStep = function (d) {
+    const tabs = $$('#menu-tabs button[data-tab]').map(function (b) { return b.getAttribute('data-tab'); });
+    const i = tabs.indexOf(menuTab); menuTab = tabs[(i + d + tabs.length) % tabs.length]; U.questFocus = null; renderMenu(); focusTab();
+  };
+  function focusTab() { const b = $('#menu-tabs button.on'); if (b && b.focus) b.focus({ preventScroll: true }); }
   function renderMenu() {
     const s = EM.state, box = $('#menu-body');
     $$('#menu-tabs button').forEach(function (b) {

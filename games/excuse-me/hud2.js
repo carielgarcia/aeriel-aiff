@@ -109,7 +109,7 @@
     if (pb) pb.addEventListener('click', U.resume);
     if (be) be.addEventListener('click', function () { U.openMenu('nightlog'); });
     window.addEventListener('keydown', function (e) {
-      if (e.repeat) return;
+      if (e.repeat || e.emHandled) return;
       if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
       if (e.code === 'KeyO' || e.code === 'Pause') { if (U.mode === 'pause') U.resume(); else if (U.mode === 'play') U.pause(); e.preventDefault(); }
       else if (U.mode === 'pause' && (e.code === 'Escape' || e.code === 'Space' || e.code === 'Enter')) { U.resume(); e.preventDefault(); }

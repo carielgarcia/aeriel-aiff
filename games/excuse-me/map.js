@@ -289,7 +289,7 @@
 
   const isM = function (e) { return e.code === 'KeyM' || (e.key && e.key.toLowerCase() === 'm'); };
   window.addEventListener('keydown', function (e) {
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.ctrlKey || e.metaKey || e.altKey || e.emHandled) return;
     if (e.target && (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable)) return;
     if (U.mode === 'map') {
       if (isM(e) || e.code === 'Escape') { e.preventDefault(); if (!e.repeat) closeMap(); }

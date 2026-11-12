@@ -91,7 +91,7 @@
     if (bd) bd.addEventListener('click', function () { EM.drink(); });
     if (bi) bi.addEventListener('click', function () { U.openMenu('items'); });
     window.addEventListener('keydown', function (e) {
-      if (e.repeat || U.mode !== 'play') return;
+      if (e.repeat || e.emHandled || U.mode !== 'play') return;
       if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
       if (e.code === 'KeyC') EM.drink();
       else if (e.code === 'KeyI') U.openMenu('items');

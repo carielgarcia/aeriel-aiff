@@ -140,7 +140,7 @@
         const ha = EM.hash2(x * 5 + k * 3, y * 9 + k, 91);
         /* most people yield when you ask; some do not move; a few get nasty */
         const rp = EM.clamp(S.rep || 0, -4, 8); /* how the crowd has come to see you */
-        const att = ha < 0.9 - 0.008 * rp ? 'yield' : (ha < 0.97 - 0.012 * rp ? 'stubborn' : 'hostile');
+        const att = ha < 0.9 - 0.008 * rp ? 'yield' : (ha < 0.97 - 0.012 * rp || Z.id === 'rooftop' ? 'stubborn' : 'hostile');
         R.dancers.push({ x: x * TS + 3 + hx * 10, y: y * TS + 9 + hy * 7, look: p[Math.floor(hl * p.length)], ph: hx, tx: x, ty: y, att: att, id: 'hd_' + Z.id + '_' + x + '_' + y + '_' + k });
       }
     }
