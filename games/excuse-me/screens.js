@@ -153,6 +153,24 @@
     U.screen('creator');
     buildCreator();
   };
+  /* a pop-up for the stylist (Leonidas, story_v35.js): the same creator, on the look only. DONE applies it to the person you are playing. */
+  const REMAKE = { title: T('LEONIDAS // YOUR LOOK', 'LEONIDAS // TU LOOK', 'LEONIDAS // SEU VISUAL'), go: T('DONE', 'LISTO', 'PRONTO'), back: T('KEEP MINE', 'QUEDARME CON EL MÍO', 'FICAR COM O MEU') };
+  U.openRemake = function (onDone) {
+    const pl = EM.state.player;
+    cre = { look: Object.assign({}, THUMB_BASE, pl.look), gender: pl.gender || 'x', name: pl.name || '', venue: EM.state.venue || 'club', tab: 'styles', remake: true, onDone: onDone, before: JSON.stringify(pl.look) };
+    E.paused = true; E.input.x = E.input.y = 0; U.keys = {};
+    U.mode = 'creator';
+    U.screen('creator');
+    buildCreator();
+  };
+  function closeRemake(apply) {
+    const done = cre.onDone, pl = EM.state.player;
+    if (apply) pl.look = Object.assign({}, cre.look);
+    const changed = apply && JSON.stringify(pl.look) !== cre.before;
+    cre = null; stopWalk();
+    U.screen('game'); U.mode = 'play'; E.paused = false;
+    if (done) done(changed);
+  }
   let walkTimer = null;
   function stopWalk() { if (walkTimer) { clearInterval(walkTimer); walkTimer = null; } }
   function creatorRoomH() {
@@ -169,7 +187,7 @@
     U.postHeight();
   }
   function buildCreator() {
-    $('#c-title').textContent = EM.tr(S.creatorTitle);
+    $('#c-title').textContent = EM.tr(cre.remake ? REMAKE.title : S.creatorTitle);
     $('#c-name-l').textContent = EM.tr(S.name);
     const inp = $('#c-name'); inp.placeholder = EM.tr(S.namePh); inp.value = cre.name;
     $('#c-venue-l').textContent = EM.tr(S.venue);
@@ -197,21 +215,22 @@
     $('#c-pv').setAttribute('aria-label', EM.tr(CS.views));
     $('#c-pv-h').setAttribute('aria-label', EM.tr(CS.closeup));
     buildTabs();
-    $('#c-rand').textContent = EM.tr(S.rand); $('#c-go').textContent = EM.tr(S.go); $('#c-back').textContent = EM.tr(S.back);
+    $('#c-rand').textContent = EM.tr(S.rand); $('#c-go').textContent = EM.tr(cre.remake ? REMAKE.go : S.go); $('#c-back').textContent = EM.tr(cre.remake ? REMAKE.back : S.back);
     drawPreview();
     fitCreator();
   }
   const TAB_ORDER = ['who', 'styles', 'body', 'face', 'hair', 'outfit', 'extras'];
   function buildTabs() {
     const tabs = $('#c-tabs'); tabs.textContent = '';
-    TAB_ORDER.forEach(function (id) {
+    const order = cre.remake ? TAB_ORDER.slice(1) : TAB_ORDER;
+    order.forEach(function (id) {
       const b = el('button', 'tab' + (cre.tab === id ? ' on' : ''), EM.tr(GROUP_NAMES[id])); b.type = 'button';
       b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', cre.tab === id ? 'true' : 'false'); b.id = 'ctab-' + id;
       b.addEventListener('click', function () { cre.tab = id; buildTabs(); fitCreator(); });
       b.addEventListener('keydown', function (e) {
-        const i = TAB_ORDER.indexOf(id); let j = -1;
-        if (e.key === 'ArrowRight') j = (i + 1) % TAB_ORDER.length; else if (e.key === 'ArrowLeft') j = (i - 1 + TAB_ORDER.length) % TAB_ORDER.length;
-        if (j >= 0) { e.preventDefault(); cre.tab = TAB_ORDER[j]; buildTabs(); $('#ctab-' + cre.tab).focus(); fitCreator(); }
+        const i = order.indexOf(id); let j = -1;
+        if (e.key === 'ArrowRight') j = (i + 1) % order.length; else if (e.key === 'ArrowLeft') j = (i - 1 + order.length) % order.length;
+        if (j >= 0) { e.preventDefault(); cre.tab = order[j]; buildTabs(); $('#ctab-' + cre.tab).focus(); fitCreator(); }
       });
       tabs.appendChild(b);
     });
@@ -306,9 +325,10 @@
       cre.look = Object.assign({}, THUMB_BASE, CH.random());
       buildCreator();
     });
-    $('#c-back').addEventListener('click', function () { stopWalk(); U.toTitle(); });
+    $('#c-back').addEventListener('click', function () { if (cre && cre.remake) { closeRemake(false); return; } stopWalk(); U.toTitle(); });
     window.addEventListener('resize', fitCreator);
     $('#c-go').addEventListener('click', function () {
+      if (cre && cre.remake) { closeRemake(true); return; }
       const player = { name: cleanName($('#c-name').value), gender: cre.gender, look: Object.assign({}, cre.look) };
       stopWalk();
       U.startNight(player, { venue: cre.venue });

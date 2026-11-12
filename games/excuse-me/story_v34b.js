@@ -73,7 +73,7 @@
         ]
       },
       d2: close('frames', t(`"Nine years. It's the longest relationship I've ever kept, and neither of us has used the word." A small, rueful smile. "Don't tell them I said so."`, `«Nueve años. Es la relación más larga que he mantenido, y ninguno de los dos ha usado la palabra». Una sonrisa pequeña y resignada. «No les digas que lo dije».`, `«Nove anos. É a relação mais longa que eu já mantive, e nenhum dos dois usou a palavra». Um sorriso pequeno e resignado. «Não conta pra eles que eu falei».`), null, 'meet'),
-      d3: close('frames', t(`"It is, mostly." They tap the sticker. "It would be better if one of us said it aloud. I think we both know which of us won't."`, `«Lo es, casi siempre». Golpean el sticker. «Sería mejor si uno de los dos lo dijera en voz alta. Creo que los dos sabemos cuál no lo hará».`, `«É, na maior parte». Eles batem no adesivo. «Seria melhor se um dos dois dissesse em voz alta. Acho que a gente sabe qual dos dois não vai».`), null, 'meet')
+      d3: close('frames', t(`"It is, mostly." He taps the sticker. "It would be better if one of us said it aloud. I think we both know which of us won't."`, `«Lo es, casi siempre». Golpea el sticker. «Sería mejor si uno de los dos lo dijera en voz alta. Creo que los dos sabemos cuál no lo hará».`, `«É, na maior parte». Ele bate no adesivo. «Seria melhor se um dos dois dissesse em voz alta. Acho que a gente sabe qual dos dois não vai».`), null, 'meet')
     }
   });
   EM.DEEP('luca', {
