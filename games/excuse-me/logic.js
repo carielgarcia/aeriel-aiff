@@ -281,8 +281,8 @@
     if (st.weird >= 100) { L.end(s.venue === 'rave' ? 'frozenout' : 'banned'); return; }
     if (st.hp <= 0) { L.passOut(T(`Your body stops cooperating.`, `Tu cuerpo deja de cooperar.`, `Seu corpo para de cooperar.`)); return; }
     if (st.soc <= 0) { L.end('burnout'); return; }
-    if ((s.boredFor || 0) >= 45) { L.end('bored'); return; }
-    if (s.time >= 600) { L.end('closing'); return; }
+    if ((s.boredFor || 0) >= 45 && !s.flags.afters_open) { L.end('bored'); return; }
+    if (s.time >= 600 && !s.flags.afters_open) { L.end('closing'); return; } /* afters_open: the sunrise is over and the afters decide how it ends */
   };
 
   /* an accumulation of bad decisions: friends notice, then the night collapses */

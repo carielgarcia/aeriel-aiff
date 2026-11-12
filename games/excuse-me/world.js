@@ -105,6 +105,7 @@
     this.crowdRects = [];
     zones[id] = this;
   }
+  EM.Zone = Zone;
   const P = Zone.prototype;
   P.set = function (x, y, t) { if (x >= 0 && y >= 0 && x < this.w && y < this.h) this.tiles[y * this.w + x] = t; return this; };
   P.get = function (x, y) { return (x < 0 || y < 0 || x >= this.w || y >= this.h) ? TL.VOID : this.tiles[y * this.w + x]; };

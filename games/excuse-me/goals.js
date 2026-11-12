@@ -19,6 +19,8 @@
     q7: function () { return [{ ent: 'peak_spot' }]; },
     q10: function () { return [{ zone: 'main' }]; }, /* dance with your people on the main floor */
     q9: function () { return [{ ent: 'sunrise_spot' }]; },
+    q13: function () { return [{ ent: 'frames_roof' }]; },
+    q14: function () { return [{ ent: 'afters_host' }]; },
     /* q8 (find Benjamin and Fernando), q11 (the DJ) and q12 (FRAMES SHELL) are covered by the seekers */
     sq_rosa: function (s) {
       const out = [];
