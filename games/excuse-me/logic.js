@@ -14,7 +14,7 @@
      Story skips (passing out, set pieces at a fixed hour) are not scaled. */
   /* The player picks a speed in MENU > SETTINGS (1/4x, 1/2x, 1x, 2x, 4x; 1x by default). EM.PACE is that choice times the base,
      read live by the clock in engine.js and by L.spend(), so changing it mid-night takes effect at once. */
-  EM.PACE_BASE = 0.5;
+  EM.PACE_BASE = 1; /* 1x is the original speed: a full night in about 50 real minutes */
   EM.SPEEDS = [0.25, 0.5, 1, 2, 4];
   Object.defineProperty(EM, 'PACE', { configurable: true, get: function () { return EM.PACE_BASE * ((EM.settings && EM.settings.speed) || 1); } });
 
