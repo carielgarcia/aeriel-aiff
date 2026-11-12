@@ -167,11 +167,12 @@
   EM.clearSave = function () { try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ } };
 
   /* settings are per-viewer conveniences */
-  EM.settings = { mute: false, calm: false, noRhythm: false, big: false };
+  EM.settings = { mute: false, calm: false, noRhythm: false, big: false, speed: 1 };
   EM.loadSettings = function () {
     try {
       const s = JSON.parse(localStorage.getItem('excuse-me-settings') || '{}');
       Object.keys(EM.settings).forEach(function (k) { if (typeof s[k] === 'boolean') EM.settings[k] = s[k]; });
+      if ([0.25, 0.5, 1, 2, 4].indexOf(s.speed) !== -1) EM.settings.speed = s.speed;
     } catch (e) { /* ignore */ }
     try { if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) EM.settings.calm = true; } catch (e) { /* ignore */ }
   };

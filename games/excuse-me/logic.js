@@ -12,7 +12,11 @@
   /* PACE: how fast the night goes. 1 = the old speed (a full night about 50 real minutes). The real-time clock and every
      time cost of talking, kissing and dancing are multiplied by it, so 0.25 quadruples the room for missions and side quests.
      Story skips (passing out, set pieces at a fixed hour) are not scaled. */
-  EM.PACE = 0.25;
+  /* The player picks a speed in MENU > SETTINGS (1/4x, 1/2x, 1x, 2x, 4x; 1x by default). EM.PACE is that choice times the base,
+     read live by the clock in engine.js and by L.spend(), so changing it mid-night takes effect at once. */
+  EM.PACE_BASE = 0.5;
+  EM.SPEEDS = [0.25, 0.5, 1, 2, 4];
+  Object.defineProperty(EM, 'PACE', { configurable: true, get: function () { return EM.PACE_BASE * ((EM.settings && EM.settings.speed) || 1); } });
 
   /* every HEALTH loss is multiplied by this: thirst, drugs, smoke, speakers and rough choices all hurt twice as much */
   EM.HP_LOSS = 2;

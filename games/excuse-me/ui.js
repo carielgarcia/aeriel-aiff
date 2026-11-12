@@ -126,7 +126,7 @@
     $('#bar-soc').classList.toggle('alert', st.soc <= 15);
     $('#bar-hp').classList.toggle('alert', st.hp <= 25);
     $('#bar-fun').classList.toggle('alert', st.fun <= 10);
-    $('#hud-clock').textContent = EM.clockStr(s.time) + (s.attempt > 1 ? '  ·  ' + EM.tr(UI.night) + ' ' + s.attempt : '');
+    $('#hud-clock').textContent = EM.clockStr(s.time) + (EM.settings.speed !== 1 ? ' · ' + (EM.settings.speed < 1 ? (EM.settings.speed === 0.5 ? '1/2' : '1/4') : EM.settings.speed) + 'X' : '') + (s.attempt > 1 ? '  ·  ' + EM.tr(UI.night) + ' ' + s.attempt : '');
     const z = EM.zones[s.zone]; if (z) $('#hud-place').textContent = EM.tr(z.name);
     const fx = Object.keys(s.fx).map(function (k) { return EM.tr(EM.FXNAME[k]); });
     if (s.drinks >= 1) fx.push(EM.tr(EM.FXNAME.drunk));
@@ -743,6 +743,16 @@
         });
         box.appendChild(b);
       });
+      /* time speed: how fast the night's clock runs */
+      box.appendChild(el('p', 'mnote dim', EM.tr(T('TIME SPEED: how fast the night passes. 1X is the normal pace.', 'VELOCIDAD DEL TIEMPO: qué tan rápido pasa la noche. 1X es el ritmo normal.', 'VELOCIDADE DO TEMPO: quão rápido a noite passa. 1X é o ritmo normal.'))));
+      const sp = el('div', 'langrow speedrow');
+      EM.SPEEDS.forEach(function (v) {
+        const b = el('button', EM.settings.speed === v ? 'on' : '', v < 1 ? (v === 0.5 ? '1/2X' : '1/4X') : v + 'X'); b.type = 'button';
+        b.setAttribute('aria-pressed', EM.settings.speed === v ? 'true' : 'false');
+        b.addEventListener('click', function () { EM.settings.speed = v; EM.saveSettings(); lastHud = ''; renderMenu(); });
+        sp.appendChild(b);
+      });
+      box.appendChild(sp);
       const hp = el('button', '', EM.tr(T('HOW TO PLAY', 'CÓMO SE JUEGA', 'COMO JOGAR'))); hp.type = 'button';
       hp.addEventListener('click', function () { U.closeMenu(); U.tutorial(); });
       box.appendChild(hp);
