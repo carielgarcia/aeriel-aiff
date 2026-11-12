@@ -31,7 +31,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.evaluate(function () { EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true; });
   ok(warns.length === 0, 'every EM.DEEP target exists and has a choice list' + (warns.length ? ': ' + warns.join(' | ') : ''));
   const r = await page.evaluate(function () {
-    const ids = ['pili', 'kiki', 'gus', 'analu', 'moe', 'oz', 'otto', 'yui', 'lyra', 'iso', 'wenzhao', 'marga', 'bruno'], out = { bad: [], opened: 0 }, s = EM.state;
+    const ids = ['pili', 'kiki', 'gus', 'analu', 'moe', 'oz', 'otto', 'yui', 'lyra', 'iso', 'wenzhao', 'marga', 'bruno', 'teo', 'bruce', 'beatriz', 'hazel', 'luca', 'dario', 'newbie', 'mateo', 'birthday', 'rico'], out = { bad: [], opened: 0 }, s = EM.state;
     ids.forEach(function (id) {
       for (let branch = 0; branch < 2; branch++) {
         try {
@@ -40,6 +40,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
           EM.ui.startDialogue(id, {});
           let steps = 0, took = false;
           while (EM.ui.D && steps++ < 30) {
+            if (s.flags['g_' + id + '_open']) { EM.ui.D = null; break; } /* host and frames return to their menu after the close */
             const st = EM.ui.D.state;
             if (st === 'text' || st === 'react') { EM.ui.dlgConfirm(); continue; }
             if (st !== 'choices') break;
@@ -56,7 +57,9 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     });
     return out;
   });
-  ok(r.bad.length === 0 && r.opened === 26, 'depth conversations: each of 13 characters reaches its close on both branches (' + r.opened + '/26)' + (r.bad.length ? ' ' + JSON.stringify(r.bad.slice(0, 5)) : ''));
+  ok(r.bad.length === 0 && r.opened === 46, 'depth conversations: each of 23 characters reaches its close on both branches (' + r.opened + '/46)' + (r.bad.length ? ' ' + JSON.stringify(r.bad.slice(0, 5)) : ''));
+  const st = await page.evaluate(function () { const D = EM.DIALOGUES; return !!(D.host.nodes.a.choices[0].__deep && D.frames.nodes.meet.choices[0].__deep && D.host.nodes.d2.next === 'a' && D.frames.nodes.d2.next === 'meet'); });
+  ok(st, 'the host (Mika) and FRAMES SHELL conversations are wired and return to their menu');
   const f = await page.evaluate(function () {
     const s = EM.state, out = {};
     ['maru', 'dani', 'tato'].forEach(function (id) {
