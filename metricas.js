@@ -34,11 +34,13 @@
     var W = 720, H = 220, L = 36, B = 22, T = 8, R = 8;
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Visitas por día' });
     var max = Math.max(1, Math.max.apply(null, series.reduce(function (a, s) { return a.concat(s.v); }, [0])));
+    max = Math.ceil(max / 4) * 4;   // 4 tramos enteros: sin rótulos repetidos (2, 2, 1, 1, 0) cuando hay pocos datos
     for (var i = 0; i <= 4; i++) { var y = T + (H - T - B) * i / 4; el('line', { class: 'grilla', x1: L, x2: W - R, y1: y, y2: y }, svg); texto(svg, L - 4, y + 3, Math.round(max * (4 - i) / 4), 'end'); }
     el('line', { class: 'eje', x1: L, x2: L, y1: T, y2: H - B }, svg); el('line', { class: 'eje', x1: L, x2: W - R, y1: H - B, y2: H - B }, svg);
     var n = dias.length, px = function (i) { return L + (n < 2 ? 0 : (W - L - R) * i / (n - 1)); }, py = function (v) { return H - B - (H - T - B) * v / max; };
     [0, Math.floor(n / 2), n - 1].forEach(function (i) { if (dias[i]) texto(svg, px(i), H - 6, dias[i].slice(5), i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'); });
     series.forEach(function (s) { el('polyline', { class: s.cls, points: s.v.map(function (v, i) { return px(i) + ',' + py(v); }).join(' ') }, svg); });
+    if (n === 1) series.forEach(function (s) { el('circle', { class: s.cls, cx: px(0), cy: py(s.v[0]), r: 4 }, svg); });   // un solo día: una polilínea de un punto no se ve
     dias.forEach(function (d, i) {
       var r = el('rect', { x: px(i) - (W - L - R) / Math.max(n, 1) / 2, y: T, width: (W - L - R) / Math.max(n, 1), height: H - T - B, fill: 'transparent' }, svg);
       conTip(r, d + ' · ' + series.map(function (s) { return s.nombre + ' ' + fmt(s.v[i]); }).join(' · '));
@@ -79,7 +81,7 @@
       ['DESDE INSTAGRAM', fmt(h['ref:instagram.com'])], ['% CELULAR', ses ? Math.round(num(h['disp:celular']) / ses * 100) + '%' : '0%']
     ]), 'hoy');
 
-    if (cf.error) sec('[ !! ] FALTA CONECTAR CLOUDFLARE', '<div class="alerta">' + esc(cf.error) + '<br>Pasos: LEEME.md → «Secretos» (CF_API_TOKEN, CF_ACCOUNT_ID, CF_SITE_TAG).</div>');
+    if (cf.error) sec('[ !! ] FALTA CONECTAR CLOUDFLARE', '<div class="alerta">' + esc(cf.error) + '<br>Pasos: analisis_metricas/LEEME.md → «Lo que tiene que hacer el dueño en Cloudflare».</div>');
 
     // 01 crecimiento
     var s1 = sec('[ 01 ] CÓMO VA CRECIENDO', '<div class="rango" id="rango"></div><div id="g1"></div><p class="rotulo">── VISITAS CLOUDFLARE &nbsp; ╌╌ SESIONES PROPIAS</p>');
@@ -122,7 +124,7 @@
     var vs = (d.registro && d.registro.visitas) || [];
     var filas = vs.map(function (v) {
       var i = v.inicio || {}, hora = new Date(v.ts).toLocaleString('es-CL', { timeZone: 'America/Santiago', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-      var ruta = v.pasos.filter(function (p) { return !/^(ref|disp|llegada|equipos|instalada|idioma|tema):/.test(p) && p !== 'sesion'; }).map(function (p) { return p.replace(':', ' ').toUpperCase(); }).join(' → ') || 'INICIO';
+      var ruta = v.pasos.filter(function (p) { return !/^(ref|disp|llegada|equipos|instalada|idioma|tema):/.test(p) && p !== 'sesion'; }).map(function (p) { return p.replace(/:/g, ' ').toUpperCase(); }).join(' → ') || 'INICIO';
       return '<tr><td>' + esc(hora) + '</td><td>' + esc([i.disp, i.ref || 'directo', i.de ? '?de=' + i.de : '', i.utm_campaign].filter(Boolean).join(' · ')) + '</td><td class="recorrido">' + esc(ruta) + '</td><td class="n">' + Math.max(0, Math.round((v.fin - v.ts) / 1000)) + ' S</td></tr>';
     }).join('');
     sec('[ 12 ] ÚLTIMAS VISITAS', filas ? '<table><thead><tr><th>HORA</th><th>LLEGÓ</th><th>RECORRIDO</th><th class="n">DURÓ</th></tr></thead><tbody>' + filas + '</tbody></table>' : VACIO);

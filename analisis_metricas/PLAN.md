@@ -26,4 +26,4 @@ Esta sesión corre en un contenedor en la nube **sin Computer Use ni Claude in C
 5. `robots.txt`: `Disallow: /metricas` y `/api/`.
 6. `/privacy` en EN/ES/PT con la tabla de `privacidad.md`.
 7. `sw.js`: no cachear `/api/` ni `/metricas*` (hoy es network-first; solo excluir).
-Ver `LEEME.md` para el detalle y los comandos.
+Ver `LEEME.md` para el detalle y los comandos. **Resuelto**: el sitio resultó ser un Worker con assets (opción B); ver `worker.js` y `wrangler.jsonc`.
