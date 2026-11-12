@@ -110,7 +110,7 @@
     attic: [0, 0], rooftop: [45, 0], backstage: [80, 0],
     main: [42, 19], restrooms: [91, 26], darkroom: [12, 33],
     welfare: [28, 57], foyer: [50, 56], tunnel: [84, 58],
-    doors: [48, 75], courtyard: [99, 73], afters: [10, 75]
+    doors: [48, 75], courtyard: [99, 73]
   };
   const SC = 6.5, PAD = 26, OUT = 3;
   const origin = function (id) {

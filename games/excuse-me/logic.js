@@ -25,6 +25,9 @@
      The chance of saying the wrong thing climbs from 15% at 39 HEALTH to 60% at 10 or less. */
   EM.LOW_HP = 40;
   /* staff: being rude to any of them costs an immense amount of WEIRDNESS, and the second time you are thrown out */
+  /* HOSTS: people who give their time, energy and home to keep the night alive (every resident, and Anselm and Dot). Rudeness to a host is a warning, then OUT. */
+  EM.HOSTS = { anselm: 1, dot: 1, resident: 1, frames: 1 };
+  EM.AFTER_END = 840; /* THE AFTER runs from the sunrise to noon (minute 840) */
   EM.STAFF = { dragan: 1, luca: 1, nico: 1, mika: 1, rosa: 1, nuri: 1, camilo: 1, teo: 1, dario: 1, ofelia: 1, bruce: 1, beatriz: 1, ines: 1, lampie: 1, sub: 1, maya: 1, bea: 1 };
 
   /* night phases by minutes since 22:00 */
@@ -212,6 +215,21 @@
     else { EM.hooks.toast({ icon: 'anger', kind: 'bad', ms: 5000, text: T('THAT IS TWICE. Someone has already called the door.', 'YA SON DOS. Alguien ya avisó a la puerta.', 'JÁ FORAM DUAS. Alguém já avisou a porta.') }); L.end(s.venue === 'rave' ? 'frozenout' : 'banned'); }
   };
 
+  /* a host's home or night: one rude move is a warning that costs a lot, the next one is OUT */
+  L.hostRude = function () {
+    const s = EM.state; if (s.ended) return;
+    s.hostStrikes = (s.hostStrikes || 0) + 1;
+    if (s.hostStrikes === 1) {
+      L.stat('weird', 30, true); L.stat('soc', -15); L.stat('fun', -10); L.rep(2);
+      EM.hooks.toast({ icon: 'anger', kind: 'bad', ms: 7500, text: T('A HOST HAS HAD ENOUGH. This is their home, their night, their work. One more rude move and you are out.', 'UN ANFITRIÓN YA TUVO SUFICIENTE. Es su casa, su noche, su trabajo. Una grosería más y te vas.', 'UM ANFITRIÃO JÁ TEVE O SUFICIENTE. É a casa dele, a noite dele, o trabalho dele. Mais uma grosseria e você sai.') });
+    } else {
+      EM.hooks.toast({ icon: 'anger', kind: 'bad', ms: 5000, text: T('THAT IS TWICE. The door is open and you are on the other side of it.', 'YA SON DOS. La puerta está abierta y tú estás del otro lado.', 'JÁ FORAM DUAS. A porta está aberta e você está do outro lado.') });
+      /* the ending is deferred one beat so a dialogue that caused it can close first (its closing scene would otherwise be cut) */
+      if (s.flags.after_go) s.flags.after_out = true;
+      setTimeout(function () { if (!EM.state.ended) L.end(s.flags.after_go ? 'after' : (L.rave() ? 'frozenout' : 'banned')); }, 250);
+    }
+  };
+
   /* time spent doing things (talking, dancing, kissing): scaled by PACE, with the remainder carried over */
   L.spend = function (min) {
     const s = EM.state; s.timeFrac = (s.timeFrac || 0) + Math.max(0, min) * EM.PACE;
@@ -281,8 +299,9 @@
     if (st.weird >= 100) { L.end(s.venue === 'rave' ? 'frozenout' : 'banned'); return; }
     if (st.hp <= 0) { L.passOut(T(`Your body stops cooperating.`, `Tu cuerpo deja de cooperar.`, `Seu corpo para de cooperar.`)); return; }
     if (st.soc <= 0) { L.end('burnout'); return; }
-    if ((s.boredFor || 0) >= 45 && !s.flags.afters_open) { L.end('bored'); return; }
-    if (s.time >= 600 && !s.flags.afters_open) { L.end('closing'); return; } /* afters_open: the sunrise is over and the afters decide how it ends */
+    if ((s.boredFor || 0) >= 45 && !s.flags.afters_open && !s.flags.after_go) { L.end('bored'); return; }
+    if (s.flags.after_go) { if (s.time >= EM.AFTER_END) { L.end('after'); return; } } /* THE AFTER (story_v29*.js) runs to noon */
+    else if (s.time >= 600 && !s.flags.afters_open) { L.end('closing'); return; } /* afters_open: the sunrise is over and THE AFTERS mission decides how it ends */
   };
 
   /* an accumulation of bad decisions: friends notice, then the night collapses */

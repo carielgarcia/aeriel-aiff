@@ -10,11 +10,15 @@
     VOID: 0, FLOOR: 1, DANCE: 2, WALL: 3, BAR: 4, SPEAKER: 5, PILLAR: 6, COUCH: 7, TILE: 8, STALL: 9,
     SINK: 10, GRASS: 11, CONC: 12, MATT: 13, LOCKER: 14, TABLE: 15, BOOTH: 16, RUG: 17, FENCE: 18,
     STAIRS: 19, BARREL: 20, PLANT: 21, DOORF: 22, BENCH: 23, ROAD: 24, SIDEWALK: 25, CURTAIN: 26,
-    MIRROR: 27, RAIL: 28, CRATE: 29, SKY: 30
+    MIRROR: 27, RAIL: 28, CRATE: 29, SKY: 30,
+    /* the home tileset (THE AFTER): a daytime flat, nothing like the club */
+    HFLOOR: 31, HWALL: 32, HRUG: 33, HTILE: 34, HCOUCH: 35, HBED: 36, HTABLE: 37, HCOUNTER: 38, HSPEAKER: 39, HCOATS: 40,
+    HPLANT: 41, HDOOR: 42, HTOILET: 43, HSINK: 44, HSKY: 45, HRAIL: 46, HBALC: 47
   };
   const SOLID = {};
   [TL.VOID, TL.WALL, TL.BAR, TL.SPEAKER, TL.PILLAR, TL.COUCH, TL.STALL, TL.SINK, TL.LOCKER, TL.TABLE, TL.FENCE,
-    TL.BARREL, TL.PLANT, TL.BENCH, TL.ROAD, TL.MIRROR, TL.RAIL, TL.CRATE, TL.SKY].forEach(function (t) { SOLID[t] = true; });
+    TL.BARREL, TL.PLANT, TL.BENCH, TL.ROAD, TL.MIRROR, TL.RAIL, TL.CRATE, TL.SKY,
+    TL.HWALL, TL.HCOUCH, TL.HTABLE, TL.HCOUNTER, TL.HSPEAKER, TL.HCOATS, TL.HPLANT, TL.HTOILET, TL.HSINK, TL.HSKY, TL.HRAIL].forEach(function (t) { SOLID[t] = true; });
   EM.isSolidTile = function (t) { return !!SOLID[t]; };
 
   /* ------------------------------------------------------------ drawing helpers (g is the tile's context, origin at the tile) */
@@ -277,6 +281,110 @@
     R(0, 0, TS, TS, '#05060F'); grad(0, 0, TS, TS, '#05060F', '#0A0E24');
     spk(11, 4, '#6A7AA8', 1, 1);
     if (hs(1, 1, 3) > 0.7) { R(8, 8, 2, 2, '#FFFFFF'); P(7, 9, '#9AA8D8'); P(10, 9, '#9AA8D8'); P(9, 7, '#9AA8D8'); P(9, 10, '#9AA8D8'); }
+  };
+
+  /* ------------------------------------------------------------ the home tileset: daylight, wood, plaster, linen */
+  function wood(i, j) {
+    R(0, 0, TS, TS, '#B98A58');
+    for (let r = 0; r < 2; r++) {
+      const y = r * 16, v = hs(i + r, j, 21), c = v > 0.66 ? '#C29360' : v > 0.33 ? '#BA8C5A' : '#B38455';
+      R(0, y, TS, 15, c); R(0, y, TS, 1, '#D3A674'); R(0, y + 15, TS, 1, '#8F6439');
+      const off = Math.floor(hs(j, r, 22) * 20) + 6; R(off, y, 1, 15, '#8F6439');
+      spk(24 + r, 3, '#A97B4B', 4, 1);
+    }
+  }
+  T[TL.HFLOOR] = function (open) { wood(TX, TY); };
+  T[TL.HWALL] = function (open) {
+    R(0, 0, TS, TS, '#D9CFBF');
+    if (open(0, 1)) {
+      R(0, 0, TS, TS, '#EDE4D4'); R(0, 0, TS, 2, '#FAF4E8');
+      spk(31, 4, '#E2D8C6', 3, 1);
+      R(0, 24, TS, 8, '#F8F3EA'); R(0, 24, TS, 1, '#FFFFFF'); R(0, 31, TS, 1, '#B9AE9B'); R(0, 25, TS, 1, '#DAD0BE');
+      R(0, 22, TS, 2, 'rgba(120,100,70,0.12)');
+    } else { R(0, 0, TS, TS, '#CFC4B2'); R(0, 0, TS, 1, '#E8DFCF'); R(0, TS - 1, TS, 1, '#A89C86'); }
+    if (open(-1, 0)) R(0, 0, 2, TS, '#BFB4A0');
+    if (open(1, 0)) R(TS - 2, 0, 2, TS, '#BFB4A0');
+  };
+  T[TL.HRUG] = function (open) {
+    /* seamless, so a large rug reads as one rug: cream weave, a blue lattice, a small terracotta diamond in every cell */
+    R(0, 0, TS, TS, '#E4D8BE');
+    for (let k = 0; k < TS; k += 4) { R(0, k, TS, 1, '#DCCFB2'); }
+    R(0, 15, TS, 1, '#B4BFCB'); R(15, 0, 1, TS, '#B4BFCB');
+    for (let i = 0; i < 5; i++) { P(8 - i, 8 - i, '#C8715A'); P(7 + i, 8 - i, '#C8715A'); P(8 - i, 7 + i, '#C8715A'); P(7 + i, 7 + i, '#C8715A'); }
+    R(7, 7, 2, 2, '#EFE6D0');
+    for (let i = 0; i < 5; i++) { P(24 - i, 24 - i, '#C8715A'); P(23 + i, 24 - i, '#C8715A'); P(24 - i, 23 + i, '#C8715A'); P(23 + i, 23 + i, '#C8715A'); }
+    R(23, 23, 2, 2, '#EFE6D0');
+  };
+  T[TL.HTILE] = function (open) {
+    R(0, 0, TS, TS, '#B9C9CE');
+    for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = i * 16, y = j * 16; R(x + 1, y + 1, 15, 15, hs(i, j, 8) > 0.5 ? '#F0F5F6' : '#E7EFF1'); R(x + 1, y + 1, 15, 1, '#FFFFFF'); R(x + 1, y + 15, 15, 1, '#CFDBDF'); }
+  };
+  T[TL.HCOUCH] = function (open) {
+    wood(TX, TY);
+    R(0, 4, TS, 24, '#5F8A78'); grad(0, 4, TS, 24, '#78A090', '#4A7060'); R(0, 4, TS, 3, '#9CC0AE'); R(0, 26, TS, 2, '#34504A');
+    R(14, 8, 4, 18, '#4A7060'); R(0, 8, 4, 20, '#6C9684'); R(28, 8, 4, 20, '#6C9684'); R(0, 28, TS, 3, '#6E4A2A'); R(0, 4, TS, 1, '#C4DDCF');
+    for (let x = 8; x < 28; x += 10) { R(x, 10, 6, 6, '#E8B46A'); R(x, 10, 6, 1, '#F6D49A'); }
+  };
+  T[TL.HBED] = function (open) {
+    /* seamless: the bed is three tiles tall in every room (pillows on the first row, a quilted blanket below) */
+    wood(TX, TY);
+    R(0, 0, TS, TS, '#EDE6D8');
+    if (TY === 3) { R(3, 4, 12, 10, '#FFFFFF'); R(17, 4, 12, 10, '#FFFFFF'); R(3, 13, 12, 1, '#D8D2C4'); R(17, 13, 12, 1, '#D8D2C4'); R(0, 18, TS, 14, '#7DA0C4'); R(0, 18, TS, 2, '#B7CEE4'); }
+    else { R(0, 0, TS, TS, '#7DA0C4'); grad(0, 0, TS, TS, '#8FB0D0', '#6A8FB6'); }
+    for (let k = 4; k < TS; k += 8) { R(k, 0, 1, TS, 'rgba(60,90,130,0.22)'); R(0, k, TS, 1, 'rgba(60,90,130,0.22)'); }
+  };
+  T[TL.HTABLE] = function (open) {
+    wood(TX, TY);
+    R(1, 4, 30, 18, '#D8B07A'); grad(1, 4, 30, 18, '#E2BC86', '#C99D66'); R(1, 4, 30, 2, '#F0D2A2'); R(1, 22, 30, 2, '#9C7444'); R(3, 24, 3, 7, '#8E653A'); R(26, 24, 3, 7, '#8E653A');
+    spk(41, 3, '#B98A58', 5, 1);
+  };
+  T[TL.HCOUNTER] = function (open) {
+    R(0, 0, TS, TS, '#C9D8D0');
+    R(0, 2, TS, 10, '#F3EFE6'); R(0, 2, TS, 2, '#FFFFFF'); R(0, 12, TS, 1, '#C4BCAA');
+    R(0, 13, TS, 19, '#8FB3A4'); grad(0, 13, TS, 19, '#9CBFB0', '#7AA190'); R(0, 13, TS, 1, '#6B9080');
+    R(2, 16, 12, 13, '#86AA9A'); R(18, 16, 12, 13, '#86AA9A'); R(2, 16, 12, 1, '#B2D0C2'); R(18, 16, 12, 1, '#B2D0C2'); R(13, 22, 2, 3, '#F3EFE6'); R(17, 22, 2, 3, '#F3EFE6');
+  };
+  T[TL.HSPEAKER] = function (open) {
+    wood(TX, TY);
+    R(5, 2, 22, 28, '#6A4A2E'); grad(5, 2, 22, 28, '#7A583A', '#573B24'); R(5, 2, 22, 2, '#9A7650'); R(5, 28, 22, 2, '#3B2616');
+    R(10, 6, 12, 12, '#26221E'); R(12, 8, 8, 8, '#3A342E'); R(15, 11, 2, 2, '#8A8070'); R(12, 21, 8, 6, '#26221E'); R(14, 23, 4, 2, '#3A342E');
+  };
+  T[TL.HCOATS] = function (open) {
+    wood(TX, TY);
+    R(3, 8, 26, 20, '#C75B4A'); R(8, 4, 18, 14, '#4B6A8C'); R(14, 10, 14, 14, '#E8B46A'); R(5, 20, 14, 8, '#6E8F72');
+    R(3, 8, 26, 1, '#E08A78'); R(8, 4, 18, 1, '#7F9DBF'); R(14, 10, 14, 1, '#F6D49A'); R(3, 27, 26, 1, '#7A3328');
+    for (let i = 8; i < 28; i += 6) P(i, 14, '#33201A');
+  };
+  T[TL.HPLANT] = function (open) {
+    wood(TX, TY);
+    R(10, 18, 12, 12, '#B8663F'); R(10, 18, 12, 2, '#D88A5E'); R(10, 28, 12, 2, '#7A3F22');
+    ellS(16, 11, 10, 9, { h2: '#9ED79A', h: '#6FB46C', b: '#4C9455', s: '#357543', s2: '#245832' });
+  };
+  T[TL.HDOOR] = function (open) {
+    wood(TX, TY);
+    R(4, 0, 24, TS, '#8A5A34'); R(4, 0, 24, 2, '#B07C4C'); R(6, 4, 9, 11, '#9A6A40'); R(17, 4, 9, 11, '#9A6A40'); R(6, 18, 9, 11, '#9A6A40'); R(17, 18, 9, 11, '#9A6A40');
+    R(24, 16, 3, 3, '#E8C46A'); R(0, 0, 4, TS, '#F3EFE6'); R(28, 0, 4, TS, '#F3EFE6');
+  };
+  T[TL.HTOILET] = function (open) {
+    R(0, 0, TS, TS, '#E4EEF0');
+    R(8, 2, 16, 10, '#FFFFFF'); R(8, 2, 16, 1, '#F3F7F8'); R(8, 11, 16, 1, '#C4D0D4'); R(10, 12, 12, 14, '#FFFFFF'); R(9, 24, 14, 4, '#E4EEF0'); R(10, 12, 1, 14, '#E4EEF0'); R(21, 12, 1, 14, '#C4D0D4');
+  };
+  T[TL.HSINK] = function (open) {
+    R(0, 0, TS, TS, '#E4EEF0');
+    R(4, 14, 24, 6, '#FFFFFF'); R(4, 14, 24, 1, '#F3F7F8'); R(6, 20, 20, 4, '#C4D0D4'); R(14, 8, 4, 6, '#9CAAB0'); R(10, 2, 12, 5, '#B4D2E0'); R(10, 2, 12, 1, '#E4F2F8');
+  };
+  T[TL.HSKY] = function (open) {
+    R(0, 0, TS, TS, '#8FC4E8'); grad(0, 0, TS, TS, '#7AB6E2', '#BEDDF0');
+    if (hs(2, 2, 5) > 0.55) { R(6, 10, 18, 5, '#FFFFFF'); R(10, 7, 10, 4, '#FFFFFF'); R(6, 14, 18, 1, '#D8E8F4'); }
+  };
+  T[TL.HRAIL] = function (open) {
+    R(0, 0, TS, TS, '#BEDDF0'); R(0, 0, TS, 8, '#8FC4E8');
+    R(0, 12, TS, 3, '#2F3438'); R(0, 12, TS, 1, '#5A6268'); for (let x = 3; x < TS; x += 8) R(x, 15, 2, 17, '#2F3438');
+    R(0, 28, TS, 4, '#B07C4C');
+  };
+  T[TL.HBALC] = function (open) {
+    R(0, 0, TS, TS, '#C98A62');
+    for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = i * 16, y = j * 16; R(x + 1, y + 1, 15, 15, hs(i, j, 9) > 0.5 ? '#D9966A' : '#D18F63'); R(x + 1, y + 1, 15, 1, '#E8B088'); R(x + 1, y + 15, 15, 1, '#A8714A'); }
   };
 
   /* th: { a, b } accent colours of the room. ox, oy: the tile's top-left in device pixels. */
