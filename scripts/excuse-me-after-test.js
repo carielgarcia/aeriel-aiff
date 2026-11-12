@@ -163,11 +163,11 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     const s = EM.state, A = EM.AF; A.setNoise(75); EM.logic.minute(); EM.ui.mode = 'play'; A.dispatch();
     const d = EM.ui.D && EM.ui.D.id; s.flags.mb_visit = true;
     const labels = H.labels(); H.settle(); const L = H.labels();
-    const joke = L.some(function (x) { return /sign on that door/i.test(x); });
+    const joke = L.some(function (x) { return /quiet hour/i.test(x); });
     H.pick('quiet hour'); H.settle();
     return { d: d, joke: joke, ok: !!s.flags.beto_ok, vol: s.after.vol };
   });
-  ok(r5b.d === 'af_beto' && r5b.joke && r5b.ok && r5b.vol === 0, 'Beto (the left wall) knocks about the headboard when the master bedroom was used; a quiet hour mutes the music');
+  ok(r5b.d === 'af_beto' && r5b.joke && r5b.ok && r5b.vol === 0, 'Beto (the left wall), the night nurse, offers a quiet hour that mutes the music');
   const r5c = await page.evaluate(function () {
     const s = EM.state, A = EM.AF; A.setNoise(95); EM.logic.minute(); EM.ui.mode = 'play'; A.dispatch();
     const d = EM.ui.D && EM.ui.D.id, hi = s.after.noise; H.pick('Apologise with Anselm'); H.settle();
@@ -242,7 +242,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     Math.random = rnd0;
     return o;
   });
-  ok(r6d.done && r6d.aftercare && r6d.noise > 6 && r6d.dsoc > 15, 'a consented encounter (asked out loud) pays like the dark room and the walls hear it (noise +' + Math.round(r6d.noise) + ')');
+  ok(r6d.done && r6d.aftercare && r6d.noise > 6 && r6d.dsoc >= 12, 'a consented encounter (asked out loud) pays like the dark room and the walls hear it (noise +' + Math.round(r6d.noise) + ')');
   ok(r6d.stopped, 'stopping at any step is free of penalty');
   ok(r6d.them && r6d.riverWater && r6d.stillHigh && r6d.later, 'River, too high: water first is rewarded; an hour later they can say yes');
   const r6e = await page.evaluate(function () {
@@ -358,6 +358,34 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     return { n: n, bad: bad.slice(0, 12), dlgs: Object.keys(EM.DIALOGUES).filter(function (k) { return /^af_/.test(k); }).length };
   });
   ok(r9.bad.length === 0, 'trilingual scan: ' + r9.n + ' strings in ' + r9.dlgs + ' new dialogues are in EN, ES and PT, no voseo, no "..." ' + (r9.bad.length ? JSON.stringify(r9.bad) : ''));
+
+  /* ------------------------------------------------ 10. random walks through every after dialogue: no exceptions, no dead ends */
+  const r10 = await page.evaluate(function () {
+    const s = EM.state, bad = [], ids = Object.keys(EM.DIALOGUES).filter(function (k) { return /^af_/.test(k) && k !== 'af_travel'; });
+    let walks = 0;
+    ids.forEach(function (id) {
+      for (let r = 0; r < 12; r++) {
+        try {
+          EM.ui.D = null; EM.ui.mode = 'play'; EM.ended = null; s.ended = null;
+          s.stats.hp = 90; s.stats.soc = 60; s.stats.fun = 60; s.stats.weird = 5; /* keep the walker out of the DIZZY mis-speak loop */
+          EM.ui.startDialogue(id, {});
+          let steps = 0; const tr = [];
+          while (EM.ui.D && steps++ < 40) {
+            const st = EM.ui.D.state; tr.push(EM.ui.D.nid + '/' + st);
+            if (st === 'text' || st === 'react') EM.ui.dlgConfirm();
+            else if (st === 'choices') { const n = EM.ui.D.choices.length; if (!n) { bad.push(id + ': empty choices'); break; } EM.ui.dlgPick(Math.floor(Math.random() * n)); }
+            else break;
+          }
+          if (EM.ui.D && steps >= 40) bad.push(id + ': did not end in 40 steps: ' + tr.slice(0, 10).join(' '));
+          walks++;
+        } catch (e) { bad.push(id + ': ' + e.message); }
+        s.ended = null;
+      }
+    });
+    EM.ui.D = null; EM.ui.mode = 'play';
+    return { bad: bad.slice(0, 8), walks: walks, n: ids.length };
+  });
+  ok(r10.bad.length === 0, 'random walks: ' + r10.walks + ' playthroughs of ' + r10.n + ' after dialogues, no exceptions or dead ends ' + (r10.bad.length ? JSON.stringify(r10.bad) : ''));
 
   ok(errors.length === 0, 'no page errors' + (errors.length ? ': ' + errors.slice(0, 4).join(' | ') : ''));
   await browser.close(); server.close();

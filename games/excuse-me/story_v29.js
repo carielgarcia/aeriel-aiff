@@ -77,7 +77,8 @@
     Z.npc({ id: 'anselm', x: 21.5, y: 4.6, dlg: 'af_anselm', dir: 'd', reach: 16, when: F('after_go') });
     Z.npc({ id: 'dot_a', cast: 'dot', x: 15.5, y: 12.6, dlg: 'af_dot_door', dir: 'l', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.af_rules; } });
     Z.npc({ id: 'dot_m', cast: 'dot', x: 20.5, y: 2.4, dlg: 'af_dot_mb', dir: 'd', reach: 16, when: F('mb_escort') });
-    Z.npc({ id: 'pasc', x: 5.5, y: 4.8, dlg: 'af_pasc', dir: 'r', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.one_done; } });
+    Z.npc({ id: 'pasc', x: 5.5, y: 4.8, dlg: 'af_pasc', dir: 'r', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.one_done && !s.flags.pasc_spooked; } });
+    Z.npc({ id: 'dot_sleep', cast: 'dot', x: 6.6, y: 4.2, dlg: 'af_dot_asleep', dir: 'd', pose: 'lie', reach: 14, when: F('dot_asleep') });
     Z.npc({ id: 'tato_sofa', cast: 'tato', x: 4.5, y: 4.2, dlg: 'af_tato_sofa', dir: 'd', pose: 'lie', reach: 16, when: F('tato_asleep') });
   })();
 
@@ -92,7 +93,7 @@
     Z.obj({ id: 'af_tap', kind: 'water', x: 3, y: 3, w: 2, h: 1, label: t('THE TAP', 'LA LLAVE', 'A TORNEIRA') });
     Z.obj({ id: 'af_toast', kind: 'aftoast', x: 9, y: 3, w: 3, h: 1, label: t('TOAST AND TEA', 'TOSTADAS Y TÉ', 'TORRADAS E CHÁ') });
     Z.obj({ id: 'af_dishes', kind: 'afdishes', x: 6, y: 3, w: 2, h: 1, label: t('THE DISHES', 'LOS PLATOS', 'A LOUÇA'), when: function (s) { return !!s.flags.af_rules && !s.flags.af_clean; } });
-    Z.npc({ id: 'dot_k', cast: 'dot', x: 2.6, y: 4.8, dlg: 'af_dot_kitchen', dir: 'r', reach: 18, when: F('af_rules') });
+    Z.npc({ id: 'dot_k', cast: 'dot', x: 2.6, y: 4.8, dlg: 'af_dot_kitchen', dir: 'r', reach: 18, when: function (s) { return !!s.flags.af_rules && !s.flags.dot_asleep; } });
     Z.npc({ id: 'sam', x: 5.4, y: 7, dlg: 'af_sam', dir: 'r', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.sam_done; } });
     Z.npc({ id: 'rey', x: 10.4, y: 6.6, dlg: 'af_rey', dir: 'l', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.rey_done; } });
     Z.npc({ id: 'vik', x: 8.4, y: 7.6, dlg: 'af_vik', dir: 'u', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.vik_done; } });
@@ -152,40 +153,28 @@
   })();
 
   /* ============================================================ the guests: seeded from your night, a few you never met */
-  /* id, zone, x, y, line (what they bring to the flat), weight of your night */
+  /* id, zone, x, y: where each guest sits. Their exchanges live in story_v31.js and story_v31b.js */
   const CAM = [
-    ['hugo', 'a_balcony', 9, 4.6, t(`Hugo, shoes in hand, on the balcony: "Forty years of afters and I still bring my own slippers. Sit. The sky is free."`, `Hugo, con los zapatos en la mano, en el balcón: «Cuarenta años de afters y sigo trayendo mis pantuflas. Siéntate. El cielo es gratis».`, `O Hugo, com os sapatos na mão, na varanda: «Quarenta anos de afters e eu ainda trago meus chinelos. Senta. O céu é de graça».`)],
-    ['rosa', 'a_kitchen', 4.2, 5.6, t(`Rosa has already found the mop. "Hosts shouldn't clean after the guests. I'm not a guest. I'm a professional."`, `Rosa ya encontró el trapeador. «Los anfitriones no deberían limpiar después de los invitados. Yo no soy invitada. Soy profesional».`, `A Rosa já achou o esfregão. «Anfitrião não devia limpar depois dos convidados. Eu não sou convidada. Sou profissional».`)],
-    ['luca', 'a_living', 20.5, 10.6, t(`Luca, off the coat check at last, holds a mug with both hands. "Nobody has handed me a coat in two hours. I don't know what to do with my arms."`, `Luca, por fin libre del guardarropa, sostiene una taza con las dos manos. «Hace dos horas que nadie me da un abrigo. No sé qué hacer con los brazos».`, `O Luca, enfim fora da chapelaria, segura uma caneca com as duas mãos. «Faz duas horas que ninguém me dá um casaco. Não sei o que fazer com os braços».`)],
-    ['nuri', 'a_kitchen', 11.4, 4.4, t(`Isi, in her black RD shirt, checks the bread: "Carbs are not a reagent either. They work, though."`, `Isi, con su camiseta negra de RD, revisa el pan: «Los carbohidratos tampoco son un reactivo. Pero funcionan».`, `A Isi, de camiseta preta da RD, confere o pão: «Carboidrato também não é reagente. Mas funciona».`)],
-    ['mika', 'a_bath', 5.4, 5.2, t(`Mika, waiting for the toilet like everyone else: "I clean bathrooms for a living. I'm on holiday. Please don't look at the sink."`, `Mika, esperando el baño como todos: «Limpio baños para vivir. Estoy de vacaciones. Por favor no mires el lavabo».`, `A Mika, esperando o banheiro como todo mundo: «Eu limpo banheiro pra viver. Tô de folga. Por favor, não olha pra pia».`)],
-    ['dario', 'a_living', 16.5, 12.8, t(`Dario by the front door, arms folded, a habit of the job: "Nobody's guarding anything. I just like to know where the exit is."`, `Dario junto a la puerta, brazos cruzados, costumbre del oficio: «Nadie cuida nada. Solo me gusta saber dónde está la salida».`, `O Dario junto à porta, braços cruzados, hábito do ofício: «Ninguém tá vigiando nada. Só gosto de saber onde fica a saída».`)],
-    ['marga', 'a_balcony', 12.5, 5.2, t(`Marga counts the plants on the railing. "Eleven. They're all alive. This flat is run better than my life."`, `Marga cuenta las plantas de la baranda. «Once. Todas vivas. Este departamento está mejor administrado que mi vida».`, `A Marga conta as plantas do parapeito. «Onze. Todas vivas. Esse apê é mais bem administrado que a minha vida».`)],
-    ['ezra', 'a_balcony', 6.4, 5.8, t(`Ezra holds a coffee mug upside down by mistake and decides to commit. "Gravity is a suggestion at this hour."`, `Ezra sostiene una taza de café al revés por error y decide comprometerse. «A esta hora la gravedad es una sugerencia».`, `O Ezra segura uma caneca de café de cabeça pra baixo por engano e decide se comprometer. «Nessa hora a gravidade é uma sugestão».`)],
-    ['juno', 'a_bedroom', 9.4, 5.8, t(`Juno has arranged four coats into a nest and is asleep inside it. One eye opens. "Wake me for the toast."`, `Juno armó un nido con cuatro abrigos y duerme adentro. Se le abre un ojo. «Despiértame para las tostadas».`, `A Juno montou um ninho com quatro casacos e dorme dentro dele. Um olho se abre. «Me acorda pra torrada».`)],
-    ['ximena', 'a_living', 9.4, 13, t(`Ximena, sitting on the rug, to nobody in particular: "I have never been to an after where the host asked me to take my shoes off. I feel very respected."`, `Ximena, sentada en la alfombra, a nadie en particular: «Nunca estuve en un after donde el anfitrión me pidiera sacarme los zapatos. Me siento muy respetada».`, `A Ximena, sentada no tapete, pra ninguém em particular: «Nunca fui num after onde o anfitrião me pedisse pra tirar os sapatos. Me sinto muito respeitada».`)],
-    ['kiki', 'a_living', 24.5, 12.4, t(`Kiki is DJing in her head, hands in the air, no sound. "Anselm said I can't touch the records. I'm just practising."`, `Kiki hace de DJ en su cabeza, con las manos en el aire, sin sonido. «Anselm dijo que no puedo tocar los discos. Solo practico».`, `A Kiki tá discotecando na cabeça, mãos pro alto, sem som. «O Anselm disse que não posso encostar nos discos. Tô só treinando».`)],
-    ['sol', 'a_balcony', 8.4, 6.2, t(`Sol shares her balcony floor with a pigeon. "He was here first. We have an understanding."`, `Sol comparte el piso del balcón con una paloma. «Él llegó primero. Tenemos un acuerdo».`, `A Sol divide o chão da varanda com um pombo. «Ele chegou primeiro. A gente tem um acordo».`)],
-    ['hazel', 'a_kitchen', 10.2, 7.4, t(`Hazel is stirring a pot that isn't hers. "I asked first. Dot said stir. I'm stirring."`, `Hazel revuelve una olla que no es suya. «Pregunté primero. Dot dijo que revolviera. Estoy revolviendo».`, `A Hazel mexe uma panela que não é dela. «Perguntei antes. A Dot disse pra mexer. Tô mexendo».`)],
-    ['oz', 'a_living', 24.5, 7.6, t(`Oz is lying on the floor with his shoes on the shoe rack, where they belong. "Look at them. They're so tidy. I'm so proud."`, `Oz está tirado en el piso con los zapatos en el zapatero, donde van. «Míralos. Qué ordenados. Qué orgullo».`, `O Oz tá deitado no chão com os sapatos na sapateira, onde devem ficar. «Olha só. Tão arrumadinhos. Que orgulho».`)],
-    ['resident', 'a_living', 6.6, 6.4, t(`ÆRIEL is on the sofa with the headphones around their neck and no music in them. "Off duty. Ask me about the weather."`, `ÆRIEL está en el sofá con los auriculares al cuello y sin música. «Fuera de turno. Pregúntame por el clima».`, `A ÆRIEL tá no sofá com o fone no pescoço e sem música. «Fora de serviço. Me pergunta do tempo».`)],
-    ['frames', 'a_living', 5.4, 12.4, t(`FRAMES SHELL has brought the crate and is not opening it. "Anselm has the records tonight. I'm just here to carry."`, `FRAMES SHELL trajo el cajón y no lo abre. «Anselm tiene los discos esta noche. Yo solo vine a cargar».`, `O FRAMES SHELL trouxe a caixa e não abre. «O Anselm tá com os discos hoje. Eu só vim carregar».`)]
+    ['hugo', 'a_balcony', 9, 4.6],
+    ['rosa', 'a_kitchen', 4.2, 5.6],
+    ['luca', 'a_living', 20.5, 10.6],
+    ['nuri', 'a_kitchen', 11.4, 4.4],
+    ['mika', 'a_bath', 5.4, 5.2],
+    ['dario', 'a_living', 16.5, 12.8],
+    ['marga', 'a_balcony', 12.5, 5.2],
+    ['ezra', 'a_balcony', 6.4, 5.8],
+    ['juno', 'a_bedroom', 9.4, 5.8],
+    ['ximena', 'a_living', 9.4, 13],
+    ['kiki', 'a_living', 24.5, 12.4],
+    ['sol', 'a_balcony', 8.4, 6.2],
+    ['hazel', 'a_kitchen', 10.2, 7.4],
+    ['oz', 'a_living', 24.5, 7.6],
+    ['resident', 'a_living', 6.6, 6.4],
+    ['frames', 'a_living', 5.4, 12.4],
   ];
   CAM.forEach(function (c) {
     const id = c[0];
     if (!EM.CAST[id]) return;
-    D['af_cam_' + id] = {
-      who: id, start: 'a', nodes: {
-        a: {
-          text: c[4],
-          choices: [
-            K('chill', t(`Sit with them a while.`, `Quedarte un rato con ellos.`, `Ficar um tempo por perto.`), { next: 'sit' }),
-            K('chill', t(`Leave them in peace.`, `Dejarlos en paz.`, `Deixar em paz.`), { free: true, next: null })
-          ]
-        },
-        sit: { text: t(`You sit with them a while. The morning needs no help. It is enough.`, `Te sientas con ellos un rato. La mañana no necesita ayuda. Alcanza.`, `Você senta um tempo por perto. A manhã não precisa de ajuda. Basta.`), once: true, do: { soc: 2, fun: 1, time: 5 }, next: null }
-      }
-    };
     EM.zones[c[1]].npc({ id: 'cam_' + id, cast: id, x: c[2], y: c[3], dlg: 'af_cam_' + id, dir: 'd', reach: 16, when: function (s) { return !!(s.after && s.after.cameos.indexOf(id) !== -1); } });
   });
   /* how much your night weighs for each (1 = anyone may turn up, more = you talked, helped or were thanked by them) */
@@ -201,7 +190,7 @@
   }
   function pickCameos(s) {
     const rnd = EM.mulberry32((s.seed | 0) + 2929), pool = CAM.map(function (c) { return c[0]; }).filter(function (id) { return !!EM.CAST[id]; }), out = [];
-    while (out.length < 6 && pool.length) {
+    while (out.length < 8 && pool.length) {
       const ws = pool.map(function (id) { return cameoWeight(s, id); }), tot = ws.reduce(function (a, b) { return a + b; }, 0);
       let r = rnd() * tot, i = 0;
       for (; i < pool.length - 1; i++) { r -= ws[i]; if (r <= 0) break; }
@@ -257,14 +246,14 @@
   /* ============================================================ the sunrise choice: do you have the energy to keep going? */
   const SD = D.sunrise && D.sunrise.nodes;
   AF.invite = function (s) {
-    if (s.flags.wed_done) return t(`Anselm and Dot find you at the rail, still in the clothes from the courtyard. "You signed our vow. Come eat something at ours. Shoes off, no phones, no one has to do anything."`, `Anselm y Dot te encuentran en la baranda, con la ropa del patio. «Firmaste nuestros votos. Ven a comer algo a casa. Zapatos afuera, sin celulares, nadie te pide nada».`, `O Anselm e a Dot te encontram no parapeito, ainda com a roupa do pátio. «Você assinou nossos votos. Vem comer alguma coisa lá em casa. Sapato fora, sem celular, ninguém te pede nada».`);
-    return t(`Two strangers find you at the rail: Anselm and Dot, who saw you at the back of the roof and liked your face. "We live ten minutes away. There is bread. Shoes off, no phones, no one has to do anything."`, `Dos desconocidos te encuentran en la baranda: Anselm y Dot, que te vieron al fondo del techo y les cayó bien tu cara. «Vivimos a diez minutos. Hay pan. Zapatos afuera, sin celulares, nadie te pide nada».`, `Dois desconhecidos te encontram no parapeito: o Anselm e a Dot, que te viram no fundo do terraço e gostaram da sua cara. «A gente mora a dez minutos. Tem pão. Sapato fora, sem celular, ninguém te pede nada».`);
+    if (s.flags.wed_done) return t(`Anselm and Dot find you at the rail, still in the clothes from the courtyard. "You signed our vow. Come eat something at ours. Shoes off, phones away, nobody has to be anyone."`, `Anselm y Dot te encuentran en la baranda, con la ropa del patio. «Firmaste nuestros votos. Ven a comer algo a casa. Zapatos afuera, celulares guardados, nadie tiene que ser nadie».`, `O Anselm e a Dot te encontram no parapeito, ainda com a roupa do pátio. «Você assinou os nossos votos. Vem comer alguma coisa lá em casa. Sapato fora, celular guardado, ninguém precisa ser ninguém».`);
+    return t(`Two strangers find you at the rail: Anselm and Dot, who saw you at the back of the roof and liked how you stood there. "We live ten minutes away. There's bread, and a floor, and nobody will ask what you do for work. Shoes off, phones away."`, `Dos desconocidos te encuentran en la baranda: Anselm y Dot, que te vieron al fondo del techo y les gustó cómo te quedabas ahí. «Vivimos a diez minutos. Hay pan, y un piso, y nadie te va a preguntar en qué trabajas. Zapatos afuera, celulares guardados».`, `Dois desconhecidos te encontram no parapeito: o Anselm e a Dot, que te viram no fundo do terraço e gostaram de como você ficava ali. «A gente mora a dez minutos. Tem pão, e um chão, e ninguém vai perguntar o que você faz da vida. Sapato fora, celular guardado».`);
   };
   if (SD && SD.end) {
     SD.end.next = 'af_ask';
     SD.af_ask = {
       text: function (s) {
-        return [AF.invite(s), t(`The sun is fully up. Your legs have an opinion. Do you have the energy to keep going?`, `El sol ya salió del todo. Tus piernas tienen una opinión. ¿Te queda energía para seguir?`, `O sol já nasceu de vez. Suas pernas têm uma opinião. Você ainda tem energia pra continuar?`)];
+        return [AF.invite(s), t(`The sun is fully up. You have been awake for a day, more or less. If you go, you go knowing it will cost you the afternoon. Do you go?`, `El sol ya salió del todo. Llevas despierto un día, más o menos. Si vas, sabes que te costará la tarde. ¿Vas?`, `O sol já nasceu de vez. Você tá acordado faz um dia, mais ou menos. Se for, vai sabendo que isso custa a tarde. Você vai?`)];
       },
       choices: [
         K('care', t(`Go to the after. Toast, a sofa, more of the same people.`, `Ir al after. Tostadas, un sofá, más de la misma gente.`, `Ir pro after. Torrada, um sofá, mais da mesma galera.`), { free: true, do: { flag: 'after_go' }, next: null }),
@@ -302,7 +291,7 @@
       s.after.f[f] = { st: 'here', leave: 0, mode: null };
     });
     /* the schedule: Maru fades first, Feña falls asleep on the sofa, Benjamin wants the next thing */
-    s.after.at = { question: s.time + 70 + Math.floor(s.after.wk[0] * 30), tato: s.time + 28, dani: s.time + 55, lio: s.time + 40, pasc: s.time + 62, home: s.time + 135 + Math.floor(s.after.wk[1] * 25) };
+    s.after.at = { door: s.time + 105 + Math.floor(s.after.wk[1] * 20), question: s.time + 150 + Math.floor(s.after.wk[0] * 40), tato: s.time + 70, dani: s.time + 115, lio: s.time + 55, pasc: s.time + 90, home: s.time + 215 + Math.floor(s.after.wk[1] * 30) };
     L.apply({ quest: { q_af1: 'active' } });
     U.startDialogue('af_travel', { npc: 'anselm' });
   };
@@ -317,6 +306,7 @@
     const rate = [-0.35, 0.1, 0.7][a.vol] || 0;
     AF.noise(rate);
     if (here && s.zone === 'a_living' && E.dancing) AF.noise(0.6);
+    if (s.flags.door_yours && !s.flags.door_closed) AF.noise(0.2);
     if (here) AF.knock(s);
     AF.schedule(s);
   };
@@ -348,6 +338,10 @@
     }
     if (!s.quests.q_af4 && now >= at.lio) { L.setQuest('q_af4', 'active'); U.toast({ icon: 'exclam', kind: 'info', ms: 6500, text: t(`Dot, passing with a tray: "Somebody's lying in the coats room alone. Could you look in on them? I can't leave the stove."`, `Dot, pasando con una bandeja: «Hay alguien tirado solo en el cuarto de los abrigos. ¿Puedes ir a ver? No puedo dejar la cocina».`, `A Dot, passando com uma bandeja: «Tem alguém deitado sozinho no quarto dos casacos. Você pode dar uma olhada? Eu não posso largar o fogão».`) }); }
     if (!s.quests.q_af5 && now >= at.pasc) L.setQuest('q_af5', 'active');
+    /* the door handoff: Dot asks you to hold the door while she sleeps for an hour */
+    if (s.flags.af_rules && !s.flags.door_asked && !s.flags.dot_asleep && now >= at.door && !U.D && U.mode === 'play' && AF.isFlat(s.zone)) { s.flags.door_asked = true; U.startDialogue('af_dot_door2', { npc: 'dot' }); return; }
+    /* Dot sleeps an hour, then takes the door back */
+    if (s.flags.dot_asleep && now >= ((s.flagAt || {}).dot_asleep || now) + 60) { s.flags.dot_asleep = false; s.flags.door_closed = true; U.toast({ icon: 'heart', kind: 'good', ms: 6000, text: t(`Dot is up, hair flat on one side, taking the keys back. «Thank you for the hour.»`, `Dot se levantó, con el pelo aplastado de un lado, recuperando las llaves. «Gracias por la hora».`, `A Dot acordou, cabelo achatado de um lado, pegando as chaves de volta. «Obrigada pela hora».`) }); }
     /* Benjamin wants the next thing */
     if (a.f.dani && a.f.dani.st === 'here' && !s.flags.dani_next && now >= at.dani && !U.D && U.mode === 'play' && AF.isFlat(s.zone)) { s.flags.dani_next = true; U.startDialogue('af_dani_next', { npc: 'dani' }); return; }
     /* THE QUESTION: Maru is fading */
@@ -376,6 +370,15 @@
   story.friendDialogue = function (id, s) {
     if (s && s.flags.after_go && s.after && s.after.f[id] && s.after.f[id].st === 'sofa') return 'af_tato_sofa';
     return fd0 ? fd0(id, s) : null;
+  };
+
+  D.af_dot_asleep = {
+    who: 'dot', role: t('ASLEEP', 'DORMIDA', 'DORMINDO'), start: 'a', nodes: {
+      a: {
+        text: t(`Dot is asleep on the sofa with the keys loose in one hand. She has given you the door, and with it an hour of her trust. You leave her be.`, `Dot duerme en el sofá con las llaves sueltas en una mano. Te dio la puerta, y con ella una hora de su confianza. La dejas en paz.`, `A Dot dorme no sofá com as chaves soltas numa mão. Ela te deu a porta, e com ela uma hora da confiança dela. Você deixa em paz.`),
+        choices: [K('chill', t(`Step away quietly.`, `Alejarte sin hacer ruido.`, `Se afastar sem fazer barulho.`), { free: true, next: null })]
+      }
+    }
   };
 
   /* ============================================================ objects, entering rooms, objectives, quests */

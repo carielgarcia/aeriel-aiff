@@ -332,3 +332,14 @@ The next chapter of the same night, on the same save: after the sunrise the host
 **Ending `after`.** Lead scene `af_noon` (or `af_out`, `af_evicted`), then the card (`NOON, SOCKS ON`), then the phone: a noon thread (Dot, Anselm, each friend, Lio) and Tuesday (how each friend actually is), via a wrapper on `story.morning` for `s.ended === 'after'`.
 
 **Tests.** `node scripts/excuse-me-after-test.js` plays the chapter in headless Chromium (needs Playwright). `node scripts/excuse-me-lint.js` passes with no budget raised.
+
+## THE AFTER, adult rewrite (v3.0): `story_v31.js`, `story_v31b.js`, `story_v32.js`, `story_v32b.js`, `story_v29c.js`
+
+Why: the first draft read as childish: single-screen guests, moral-ladder choices, repeated speech forms, no cost to the neighbours.
+
+- **Register**: adults at the end of a long night. Swearing allowed. No similes in speech beyond the lint budgets (`node scripts/excuse-me-lint.js`).
+- **Guests**: 16, eight per night. Hook, turn, close. The close sets `g_<id>_open` and returns as a Tuesday text (up to four).
+- **Spine** (about five hours of game time): travel (who pays, who drives) > house rules > Anselm and the records > kitchen aftercare > Lio > Pasc's bag > **door handoff** (~+105) > Benjamin's next thing (~+115) > THE QUESTION (~+150) > home (~+215).
+- **Neighbours with stakes**: Marcos (interview at ten), Beto (night nurse), Quiroga (owner of his own). Settling them costs FUN/SOCIAL/time/noise/a warning in your name.
+- **Master bedroom**: four people, four conversations (Pax, Nell, River, Cosmo). Talking opens the room; a verbal ask always works with someone you talked to; stopping at any step pays a smaller reward (`HELD`). Tasteful, implied.
+- **Out of scope by decision**: a wish picker and a promise ledger.
