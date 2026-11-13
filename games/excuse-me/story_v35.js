@@ -26,7 +26,8 @@
       K('chill', t(`"That's a good friend to be."`, `«Es buena forma de ser amigo».`, `«É um bom jeito de ser amigo».`), { do: { soc: 2 }, next: null })
     ] },
     dj2: { text: t(`"Long enough that saying the number would give away both our ages, and we agreed years ago never to do that." He taps the crate. "Next question."`, `«Lo bastante como para que decir el número delate la edad de los dos, y hace años acordamos no hacerlo jamás». Golpea el cajón. «Siguiente pregunta».`, `«Tempo o bastante pra dizer o número entregar a idade dos dois, e a gente combinou anos atrás de nunca fazer isso». Ele bate na caixa. «Próxima pergunta».`), once: true, do: { soc: 2, flag: 'frames_friends' }, next: null },
-    job: { text: t(`"I am a professional reality show competitor… maybe I'm an influencer… maybe I'm just a psychologist."`, `«Soy un competidor profesional de reality shows… quizá soy influencer… quizá solo soy psicólogo».`, `«Sou um competidor profissional de reality show… talvez eu seja influenciador… talvez seja só psicólogo».`), choices: [
+    job: { text: [t(`"I am a professional reality show competitor… maybe I'm an influencer… maybe I'm just a psychologist."`, `«Soy un competidor profesional de reality shows… quizá soy influencer… quizá solo soy psicólogo».`, `«Sou um competidor profissional de reality show… talvez eu seja influenciador… talvez seja só psicólogo».`),
+      t(`"I can do a few things… but what always stays is being a son of a bitch."`, `«Puedo hacer varias cosas… pero lo que siempre se mantiene es ser un conchadesumadre».`, `«Eu consigo fazer várias coisas… mas o que sempre fica é ser um filho da puta».`)], choices: [
       K('joke', t(`"Which one is it today?"`, `«¿Cuál es hoy?»`, `«Qual é hoje?»`), { next: 'job2' }),
       K('chill', t(`"All three sound exhausting."`, `«Las tres suenan agotadoras».`, `«As três parecem exaustivas».`), { do: { soc: 1 }, next: null })
     ] },
@@ -222,7 +223,8 @@
   };
 
   /* ---------------------------------------------------------------- LEONIDAS */
-  EM.CAST.leonidas = { name: 'LEONIDAS', look: { skin: 3, build: 0, expr: 3, hair: 22, hc: 13, top: 20, tc: 5, bottom: 8, bc: 10, shoes: 3, ac: 8, hat: 0, face: 4, neck: 3, ear: 3, makeup: 6, wrist: 2 } };
+  /* a man in full glam: ink pompadour, open green satin vest, wide-leg black trousers, platform boots, chains, hoops, winged liner and glitter */
+  EM.CAST.leonidas = { name: 'LEONIDAS', look: { skin: 3, build: 1, expr: 3, hair: 18, hc: 13, top: 8, tc: 13, bottom: 6, bc: 1, shoes: 3, ac: 8, hat: 0, face: 4, neck: 1, ear: 2, makeup: 3, wrist: 3 } };
   const LEO_ROLE = t('GLAM // FRIEND OF ÆRIEL', 'GLAM // AMIGO DE ÆRIEL', 'GLAM // AMIGO DO ÆRIEL');
 
   /* the creator, as a pop-up: opened after the dialogue closes */

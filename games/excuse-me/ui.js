@@ -721,7 +721,7 @@
       (EM.menuItems || []).forEach(function (f) { f(box, s); });
       box.appendChild(el('p', 'mnote dim', EM.tr(UI.keysHelp)));
     } else if (menuTab === 'quests') {
-      const list = Object.keys(EM.QUESTS || {}).filter(function (id) { return s.quests[id]; });
+      const list = Object.keys(EM.QUESTS || {}).filter(function (id) { return s.quests[id] && !(EM.questHidden && EM.questHidden(id, s)); }); /* EM.questHidden: missions folded into a bigger one (story_v39.js) */
       if (!list.length) box.appendChild(el('p', 'mnote', EM.tr(UI.none)));
       const side = function (id) { return /^(sq_|rv_)/.test(id); };
       const sections = [[T('MAIN MISSIONS', 'MISIONES PRINCIPALES', 'MISSÕES PRINCIPAIS'), list.filter(function (id) { return !side(id); })], [T('SIDE QUESTS', 'MISIONES SECUNDARIAS', 'MISSÕES SECUNDÁRIAS'), list.filter(side)]];

@@ -12,7 +12,7 @@
   const TS = 16, TH = 9;
 
   /* ============================================================ passage tags */
-  const SHORT = { restrooms: 'WC', main: 'MAIN', darkroom: 'DARK', backstage: 'STAFF', rooftop: 'ROOF', courtyard: 'SMOKE', tunnel: 'TUNNEL', welfare: 'CALM', foyer: 'FOYER', doors: 'OUT', attic: 'SALA 2', a_bedroom: 'THE COATS', a_master: 'MASTER BEDROOM' };
+  const SHORT = { restrooms: 'WC', main: 'MAIN', darkroom: 'DARK', backstage: 'STAFF', rooftop: 'ROOF', courtyard: 'SMOKE', tunnel: 'TUNNEL', welfare: 'CALM', foyer: 'FOYER', doors: 'OUT', attic: 'SALA 2', a_bedroom: 'THE COATS', a_master: 'MASTER BEDROOM', a_living: 'LIVING ROOM', a_kitchen: 'KITCHEN', a_bath: 'WC', a_balcony: 'BALCONY' };
   /* hand-placed signs that only named a passage; the generated tags replace them */
   const OLD_SIGN = /^(<\s*)?(DANCE|SALA 2|WC|SMOKING|QUIET ROOM|EXIT|DARK ROOM|STAFF|ROOF|MAIN|DOWN|BALCONY|STAGE)(\s*>)?$/;
   const ASCII = { 'Á': 'A', 'À': 'A', 'Ã': 'A', 'Â': 'A', 'É': 'E', 'Ê': 'E', 'Í': 'I', 'Ó': 'O', 'Õ': 'O', 'Ô': 'O', 'Ú': 'U', 'Ü': 'U', 'Ç': 'C' };
@@ -61,7 +61,7 @@
     z.ents.forEach(function (d) {
       if (d.type !== 'door') return;
       const sd = side(z, d);
-      const tries = [text(sd, label(d.to, false)), text(sd, label(d.to, true)), text(sd, '')];
+      const tries = d.tag ? [text(sd, plain(EM.tr(d.tag))), text(sd, plain(EM.tr(d.tagShort || d.tag))), text(sd, '')] : [text(sd, label(d.to, false)), text(sd, label(d.to, true)), text(sd, '')];
       let pick = null;
       for (let i = 0; i < tries.length && !pick; i++) { const p = place(z, d, sd, tries[i]); if (free(z, p)) pick = p; }
       out.push(pick || place(z, d, sd, tries[1]));

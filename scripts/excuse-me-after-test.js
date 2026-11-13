@@ -69,6 +69,9 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   const r1c = await page.evaluate(function () { return { go: !!EM.state.flags.after_go, after: !!EM.state.after, d: EM.ui.D && EM.ui.D.id, ended: EM.state.ended || null, q: EM.state.quests.q_af1 }; });
   ok(r1b === 'ok' && r1c.go && r1c.after && r1c.d === 'af_travel' && !r1c.ended && r1c.q === 'active', 'going to the after keeps the same night (no ending), starts GETTING THERE');
 
+  /* the test walks the missions out of order; THE QUESTION is held until its own section (the game releases it when the coats room is done, story_v39.js) */
+  await page.evaluate(function () { if (EM.state.after) EM.state.after.holdQuestion = true; });
+
   /* ------------------------------------------------ 2. getting there: the buddy rule */
   const r2 = await page.evaluate(function () {
     H.pick('taxi'); H.settle();
@@ -386,6 +389,42 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     return { bad: bad.slice(0, 8), walks: walks, n: ids.length };
   });
   ok(r10.bad.length === 0, 'random walks: ' + r10.walks + ' playthroughs of ' + r10.n + ' after dialogues, no exceptions or dead ends ' + (r10.bad.length ? JSON.stringify(r10.bad) : ''));
+
+  /* ------------------------------------------------ 11. the spine (story_v39.js): one ordered list, a door that says what it needs, a noise bar that says why */
+  await page.waitForTimeout(1500); /* let the earlier sections' delayed endings fire before a fresh night */
+  await page.evaluate(function () {
+    const player = { name: 'TEST', gender: 'x', look: Object.assign({}, EM.CHAR.random()) };
+    EM.settings.speed = 0.25; EM.ui.startNight(player, { venue: 'club' });
+  });
+  await page.waitForTimeout(700);
+  const r11 = await page.evaluate(function () {
+    EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true;
+    const s = EM.state, out = {}; s.time = 520; s.party = ['maru', 'dani', 'tato']; s.away = {}; s.flags.after_go = true; s.flags.afters_open = true; EM.scripts.af_begin();
+    EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true; EM.engine.enter('a_living', 13, 12, 'u');
+    EM.logic.apply({ flag: ['af_rules', 'phone_basket'], quest: { q_af1: 'done', q_af2: 'done', q_af3: 'active' } });
+    out.o2 = EM.tr(EM.story.objective(s)); out.spine = s.quests.q_af0;
+    for (let i = 0; i < 100; i++) EM.logic.minute();
+    out.coatsWaits = !s.quests.q_af4; out.locked = EM.tr(EM.DIALOGUES.af_front.nodes.locked.text(s)[1]);
+    EM.logic.apply({ flag: ['sam_done', 'sam_ok', 'rey_done', 'rey_ok'] }); EM.logic.minute(); out.coats = s.quests.q_af4; out.o3 = EM.tr(EM.story.objective(s));
+    EM.logic.apply({ flag: ['lio_done'], quest: { q_af4: 'done' } }); EM.logic.minute(); EM.logic.minute(); out.q7 = s.quests.q_af7;
+    EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true;
+    EM.logic.apply({ flag: ['question_done'], quest: { q_af7: 'done' } }); EM.logic.minute(); EM.logic.minute();
+    out.q9 = s.quests.q_af9; out.o5 = EM.tr(EM.story.objective(s)); out.star = Object.keys(EM.seekTargets(s)).indexOf('anselm') !== -1;
+    out.hidden = EM.questHidden('q_af3', s) && !EM.questHidden('q_af8', s);
+    out.mb = (function () { s.flags.af_rules = false; EM.scripts.af_mb_gate(); s.flags.af_rules = true; return Array.from(document.querySelectorAll('#toasts > *')).map(function (n) { return n.textContent; }).join('|'); })();
+    EM.scripts.af_set2(); EM.AF.noise(12);
+    out.cap = document.getElementById('noise-why').textContent; out.tst = Array.from(document.querySelectorAll('#toasts > *')).map(function (n) { return n.textContent; }).join('|');
+    out.tag = EM.zones.a_living.ents.filter(function (e) { return e.id === 'ad_front'; })[0].tag.en;
+    out.people = EM.zones.a_living.ents.filter(function (e) { return /^af[cd]_/.test(e.id); }).length;
+    return out;
+  });
+  ok(/^AFTER 2\/5/.test(r11.o2) && r11.spine === 'active', 'THE AFTER is one list: the banner says AFTER 2/5 and the step (' + r11.o2.slice(0, 40) + ')');
+  ok(r11.coatsWaits && r11.coats === 'active' && /^AFTER 3\/5/.test(r11.o3), 'step 3 waits for step 2, then opens at once (not by the clock)');
+  ok(/Still to do/.test(r11.locked) && /KITCHEN|COATS|QUESTION/.test(r11.locked), 'the front door says what is left before you can leave');
+  ok(r11.q7 === 'active' && r11.q9 === 'active' && /^AFTER 5\/5/.test(r11.o5) && r11.star && r11.hidden, 'steps 1 to 4 done: GOING HOME opens, golden star on Anselm, folded missions leave the log');
+  ok(/MASTER BEDROOM IS CLOSED/.test(r11.mb) && /house rules/i.test(r11.mb), 'the master bedroom door says what it needs');
+  ok(/NOISE \d+ ▲ LOUD MUSIC/.test(r11.cap) && /NOISE \+12/.test(r11.tst), 'the noise bar says why it moves: caption and a toast with the cause (' + r11.cap + ')');
+  ok(r11.tag === 'FRONT DOOR' && r11.people >= 15, 'the front door is tagged, and the flat is full of dancers and circles (' + r11.people + ' guests)');
 
   ok(errors.length === 0, 'no page errors' + (errors.length ? ': ' + errors.slice(0, 4).join(' | ') : ''));
   await browser.close(); server.close();
