@@ -46,7 +46,7 @@
     /* four rounds: a single move twice, then two moves chained, then a longer chain */
     const pool = pers.moves.slice();
     const pick = function () { return pool[Math.floor(Math.random() * pool.length)]; };
-    const rounds = [[pick()], [pick()], [pick(), pick()], [pick(), pick(), pick()]].map(function (r) { return r.slice(); });
+    const rounds = (pers.rounds ? pers.rounds(pick) : [[pick()], [pick()], [pick(), pick()], [pick(), pick(), pick()]]).map(function (r) { return r.slice(); });
     P = { who: who, pers: pers, rounds: rounds, ri: 0, pos: 0, shown: 0, hits: 0, total: 0, perfect: 0, miss: 0, cb: cb, timers: [], locked: true, seq: '' };
     EM.DIALOGUES.pd_run = { who: who, role: t('DANCING WITH YOU', 'BAILANDO CONTIGO', 'DANÇANDO COM VOCÊ'), forced: true, start: 'a', nodes: { a: { pd: true, text: '' } } };
     EM.audio.hold = true;

@@ -164,6 +164,45 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     return out;
   });
   ok(ae.always && ae.q1a === 'active' && ae.q1 === 'done' && ae.q2 === 'active' && ae.q2d === 'done' && ae.q3 === 'active' && ae.cities && ae.q3d === 'done' && ae.q4 === 'active' && ae.q4d === 'done' && ae.known, 'ÆRIEL is always at the after, and the four side quests unlock one after another and complete ' + JSON.stringify(ae));
+  /* ------------------------------------------------ ELOY K, the glam dancer by the note (story_v37.js) */
+  const el = await page.evaluate(function () {
+    const s = EM.state, H = window.H2, out = {};
+    s.ended = null; s.time = 200; EM.ui.D = null; EM.ui.mode = 'play';
+    ['eloy_met', 'eloy_danced', 'eloy_has_drink', 'eloy_drink_given', 'eloy_blessed', 'g_eloy_open'].forEach(function (k) { delete s.flags[k]; }); delete s.quests.sq_eloy;
+    const run = function (id, who, picks) { EM.ui.D = null; EM.ui.mode = 'play'; s.stats.hp = 90; s.stats.soc = 60; s.fx.glitch = 0; EM.ui.startDialogue(id, { npc: who }); H.settle(); return picks.map(function (p) { return H.pick(p); }); };
+    /* placement */
+    const e = EM.zones.main.ents.filter(function (x) { return x.id === 'eloy'; })[0];
+    out.near = !!e && Math.hypot(e.x - 15.5, e.y - 10.5) < 4.5 && Math.hypot(e.x - 15.5, e.y - 10.5) > 1.2;
+    /* the longest dance */
+    const pick = function () { return 'wave'; };
+    const r = EM.PARTNERS.eloy.rounds(pick), len = r.map(function (rd) { return rd.map(function (k) { return EM.MOVES[k].seq; }).join('').length; });
+    out.lens = len; out.longest = Math.max.apply(null, len) >= 16 && r.length === 5;
+    /* the offer and the dance */
+    out.offer = run('eloy', 'eloy', ['teach me', 'Yes']); out.q1 = s.quests.sq_eloy;
+    EM.ui.D = null; EM.ui.mode = 'play'; EM.ui.startDialogue('eloy', { npc: 'eloy' }); H.settle(); H.pick('Dance with Eloy'); out.pd = !!EM.ui.pdActive(); EM.ui.pdBail(); H.settle(); EM.ui.D = null; EM.ui.mode = 'play';
+    /* the drink needs the dance first, then comes from the bar */
+    out.beforeDance = (function () { EM.ui.D = null; EM.ui.startDialogue('bar_menu', { npc: 'nico' }); H.settle(); const has = H.labels().some(function (x) { return /drink for Eloy/i.test(x); }); EM.ui.D = null; return has; })();
+    s.flags.eloy_danced = true;
+    out.bar = run('bar_menu', 'nico', ['drink for Eloy']); out.has = !!s.flags.eloy_has_drink;
+    /* give the drink, decline the kiss, then ask for the cheek */
+    out.give = run('eloy', 'eloy', ['Not a kiss']); out.given = !!s.flags.eloy_drink_given; out.declined = !s.flags.eloy_blessed && s.quests.sq_eloy === 'active';
+    out.cheek = run('eloy', 'eloy', ['On the cheek']); out.cheekOk = !!s.flags.eloy_blessed && s.quests.sq_eloy === 'done';
+    /* and the kiss itself, from a clean slate */
+    delete s.flags.eloy_blessed; s.quests.sq_eloy = 'active'; s.makeoutsOk = 0;
+    out.kiss = run('eloy', 'eloy', ['Yes. Kiss me']); out.kissOk = !!s.flags.eloy_blessed && !!s.flags.kiss_eloy && s.quests.sq_eloy === 'done' && s.makeoutsOk === 1;
+    /* the blessing pays: dancing on the beat gives FUN and takes WEIRDNESS off */
+    s.stats.fun = 40; s.stats.weird = 30; EM.engine.dancing = true;
+    for (let i = 0; i < 10; i++) EM.logic.minute();
+    out.fun = s.stats.fun; out.weird = s.stats.weird; EM.engine.dancing = false;
+    const f0 = s.stats.fun, w0 = s.stats.weird;
+    for (let i = 0; i < 10; i++) EM.logic.minute();
+    out.idleFun = s.stats.fun - f0; out.idleWeird = s.stats.weird - w0;
+    return out;
+  });
+  ok(el.near && el.longest, 'Eloy K stands a few steps from a dance note, and his dance is five rounds with a sixteen-arrow finale ' + JSON.stringify([el.near, el.lens]));
+  ok(el.q1 === 'active' && el.pd && el.beforeDance && el.has, 'his quest: offered, the dance starts, and the bar will pour his drink as soon as the quest is active ' + JSON.stringify({ q1: el.q1, pd: el.pd, beforeDance: el.beforeDance, has: el.has }));
+  ok(el.given && el.declined && el.cheekOk && el.kissOk, 'the kiss is an offer: no costs nothing and keeps it open, the cheek and the kiss both finish the quest ' + JSON.stringify({ given: el.given, declined: el.declined, cheekOk: el.cheekOk, kissOk: el.kissOk }));
+  ok(el.fun > 42.5 && el.weird < 27 && el.idleFun < 0, 'after the kiss dancing pays FUN and takes WEIRDNESS off, and nothing changes off the beat (' + el.fun.toFixed(1) + ' FUN, ' + el.weird.toFixed(1) + ' WEIRD while dancing)');
   ok(errors.length === 0, 'no page errors' + (errors.length ? ': ' + errors.slice(0, 4).join(' | ') : ''));
   await browser.close(); server.close();
   console.log('\n' + passes + ' passed, ' + fails + ' failed'); process.exit(fails ? 1 : 0);
