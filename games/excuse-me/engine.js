@@ -55,10 +55,22 @@
     /* the whole zone in device pixels: RS times the logical size, tiles drawn at 32x32 */
     const c = EM.mkCanvas(z.w * TS * RS, z.h * TS * RS); const cg = c.getContext('2d'); cg.imageSmoothingEnabled = false;
     const solid = function (x, y) { return EM.isSolidTile(z.get(x, y)); };
+    const floorTypes = [TL.FLOOR, TL.HFLOOR, TL.HTILE, TL.TILE, TL.RUG, TL.HRUG, TL.CONC, TL.GRASS, TL.SIDEWALK, TL.HBALC];
+    const floorCounts = {};
+    for (let i = 0; i < z.tiles.length; i++) {
+      const tv = z.tiles[i];
+      if (floorTypes.indexOf(tv) !== -1) floorCounts[tv] = (floorCounts[tv] || 0) + 1;
+    }
+    let baseFloor = TL.FLOOR, bestCount = 0;
+    floorTypes.forEach(function (ft) {
+      if ((floorCounts[ft] || 0) > bestCount) { bestCount = floorCounts[ft]; baseFloor = ft; }
+    });
+    const tileTheme = { a: z.theme.a, b: z.theme.b, floor: baseFloor, id: z.id };
     for (let y = 0; y < z.h; y++) for (let x = 0; x < z.w; x++) {
       let t = z.get(x, y);
       if (t === TL.DANCE && variant === 'B') t = 'DANCE_B';
-      EM.drawTile(cg, t, x * TS * RS, y * TS * RS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && z.get(x + dx, y + dy) !== TL.VOID; }, z.theme);
+      tileTheme.at = function (dx, dy) { return z.get(x + dx, y + dy); };
+      EM.drawTile(cg, t, x * TS * RS, y * TS * RS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && z.get(x + dx, y + dy) !== TL.VOID; }, tileTheme);
     }
     if (EM.decorateZone) EM.decorateZone(z, cg);
     /* signs: drawn in logical units under the render scale, so the text is the smooth font */
@@ -254,7 +266,7 @@
       if (d <= reach * 0.5 + 6 && d < bd) { bd = d; best = e; }
     });
     R.ents.forEach(function (e) {
-      if (e.type !== 'obj' || !visible(e)) return;
+      if (e.type !== 'obj' || e.def.decor || !visible(e)) return;
       const d = rectDist(px, py, e.rect);
       if (d <= 7 && d < bd) { bd = d; best = e; }
     });
@@ -656,6 +668,8 @@
         if (Math.floor(t * 2.5) % 3) EM.blit(g, EM.icon('spark', N.yel), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 5 + Math.round(Math.sin(t * 5)));
       } else if (e.kind === 'poster') {
         EM.blit(g, EM.icon('question', Z.theme.b), e.rect.x + Math.round(e.rect.w / 2) - 4, e.rect.y + Math.round(e.rect.h / 2) - 4);
+      } else if (EM.hasObjSprite && EM.hasObjSprite(e.kind)) {
+        EM.blit(g, EM.objSprite(e.kind), e.rect.x + Math.round(e.rect.w / 2) - 8, e.rect.y + Math.round(e.rect.h / 2) - 8);
       }
     });
     /* doors: glow */
@@ -741,7 +755,7 @@
       EM.drawText(g, 'Z', Math.round(hx - 1), Math.round(hy + 1 + Math.sin(t * 6)), '#0A0A0A');
     }
     /* blue stars over the people and places side quests send you to */
-    sideNow.forEach(function (sp) { if (sp.zone === Z.id) drawStar(sp.x * TS, sp.y * TS - (sp.npc ? 50 : 26), BLUE, BLUE_SPARK); });
+    sideNow.forEach(function (sp) { if (sp.zone === Z.id && !(sp.ent && seekNow[sp.ent])) drawStar(sp.x * TS, sp.y * TS - (sp.npc ? 50 : 26), BLUE, BLUE_SPARK); });
     g.restore();
 
     /* light: coloured dither halos, and darkness */
@@ -770,16 +784,19 @@
      otherwise to the exit that leads toward the room they went to */
   function zoneRoute(from, to) {
     if (from === to) return null;
-    const prev = {}; prev[from] = null; const q = [from];
-    while (q.length) {
-      const z = q.shift();
-      const zz = EM.zones[z]; if (!zz) continue;
-      for (let i = 0; i < zz.ents.length; i++) {
-        const e = zz.ents[i];
-        if (e.type !== 'door' || prev[e.to] !== undefined) continue;
-        prev[e.to] = { z: z, door: e };
-        if (e.to === to) { let c = prev[to]; while (c.z !== from) c = prev[c.z]; return c.door; }
-        q.push(e.to);
+    for (let pass = 0; pass < 2; pass++) {
+      const prev = {}; prev[from] = null; const q = [from];
+      while (q.length) {
+        const z = q.shift();
+        const zz = EM.zones[z]; if (!zz) continue;
+        for (let i = 0; i < zz.ents.length; i++) {
+          const e = zz.ents[i];
+          if (e.type !== 'door' || prev[e.to] !== undefined) continue;
+          if (pass === 0 && e.when && (!S || !e.when(S))) continue;
+          prev[e.to] = { z: z, door: e };
+          if (e.to === to) { let c = prev[to]; while (c.z !== from) c = prev[c.z]; return c.door; }
+          q.push(e.to);
+        }
       }
     }
     return null;
@@ -826,6 +843,7 @@
   function sideArrows(camx, camy) {
     const marks = {};
     sideNow.forEach(function (sp) {
+      if (sp.ent && seekNow[sp.ent]) return;
       let wx, wy;
       if (sp.zone === Z.id) { wx = sp.x * TS; wy = sp.y * TS - 20; }
       else {

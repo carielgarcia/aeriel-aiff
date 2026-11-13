@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXCUSE ME — Visual Building Blocks Proposal &amp; 16-Bit Room Mockups // ÆRIEL</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; border-radius: 0 !important; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #0A0A0A; color: #FFFFFF;
+      font-family: Consolas, Menlo, Monaco, "Courier New", Courier, monospace;
+      font-size: 13px; line-height: 1.5;
+    }
+    a { color: #FFFFFF; text-decoration: none; border-bottom: 1px solid #FFFFFF; }
+    a:hover { background: #FFFFFF; color: #0A0A0A; transition: none; }
+
+    header {
+      border-bottom: 2px solid #FFFFFF;
+      padding: 1.25rem 1.5rem;
+      background: #0A0A0A;
+      display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: flex-end;
+    }
+    .kicker {
+      font-size: 11px; color: #7F7F7F; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 0.35rem 0;
+    }
+    h1 {
+      margin: 0; font-size: 1.35rem; text-transform: uppercase; letter-spacing: 1px; line-height: 1.2;
+    }
+    .meta-bar {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+    }
+    .badge {
+      display: inline-block; border: 1px solid #FFFFFF; padding: 0.15rem 0.45rem;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1px; background: #121212;
+    }
+    .badge.muted { border-color: #7F7F7F; color: #7F7F7F; }
+    .badge.inv { background: #FFFFFF; color: #0A0A0A; font-weight: bold; }
+
+    main { max-width: 1380px; margin: 0 auto; padding: 1.25rem; display: grid; gap: 2rem; }
+
+    section { border: 2px solid #FFFFFF; background: #121212; }
+    .sec-head {
+      border-bottom: 1px solid #FFFFFF; padding: 0.85rem 1rem; background: #0A0A0A;
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem;
+    }
+    .sec-head h2 {
+      margin: 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .sec-body { padding: 1rem; }
+
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+    }
+    .ctrl-label {
+      font-size: 11px; color: #7F7F7F; text-transform: uppercase; letter-spacing: 1px; margin-right: 0.25rem;
+    }
+    button {
+      font-family: inherit; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+      background: #0A0A0A; color: #FFFFFF; border: 1px solid #FFFFFF;
+      padding: 0.35rem 0.65rem; cursor: pointer; transition: none;
+    }
+    button:hover, button:focus-visible, button.active {
+      background: #FFFFFF; color: #0A0A0A; font-weight: bold; outline: none;
+    }
+
+    /* Section A: Tile Atlas Grid */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 0.75rem;
+    }
+    .tile-card {
+      border: 1px solid #FFFFFF; background: #0A0A0A; padding: 0.65rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .tile-card.hidden { display: none; }
+    .tile-top {
+      display: flex; justify-content: space-between; align-items: center; gap: 0.4rem;
+      border-bottom: 1px solid #7F7F7F; padding-bottom: 0.35rem;
+    }
+    .tile-name { font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .tile-id { font-size: 11px; color: #7F7F7F; }
+    .tile-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; align-items: center;
+    }
+    .tile-slot {
+      display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+      border: 1px solid #7F7F7F; padding: 0.35rem; background: #121212;
+    }
+    .tile-slot span { font-size: 10px; color: #7F7F7F; text-transform: uppercase; letter-spacing: 1px; }
+    .tile-slot.after { border-color: #FFFFFF; }
+    .tile-slot.after span { color: #FFFFFF; }
+    canvas.px {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      display: block;
+    }
+    .tile-new-empty {
+      width: 64px; height: 64px; border: 1px dashed #7F7F7F;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #7F7F7F; text-transform: uppercase;
+    }
+    .tile-note { font-size: 11px; color: #CCCCCC; line-height: 1.35; }
+
+    /* Section B: Sprite Atlas */
+    .sprite-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 0.75rem;
+    }
+    .sprite-card {
+      border: 1px solid #FFFFFF; background: #0A0A0A; padding: 0.65rem;
+      display: flex; flex-direction: column; gap: 0.45rem;
+    }
+    .sprite-swatches {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;
+    }
+    .swatch {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0.45rem; border: 1px solid #7F7F7F; gap: 0.25rem;
+    }
+    .swatch.club { background: #0D0D14; }
+    .swatch.flat { background: #B98A58; }
+    .swatch small { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #FFFFFF; background: #0A0A0A; padding: 0 3px; }
+
+    .icon-strip {
+      margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #7F7F7F;
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .icon-pill {
+      border: 1px solid #7F7F7F; background: #0A0A0A; padding: 0.3rem 0.45rem;
+      display: inline-flex; align-items: center; gap: 0.4rem; font-size: 10px; text-transform: uppercase;
+    }
+
+    /* Section C: Room Mockups */
+    .room-stage-wrap {
+      border: 1px solid #FFFFFF; background: #0A0A0A; padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .room-info {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: 0.75rem; margin-bottom: 0.75rem; padding-bottom: 0.65rem; border-bottom: 1px solid #7F7F7F;
+    }
+    .room-info h3 { margin: 0; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+    .room-legend {
+      margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem;
+    }
+    .room-compare-grid {
+      display: grid; grid-template-columns: 1fr; gap: 1rem;
+    }
+    .room-compare-grid.split {
+      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    }
+    .room-canvas-box {
+      border: 1px solid #7F7F7F; background: #050508; padding: 0.5rem;
+      display: flex; flex-direction: column; gap: 0.4rem; overflow-x: auto;
+    }
+    .room-canvas-box .box-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #FFFFFF;
+    }
+
+    footer {
+      border-top: 1px solid #FFFFFF; padding: 1rem 1.5rem; color: #7F7F7F;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="kicker">[ ÆRIEL // EXCUSE ME 16-BIT ENGINE // VISUAL AUDIT &amp; UPGRADE PROPOSAL ]</p>
+    <h1>VISUAL BUILDING BLOCKS ATLAS &amp; ROOM MOCKUPS</h1>
+  </div>
+  <div class="meta-bar">
+    <span class="badge">TILE SIZE: 16×16 LOGICAL (32×32 @ RS=2)</span>
+    <span class="badge">58 TILES (0..57)</span>
+    <span class="badge inv">30 OBJ SPRITES + 28 ICONS</span>
+    <a class="badge" href="index.html">← BACK TO GAME</a>
+  </div>
+</header>
+
+<main>
+  <!-- SECTION A: BEFORE VS AFTER TILE ATLAS -->
+  <section id="sec-tiles">
+    <div class="sec-head">
+      <h2>A. TILE ATLAS — BEFORE (0..47) VS. AFTER (0..47) + NEW FURNITURE (48..57)</h2>
+      <div class="controls">
+        <span class="ctrl-label">FILTER:</span>
+        <button type="button" class="filter-btn active" data-filter="all">ALL (58)</button>
+        <button type="button" class="filter-btn" data-filter="club">CLUB (0..30, 57)</button>
+        <button type="button" class="filter-btn" data-filter="flat">THE AFTER (31..47, 56)</button>
+        <button type="button" class="filter-btn" data-filter="new">NEW FURNITURE (48..57)</button>
+        <button type="button" class="filter-btn" data-filter="arch">FLOORS/WALLS/PORTALS</button>
+      </div>
+    </div>
+    <div class="sec-head" style="background:#121212;">
+      <div class="controls">
+        <span class="ctrl-label">CLUB ACCENT THEME PREVIEW:</span>
+        <button type="button" class="theme-btn active" data-a="#FF2D95" data-b="#19D3FF">MAIN FLOOR</button>
+        <button type="button" class="theme-btn" data-a="#FFB020" data-b="#FF2D95">FOYER</button>
+        <button type="button" class="theme-btn" data-a="#FFB020" data-b="#FF6A00">BACKSTAGE</button>
+        <button type="button" class="theme-btn" data-a="#2ED36A" data-b="#19D3FF">QUIET ROOM</button>
+        <button type="button" class="theme-btn" data-a="#FF3B30" data-b="#8A5CFF">DARK ROOM</button>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div id="tile-grid" class="tile-grid"></div>
+    </div>
+  </section>
+
+  <!-- SECTION B: OBJECT & ICON SPRITE ATLAS -->
+  <section id="sec-sprites">
+    <div class="sec-head">
+      <h2>B. OBJECT &amp; FURNITURE SPRITE ATLAS — EM.objSprite(kind) &amp; EM.icon(name)</h2>
+      <div class="controls">
+        <span class="badge">18 BASE KINDS + 12 NEW KINDS + 4 ROOM ALIASES</span>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div id="sprite-grid" class="sprite-grid"></div>
+      <div class="icon-strip" id="icon-strip"></div>
+    </div>
+  </section>
+
+  <!-- SECTION C: FULL 16-BIT ROOM MOCKUPS -->
+  <section id="sec-rooms">
+    <div class="sec-head">
+      <h2>C. 16-BIT ROOM MOCKUPS — REDESIGNED SPACES WITH NEW FURNITURE &amp; OBJECTS</h2>
+      <div class="controls">
+        <span class="ctrl-label">VIEW:</span>
+        <button type="button" class="mode-btn active" data-mode="after">AFTER (PROPOSED)</button>
+        <button type="button" class="mode-btn" data-mode="before">BEFORE (ORIGINAL)</button>
+        <button type="button" class="mode-btn" data-mode="split">SIDE-BY-SIDE COMPARE</button>
+      </div>
+    </div>
+    <div class="sec-head" style="background:#121212;">
+      <div class="controls" id="room-tabs">
+        <button type="button" class="room-btn active" data-room="main">1. MAIN FLOOR</button>
+        <button type="button" class="room-btn" data-room="attic">2. SALA 2 // ATTIC</button>
+        <button type="button" class="room-btn" data-room="foyer">3. FOYER</button>
+        <button type="button" class="room-btn" data-room="backstage">4. BACKSTAGE</button>
+        <button type="button" class="room-btn" data-room="restrooms">5. TOILETS</button>
+        <button type="button" class="room-btn" data-room="welfare">6. QUIET ROOM</button>
+        <button type="button" class="room-btn" data-room="a_living">7. LIVING ROOM // FLAT</button>
+        <button type="button" class="room-btn" data-room="a_kitchen">8. KITCHEN // FLAT</button>
+        <button type="button" class="room-btn" data-room="a_bath">9. BATHROOM // FLAT</button>
+        <button type="button" class="room-btn" data-room="a_balcony">10. BALCONY // FLAT</button>
+        <button type="button" class="room-btn" data-room="a_master">11. MASTER // FLAT</button>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div class="room-stage-wrap">
+        <div class="room-info">
+          <div>
+            <h3 id="room-title">MAIN FLOOR</h3>
+            <span id="room-sub" class="kicker" style="margin:0;"></span>
+          </div>
+          <div id="room-badges" class="meta-bar"></div>
+        </div>
+        <div id="room-compare-grid" class="room-compare-grid"></div>
+        <div id="room-legend" class="room-legend"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>EXCUSE ME // VISUAL BUILDING BLOCKS PROPOSAL</span>
+  <span>BRUTALIST OUTER CHROME + FULL-COLOR 16-BIT ENGINE PREVIEW</span>
+</footer>
+
+<script src="core.js"></script>
+<script src="gfx.js"></script>
+<script src="sprites.js"></script>
+<script src="tiles.js"></script>
+<script>
+(function () {
+  'use strict';
+  const EM = window.EM, TL = EM.TL, RS = EM.RS, TS = 16 * RS, N = EM.NEON, shade = EM.shade;
+
+  /* ============================================================ 1. SNAPSHOT OF ORIGINAL BEFORE TILES (0..47) */
+  const OLD_T = (function () {
+    let g = null, TX = 0, TY = 0;
+    const R = function (x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); };
+    const P = function (x, y, c) { g.fillStyle = c; g.fillRect(x, y, 1, 1); };
+    const dim = function (hex, f) { return shade(hex, -f); };
+    const hs = function (i, j, s) { return EM.hash2(TX * 31 + i, TY * 17 + j, s); };
+    const BAY = EM.BAYER;
+    function spk(seed, n, c, w, h) {
+      for (let i = 0; i < n; i++) { const x = Math.floor(hs(i, 3, seed) * (TS - (w || 1))), y = Math.floor(hs(5, i, seed + 9) * (TS - (h || 1))); R(x, y, w || 1, h || 1, c); }
+    }
+    function grad(x, y, w, h, c0, c1) {
+      for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) { const t = h > 1 ? j / (h - 1) : 0; P(x + i, y + j, t > BAY[((y + j) & 3) * 4 + ((x + i) & 3)] / 16 ? c1 : c0); }
+    }
+    function bevel(x, y, w, h, hi, lo, t) {
+      t = t || 1; R(x, y, w, t, hi); R(x, y, t, h, hi); R(x, y + h - t, w, t, lo); R(x + w - t, y, t, h, lo);
+    }
+    function ellS(cx, cy, rx, ry, ramp) {
+      for (let y = Math.floor(cy - ry); y < Math.ceil(cy + ry); y++) for (let x = Math.floor(cx - rx); x < Math.ceil(cx + rx); x++) {
+        const nx = (x + 0.5 - cx) / rx, ny = (y + 0.5 - cy) / ry; if (nx * nx + ny * ny > 1) continue;
+        const v = -(nx * 0.62 + ny * 0.78) + (((x + y) & 1) ? 0.08 : -0.08);
+        P(x, y, v > 0.64 ? ramp.h2 : v > 0.30 ? ramp.h : v > -0.16 ? ramp.b : v > -0.52 ? ramp.s : ramp.s2);
+      }
+    }
+    function contact(open, left, right) {
+      if (!open(0, -1)) { R(0, 0, TS, 6, 'rgba(2,2,8,0.30)'); R(0, 0, TS, 3, 'rgba(2,2,8,0.30)'); R(0, 0, TS, 1, 'rgba(2,2,8,0.2)'); }
+      if (left !== false && !open(-1, 0)) { R(0, 0, 3, TS, 'rgba(2,2,8,0.22)'); R(0, 0, 1, TS, 'rgba(2,2,8,0.18)'); }
+      if (right !== false && !open(1, 0)) { R(TS - 2, 0, 2, TS, 'rgba(2,2,8,0.14)'); }
+    }
+    const T = {};
+    T[TL.FLOOR] = function (open, A, B) {
+      R(0, 0, TS, TS, '#0B0B10'); R(0, 0, 16, 16, '#0D0D13'); R(16, 16, 16, 16, '#0D0D13');
+      spk(1, 7, '#171720', 2, 1); spk(2, 3, dim(A, 0.74), 1, 1); spk(4, 3, '#06060A', 2, 1);
+      R(0, TS - 1, TS, 1, '#07070B'); R(TS - 1, 0, 1, TS, '#07070B'); R(0, 0, TS - 1, 1, '#14141C'); R(0, 0, 1, TS - 1, '#14141C');
+      contact(open);
+    };
+    T[TL.DANCE] = function (open, A, B, alt) {
+      R(0, 0, TS, TS, '#0A0A0F');
+      const q = function (x, y, c) {
+        const c0 = dim(c, 0.82), c1 = dim(c, 0.62), c2 = dim(c, 0.42);
+        R(x, y, 16, 16, c0); R(x + 2, y + 2, 12, 12, c1); R(x + 5, y + 5, 6, 6, c2); grad(x + 2, y + 2, 12, 12, c1, c0);
+        bevel(x, y, 16, 16, dim(c, 0.5), dim(c, 0.9), 1); P(x + 7, y + 7, dim(c, 0.2)); P(x + 8, y + 8, dim(c, 0.2)); P(x + 3, y + 3, dim(c, 0.28));
+      };
+      if (!alt) { q(0, 0, A); q(16, 16, B); } else { q(16, 0, B); q(0, 16, A); }
+      spk(7, 2, dim(A, 0.3), 1, 1); R(0, 0, TS, 1, 'rgba(255,255,255,0.04)');
+    };
+    T[TL.WALL] = function (open, A, B) {
+      R(0, 0, TS, TS, '#0E0E13');
+      for (let r = 0; r < 4; r++) {
+        const off = (r & 1) ? 8 : 0;
+        for (let k = -1; k < 3; k++) {
+          const x0 = off + k * 16, bx = Math.max(0, x0 + 1), bw = Math.min(TS, x0 + 15) - bx; if (bw <= 0) continue;
+          const v = hs(k + 5, r, 61), c = v > 0.66 ? '#1B1B24' : v > 0.33 ? '#18181F' : '#15151C';
+          R(bx, r * 8, bw, 7, c); R(bx, r * 8, bw, 1, '#26262F'); R(bx, r * 8 + 6, bw, 1, '#0C0C11'); R(bx, r * 8 + 1, 1, 5, '#202029');
+        }
+        R(0, r * 8 + 7, TS, 1, '#09090D');
+      }
+      spk(3, 3, '#232330', 1, 1);
+      if (open(0, -1)) { R(0, 0, TS, 2, A); R(0, 2, TS, 2, dim(A, 0.6)); R(0, 4, TS, 1, dim(A, 0.85)); }
+      if (open(0, 1)) {
+        R(0, 22, TS, 10, '#17171F'); R(0, 22, TS, 1, dim(B, 0.1)); R(0, 23, TS, 1, dim(B, 0.55)); R(0, 31, TS, 1, dim(B, 0.5));
+        for (let x = 4; x < TS; x += 8) { R(x, 25, 1, 5, '#262630'); R(x + 1, 25, 1, 5, '#0F0F15'); }
+      }
+      if (open(-1, 0)) { R(0, 0, 2, TS, dim(A, 0.35)); R(2, 0, 1, TS, dim(A, 0.75)); }
+      if (open(1, 0)) { R(TS - 2, 0, 2, TS, dim(A, 0.35)); R(TS - 3, 0, 1, TS, dim(A, 0.75)); }
+    };
+    T[TL.BAR] = function (open, A, B) {
+      R(0, 0, TS, TS, '#0A0A0E');
+      [[3, '#2E8B57'], [9, N.amb], [14, '#8A5CFF'], [22, '#2F6BFF'], [27, '#E5332A']].forEach(function (b, i) { const h = 5 + (i * 3) % 4; R(b[0], 2 - Math.min(2, h - 3), 3, h, dim(b[1], 0.2)); R(b[0], 2 - Math.min(2, h - 3), 1, h, b[1]); P(b[0], 2 - Math.min(2, h - 3), '#FFFFFF'); });
+      R(0, 5, TS, 14, '#5A3A22'); grad(0, 5, TS, 14, '#6A4529', '#4A2E1A'); R(0, 5, TS, 2, N.amb); R(0, 7, TS, 2, '#9A6A34'); R(0, 9, TS, 1, '#3A2412');
+      R(0, 19, TS, 13, '#2A1810'); grad(0, 19, TS, 13, '#33201A', '#1E120C'); R(0, 19, TS, 2, N.amb);
+      for (let i = 3; i < TS; i += 8) { R(i, 21, 1, 11, '#0F0A07'); R(i + 1, 21, 1, 11, '#3A2418'); }
+      R(0, 29, TS, 3, 'rgba(0,0,0,0.4)'); P(8, 13, '#FFD27A'); P(23, 14, '#FFD27A'); R(2, 6, 4, 1, '#FFD9A0');
+    };
+    T[TL.SPEAKER] = function (open, A, B) {
+      R(0, 0, TS, TS, '#0F0F14'); bevel(0, 0, TS, TS, dim(A, 0.3), '#06060A', 2); R(2, 2, TS - 4, TS - 4, '#13131A');
+      for (let y = 0; y < TS; y++) for (let x = 0; x < TS; x++) {
+        const d = Math.hypot(x - 15.5, y - 17);
+        if (d < 3.2) P(x, y, '#06060A');
+        else if (d < 7.4) P(x, y, ((x + y) & 1) && d > 6.4 ? '#14141B' : (d > 5.4 ? '#34343F' : '#252530'));
+        else if (d < 9.2) P(x, y, '#0A0A0F');
+        else if (d >= 11 && d < 13.2) P(x, y, ((x + y) & 1) ? A : dim(A, 0.4));
+      }
+      P(13, 14, '#4A4A58'); P(14, 13, '#4A4A58'); [[5, 5], [26, 5], [5, 27], [26, 27]].forEach(function (s) { R(s[0], s[1], 2, 2, '#3A3A46'); P(s[0], s[1], '#6A6A78'); });
+    };
+    T[TL.PILLAR] = function (open, A, B) {
+      R(0, 0, TS, TS, '#09090D'); R(4, 0, 24, TS, '#1A1A22');
+      for (let x = 4; x < 28; x++) { const t = (x - 4) / 23; R(x, 0, 1, TS, t < 0.2 ? '#2E2E3A' : t < 0.55 ? '#22222C' : t < 0.8 ? '#181820' : '#0F0F15'); }
+      R(4, 0, 2, TS, B); R(6, 0, 1, TS, dim(B, 0.5)); R(26, 0, 2, TS, '#07070B');
+      R(4, 0, 24, 4, '#3A3A48'); R(4, 4, 24, 1, '#0C0C11'); R(4, 28, 24, 4, '#101016'); R(4, 28, 24, 1, '#34343F');
+      R(10, 8, 2, 18, dim(B, 0.55)); P(10, 8, B); R(11, 8, 1, 18, dim(B, 0.3));
+    };
+    T[TL.COUCH] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(0, 2, TS, 10, '#7A1E5A'); grad(0, 2, TS, 10, '#8E2468', '#661648'); R(0, 2, TS, 2, '#C0489A');
+      R(0, 12, TS, 16, '#5B1646'); grad(0, 12, TS, 16, '#6C1C54', '#4A1038');
+      R(0, 12, 5, 16, '#8A2A6A'); R(27, 12, 5, 16, '#7A2260'); R(14, 12, 4, 16, '#3F0F30'); R(0, 28, TS, 3, '#2A0A22');
+      for (let x = 9; x < 27; x += 8) P(x, 7, '#E070B8');
+    };
+    T[TL.TILE] = function (open) {
+      R(0, 0, TS, TS, '#0C1A1E');
+      for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = i * 16, y = j * 16; R(x + 1, y + 1, 15, 15, hs(i, j, 8) > 0.5 ? '#10242A' : '#0F2127'); R(x + 1, y + 1, 15, 1, '#24626E'); R(x + 1, y + 1, 1, 15, '#1D5560'); P(x + 5, y + 5, '#2F8A99'); }
+      contact(open);
+    };
+    T[TL.STALL] = function () {
+      R(0, 0, TS, TS, '#14222E'); grad(0, 0, TS, TS, '#1A2E3C', '#0F1B25'); R(0, 0, TS, 4, N.cyn);
+      for (let i = 6; i < 30; i += 6) { R(i, 6, 1, 26, '#0B141C'); R(i + 1, 6, 1, 26, '#243A4A'); }
+      R(24, 16, 4, 4, '#9CE8FF');
+    };
+    T[TL.SINK] = function () {
+      R(0, 0, TS, TS, '#0C1A1E'); R(0, 8, TS, 18, '#E2EAEE'); grad(0, 8, TS, 18, '#EEF4F6', '#BCC8CE'); R(2, 8, TS - 4, 2, '#FFFFFF');
+      ellS(16, 18, 11, 6, EM.ramp('#1C3A44')); R(14, 2, 4, 9, '#B8C4CA'); R(0, 26, TS, 6, '#2B4A55');
+    };
+    T[TL.GRASS] = function (open) {
+      R(0, 0, TS, TS, '#0A140D'); grad(0, 0, TS, TS, '#0C1A10', '#08110B');
+      spk(5, 24, '#14391F', 1, 2); spk(6, 10, '#2A8A46', 1, 2); spk(8, 2, N.lim, 1, 1); contact(open);
+    };
+    T[TL.CONC] = function (open) {
+      R(0, 0, TS, TS, '#11131A'); grad(0, 0, TS, TS, '#14161E', '#0E1016');
+      spk(7, 14, '#0A0B10', 2, 1); spk(8, 8, '#20242F', 2, 1); contact(open);
+    };
+    T[TL.MATT] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(2, 2, 28, 28, '#2B4A6B'); grad(2, 2, 28, 28, '#33577C', '#223A56');
+      R(2, 2, 28, 9, '#F4F4F8'); R(2, 17, 28, 1, '#1D3550'); R(2, 28, 28, 2, '#14283C');
+    };
+    T[TL.LOCKER] = function () {
+      R(0, 0, TS, TS, '#0D1518');
+      [2, 17].forEach(function (x) {
+        R(x, 2, 13, 28, '#2A5560'); grad(x, 2, 13, 28, '#33666F', '#1F414A'); R(x, 2, 13, 2, '#5A9AA8');
+        for (let y = 6; y < 12; y += 2) R(x + 3, y, 7, 1, '#0D1518'); R(x + 10, 15, 2, 6, '#DCE6EA');
+      });
+    };
+    T[TL.TABLE] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(2, 6, 28, 18, '#6B4A2E'); grad(2, 6, 28, 18, '#7A5535', '#5A3E26');
+      R(2, 6, 28, 2, '#B08A58'); R(2, 24, 28, 6, '#2A190E'); R(4, 26, 3, 5, '#1A0F08'); R(25, 26, 3, 5, '#1A0F08');
+    };
+    T[TL.BOOTH] = function (open, A, B) {
+      R(0, 0, TS, TS, '#08080C'); R(0, 0, TS, 2, B); R(0, 2, TS, 1, dim(B, 0.6));
+      for (let i = 0; i < TS; i += 8) { R(i, 3, 1, 29, '#16161D'); R(i + 1, 3, 1, 29, '#0C0C11'); P(i + 4, 10, '#26262F'); P(i + 4, 22, '#26262F'); }
+      P(12, 16, A); P(28, 24, B); R(0, 30, TS, 2, 'rgba(0,0,0,0.5)');
+    };
+    T[TL.RUG] = function (open) {
+      R(0, 0, TS, TS, '#1A0A12'); R(2, 2, 28, 28, '#2A0F1C');
+      R(4, 4, 24, 2, '#8A2E40'); R(4, 26, 24, 2, '#8A2E40'); R(4, 4, 2, 24, '#8A2E40'); R(26, 4, 2, 24, '#8A2E40');
+      for (let i = 0; i < 8; i++) { P(16 - i, 16 - i, N.amb); P(15 + i, 16 - i, N.amb); P(16 - i, 15 + i, N.amb); P(15 + i, 15 + i, N.amb); }
+      for (let x = 2; x < 30; x += 3) { R(x, 0, 1, 2, '#C9A66B'); R(x, 30, 1, 2, '#C9A66B'); }
+      contact(open);
+    };
+    T[TL.FENCE] = function (open, A, B) {
+      T[TL.SIDEWALK](open, A, B, true);
+      R(0, 10, TS, 2, A); R(0, 20, TS, 2, A);
+      [2, 12, 22].forEach(function (i) { R(i, 6, 4, 24, '#9A9AA8'); R(i, 6, 1, 24, '#E4E4EE'); });
+    };
+    T[TL.STAIRS] = function () {
+      for (let i = 0; i < 4; i++) { const y = i * 8, tr = i & 1 ? '#4A4A5A' : '#7A7A8E'; R(0, y, TS, 6, tr); R(0, y, TS, 1, '#A0A0B4'); R(0, y + 6, TS, 2, '#08080C'); }
+      R(0, 0, TS, 2, N.lim);
+    };
+    T[TL.BARREL] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(4, 12, 24, 20, '#3A3A44'); R(4, 12, 24, 2, '#8A8A99'); R(4, 20, 24, 2, '#1A1A20');
+      ellS(16, 8, 7, 6, EM.ramp(N.org)); ellS(16, 6, 4.5, 5, EM.ramp(N.yel)); R(15, 1, 3, 4, '#FFFFFF');
+    };
+    T[TL.PLANT] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(10, 20, 12, 12, '#5A3A28'); R(9, 20, 14, 2, '#9A6A44');
+      ellS(16, 12, 3.4, 8, EM.ramp('#1E8A48')); ellS(9, 12, 6, 2.6, EM.ramp(N.grn)); ellS(23, 11, 6, 2.6, EM.ramp(N.grn));
+    };
+    T[TL.DOORF] = function () {
+      R(0, 0, TS, TS, '#08080C'); R(0, 0, TS, 4, N.lim); R(0, 4, TS, 1, dim(N.lim, 0.55));
+      [12, 20, 28].forEach(function (y) { R(4, y, 24, 1, dim(N.lim, 0.6)); R(4, y + 1, 24, 1, dim(N.lim, 0.85)); });
+      R(0, 0, 2, TS, '#14141A'); R(TS - 2, 0, 2, TS, '#14141A');
+    };
+    T[TL.BENCH] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(0, 10, TS, 8, '#8A5A3A'); R(0, 10, TS, 2, '#C08A5A'); R(0, 18, TS, 4, '#4A2E1A'); R(2, 22, 4, 8, '#2A1A10'); R(26, 22, 4, 8, '#2A1A10');
+    };
+    T[TL.ROAD] = function (open) {
+      R(0, 0, TS, TS, '#0D0D12'); grad(0, 0, TS, TS, '#101016', '#0A0A0F');
+      if (open(0, -1)) { R(0, 0, TS, 6, '#22222C'); R(0, 0, TS, 2, '#3B3B4A'); }
+      R(4, 14, 10, 4, N.amb); R(20, 14, 10, 4, N.amb);
+    };
+    T[TL.SIDEWALK] = function (open, A, B, noContact) {
+      const tones = ['#15151C', '#17171F', '#13131A', '#191921'];
+      for (let q = 0; q < 4; q++) R((q & 1) * 16, (q >> 1) * 16, 16, 16, tones[(q + TX + TY) & 3]);
+      R(0, 14, TS, 2, '#0C0C12'); R(14, 0, 2, TS, '#0C0C12'); R(0, 30, TS, 2, '#0C0C12'); R(30, 0, 2, TS, '#0C0C12');
+      if (!noContact) contact(open);
+    };
+    T[TL.CURTAIN] = function () {
+      R(0, 0, TS, TS, '#14060A');
+      for (let i = 0; i < TS; i += 8) { R(i, 3, 3, 29, '#9A2234'); R(i + 3, 3, 3, 29, '#5A1220'); }
+      R(0, 0, TS, 4, '#C9A66B');
+    };
+    T[TL.MIRROR] = function () {
+      R(0, 0, TS, TS, '#0C1A1E'); R(2, 2, 28, 22, '#2F4F5A'); grad(2, 2, 28, 22, '#A8D0DC', '#4A7A8A');
+      bevel(2, 2, 28, 22, '#E8F6FF', '#2A4650', 1); R(0, 30, TS, 2, '#2F8A99');
+    };
+    T[TL.RAIL] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(0, 12, TS, 4, '#E8E8F0');
+      for (let i = 2; i < TS; i += 10) R(i, 16, 2, 16, '#6A6A7C');
+    };
+    T[TL.CRATE] = function () {
+      R(0, 0, TS, TS, '#09090D'); R(2, 4, 28, 26, '#6B4A2E'); R(2, 4, 28, 2, N.amb); R(2, 16, 28, 2, '#3B2616'); R(14, 4, 2, 26, '#3B2616');
+    };
+    T[TL.SKY] = function () {
+      R(0, 0, TS, TS, '#05060F'); grad(0, 0, TS, TS, '#05060F', '#0A0E24'); spk(11, 4, '#6A7AA8', 1, 1);
+    };
+    function wood(i, j) {
+      R(0, 0, TS, TS, '#B98A58');
+      for (let r = 0; r < 2; r++) {
+        const y = r * 16, v = hs(i + r, j, 21), c = v > 0.66 ? '#C29360' : v > 0.33 ? '#BA8C5A' : '#B38455';
+        R(0, y, TS, 15, c); R(0, y, TS, 1, '#D3A674'); R(0, y + 15, TS, 1, '#8F6439');
+        const off = Math.floor(hs(j, r, 22) * 20) + 6; R(off, y, 1, 15, '#8F6439');
+      }
+    }
+    T[TL.HFLOOR] = function () { wood(TX, TY); };
+    T[TL.HWALL] = function (open) {
+      R(0, 0, TS, TS, '#D9CFBF');
+      if (open(0, 1)) { R(0, 0, TS, TS, '#EDE4D4'); R(0, 24, TS, 8, '#F8F3EA'); R(0, 24, TS, 1, '#FFFFFF'); R(0, 31, TS, 1, '#B9AE9B'); }
+      else { R(0, 0, TS, TS, '#CFC4B2'); }
+    };
+    T[TL.HRUG] = function () {
+      R(0, 0, TS, TS, '#E4D8BE'); for (let k = 0; k < TS; k += 4) R(0, k, TS, 1, '#DCCFB2');
+      R(0, 15, TS, 1, '#B4BFCB'); R(15, 0, 1, TS, '#B4BFCB');
+      for (let i = 0; i < 5; i++) { P(8 - i, 8 - i, '#C8715A'); P(7 + i, 8 - i, '#C8715A'); P(8 - i, 7 + i, '#C8715A'); P(7 + i, 7 + i, '#C8715A'); }
+    };
+    T[TL.HTILE] = function () {
+      R(0, 0, TS, TS, '#B9C9CE');
+      for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = i * 16, y = j * 16; R(x + 1, y + 1, 15, 15, hs(i, j, 8) > 0.5 ? '#F0F5F6' : '#E7EFF1'); R(x + 1, y + 1, 15, 1, '#FFFFFF'); }
+    };
+    T[TL.HCOUCH] = function () {
+      wood(TX, TY); R(0, 4, TS, 24, '#5F8A78'); R(0, 4, TS, 3, '#9CC0AE'); R(14, 8, 4, 18, '#4A7060'); R(0, 28, TS, 3, '#6E4A2A');
+      for (let x = 8; x < 28; x += 10) R(x, 10, 6, 6, '#E8B46A');
+    };
+    T[TL.HBED] = function () {
+      wood(TX, TY); R(0, 0, TS, TS, '#EDE6D8');
+      if (TY === 3) { R(3, 4, 12, 10, '#FFFFFF'); R(17, 4, 12, 10, '#FFFFFF'); R(0, 18, TS, 14, '#7DA0C4'); }
+      else R(0, 0, TS, TS, '#7DA0C4');
+    };
+    T[TL.HTABLE] = function () {
+      wood(TX, TY); R(1, 4, 30, 18, '#D8B07A'); R(1, 4, 30, 2, '#F0D2A2'); R(1, 22, 30, 2, '#9C7444'); R(3, 24, 3, 7, '#8E653A'); R(26, 24, 3, 7, '#8E653A');
+    };
+    T[TL.HCOUNTER] = function () {
+      R(0, 0, TS, TS, '#C9D8D0'); R(0, 2, TS, 10, '#F3EFE6'); R(0, 13, TS, 19, '#8FB3A4');
+      R(2, 16, 12, 13, '#86AA9A'); R(18, 16, 12, 13, '#86AA9A'); R(13, 22, 2, 3, '#F3EFE6'); R(17, 22, 2, 3, '#F3EFE6');
+    };
+    T[TL.HSPEAKER] = function () {
+      wood(TX, TY); R(5, 2, 22, 28, '#6A4A2E'); R(10, 6, 12, 12, '#26221E'); R(12, 8, 8, 8, '#3A342E'); R(12, 21, 8, 6, '#26221E');
+    };
+    T[TL.HCOATS] = function () {
+      wood(TX, TY); R(3, 8, 26, 20, '#C75B4A'); R(8, 4, 18, 14, '#4B6A8C'); R(14, 10, 14, 14, '#E8B46A');
+    };
+    T[TL.HPLANT] = function () {
+      wood(TX, TY); R(10, 18, 12, 12, '#B8663F');
+      ellS(16, 11, 10, 9, { h2: '#9ED79A', h: '#6FB46C', b: '#4C9455', s: '#357543', s2: '#245832' });
+    };
+    T[TL.HDOOR] = function () {
+      wood(TX, TY); R(4, 0, 24, TS, '#8A5A34'); R(6, 4, 9, 11, '#9A6A40'); R(17, 4, 9, 11, '#9A6A40'); R(24, 16, 3, 3, '#E8C46A'); R(0, 0, 4, TS, '#F3EFE6'); R(28, 0, 4, TS, '#F3EFE6');
+    };
+    T[TL.HTOILET] = function () {
+      R(0, 0, TS, TS, '#E4EEF0'); R(8, 2, 16, 10, '#FFFFFF'); R(10, 12, 12, 14, '#FFFFFF');
+    };
+    T[TL.HSINK] = function () {
+      R(0, 0, TS, TS, '#E4EEF0'); R(4, 14, 24, 6, '#FFFFFF'); R(14, 8, 4, 6, '#9CAAB0'); R(10, 2, 12, 5, '#B4D2E0');
+    };
+    T[TL.HSKY] = function () {
+      R(0, 0, TS, TS, '#8FC4E8'); grad(0, 0, TS, TS, '#7AB6E2', '#BEDDF0');
+    };
+    T[TL.HRAIL] = function () {
+      R(0, 0, TS, TS, '#BEDDF0'); R(0, 0, TS, 8, '#8FC4E8'); R(0, 12, TS, 3, '#2F3438'); for (let x = 3; x < TS; x += 8) R(x, 15, 2, 17, '#2F3438'); R(0, 28, TS, 4, '#B07C4C');
+    };
+    T[TL.HBALC] = function () {
+      R(0, 0, TS, TS, '#C98A62'); for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = i * 16, y = j * 16; R(x + 1, y + 1, 15, 15, hs(i, j, 9) > 0.5 ? '#D9966A' : '#D18F63'); }
+    };
+
+    return function drawOldTile(ctx, t, ox, oy, tx, ty, open, th) {
+      th = th || { a: N.mag, b: N.cyn }; g = ctx; TX = tx; TY = ty;
+      g.save(); g.translate(ox, oy);
+      if (T[t]) T[t](open, th.a, th.b);
+      else R(0, 0, TS, TS, '#050508');
+      g.restore();
+    };
+  })();
+
+  /* ============================================================ 2. TILE NOTES & METADATA */
+  const TILE_NOTES = {
+    0: 'Deep void canvas (#050508).',
+    1: 'Added recessed steel plate seams, cable conduit grooves & corner hex bolts.',
+    2: 'Full LED/glass diffuser grid, cross filaments, bevels & specular corner glints.',
+    3: 'Brick courses + acoustic dado rail in room accent B + ribbed wainscoting & shadow.',
+    4: 'Bottle neck/cap glints, mahogany reflections, coasters, under-bar LED & brass footrail.',
+    5: 'Separated top horn tweeter waveguide from deep woofer cone + corner steel plates.',
+    6: 'Bolted column capital, floor anchor bolts & crisper cylindrical dither.',
+    7: 'Tufted button dimples, center cushion split & piped velvet edge highlights.',
+    8: 'Crisp recessed grout grid, bevel glaze rims & diagonal ceramic specular sheen.',
+    9: 'Added chrome occupied latch indicator & darker floor privacy gap.',
+    10: 'Brightened water glint & faucet spout over dark vanity cabinet.',
+    11: 'Richer turf clusters & night firefly/clover flecks.',
+    12: 'Refined concrete aggregate, expansion bevel & weathered hairline cracks.',
+    13: 'Vinyl seams, crisp pillow fold & quilted diamond tuft marks.',
+    14: 'Added white number plate badges above recessed chrome locker latches.',
+    15: 'Warm beveled timber grain & recessed under-apron shadow.',
+    16: 'Upgraded to dual 12" turntables + tonearms + center 4-ch mixer + green/amber/red VU LEDs.',
+    17: 'Richer velvet pile gradient, woven frame & fringed border.',
+    18: 'Clean 3-post spacing with white specular ridge highlights.',
+    19: '3D stair treads, grooved anti-slip metallic nosings & brushed steel side handrails.',
+    20: 'Multi-tone steel drum hoops & dithered rising flame.',
+    21: 'Layered palm/monstera fronds & rimmed ceramic pot.',
+    22: 'Heavy riveted steel jambs, glowing lime transom spill, chevron guide & ribbed threshold.',
+    23: 'Slatted hardwood bench with iron bolt heads.',
+    24: 'Aggregate grain, curb lip, weathered amber lane stripes & wet shimmer.',
+    25: '2×2 beveled paving slabs with hairline crack variation.',
+    26: 'Brass curtain rings on rod & subtle under-curtain light leak.',
+    27: 'Dual-bezel metal frame & crisp diagonal mirror highlights.',
+    28: 'Polished chrome rooftop rail & stanchions.',
+    29: 'Touring wood crate with amber top trim & steel corner rivets.',
+    30: 'Midnight gradient & twinkling cross-star.',
+    31: 'Beveled honey-oak planks, staggered joints, grain streaks & warm umber contact shadows.',
+    32: 'Sunlit plaster + picture rail molding + paneled cream/timber plinth baseboard.',
+    33: 'Seamless woven cream rug with slate lattice & terracotta diamond motifs.',
+    34: 'Daylight ceramic 2×2 grid with pale grout, top/left bevel & diagonal glaze glint.',
+    35: 'Mid-century sage sofa with piped top rail, ochre throw pillows & walnut legs.',
+    36: 'Oak headboard strip, creased white pillows, crisp sheet cuff & quilted cobalt duvet.',
+    37: 'Warm beveled oak table with tapered legs & woodgrain.',
+    38: 'Terrazzo countertop speckles, shaker door bevels & warm brass pulls.',
+    39: 'Walnut hi-fi monitor with copper dust cap & silk tweeter.',
+    40: 'Layered coats with distinct wool/denim folds & highlights.',
+    41: 'Terracotta pot rim & layered sunlit foliage.',
+    42: 'Cream architrave jambs, unmistakable warm amber transom header & brass threshold.',
+    43: 'Daylight porcelain toilet with chrome flush button & base shadow.',
+    44: 'Daylight pedestal sink with framed mirror & diagonal glass glint.',
+    45: 'Morning sky gradient with soft cumulus cloud banks.',
+    46: 'Wrought-iron balcony railing over terracotta coping.',
+    47: 'Sunlit terracotta balcony 2×2 pavers with sandy mortar.',
+    48: 'NEW (SOLID): Tufted plum-velvet club/flat armchair with rolled arms & walnut feet.',
+    49: 'NEW (SOLID): Aluminum truss lighting totem & flight-case base with A/B LED PAR cans.',
+    50: 'NEW (SOLID): Rolling chrome coat-check garment rail with winter coats & check tags.',
+    51: 'NEW (SOLID): Illuminated glass-door beverage cooler / flat fridge with bottle shelves.',
+    52: 'NEW (SOLID): Walnut bookshelf packed with vinyl LPs, art books & trailing pothos.',
+    53: 'NEW (SOLID): Tufted teal-velvet lounge ottoman pouf with piped rim.',
+    54: 'NEW (SOLID): Folded-horn club bass bin subwoofer with corner armor & status LED.',
+    55: 'NEW (SOLID): Cast-iron ribbed apartment/backstage radiator with brass valve.',
+    56: 'NEW (SOLID): Porcelain alcove bathtub with #1C1A29 outline, aqua water, brass tap & curtain (autotiles).',
+    57: 'NEW (SOLID): Unmistakable club stall toilet with cistern, dark bowl shimmer & wall TP dispenser.'
+  };
+
+  let curTheme = { a: '#FF2D95', b: '#19D3FF' };
+  let curFilter = 'all';
+  let curRoom = 'main';
+  let curMode = 'after';
+
+  function mkTileCanvas(drawFn, t, openFn, tx, ty, th) {
+    const c = document.createElement('canvas');
+    c.width = TS; c.height = TS;
+    c.style.width = '64px'; c.style.height = '64px';
+    c.className = 'px';
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    drawFn(ctx, t, 0, 0, tx, ty, openFn, th);
+    return c;
+  }
+
+  function renderAtlas() {
+    const grid = document.getElementById('tile-grid');
+    grid.innerHTML = '';
+    const openAlways = function () { return true; };
+    const openWall = function (dx, dy) { return dy === 1; }; /* show south-facing dado/baseboard clearly */
+
+    for (let id = 0; id <= 57; id++) {
+      const name = EM.TL_NAMES[id] || ('TILE_' + id);
+      const isNew = id >= 48;
+      const isFlat = (id >= 31 && id <= 47) || id === 56;
+      const isArch = [1, 2, 3, 8, 11, 12, 19, 22, 24, 25, 26, 31, 32, 34, 42, 47].indexOf(id) !== -1;
+      let vis = true;
+      if (curFilter === 'club') vis = id <= 30 || id === 57;
+      else if (curFilter === 'flat') vis = isFlat;
+      else if (curFilter === 'new') vis = isNew;
+      else if (curFilter === 'arch') vis = isArch;
+
+      const card = document.createElement('div');
+      card.className = 'tile-card' + (vis ? '' : ' hidden');
+
+      const top = document.createElement('div');
+      top.className = 'tile-top';
+      const solidBadge = EM.isSolidTile(id)
+        ? '<span class="badge inv">SOLID</span>'
+        : '<span class="badge muted">WALK</span>';
+      top.innerHTML = '<div><span class="tile-id">#' + String(id).padStart(2, '0') + '</span> <span class="tile-name">' + name + '</span></div>' + solidBadge;
+      card.appendChild(top);
+
+      const pair = document.createElement('div');
+      pair.className = 'tile-pair';
+      const openFn = (id === TL.WALL || id === TL.HWALL) ? openWall : openAlways;
+      const tySample = (id === TL.HBED) ? 3 : 2;
+
+      const bSlot = document.createElement('div');
+      bSlot.className = 'tile-slot';
+      if (isNew) {
+        bSlot.innerHTML = '<div class="tile-new-empty">NEW TILE</div><span>BEFORE</span>';
+      } else {
+        bSlot.appendChild(mkTileCanvas(OLD_T, id, openFn, 2, tySample, curTheme));
+        const sp = document.createElement('span'); sp.textContent = 'BEFORE'; bSlot.appendChild(sp);
+      }
+
+      const aSlot = document.createElement('div');
+      aSlot.className = 'tile-slot after';
+      aSlot.appendChild(mkTileCanvas(EM.drawTile, id, openFn, 2, tySample, curTheme));
+      const spA = document.createElement('span'); spA.textContent = isNew ? 'NEW (16-BIT)' : 'AFTER'; aSlot.appendChild(spA);
+
+      pair.appendChild(bSlot); pair.appendChild(aSlot);
+      card.appendChild(pair);
+
+      const note = document.createElement('div');
+      note.className = 'tile-note';
+      note.textContent = TILE_NOTES[id] || '';
+      card.appendChild(note);
+
+      grid.appendChild(card);
+    }
+  }
+
+  /* ============================================================ 3. OBJECT & ICON SPRITE ATLAS */
+  function renderSprites() {
+    const grid = document.getElementById('sprite-grid');
+    grid.innerHTML = '';
+    const allKinds = EM.OBJ_KINDS.concat(['cat', 'aftoast', 'afbasket', 'afbowl']);
+    const NEW_SET = {
+      vinyl_crate: 1, synth_rack: 1, espresso: 1, candle_table: 1, coat_stand: 1, lava_lamp: 1,
+      window_dawn: 1, wall_art: 1, mop_bucket: 1, hand_dryer: 1, first_aid: 1, tea_urn: 1
+    };
+    const ALIAS_SET = { cat: 1, aftoast: 1, afbasket: 1, afbowl: 1 };
+
+    allKinds.forEach(function (k) {
+      const card = document.createElement('div');
+      card.className = 'sprite-card';
+      const tag = NEW_SET[k] ? '<span class="badge inv">NEW</span>' : ALIAS_SET[k] ? '<span class="badge muted">ZONE</span>' : '<span class="badge">BASE</span>';
+      card.innerHTML = '<div class="tile-top"><span class="tile-name">' + k + '</span>' + tag + '</div>';
+
+      const sw = document.createElement('div');
+      sw.className = 'sprite-swatches';
+      const img = EM.objSprite(k);
+
+      ['club', 'flat'].forEach(function (bg) {
+        const box = document.createElement('div');
+        box.className = 'swatch ' + bg;
+        const c = document.createElement('canvas');
+        c.width = img.width; c.height = img.height;
+        c.style.width = '48px'; c.style.height = '48px';
+        c.className = 'px';
+        const cx = c.getContext('2d'); cx.imageSmoothingEnabled = false;
+        cx.drawImage(img, 0, 0);
+        const sm = document.createElement('small'); sm.textContent = bg === 'club' ? 'CLUB' : 'FLAT';
+        box.appendChild(c); box.appendChild(sm);
+        sw.appendChild(box);
+      });
+      card.appendChild(sw);
+      grid.appendChild(card);
+    });
+
+    const strip = document.getElementById('icon-strip');
+    strip.innerHTML = '<span class="ctrl-label" style="width:100%;">EXISTING 8×8 UI/FLOOR ICONS (EM.icon — 28 TOTAL):</span>';
+    ['wave', 'point', 'hug', 'water', 'phone', 'thumb', 'palm', 'heart', 'skull', 'zzz', 'note', 'exclam', 'question', 'sweat', 'spark', 'pill', 'cig', 'drink', 'cross', 'shield', 'eyes', 'mute', 'door', 'breath', 'up', 'star', 'hand', 'anger'].forEach(function (ic) {
+      const pill = document.createElement('span');
+      pill.className = 'icon-pill';
+      const c = EM.iconCanvas(ic);
+      c.style.width = '18px'; c.style.height = '18px'; c.className = 'px';
+      pill.appendChild(c);
+      const t = document.createElement('span'); t.textContent = ic; pill.appendChild(t);
+      strip.appendChild(pill);
+    });
+  }
+
+  /* ============================================================ 4. FULL 16-BIT ROOM DIORAMAS (7 SPACES) */
+  function mkMap(w, h, base) {
+    const a = new Uint8Array(w * h); a.fill(base);
+    return {
+      w: w, h: h, tiles: a,
+      set: function (x, y, t) { if (x >= 0 && y >= 0 && x < w && y < h) a[y * w + x] = t; },
+      fill: function (x, y, ww, hh, t) { for (let j = 0; j < hh; j++) for (let i = 0; i < ww; i++) this.set(x + i, y + j, t); },
+      get: function (x, y) { return (x < 0 || y < 0 || x >= w || y >= h) ? TL.VOID : a[y * w + x]; }
+    };
+  }
+
+  const ROOMS = {
+    main: {
+      title: 'MAIN FLOOR // LA GRIETA',
+      sub: 'Sub-floor LED dance matrix, dual-turntable booth with VU meters, folded-horn subwoofers & truss lighting totems',
+      theme: { a: '#FF2D95', b: '#19D3FF' },
+      badges: ['SUBWOOFER (54)', 'LIGHTRIG (49)', 'FRIDGE (51)', 'vinyl_crate', 'DJ', 'water'],
+      build: function (isAfter) {
+        const w = 18, h = 11, m = mkMap(w, h, TL.WALL);
+        m.fill(1, 2, w - 2, h - 3, TL.FLOOR);
+        m.fill(4, 5, 10, 4, TL.DANCE);
+        m.fill(6, 2, 6, 1, TL.BOOTH); m.fill(7, 3, 4, 1, TL.TABLE);
+        m.set(5, 2, TL.SPEAKER); m.set(12, 2, TL.SPEAKER);
+        m.set(3, 4, TL.PILLAR); m.set(14, 4, TL.PILLAR);
+        m.fill(16, 4, 1, 4, TL.BAR);
+        m.set(9, 10, TL.DOORF); m.set(14, 1, TL.DOORF); m.set(15, 1, TL.STAIRS);
+        const objs = [{ k: 'water', x: 15, y: 4 }, { k: 'DJ', x: 8, y: 2 }];
+        if (isAfter) {
+          m.set(4, 2, TL.SUBWOOFER); m.set(13, 2, TL.SUBWOOFER);
+          m.set(2, 2, TL.LIGHTRIG); m.set(16, 2, TL.LIGHTRIG);
+          m.set(16, 8, TL.FRIDGE);
+          m.set(2, 8, TL.COUCH); m.set(3, 8, TL.COUCH);
+          objs.push({ k: 'vinyl_crate', x: 6, y: 3 }, { k: 'poster', x: 1, y: 2 });
+        }
+        return { m: m, objs: objs, signs: [[9, 9, 'FOYER'], [14, 2, 'SALA 2']] };
+      }
+    },
+    attic: {
+      title: 'SALA 2 // THE ATTIC',
+      sub: 'Elevated Frames Shell / APÜD DJ booth, flanking subwoofers & light rigs, 4 structural pillars, NW velvet lounge, north dubplate bar & SE chill alcove',
+      theme: { a: '#8A5CFF', b: '#B6FF3B' },
+      badges: ['BOOTH (14)', 'SUBWOOFER (54)', 'LIGHTRIG (49)', 'PILLAR (55)', 'BAR (12)', 'RUG (17)'],
+      build: function (isAfter) {
+        const w = 20, h = 12, m = mkMap(w, h, TL.WALL);
+        m.fill(1, 2, w - 2, h - 3, TL.FLOOR);
+        m.fill(4, 4, 11, 5, TL.DANCE);
+        m.fill(15, 2, 4, 2, TL.BOOTH); m.fill(15, 4, 4, 1, TL.TABLE);
+        m.set(0, 6, TL.STAIRS); m.set(2, 10, TL.STAIRS); m.set(2, 11, TL.DOORF); m.set(11, 1, TL.DOORF); m.set(19, 6, TL.DOORF);
+        m.fill(1, 3, 1, 2, TL.SPEAKER); m.fill(1, 7, 1, 2, TL.SPEAKER);
+        const objs = [{ k: 'DJ', x: 16, y: 4 }];
+        if (isAfter) {
+          m.set(3, 4, TL.PILLAR); m.set(15, 4, TL.PILLAR); m.set(3, 8, TL.PILLAR); m.set(15, 8, TL.PILLAR);
+          m.set(14, 2, TL.LIGHTRIG); m.set(19, 2, TL.LIGHTRIG); m.set(8, 3, TL.LIGHTRIG);
+          m.set(14, 3, TL.SUBWOOFER); m.set(19, 3, TL.FRIDGE); m.set(19, 4, TL.SUBWOOFER);
+          m.set(1, 5, TL.SUBWOOFER); m.set(17, 5, TL.SPEAKER);
+          m.fill(1, 2, 2, 1, TL.RUG); m.set(1, 2, TL.COUCH); m.set(2, 2, TL.ARMCHAIR);
+          m.fill(5, 1, 2, 1, TL.MIRROR); m.set(4, 2, TL.FRIDGE); m.fill(5, 2, 3, 1, TL.BAR);
+          m.fill(15, 9, 4, 2, TL.RUG); m.fill(16, 10, 2, 1, TL.COUCH); m.set(18, 9, TL.ARMCHAIR); m.set(14, 10, TL.PLANT);
+          m.fill(5, 10, 6, 1, TL.COUCH);
+          objs.push(
+            { k: 'synth_rack', x: 15, y: 4 },
+            { k: 'vinyl_crate', x: 18, y: 4 },
+            { k: 'water', x: 5, y: 2 },
+            { k: 'lava_lamp', x: 3, y: 2 },
+            { k: 'wall_art', x: 9, y: 1 },
+            { k: 'candle_table', x: 16, y: 9 }
+          );
+        }
+        return { m: m, objs: objs, signs: [[2, 9, 'DOWN'], [10, 2, 'BALCONY']] };
+      }
+    },
+    foyer: {
+      title: 'FOYER // COAT CHECK',
+      sub: 'Rolling coatrack garment rail, lockers, check-in counter, stairs to SALA 2 & unambiguous club portals',
+      theme: { a: '#FFB020', b: '#FF2D95' },
+      badges: ['COATRACK (50)', 'ARMCHAIR (48)', 'coat_stand', 'poster', 'phone'],
+      build: function (isAfter) {
+        const w = 16, h = 10, m = mkMap(w, h, TL.WALL);
+        m.fill(1, 2, w - 2, h - 3, TL.FLOOR);
+        m.fill(2, 2, 4, 1, TL.LOCKER); m.fill(2, 3, 4, 1, TL.BAR);
+        m.set(8, 1, TL.DOORF); m.set(12, 1, TL.DOORF); m.set(12, 2, TL.STAIRS);
+        m.set(4, 9, TL.DOORF); m.set(0, 6, TL.DOORF); m.set(15, 6, TL.DOORF);
+        m.set(1, 8, TL.PLANT); m.fill(7, 7, 2, 1, TL.BENCH);
+        const objs = [{ k: 'note', x: 3, y: 4 }];
+        if (isAfter) {
+          m.set(6, 2, TL.COATRACK); m.set(7, 2, TL.COATRACK);
+          m.set(13, 7, TL.ARMCHAIR); m.set(14, 7, TL.OTTOMAN);
+          m.set(14, 3, TL.RADIATOR);
+          objs.push({ k: 'coat_stand', x: 1, y: 3 }, { k: 'poster', x: 10, y: 2 }, { k: 'phone', x: 7, y: 6 });
+        }
+        return { m: m, objs: objs, signs: [[8, 2, 'MAIN'], [12, 3, 'SALA 2'], [1, 5, '< CALM']] };
+      }
+    },
+    backstage: {
+      title: 'BACKSTAGE // GREEN ROOM',
+      sub: 'Velvet rug, green-room armchairs & ottoman, cold beverage fridge, synth flight rig & vinyl crate',
+      theme: { a: '#FFB020', b: '#FF6A00' },
+      badges: ['ARMCHAIR (48)', 'OTTOMAN (53)', 'FRIDGE (51)', 'LIGHTRIG (49)', 'synth_rack', 'lava_lamp'],
+      build: function (isAfter) {
+        const w = 16, h = 10, m = mkMap(w, h, TL.WALL);
+        m.fill(1, 2, w - 2, h - 3, TL.RUG);
+        m.fill(5, 7, 3, 1, TL.COUCH); m.fill(11, 2, 2, 1, TL.CRATE); m.fill(8, 4, 2, 1, TL.TABLE);
+        m.set(3, 9, TL.DOORF); m.set(0, 5, TL.DOORF); m.set(13, 1, TL.DOORF);
+        const objs = [{ k: 'water', x: 11, y: 3 }];
+        if (isAfter) {
+          m.set(3, 5, TL.ARMCHAIR); m.set(5, 5, TL.OTTOMAN);
+          m.set(14, 2, TL.FRIDGE); m.set(2, 2, TL.LIGHTRIG); m.set(9, 2, TL.RADIATOR);
+          objs.push({ k: 'synth_rack', x: 8, y: 3 }, { k: 'vinyl_crate', x: 6, y: 3 }, { k: 'lava_lamp', x: 9, y: 4 }, { k: 'ashtray', x: 8, y: 5 });
+        }
+        return { m: m, objs: objs, signs: [[3, 8, 'STAGE'], [13, 2, 'ROOF']] };
+      }
+    },
+    restrooms: {
+      title: 'TOILETS // RESTROOMS',
+      sub: 'Full sink & backlit mirror bank, realistic 4-tile stainless cubicle bays, visible porcelain toilets, wall hand dryers & mop bucket',
+      theme: { a: '#19D3FF', b: '#00C2A8' },
+      badges: ['TOILET (57)', 'STALL (9)', 'SINK (10)', 'MIRROR (27)', 'hand_dryer', 'mop_bucket'],
+      build: function (isAfter) {
+        const w = 18, h = 11, m = mkMap(w, h, TL.WALL);
+        m.fill(1, 2, w - 2, h - 3, TL.TILE);
+        m.set(0, 5, TL.DOORF); m.set(6, 10, TL.DOORF);
+        if (!isAfter) {
+          m.fill(2, 1, 4, 1, TL.MIRROR); m.fill(2, 2, 4, 1, TL.SINK);
+          m.fill(9, 2, 1, 4, TL.WALL);
+          [11, 13, 15, 17].forEach(function (x) { if (x < 17) m.fill(x, 3, 1, 3, TL.STALL); });
+          m.set(12, 3, TL.STALL); m.set(14, 3, TL.STALL); m.set(14, 6, TL.STALL);
+          return { m: m, objs: [{ k: 'water', x: 2, y: 3 }], signs: [[10, 7, 'ALL GENDERS']] };
+        }
+        m.fill(3, 1, 4, 1, TL.MIRROR); m.fill(3, 2, 4, 1, TL.SINK);
+        m.fill(7, 1, 3, 1, TL.MIRROR);
+        m.fill(10, 2, 1, 4, TL.WALL); m.fill(10, 8, 1, 2, TL.WALL);
+        [11, 13, 15, 17].forEach(function (x) { if (x < 17) m.fill(x, 2, 1, 4, TL.STALL); });
+        m.set(12, 2, TL.TOILET); m.set(14, 2, TL.TOILET); m.set(16, 2, TL.TOILET);
+        m.set(14, 5, TL.STALL); m.set(16, 5, TL.STALL);
+        m.set(1, 8, TL.BENCH); m.set(1, 9, TL.PLANT); m.set(16, 9, TL.PLANT);
+        return {
+          m: m,
+          objs: [
+            { k: 'water', x: 3, y: 3 },
+            { k: 'hand_dryer', x: 1, y: 2 },
+            { k: 'hand_dryer', x: 9, y: 4 },
+            { k: 'mop_bucket', x: 11, y: 9 }
+          ],
+          signs: [[10, 7, 'ALL GENDERS'], [1, 4, 'STAFF']]
+        };
+      }
+    },
+    welfare: {
+      title: 'QUIET ROOM // WELFARE',
+      sub: 'Warm acoustic floor + woven lounge rugs, seamless recovery daybed, harm-reduction table, herbal tea urn & first-aid kit',
+      theme: { a: '#2ED36A', b: '#19D3FF' },
+      badges: ['MATT (13)', 'RUG (17)', 'BOOKSHELF (52)', 'tea_urn', 'first_aid', 'wall_art'],
+      build: function (isAfter) {
+        const w = 16, h = 11, m = mkMap(w, h, TL.WALL);
+        if (!isAfter) {
+          m.fill(1, 2, w - 2, h - 3, TL.TILE);
+          m.fill(2, 6, 4, 3, TL.MATT); m.fill(9, 3, 3, 1, TL.TABLE); m.fill(13, 2, 2, 2, TL.CRATE);
+          m.set(15, 6, TL.DOORF); m.set(8, 1, TL.DOORF);
+          return { m: m, objs: [{ k: 'water', x: 13, y: 4 }], signs: [[9, 2, 'CHECK'], [2, 5, 'REST']] };
+        }
+        m.fill(1, 2, w - 2, h - 3, TL.FLOOR);
+        m.fill(1, 5, 7, 5, TL.RUG); m.fill(8, 5, 6, 5, TL.RUG);
+        m.fill(2, 6, 4, 3, TL.MATT);
+        m.set(1, 8, TL.PLANT); m.set(1, 4, TL.ARMCHAIR);
+        m.set(2, 2, TL.RADIATOR); m.set(4, 2, TL.BOOKSHELF); m.set(6, 2, TL.PLANT);
+        m.fill(9, 3, 3, 1, TL.TABLE); m.fill(13, 3, 2, 1, TL.TABLE); m.set(14, 2, TL.PLANT);
+        m.set(10, 8, TL.ARMCHAIR); m.set(11, 8, TL.OTTOMAN); m.set(13, 9, TL.RADIATOR);
+        m.set(15, 6, TL.DOORF); m.set(8, 1, TL.DOORF);
+        return {
+          m: m,
+          objs: [
+            { k: 'lamp', x: 9, y: 3 },
+            { k: 'first_aid', x: 10, y: 3 },
+            { k: 'tea_urn', x: 13, y: 3 },
+            { k: 'candle_table', x: 9, y: 8 },
+            { k: 'wall_art', x: 6, y: 1 },
+            { k: 'wall_art', x: 11, y: 1 },
+            { k: 'water', x: 13, y: 4 }
+          ],
+          signs: [[9, 2, 'CHECK'], [2, 5, 'REST'], [12, 5, 'WATER']]
+        };
+      }
+    },
+    a_living: {
+      title: 'LIVING ROOM // THE FLAT',
+      sub: 'Woven kilim centerpiece, coffee table + props, dawn windows, framed wall art, bookshelves, vinyl corner & coatrack',
+      theme: { a: '#FFB020', b: '#FF7AB8' },
+      badges: ['HRUG (33)', 'HTABLE (37)', 'BOOKSHELF (52)', 'window_dawn', 'wall_art', 'vinyl_crate'],
+      build: function (isAfter) {
+        const w = 18, h = 11, m = mkMap(w, h, TL.HWALL);
+        m.fill(1, 2, w - 2, h - 3, TL.HFLOOR);
+        m.fill(4, 5, 9, 4, TL.HRUG);
+        m.fill(2, 3, 4, 1, TL.HCOUCH); m.fill(12, 3, 3, 1, TL.HTABLE);
+        m.set(11, 3, TL.HSPEAKER); m.set(15, 3, TL.HSPEAKER);
+        m.set(1, 9, TL.HPLANT); m.set(16, 9, TL.HPLANT);
+        m.set(6, 1, TL.HDOOR); m.set(10, 1, TL.HDOOR); m.set(17, 6, TL.HDOOR); m.set(0, 6, TL.HDOOR); m.set(8, 10, TL.HDOOR);
+        const objs = [{ k: 'records', x: 13, y: 3 }, { k: 'afbasket', x: 7, y: 9 }];
+        if (isAfter) {
+          m.fill(6, 5, 3, 1, TL.HTABLE);
+          m.fill(7, 2, 2, 1, TL.BOOKSHELF); m.set(16, 2, TL.RADIATOR); m.set(1, 2, TL.HPLANT);
+          m.set(2, 6, TL.ARMCHAIR); m.set(3, 6, TL.OTTOMAN); m.set(6, 9, TL.COATRACK);
+          objs.push(
+            { k: 'window_dawn', x: 3, y: 1 }, { k: 'window_dawn', x: 13, y: 1 },
+            { k: 'wall_art', x: 8, y: 1 }, { k: 'vinyl_crate', x: 11, y: 4 },
+            { k: 'candle_table', x: 6, y: 5 }, { k: 'ashtray', x: 7, y: 5 }, { k: 'dishes', x: 8, y: 5 },
+            { k: 'lava_lamp', x: 1, y: 8 }, { k: 'shoes', x: 9, y: 9 }, { k: 'lamp', x: 15, y: 9 }
+          );
+        }
+        return { m: m, objs: objs, signs: [[6, 2, 'COATS'], [10, 2, 'WC'], [8, 9, 'SHOES OFF']] };
+      }
+    },
+    a_kitchen: {
+      title: 'KITCHEN // THE FLAT',
+      sub: 'Counter with aligned stainless sink + gooseneck faucet & 4-burner stovetop + copper kettle, fridge, breakfast rug & dawn windows',
+      theme: { a: '#FFB020', b: '#FF7AB8' },
+      badges: ['HCOUNTER (38)', 'FRIDGE (51)', 'HRUG (33)', 'window_dawn', 'espresso', 'aftoast'],
+      build: function (isAfter) {
+        const w = 14, h = 10, m = mkMap(w, h, TL.HWALL);
+        m.fill(1, 2, w - 2, h - 3, TL.HTILE);
+        m.fill(3, 2, 9, 1, TL.HCOUNTER); m.fill(6, 5, 3, 1, TL.HTABLE); m.set(12, 7, TL.HPLANT);
+        m.set(0, 8, TL.HDOOR);
+        const objs = [{ k: 'water', x: 3, y: 3 }, { k: 'dishes', x: 6, y: 3 }, { k: 'aftoast', x: 9, y: 3 }];
+        if (isAfter) {
+          m.fill(5, 4, 5, 3, TL.HRUG);
+          m.set(2, 2, TL.FRIDGE); m.set(12, 2, TL.RADIATOR); m.set(1, 2, TL.HPLANT);
+          objs.push(
+            { k: 'espresso', x: 8, y: 2 }, { k: 'dishes', x: 6, y: 2 },
+            { k: 'kettle', x: 7, y: 5 }, { k: 'aftoast', x: 8, y: 5 },
+            { k: 'window_dawn', x: 6, y: 1 }, { k: 'window_dawn', x: 10, y: 1 }, { k: 'wall_art', x: 1, y: 1 }
+          );
+        }
+        return { m: m, objs: objs, signs: [[5, 1, 'TOAST']] };
+      }
+    },
+    a_bath: {
+      title: 'BATHROOM // THE FLAT',
+      sub: '2-tile porcelain alcove tub, 2x1 woven bathmat, oak-framed vanity mirror above sink, south-facing toilet & laundry stool',
+      theme: { a: '#FFB020', b: '#FF7AB8' },
+      badges: ['HBATH (56)', 'HTOILET (43)', 'HSINK (44)', 'MIRROR (27)', 'HRUG (33)', 'window_dawn'],
+      build: function (isAfter) {
+        if (!isAfter) {
+          const w = 8, h = 8, m = mkMap(w, h, TL.HWALL);
+          m.fill(1, 2, w - 2, h - 3, TL.HTILE);
+          m.set(3, 2, TL.HTOILET); m.set(5, 2, TL.HSINK); m.set(3, 7, TL.HDOOR);
+          return { m: m, objs: [], signs: [[2, 1, 'ONE TOILET']] };
+        }
+        const w = 10, h = 9, m = mkMap(w, h, TL.HWALL);
+        m.fill(1, 2, w - 2, h - 3, TL.HTILE);
+        m.fill(1, 2, 2, 1, TL.HBATH);
+        m.set(4, 2, TL.HTOILET); m.set(6, 1, TL.MIRROR); m.set(6, 2, TL.HSINK); m.set(8, 2, TL.RADIATOR);
+        m.fill(1, 3, 2, 1, TL.HRUG);
+        m.set(8, 5, TL.OTTOMAN);
+        m.set(1, 7, TL.HPLANT); m.set(8, 7, TL.HPLANT);
+        m.set(4, 8, TL.HDOOR);
+        return {
+          m: m,
+          objs: [{ k: 'lamp', x: 5, y: 2 }, { k: 'window_dawn', x: 8, y: 1 }],
+          signs: [[2, 1, 'ONE TOILET']]
+        };
+      }
+    },
+    a_balcony: {
+      title: 'BALCONY // THE FLAT',
+      sub: 'Outdoor woven patio rug, bistro table with ashtray & morning espresso, lounge chair & potted terracotta greenery',
+      theme: { a: '#FFB020', b: '#FF7AB8' },
+      badges: ['HBALC (47)', 'HRUG (33)', 'HTABLE (37)', 'HPLANT (41)', 'ashtray', 'espresso'],
+      build: function (isAfter) {
+        const w = 16, h = 8, m = mkMap(w, h, TL.VOID);
+        m.fill(0, 0, 16, 2, TL.HSKY); m.fill(0, 2, 16, 1, TL.HRAIL); m.fill(1, 3, 14, 4, TL.HBALC);
+        m.fill(0, 3, 1, 4, TL.HRAIL); m.fill(0, 7, 16, 1, TL.HRAIL); m.fill(15, 3, 1, 4, TL.HRAIL); m.set(15, 5, TL.HDOOR);
+        if (!isAfter) return { m: m, objs: [], signs: [] };
+        m.fill(2, 4, 4, 2, TL.HRUG);
+        m.fill(3, 5, 2, 1, TL.HTABLE);
+        m.set(1, 6, TL.ARMCHAIR); m.set(2, 6, TL.OTTOMAN);
+        m.set(1, 3, TL.HPLANT); m.set(7, 3, TL.HPLANT); m.set(11, 3, TL.HPLANT); m.set(14, 3, TL.HPLANT); m.set(14, 6, TL.HPLANT);
+        return {
+          m: m,
+          objs: [
+            { k: 'ashtray', x: 3, y: 5 },
+            { k: 'espresso', x: 4, y: 5 },
+            { k: 'lamp', x: 2, y: 3 },
+            { k: 'lamp', x: 13, y: 3 }
+          ],
+          signs: []
+        };
+      }
+    },
+    a_master: {
+      title: 'MASTER BEDROOM // THE FLAT',
+      sub: 'Cohesive multi-tile oak bed with throw blanket, woven kilim rugs, reading nook, vinyl crate, dawn windows & wall art',
+      theme: { a: '#FFB020', b: '#FF7AB8' },
+      badges: ['HBED (36)', 'HRUG (33)', 'BOOKSHELF (52)', 'window_dawn', 'wall_art', 'records'],
+      build: function (isAfter) {
+        const w = 14, h = 10, m = mkMap(w, h, TL.HWALL);
+        m.fill(1, 2, w - 2, h - 3, TL.HFLOOR);
+        m.fill(8, 3, 4, 3, TL.HBED); m.fill(2, 3, 2, 1, TL.HCOUCH);
+        m.set(3, 9, TL.HDOOR);
+        const objs = [{ k: 'afbowl', x: 1, y: 7 }];
+        if (isAfter) {
+          m.fill(1, 3, 4, 2, TL.HRUG); m.fill(6, 4, 7, 4, TL.HRUG);
+          m.set(7, 3, TL.HTABLE); m.set(12, 4, TL.HTABLE);
+          m.fill(5, 2, 2, 1, TL.BOOKSHELF); m.set(12, 3, TL.RADIATOR); m.set(1, 5, TL.OTTOMAN);
+          m.set(1, 2, TL.HPLANT); m.set(12, 2, TL.HPLANT);
+          objs.push(
+            { k: 'lamp', x: 7, y: 3 }, { k: 'lamp', x: 12, y: 4 },
+            { k: 'candle_table', x: 4, y: 3 }, { k: 'photo', x: 5, y: 3 },
+            { k: 'records', x: 1, y: 3 }, { k: 'vinyl_crate', x: 1, y: 4 },
+            { k: 'window_dawn', x: 3, y: 1 }, { k: 'window_dawn', x: 9, y: 1 }, { k: 'wall_art', x: 7, y: 1 }
+          );
+        }
+        return { m: m, objs: objs, signs: [[5, 2, 'ASK FIRST']] };
+      }
+    }
+  };
+
+  function renderRoomCanvas(roomSpec, isAfter, labelTxt) {
+    const data = roomSpec.build(isAfter);
+    const m = data.m;
+    const c = document.createElement('canvas');
+    c.width = m.w * TS; c.height = m.h * TS;
+    const scale = m.w >= 17 ? 1.75 : 2;
+    c.style.width = Math.round(m.w * 16 * scale) + 'px';
+    c.style.height = Math.round(m.h * 16 * scale) + 'px';
+    c.className = 'px';
+    const ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = false;
+
+    const solid = function (x, y) { return EM.isSolidTile(m.get(x, y)); };
+    const fn = isAfter ? EM.drawTile : OLD_T;
+    const floorTypes = [TL.FLOOR, TL.HFLOOR, TL.HTILE, TL.TILE, TL.RUG, TL.HRUG, TL.CONC, TL.GRASS, TL.SIDEWALK, TL.HBALC];
+    const floorCounts = {};
+    for (let y = 0; y < m.h; y++) for (let x = 0; x < m.w; x++) {
+      const tv = m.get(x, y);
+      if (floorTypes.indexOf(tv) !== -1) floorCounts[tv] = (floorCounts[tv] || 0) + 1;
+    }
+    let baseFloor = TL.FLOOR, bestCount = 0;
+    floorTypes.forEach(function (ft) { if ((floorCounts[ft] || 0) > bestCount) { bestCount = floorCounts[ft]; baseFloor = ft; } });
+    const tileTheme = { a: roomSpec.theme.a, b: roomSpec.theme.b, floor: baseFloor, id: curRoom };
+    for (let y = 0; y < m.h; y++) for (let x = 0; x < m.w; x++) {
+      let t = m.get(x, y);
+      if (t === TL.DANCE && ((x + y) & 1)) t = 'DANCE_B';
+      tileTheme.at = function (dx, dy) { return m.get(x + dx, y + dy); };
+      fn(ctx, t, x * TS, y * TS, x, y, function (dx, dy) { return !solid(x + dx, y + dy) && m.get(x + dx, y + dy) !== TL.VOID; }, tileTheme);
+    }
+
+    /* crisp signs */
+    ctx.save(); ctx.scale(RS, RS);
+    (data.signs || []).forEach(function (sg, i) {
+      const w = EM.textWidth(sg[2]) + 4, h = 9, colr = i % 2 ? roomSpec.theme.b : roomSpec.theme.a;
+      ctx.save(); ctx.translate(sg[0] * 16 + 1, sg[1] * 16 + 3);
+      ctx.fillStyle = '#07070A'; ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = colr; ctx.fillRect(0, 0, w, 1); ctx.fillRect(0, h - 1, w, 1); ctx.fillRect(0, 0, 1, h); ctx.fillRect(w - 1, 0, 1, h);
+      EM.drawText(ctx, sg[2], 2, 2, EM.shade(colr, 0.45));
+      ctx.restore();
+    });
+
+    /* object sprites (After) or basic legacy icons (Before) */
+    (data.objs || []).forEach(function (o) {
+      if (isAfter) {
+        EM.blit(ctx, EM.objSprite(o.k), o.x * 16, o.y * 16);
+      } else if (o.k === 'water' || o.k === 'poster' || o.k === 'smoke') {
+        EM.blit(ctx, EM.icon(o.k === 'smoke' ? 'cig' : o.k), o.x * 16 + 4, o.y * 16 + 4);
+      }
+    });
+    ctx.restore();
+
+    const box = document.createElement('div');
+    box.className = 'room-canvas-box';
+    const lbl = document.createElement('div');
+    lbl.className = 'box-label';
+    lbl.textContent = labelTxt;
+    box.appendChild(lbl); box.appendChild(c);
+    return box;
+  }
+
+  function renderRooms() {
+    const spec = ROOMS[curRoom];
+    document.getElementById('room-title').textContent = spec.title;
+    document.getElementById('room-sub').textContent = spec.sub;
+
+    const badges = document.getElementById('room-badges');
+    badges.innerHTML = '';
+    spec.badges.forEach(function (b) {
+      const s = document.createElement('span');
+      s.className = 'badge' + (/^\w+ \(\d+\)$/.test(b) ? ' inv' : '');
+      s.textContent = b;
+      badges.appendChild(s);
+    });
+
+    const grid = document.getElementById('room-compare-grid');
+    grid.innerHTML = '';
+    grid.className = 'room-compare-grid' + (curMode === 'split' ? ' split' : '');
+
+    if (curMode === 'after') {
+      grid.appendChild(renderRoomCanvas(spec, true, 'AFTER // UPGRADED 16-BIT TILES + NEW FURNITURE + OBJ SPRITES'));
+    } else if (curMode === 'before') {
+      grid.appendChild(renderRoomCanvas(spec, false, 'BEFORE // ORIGINAL TILES & MINIMAL FLOOR ICONS'));
+    } else {
+      grid.appendChild(renderRoomCanvas(spec, false, 'BEFORE // ORIGINAL'));
+      grid.appendChild(renderRoomCanvas(spec, true, 'AFTER // PROPOSED UPGRADE'));
+    }
+  }
+
+  /* ============================================================ 5. WIRE CONTROLS */
+  document.querySelectorAll('.filter-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      curFilter = btn.dataset.filter;
+      renderAtlas();
+    });
+  });
+
+  document.querySelectorAll('.theme-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.theme-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      curTheme = { a: btn.dataset.a, b: btn.dataset.b };
+      renderAtlas();
+    });
+  });
+
+  document.querySelectorAll('.room-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.room-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      curRoom = btn.dataset.room;
+      renderRooms();
+    });
+  });
+
+  document.querySelectorAll('.mode-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      curMode = btn.dataset.mode;
+      renderRooms();
+    });
+  });
+
+  renderAtlas();
+  renderSprites();
+  renderRooms();
+})();
+</script>
+</body>
+</html>

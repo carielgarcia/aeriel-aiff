@@ -20,8 +20,9 @@
     q8d: function (s) { return [{ zone: F(s, 'dark_explored') ? 'main' : 'darkroom' }]; },
     q10: function () { return [{ zone: 'main' }]; }, /* dance with your people on the main floor */
     q9: function () { return [{ ent: 'sunrise_spot' }]; },
+    q12: function (s) { return s.time < 270 ? [{ ent: 'frames_attic', zone: 'attic' }] : [{ ent: 'frames', zone: 'backstage' }]; },
     q13: function () { return [{ ent: 'af_inviter' }]; },
-    /* q8 (find Benjamin and Fernando), q11 (the DJ) and q12 (FRAMES SHELL) are covered by the seekers */
+    /* q8 (find Benjamin and Fernando) and q11 (the DJ) are covered by the seekers */
     sq_rosa: function (s) {
       const out = [];
       if (!F(s, 'rosa_e1')) out.push({ ent: 'tavi' });
@@ -69,7 +70,9 @@
       if (!F(s, 'eloy_danced')) return [{ ent: 'eloy' }];
       if (!F(s, 'eloy_has_drink') && !F(s, 'eloy_drink_given')) return [{ ent: 'nico' }];
       return [{ ent: 'eloy' }];
-    }
+    },
+    sq_white_label: function (s) { return [{ ent: F(s, 'wl_note_from_celeste') ? 'valentina' : 'celeste' }]; },
+    sq_communion: function (s) { return [{ ent: F(s, 'sc_phase_marked') ? 'damian' : 'sora' }]; }
   };
 
   function find(id, zoneHint) {
@@ -88,7 +91,7 @@
       if (mv) { x = mv.x; y = mv.y; }
       else if (e.type === 'npc') { x = e.box || e.x !== Math.floor(e.x) ? e.x : e.x + 0.5; y = e.box || e.y !== Math.floor(e.y) ? e.y : e.y + 0.5; }
       else { x = e.x + e.w / 2; y = e.y + e.h / 2; }
-      return { zone: hit.z.id, x: x, y: y, quest: quest, npc: e.type === 'npc' };
+      return { zone: hit.z.id, x: x, y: y, quest: quest, npc: e.type === 'npc', ent: spec.ent };
     }
     const z = EM.zones[spec.zone]; if (!z) return null;
     return { zone: z.id, x: spec.x !== undefined ? spec.x : z.w / 2, y: spec.y !== undefined ? spec.y : z.h / 2, quest: quest };

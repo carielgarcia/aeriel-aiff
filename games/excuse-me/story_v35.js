@@ -46,15 +46,16 @@
     });
   };
   framesOn('frames', ['meet', 'again']);
+  framesOn('frames_attic', ['a', 'again']);
   framesOn('frames_roof_talk', ['a']);
   framesOn('af_cam_frames', ['a']);
   /* FRAMES is he */
   ['They tap the sticker.'].forEach(function () { /* handled in story_v34b.js */ });
 
-  /* ---------------------------------------------------------------- APÜD: three questions */
+  /* ---------------------------------------------------------------- APÜD: three questions + Sala 2 booth + Afterparty care */
   const AQ = {
-    dj: { text: t(`"HardBounce. I'm a DJ, same as FRAMES, and tonight I'm just helping ÆRIEL. Someone has to keep the floor honest while FRAMES makes speeches about names."`, `«HardBounce. Soy DJ, igual que FRAMES, y esta noche solo ayudo a ÆRIEL. Alguien tiene que mantener honesta la pista mientras FRAMES da discursos sobre nombres».`, `«HardBounce. Sou DJ, que nem o FRAMES, e hoje só tô ajudando o ÆRIEL. Alguém precisa manter a pista honesta enquanto o FRAMES faz discurso sobre nomes».`), once: true, do: { soc: 2, flag: 'apud_dj' }, next: null },
-    love: { text: t(`He keeps his eyes on the horizon. "The love of my life lives on an island in the Mediterranean. Far from here. I hold the horizon at sunrise because it's the one edge that touches both of us."`, `Mantiene los ojos en el horizonte. «El amor de mi vida vive en una isla del Mediterráneo. Lejos de aquí. Sostengo el horizonte al amanecer porque es el único borde que nos toca a los dos».`, `Ele mantém os olhos no horizonte. «O amor da minha vida mora numa ilha do Mediterrâneo. Longe daqui. Eu seguro o horizonte no nascer do sol porque é a única borda que toca nós dois».`), choices: [
+    dj: { text: t(`"HardBounce. I'm a DJ, same as FRAMES, and tonight I took Sala 2 at 02:30 to help ÆRIEL out. Someone has to keep the floor honest while FRAMES makes speeches about names."`, `«HardBounce. Soy DJ, igual que FRAMES, y esta noche tomé Sala 2 a las 02:30 para ayudar a ÆRIEL. Alguien tiene que mantener honesta la pista mientras FRAMES da discursos sobre nombres».`, `«HardBounce. Sou DJ, que nem o FRAMES, e hoje peguei a Sala 2 às 02:30 pra ajudar o ÆRIEL. Alguém precisa manter a pista honesta enquanto o FRAMES faz discurso sobre nomes».`), once: true, do: { soc: 2, flag: 'apud_dj' }, next: null },
+    love: { text: t(`He keeps his eyes steady. "The love of my life lives on an island in the Mediterranean. Far from here. I hold the horizon at sunrise because it's the one edge that touches both of us."`, `Mantiene la mirada serena. «El amor de mi vida vive en una isla del Mediterráneo. Lejos de aquí. Sostengo el horizonte al amanecer porque es el único borde que nos toca a los dos».`, `Ele mantém o olhar sereno. «O amor da minha vida mora numa ilha do Mediterrâneo. Longe daqui. Eu seguro o horizonte no nascer do sol porque é a única borda que toca nós dois».`), choices: [
       K('ask', t(`"Which island?"`, `«¿Qué isla?»`, `«Qual ilha?»`), { next: 'love2' }),
       K('care', t(`"That sounds heavy to carry."`, `«Suena pesado de cargar».`, `«Parece pesado de carregar».`), { next: 'love3' })
     ] },
@@ -66,18 +67,158 @@
     ] },
     psy2: { text: t(`"I said what I said." The corner of his mouth moves. "The diploma is for Monday. The bounce is for the floor."`, `«Dije lo que dije». Se le mueve la comisura de la boca. «El diploma es para el lunes. El rebote es para la pista».`, `«Falei o que falei». O canto da boca dele se mexe. «O diploma é pra segunda. O pulo é pra pista».`), once: true, do: { soc: 2, fun: 2, flag: 'apud_psy' }, next: null }
   };
-  (function () {
-    const d = D.apud_roof_talk; if (!d) return;
+  const apudOn = function (id, nodes) {
+    const d = D[id]; if (!d) return;
     Object.keys(AQ).forEach(function (k) { d.nodes[k] = AQ[k]; });
-    const a = d.nodes.a;
-    if (Array.isArray(a.choices) && !a.choices.some(function (c) { return c.__aq; })) {
+    nodes.forEach(function (from) {
+      const n = d.nodes[from]; if (!n || !Array.isArray(n.choices)) return;
+      if (n.choices.some(function (c) { return c.__aq; })) return;
       [
         K('ask', t(`"Are you a DJ too?"`, `«¿Tú también eres DJ?»`, `«Você também é DJ?»`), { next: 'dj', __aq: true, do: { time: 2 } }),
         K('ask', t(`"Is there someone waiting for you?"`, `«¿Hay alguien que te espere?»`, `«Tem alguém esperando você?»`), { next: 'love', __aq: true, do: { time: 2 } }),
         K('ask', t(`"What do you do when you're not DJing?"`, `«¿Qué haces cuando no estás pinchando?»`, `«O que você faz quando não tá discotecando?»`), { next: 'psy', __aq: true, do: { time: 2 } })
-      ].forEach(function (c) { a.choices.splice(Math.max(0, a.choices.length - 1), 0, c); });
+      ].forEach(function (c) { n.choices.splice(Math.max(0, n.choices.length - 1), 0, c); });
+    });
+  };
+
+  /* Sala 2 booth (02:30-05:30): APÜD spinning HardBounce */
+  D.apud_attic = {
+    who: 'apud', role: t('SALA 2 // HARDBOUNCE', 'SALA 2 // HARDBOUNCE', 'SALA 2 // HARDBOUNCE'), start: 'st', nodes: {
+      st: { branch: [{ req: { flag: 'met_apud_attic' }, to: 'again' }, { req: function () { return true; }, to: 'a' }] },
+      a: {
+        text: t(`APÜD grins behind the Sala 2 decks over a ferocious 148-BPM HardBounce bassline, eyes moving between the dancers and the faders. "Took the upper floor from FRAMES at 02:30. Heavy kicks, high bounce, warm room — I'm riding Sala 2 at full tilt until it's time to climb to the rooftop."`,
+          `APÜD sonríe detrás de las bandejas de Sala 2 sobre un bajo feroz de HardBounce a 148 BPM, moviendo la vista entre la pista y los faders. «Tomé el piso de arriba después de FRAMES a las 02:30. Bombos firmes, rebote alto, sala cálida — sostengo Sala 2 a toda velocidad hasta que toque subir al techo».`,
+          `O APÜD sorri atrás dos toca-discos da Sala 2 em cima de um baixo feroz de HardBounce a 148 BPM, os olhos indo da pista pros faders. «Assumi o andar de cima depois do FRAMES às 02:30. Bumbos fortes, pulo alto, sala quente — tô levando a Sala 2 no talo até a hora de subir pro terraço».`),
+        do: { flag: 'met_apud_attic', soc: 1 },
+        choices: [
+          K('care', t(`"The bounce up here gave the room a second wind."`, `«El rebote acá arriba le dio un segundo aire a la sala».`, `«O pulo aqui em cima deu um segundo fôlego pra sala».`), { do: { fun: 2 }, free: true, next: null }),
+          LEAVE()
+        ]
+      },
+      again: {
+        text: t(`APÜD taps his chest over the kick without missing the transition. "Still bouncing up here until the roof opens. Hydrate and keep your knees loose."`,
+          `APÜD se da un toque en el pecho al ritmo del bombo sin soltar la transición. «Seguimos rebotando aquí arriba hasta que abra el techo. Hidrátate y suelta las rodillas».`,
+          `O APÜD bate no peito no tempo do bumbo sem perder a virada. «Seguimos pulando aqui em cima até abrir o terraço. Hidrata e solta os joelhos».`),
+        choices: [LEAVE()]
+      }
     }
-  })();
+  };
+  apudOn('apud_attic', ['a', 'again']);
+  apudOn('apud_roof_talk', ['a']);
+
+  /* Afterparty cameo (a_living): APÜD sits with warm tea and genuinely checks in on how you're feeling — NO mission */
+  D.af_cam_apud = {
+    who: 'apud', role: t('AFTERHOURS // WARM TEA', 'AFTERHOURS // TÉ TIBIO', 'AFTERHOURS // CHÁ QUENTINHO'), start: 'st', nodes: {
+      st: { branch: [{ req: { flag: 'apud_validated' }, to: 'again' }, { req: function () { return true; }, to: 'a' }] },
+      a: {
+        text: t(`APÜD sits near the edge of the rug cradling two chipped mugs of chamomile tea, steam rising slow in the daylight. He slides one toward you without rushing. "No decks left to hold. No favors, no schedules. Just sit a second — how are you actually feeling after carrying tonight?"`,
+          `APÜD está sentado cerca del borde de la alfombra sosteniendo dos tazas desportilladas de té de manzanilla, con el vapor subiendo lento en la luz del día. Te desliza una sin apuro. «Ya no quedan cabinas que sostener. Sin favores, sin horarios. Siéntate un segundo: ¿cómo te sientes de verdad después de cargar con toda esta noche?»`,
+          `O APÜD tá sentado perto da ponta do tapete segurando duas canecas lascadas de chá de camomila, o vapor subindo devagar na luz do dia. Ele desliza uma pra você sem pressa. «Não sobrou cabine pra segurar. Sem favores, sem horários. Senta um segundo — como você tá se sentindo de verdade depois de carregar essa noite?»`),
+        choices: [
+          K('care', t(`"Honestly? Tired down to my bones."`, `«¿De verdad? Cansado hasta los huesos».`, `«Sinceramente? Cansado até os ossos».`), { next: 'feel_tired' }),
+          K('honest', t(`"Raw and tender — everything from tonight still feels loud."`, `«Sensible y a flor de piel — todo lo de esta noche sigue sonando fuerte».`, `«Sensível e à flor da pele — tudo de hoje ainda tá ecoando alto».`), { next: 'feel_tender' }),
+          K('silent', t(`"A little lonely, even with all these people around."`, `«Un poco solo, incluso con toda esta gente alrededor».`, `«Um pouco sozinho, mesmo com toda essa gente por perto».`), { next: 'feel_lonely' }),
+          K('chill', t(`"Surprisingly full. Grateful for everyone who made it to morning."`, `«Sorprendentemente lleno. Agradecido por cada persona que llegó a la mañana».`, `«Surpreendentemente cheio. Grato por todo mundo que chegou até a manhã».`), { next: 'feel_full' }),
+          LEAVE()
+        ]
+      },
+      again: {
+        text: t(`APÜD wraps both hands around his mug and gives you an unhurried nod. "Tea's still warm if you need somewhere quiet to set things down."`,
+          `APÜD rodea la taza con ambas manos y te asiente sin apuro. «El té sigue tibio si necesitas un lugar tranquilo donde soltar peso».`,
+          `O APÜD envolve a caneca com as duas mãos e faz um aceno calmo. «O chá ainda tá quentinho se você precisar de um canto tranquilo pra descansar a cabeça».`),
+        choices: [
+          K('care', t(`"Can I check in on how I'm feeling again?"`, `«¿Te cuento cómo me siento ahora?»`, `«Posso te contar como tô me sentindo agora?»`), { next: 'a' }),
+          LEAVE()
+        ]
+      },
+      feel_tired: {
+        text: t(`APÜD lets out a soft breath and nods slowly, not rushing to cheer you up. "Of course you are. You held people together for six hours on concrete floors and borrowed sleep. Nobody asks how heavy it is to be the reliable one until morning hits."`,
+          `APÜD suelta un suspiro suave y asiente despacio, sin apurarse a animarte. «Claro que sí. Sostuviste a la gente seis horas sobre cemento y sueño prestado. Casi nadie pregunta cuánto pesa ser quien siempre responde hasta que cae la mañana».`,
+          `O APÜD solta um suspiro leve e assente devagar, sem correr pra te animar. «Claro que tá. Você segurou as pontas de todo mundo por seis horas no concreto e sono emprestado. Quase ninguém pergunta quanto pesa ser quem resolve tudo até amanhecer».`),
+        choices: [
+          K('honest', t(`"It really did feel like everyone leaned on me at once."`, `«Sí sentí que todos se apoyaron en mí al mismo tiempo».`, `«Pareceu mesmo que todo mundo se apoiou em mim de uma vez».`), { next: 'hold_rest' }),
+          K('chill', t(`"Drinking the tea helps. I don't have to fix anything right now."`, `«Tomar el té ayuda. No tengo que arreglar nada ahora».`, `«Tomar esse chá ajuda. Não preciso resolver nada agora».`), { next: 'hold_rest' })
+        ]
+      },
+      feel_tender: {
+        text: t(`He listens with steady, unhurried patience, watching the steam curl between you. "That openness is real. Bass strips off the armor we wear all week, and daylight meets us before the skin closes back up. Being bruised-open doesn't mean you fell apart."`,
+          `Escucha con paciencia serena y sin apuro, mirando el vapor subir entre ustedes. «Esa sensibilidad es real. Los graves quitan la armadura que usamos toda la semana, y la luz del día nos encuentra antes de que la piel vuelva a cerrarse. Quedar a flor de piel no significa haberte roto».`,
+          `Ele escuta com paciência serena e sem pressa, olhando o vapor subir entre vocês. «Essa sensibilidade é real. O grave tira a armadura que a gente usa a semana inteira, e a luz do dia encontra a gente antes da pele fechar de novo. Ficar à flor da pele não quer dizer que você desmontou».`),
+        choices: [
+          K('care', t(`"Thank you for saying that without making it clinical."`, `«Gracias por decirlo así, sin ponerte clínico».`, `«Obrigado por dizer isso assim, sem soar clínico».`), { next: 'hold_tender' }),
+          K('honest', t(`"What do you do when a night lingers under your skin?"`, `«¿Qué haces tú cuando una noche se te queda bajo la piel?»`, `«O que você faz quando uma noite fica embaixo da pele?»`), { next: 'hold_tender' })
+        ]
+      },
+      feel_lonely: {
+        text: t(`APÜD softens at the shoulders and meets your eyes squarely. "That's the quietest hangover in nightlife: being surrounded by warmth and still feeling ten centimeters outside your own chest. You showed up for everyone else tonight. Who checked on you before now?"`,
+          `APÜD afloja los hombros y te sostiene la mirada de frente. «Esa es la resaca más silenciosa de la noche: estar rodeado de calor y aun así sentirte diez centímetros fuera de tu propio pecho. Estuviste para todos esta noche. ¿Quién preguntó por ti antes de ahora?»`,
+          `O APÜD solta os ombros e encontra seu olhar de frente. «Essa é a ressaca mais silenciosa da noite: estar cercado de calor e ainda se sentir dez centímetros fora do próprio peito. Você apareceu pra todo mundo hoje. Quem perguntou por você antes de agora?»`),
+        choices: [
+          K('care', t(`"Sitting here with you makes the room feel closer again."`, `«Estar aquí contigo hace que la sala se sienta cerca otra vez».`, `«Sentar aqui com você faz a sala parecer perto de novo».`), { next: 'hold_lonely' }),
+          K('honest', t(`"Mostly I just kept moving so I wouldn't notice."`, `«Más que nada seguí moviéndome para no notarlo».`, `«Mais do que tudo eu continuei me mexendo pra não notar».`), { next: 'hold_lonely' })
+        ]
+      },
+      feel_full: {
+        text: t(`APÜD's face breaks into a genuine, unguarded smile. "Hold onto that without questioning it. Most of life rushes past the good nights before we're allowed to enjoy them. You looked after your people and didn't lose yourself doing it."`,
+          `La cara de APÜD se abre en una sonrisa genuina y sin defensa. «Guarda eso sin dudar de ello. Casi toda la vida pasa de largo sobre las buenas noches antes de dejarnos disfrutarlas. Cuidaste a tu gente y no te perdiste en el camino».`,
+          `O rosto do APÜD se abre num sorriso genuíno e sem defesa. «Guarda isso sem desconfiar. Quase sempre a vida passa correndo pelas noites boas antes de deixar a gente sentir. Você cuidou da sua galera sem se perder no caminho».`),
+        choices: [
+          K('care', t(`"I didn't expect to still be standing here this happy."`, `«No esperaba seguir aquí tan contento a esta hora».`, `«Eu não esperava ainda tá aqui tão bem a essa hora».`), { next: 'hold_full' }),
+          K('chill', t(`"Now I just want warm tea and a couch."`, `«Ahora solo quiero té tibio y un sofá».`, `«Agora só quero chá morno e um sofá».`), { next: 'hold_full' })
+        ]
+      },
+      hold_rest: {
+        text: t(`"Then set the pack down here." He taps his mug lightly against yours. "Rest isn't quitting. You're allowed to only be held until noon — nothing asks anything more of you today."`,
+          `«Entonces suelta la carga aquí». Choca suave su taza con la tuya. «Descansar no es rendirse. Tienes permiso de dejarte cuidar hasta el mediodía — hoy nada te pide nada más».`,
+          `«Então larga o peso aqui». Ele encosta leve a caneca na sua. «Descansar não é desistir. Você tem permissão pra só ser acolhido até o meio-dia — hoje nada te pede mais nada».`),
+        next: 'validate_done'
+      },
+      hold_tender: {
+        text: t(`"I wash my hands in warm water, drink something without ice, and sit beside someone I don't have to impress." He nudges your knee lightly. "You carried real care tonight. Let some of it land back on you."`,
+          `«Me lavo las manos con agua tibia, tomo algo sin hielo y me siento junto a alguien a quien no tengo que impresionar». Te da un toque leve en la rodilla. «Cargaste cuidado real esta noche. Deja que algo de eso vuelva hacia ti».`,
+          `«Eu lavo as mãos com água morna, tomo algo sem gelo e sento do lado de alguém que eu não preciso impressionar». Ele encosta leve no seu joelho. «Você carregou cuidado de verdade hoje. Deixa um pouco disso voltar pra você».`),
+        next: 'validate_done'
+      },
+      hold_lonely: {
+        text: t(`"Then stay right here as long as the kettle lasts." His voice stays easy and grounded. "I'm glad you're in this room, exactly at this speed. You didn't disappear on yourself, and someone noticed."`,
+          `«Entonces quédate aquí todo lo que dure la pava». Su voz sigue tranquila y firme. «Me alegra que estés en esta sala, exactamente a este ritmo. No te abandonaste, y alguien lo vio».`,
+          `«Então fica bem aqui enquanto durar a chaleira». A voz dele segue calma e firme. «Fico feliz que você esteja nessa sala, exatamente nesse ritmo. Você não se abandonou, e alguém viu».`),
+        next: 'validate_done'
+      },
+      hold_full: {
+        text: t(`"Tea and a couch are an undefeated closing set." He lifts his mug toward the window. "You earned a soft morning — keep this feeling in your pocket for Monday."`,
+          `«Té y sofá son un set de cierre invicto». Levanta la taza hacia la ventana. «Te ganaste una mañana suave — guarda esta sensación en el bolsillo para el lunes».`,
+          `«Chá e sofá são um set de encerramento invicto». Ele ergue a caneca pra janela. «Você mereceu uma manhã leve — guarda essa sensação no bolso pra segunda».`),
+        next: 'validate_done'
+      },
+      validate_done: {
+        text: t(`You drink the chamomile slow while the morning sun warms the floor. Your shoulders finally drop two inches. APÜD doesn't fill the quiet — he just stays beside you until you feel steady again.`,
+          `Tomas la manzanilla despacio mientras el sol de la mañana entibia el suelo. Por fin te bajan los hombros cinco centímetros. APÜD no llena el silencio — solo se queda a tu lado hasta que vuelves a sentirte firme.`,
+          `Você bebe a camomila devagar enquanto o sol da manhã aquece o chão. Seus ombros finalmente baixam dois dedos. O APÜD não preenche o silêncio — ele só fica do seu lado até você se sentir firme de novo.`),
+        once: true,
+        do: { soc: 4, care: 2, fun: 3, weird: -5, hp: 4, flag: ['g_apud_open', 'apud_validated'] },
+        next: null
+      }
+    }
+  };
+  apudOn('af_cam_apud', ['a', 'again']);
+
+  /* 02:30 AM Sala 2 handover notification */
+  const tick0 = EM.story.tick;
+  EM.story.tick = function (dt) {
+    if (tick0) tick0(dt);
+    const s = EM.state;
+    if (!s || s.ended || s.flags.after_go || s.flags.roof_open) return;
+    if (s.time >= 270 && !s.flags.sala2_shift_toast) {
+      s.flags.sala2_shift_toast = true;
+      U.toast({
+        icon: 'note',
+        kind: 'info',
+        ms: 6500,
+        text: t(`02:30 AM — APÜD just took over Sala 2 with HardBounce. FRAMES SHELL moved downstairs to Backstage with the request crate.`, `02:30 AM — APÜD acaba de tomar Sala 2 con HardBounce. FRAMES SHELL bajó al Backstage con el cajón de pedidos.`, `02:30 AM — O APÜD acabou de assumir a Sala 2 com HardBounce. O FRAMES SHELL desceu pro Backstage com o caixote de pedidos.`)
+      });
+    }
+  };
 
   /* ---------------------------------------------------------------- LEONIDAS */
   EM.CAST.leonidas = { name: 'LEONIDAS', look: { skin: 3, build: 0, expr: 3, hair: 22, hc: 13, top: 20, tc: 5, bottom: 8, bc: 10, shoes: 3, ac: 8, hat: 0, face: 4, neck: 3, ear: 3, makeup: 6, wrist: 2 } };
@@ -165,8 +306,18 @@
   const m0 = EM.story.morning;
   EM.story.morning = function (s) {
     const msgs = m0(s);
-    if (s.ended === 'after' && s.flags.g_leonidas_open && Array.isArray(msgs)) {
-      msgs.push({ who: 'leonidas', name: null, time: 'TUE 19:40', t: t(`darling. i have been thinking about the green satin at 4:12. i am describing it to everyone. nobody can prove it. i've never been happier. kisses. do not touch your hair.`, `cariño. he estado pensando en el satén verde de las 4:12. se lo describo a todos. nadie puede probarlo. nunca he sido más feliz. besos. no te toques el pelo.`, `querido. fiquei pensando no cetim verde das 4:12. tô descrevendo pra todo mundo. ninguém pode provar. nunca fui tão feliz. beijos. não mexe no cabelo.`) });
+    if (s.ended === 'after' && Array.isArray(msgs)) {
+      if (s.flags.g_leonidas_open) {
+        msgs.push({ who: 'leonidas', name: null, time: 'TUE 19:40', t: t(`darling. i have been thinking about the green satin at 4:12. i am describing it to everyone. nobody can prove it. i've never been happier. kisses. do not touch your hair.`, `cariño. he estado pensando en el satén verde de las 4:12. se lo describo a todos. nadie puede probarlo. nunca he sido más feliz. besos. no te toques el pelo.`, `querido. fiquei pensando no cetim verde das 4:12. tô descrevendo pra todo mundo. ninguém pode provar. nunca fui tão feliz. beijos. não mexe no cabelo.`) });
+      }
+      if (s.flags.frames_perra_learned) {
+        msgs.push({ who: 'frames', name: null, time: 'TUE 14:15', t: t(`morning. hope nobody tried your patience today. remember: drop the smile, keep your spine straight, let them choke on the silence. crate stays shut till friday.`, `buen día. espero que nadie haya probado tu paciencia hoy. acuérdate: cero sonrisa, espalda recta, que ellos se atraganten con el silencio. el cajón sigue cerrado hasta el viernes.`, `bom dia. espero que ninguém tenha testado sua paciência hoje. lembra: corta o sorriso, coluna reta, deixa eles se engasgarem com o silêncio. o caixote fica fechado até sexta.`) });
+      } else if (s.flags.g_frames_open) {
+        msgs.push({ who: 'frames', name: null, time: 'TUE 14:15', t: t(`morning. finally spun that 1979 brazilian pressing with coffee. sounded right for daylight. thanks for helping carry the night.`, `buen día. por fin puse ese disco brasileño de 1979 con café. sonó perfecto para la luz del día. gracias por ayudar a sostener la noche.`, `bom dia. finalmente toquei aquele disco brasileiro de 1979 com café. soou perfeito pra luz do dia. valeu por ajudar a segurar a noite.`) });
+      }
+      if (s.flags.apud_validated || s.flags.g_apud_open) {
+        msgs.push({ who: 'apud', name: null, time: 'TUE 16:05', t: t(`hey. chamomile kettle is still warm on this side. hope your tuesday moved gently, without anyone handing you their weight to carry.`, `hola. la pava de manzanilla sigue tibia de este lado. espero que tu martes haya ido suave, sin que nadie te ponga encima su propio peso.`, `oi. a chaleira de camomila ainda tá morna desse lado. espero que sua terça tenha ido leve, sem ninguém jogar o próprio peso nas suas costas.`) });
+      }
     }
     return msgs;
   };

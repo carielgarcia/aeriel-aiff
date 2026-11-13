@@ -12,7 +12,7 @@
   const TS = 16, TH = 9;
 
   /* ============================================================ passage tags */
-  const SHORT = { restrooms: 'WC', main: 'MAIN', darkroom: 'DARK', backstage: 'STAFF', rooftop: 'ROOF', courtyard: 'SMOKE', tunnel: 'TUNNEL', welfare: 'CALM', foyer: 'FOYER', doors: 'OUT', attic: 'SALA 2' };
+  const SHORT = { restrooms: 'WC', main: 'MAIN', darkroom: 'DARK', backstage: 'STAFF', rooftop: 'ROOF', courtyard: 'SMOKE', tunnel: 'TUNNEL', welfare: 'CALM', foyer: 'FOYER', doors: 'OUT', attic: 'SALA 2', a_bedroom: 'THE COATS', a_master: 'MASTER BEDROOM' };
   /* hand-placed signs that only named a passage; the generated tags replace them */
   const OLD_SIGN = /^(<\s*)?(DANCE|SALA 2|WC|SMOKING|QUIET ROOM|EXIT|DARK ROOM|STAFF|ROOF|MAIN|DOWN|BALCONY|STAGE)(\s*>)?$/;
   const ASCII = { 'Á': 'A', 'À': 'A', 'Ã': 'A', 'Â': 'A', 'É': 'E', 'Ê': 'E', 'Í': 'I', 'Ó': 'O', 'Õ': 'O', 'Ô': 'O', 'Ú': 'U', 'Ü': 'U', 'Ç': 'C' };
@@ -28,7 +28,8 @@
   function label(to, short) {
     if (to === 'street_exit') return plain(EM.tr(T('EXIT', 'SALIDA', 'SAÍDA')));
     const zn = EM.zones[to]; if (!zn) return '';
-    return plain(short ? (SHORT[to] || '') : EM.tr(zn.name).split('//')[0].trim());
+    const full = zn.name ? EM.tr(zn.name).split('//')[0].trim() : (SHORT[to] || to.toUpperCase());
+    return plain(short ? (SHORT[to] || '') : full);
   }
   function text(sd, name) {
     if (!name) return ARROW[sd];

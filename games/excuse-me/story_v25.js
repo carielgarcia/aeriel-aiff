@@ -158,7 +158,7 @@
       },
       reward: {
         text: t(`She unclips a small enamel pin from her collar and puts it in your hand. "Wear it somewhere people will ask. Say the sentence you said tonight. That's what it's for."`, `Se quita un pin esmaltado del cuello y te lo pone en la mano. «Úsalo donde la gente pregunte. Di la frase que dijiste esta noche. Para eso sirve».`, `Ela solta um pequeno pin esmaltado da gola e põe na sua mão. «Usa onde as pessoas perguntarem. Diz a frase que você disse hoje. É pra isso que serve».`),
-        once: true, do: { call: 'ros_pin', flag: 'ros_gift_pending' }, next: null
+        choices: [K('care', t(`"Thank you, Rosario." [Take the pin]`, `«Gracias, Rosario». [Tomar el pin]`, `«{Obrigado|Obrigada|Valeu}, Rosario». [Pegar o pin]`), { do: { call: 'ros_pin', flag: 'ros_gift_pending' }, free: true, next: null })]
       }
     }
   };
@@ -177,7 +177,7 @@
         },
         next: 'b'
       },
-      b: { who: 'rosario', text: t(`Rosario watches him go and lets out a long breath. "Thank you for listening. That's all it was." She turns to you. "Here."`, `Rosario lo ve irse y suelta un largo suspiro. «Gracias por escuchar. Eso era todo». Se vuelve hacia ti. «Toma».`, `A Rosario vê ele ir e solta um longo suspiro. «Obrigada por ouvir. Era só isso». Ela se vira pra você. «Toma».`), do: { call: 'ros_pin', flag: 'ros_gift_pending' }, once: true, next: null }
+      b: { who: 'rosario', text: t(`Rosario watches him go and lets out a long breath. "Thank you for listening. That's all it was." She turns to you. "Here."`, `Rosario lo ve irse y suelta un largo suspiro. «Gracias por escuchar. Eso era todo». Se vuelve hacia ti. «Toma».`, `A Rosario vê ele ir e solta um longo suspiro. «Obrigada por ouvir. Era só isso». Ela se vira pra você. «Toma».`), choices: [K('care', t(`"Thank you, Rosario." [Take the pin]`, `«Gracias, Rosario». [Tomar el pin]`, `«{Obrigado|Obrigada|Valeu}, Rosario». [Pegar o pin]`), { do: { call: 'ros_pin', flag: 'ros_gift_pending' }, free: true, next: null })] }
     }
   };
   S.ros_pin = function () {
@@ -200,8 +200,7 @@
     who: 'rosario', role: t('SOMEONE YOU STOOD WITH', 'ALGUIEN CON QUIEN ESTUVISTE', 'ALGUÉM QUE VOCÊ APOIOU'), start: 'a', nodes: {
       a: {
         text: t(`Rosario finds you without looking for you. "I had something in my bag that wasn't mine to keep. You can have it."`, `Rosario te encuentra sin buscarte. «Tenía algo en el bolso que no me tocaba quedarme. Es tuyo».`, `A Rosario te encontra sem te procurar. «Eu tinha uma coisa na bolsa que não era minha pra ficar. É sua».`),
-        once: true, do: { flag: 'ros_gift_given', call: 'ros_gift_give' },
-        choices: [K('care', t(`"Thank you."`, `«Gracias».`, `«Obrigado».`), { free: true, next: null, react: t(`"Go dance." She is already moving.`, `«Ve a bailar». Ya se está moviendo.`, `«Vai dançar». Ela já tá se mexendo.`) })]
+        choices: [K('care', t(`"Thank you."`, `«Gracias».`, `«{Obrigado|Obrigada|Valeu}».`), { do: { flag: 'ros_gift_given', call: 'ros_gift_give' }, free: true, next: null, react: t(`"Go dance." She is already moving.`, `«Ve a bailar». Ya se está moviendo.`, `«Vai dançar». Ela já tá se mexendo.`) })]
       }
     }
   };
@@ -383,7 +382,7 @@
       gaveup: { text: t(`"It's okay." She is looking at the floor. "I knew. I just hoped." The look on her face costs you something.`, `«Está bien». Mira el piso. «Lo sabía. Solo tenía esperanza». La cara que pone te cuesta algo.`, `«Tudo bem». Ela olha pro chão. «Eu sabia. Só tinha esperança». A cara dela te custa alguma coisa.`), once: true, do: { soc: -3 }, choices: [LEAVE()] },
       reward: {
         text: t(`Mina holds a small foam case in both hands. "He paid. He paid in three different pockets. Here." She slides it across. "Notch filters. Better than the foam you have. And come to the desk for five minutes. There's a low end I want you to hear."`, `Mina sostiene un estuche de espuma con las dos manos. «Pagó. Pagó con tres bolsillos distintos. Toma». Lo desliza hacia ti. «Filtros de muesca. Mejores que la espuma que tienes. Y ven a la mesa cinco minutos. Hay un grave que quiero que oigas».`, `A Mina segura um estojo pequeno de espuma com as duas mãos. «Ele pagou. Pagou com três bolsos diferentes. Toma». Ela desliza pra você. «Filtros notch. Melhores que a espuma que você tem. E vem até a mesa por cinco minutos. Tem um grave que eu quero que você ouça».`),
-        once: true, do: { flag: ['neil_reward', 'low_end_tip'], fun: 5, time: 5, call: 'neil_filters' }, next: null
+        choices: [K('care', t(`"Thank you, Mina." [Take the filters]`, `«Gracias, Mina». [Tomar los filtros]`, `«{Obrigado|Obrigada|Valeu}, Mina». [Pegar os filtros]`), { do: { flag: ['neil_reward', 'low_end_tip'], fun: 5, time: 5, call: 'neil_filters' }, next: null })]
       },
       after: { text: t(`Mina has one headphone on. "Left side, a little more bass. You'll hear it."`, `Mina trae un auricular puesto. «Lado izquierdo, un poco más de grave. Lo vas a oír».`, `A Mina tá com um fone no ouvido. «Lado esquerdo, um pouco mais de grave. Você vai ouvir».`), choices: [LEAVE()] }
     }
@@ -443,7 +442,8 @@
     }
   };
   D.shane_f = {
-    who: 'shane', role: t('AT THE COAT CHECK', 'EN EL GUARDARROPA', 'NA CHAPELARIA'), start: 'a', nodes: {
+    who: 'shane', role: t('AT THE COAT CHECK', 'EN EL GUARDARROPA', 'NA CHAPELARIA'), start: 'st', nodes: {
+      st: { branch: [{ req: { flag: 'shane_gift_ready' }, to: 'gift' }, { req: function () { return true; }, to: 'a' }] },
       a: { who: 'luca', text: t(`"I need the ticket," says Luca, pleasantly.`, `«Necesito el ticket», dice Luca, con amabilidad.`, `«Preciso do ticket», diz o Luca, com educação.`), next: 'b' },
       b: { text: t(`"The ticket is in the jacket."`, `«El ticket está en la chaqueta».`, `«O ticket tá na jaqueta».`), next: 'c' },
       c: { who: 'luca', text: t(`"Then the jacket is the ticket. It's an efficient system." Luca looks Shane up and down, takes a long moment, and sighs. "…Shane."`, `«Entonces la chaqueta es el ticket. Es un sistema eficiente». Luca mira a Shane de arriba abajo, se toma un momento largo y suspira. «…Shane».`, `«Então a jaqueta é o ticket. É um sistema eficiente». O Luca olha o Shane de cima a baixo, demora um longo momento e suspira. «…Shane».`), next: 'd' },
@@ -451,13 +451,13 @@
         text: t(`The jacket is tied around his waist. Shane looks down at it, then up at you, in a quiet voice: "Don't."`, `La chaqueta está atada a su cintura. Shane la mira, luego te mira a ti, con una voz muy baja: «No».`, `A jaqueta tá amarrada na cintura dele. O Shane olha pra ela, depois pra você, numa voz muito baixa: «Não».`),
         choices: [
           K('joke', t(`Laugh.`, `Reírte.`, `Rir.`), { do: { hp: -4, soc: -3, flag: 'shane_done' }, next: null, react: t(`He shoves you, not hard but not soft. "It was ten minutes. Or eleven." He stalks off, jacket and all.`, `Te empuja, no fuerte pero tampoco suave. «Fueron diez minutos. O once». Se va echando humo, con chaqueta y todo.`, `Ele te empurra, não forte mas também não de leve. «Foram dez minutos. Ou onze». Ele sai pisando duro, de jaqueta e tudo.`) }),
-          K('care', t(`"It's a good lining."`, `«Es un buen forro».`, `«É um bom forro».`), { do: { fun: 6, soc: 3, flag: 'shane_done' }, next: 'gift', react: t(`He laughs, a real one that surprises him. "It is. It's a great lining."`, `Se ríe, de verdad, y eso lo sorprende. «Lo es. Es un gran forro».`, `Ele ri, de verdade, e isso o surpreende. «É. É um grande forro».`) }),
+          K('care', t(`"It's a good lining."`, `«Es un buen forro».`, `«É um bom forro».`), { do: { fun: 6, soc: 3, flag: 'shane_gift_ready' }, next: 'gift', react: t(`He laughs, a real one that surprises him. "It is. It's a great lining."`, `Se ríe, de verdad, y eso lo sorprende. «Lo es. Es un gran forro».`, `Ele ri, de verdade, e isso o surpreende. «É. É um grande forro».`) }),
           K('chill', t(`Say nothing.`, `No decir nada.`, `Não dizer nada.`), { free: true, do: { flag: 'shane_done' }, next: null, react: t(`You say nothing. He puts the jacket on, one arm, then the other. "Thank you for not saying it."`, `No dices nada. Se pone la chaqueta, un brazo, luego el otro. «Gracias por no decirlo».`, `Você não diz nada. Ele veste a jaqueta, um braço, depois o outro. «Obrigado por não dizer».`) })
         ]
       },
       gift: {
         text: t(`He pats his pockets and finds half a bottle of water, and an unclaimed lost-property slip from the coat check. "Take it. I don't need a stranger's earring. I need to not be this person."`, `Se palpa los bolsillos y encuentra media botella de agua y un reclamo de objetos perdidos sin usar. «Toma. No necesito el arete de un desconocido. Necesito dejar de ser esta persona».`, `Ele apalpa os bolsos e acha meia garrafa de água e um pedido de achados e perdidos que ninguém usou. «Toma. Não preciso do brinco de um desconhecido. Preciso deixar de ser essa pessoa».`),
-        once: true, do: { call: 'shane_gift' }, next: null
+        choices: [K('care', t(`"Thank you, Shane." [Take the water and claim]`, `«Gracias, Shane». [Tomar el agua y el reclamo]`, `«{Obrigado|Obrigada|Valeu}, Shane». [Pegar a água e o ticket]`), { do: { call: 'shane_gift', flag: 'shane_done', unflag: 'shane_gift_ready' }, free: true, next: null })]
       }
     }
   };
@@ -470,7 +470,7 @@
   ['gav1', 'gav2', 'gav3', 'gav4'].forEach(function (id, i) { EM.CAST[id] = { name: 'GAV', look: look({ skin: i + 1, hair: i + 2, hc: i, expr: 2, top: 3, tc: 4, bottom: 1, bc: 3, acc: 0 }) }; });
   D.gav = {
     who: 'gav', role: t('STAG PARTY', 'DESPEDIDA', 'DESPEDIDA'), start: 'st', nodes: {
-      st: { branch: [{ req: { flag: 'gav_done' }, to: 'gone' }, { req: function () { return true; }, to: 'a' }] },
+      st: { branch: [{ req: { flag: 'gav_done' }, to: 'gone' }, { req: { flag: 'gav_wait_ready' }, to: 'wait' }, { req: function () { return true; }, to: 'a' }] },
       gone: { text: t(`The stag party is gone. The curtain moves slightly. Somebody left wishing they had stayed.`, `La despedida se fue. La cortina se mueve apenas. Alguien se fue con ganas de haberse quedado.`, `A despedida foi embora. A cortina se mexe de leve. Alguém saiu querendo ter ficado.`), choices: [LEAVE()] },
       a: {
         text: t(`Five men in matching shirts stand at the curtain. "It's dark. Why is it dark? Is it broken?" Gav pokes the fabric.`, `Cinco hombres con camisas iguales están en la cortina. «Está oscuro. ¿Por qué está oscuro? ¿Está roto?» Gav pincha la tela.`, `Cinco homens de camisas iguais estão na cortina. «Tá escuro. Por que tá escuro? Tá quebrado?» O Gav cutuca o tecido.`),
@@ -483,15 +483,15 @@
       dario: {
         who: 'dario', text: t(`Dario appears at the curtain without a sound. "Three rules. Ask first. No means no. Respect the dark. Which of you wants to be first to break them?" Gav, ahead of everyone else: "We're not doing anything. We're just standing in the dark. As a group."`, `Dario aparece junto a la cortina sin hacer ruido. «Tres reglas. Preguntar primero. No es no. Respetar la oscuridad. ¿Cuál de ustedes quiere ser el primero en romperlas?» Gav, adelantándose: «No estamos haciendo nada. Solo estamos parados en la oscuridad. En grupo».`, `O Dario aparece na cortina sem fazer barulho. «Três regras. Perguntar primeiro. Não é não. Respeitar o escuro. Qual de vocês quer ser o primeiro a quebrá-las?» O Gav, na frente de todo mundo: «Não estamos fazendo nada. Só estamos parados no escuro. Em grupo».`),
         choices: [
-          K('honest', t(`"That's what the rules are about."`, `«De eso tratan las reglas».`, `«É disso que as regras tratam».`), { do: { weird: -1 }, next: 'wait', react: t(`Gav glances at the others. "…Ah." It takes the whole group a moment. Nobody argues.`, `Gav mira a los demás. «…Ah». Al grupo entero le lleva un momento. Nadie discute.`, `O Gav olha pros outros. «…Ah». Leva um momento pro grupo inteiro. Ninguém discute.`) }),
-          K('plan', t(`Sit them by the door for ten minutes, as Dario says.`, `Sentarlos junto a la puerta diez minutos, como dice Dario.`, `Sentar eles perto da porta por dez minutos, como diz o Dario.`), { do: { soc: -3, time: 10, flag: 'gav_dario' }, next: 'wait' }),
+          K('honest', t(`"That's what the rules are about."`, `«De eso tratan las reglas».`, `«É disso que as regras tratam».`), { do: { weird: -1, flag: 'gav_wait_ready' }, next: 'wait', react: t(`Gav glances at the others. "…Ah." It takes the whole group a moment. Nobody argues.`, `Gav mira a los demás. «…Ah». Al grupo entero le lleva un momento. Nadie discute.`, `O Gav olha pros outros. «…Ah». Leva um momento pro grupo inteiro. Ninguém discute.`) }),
+          K('plan', t(`Sit them by the door for ten minutes, as Dario says.`, `Sentarlos junto a la puerta diez minutos, como dice Dario.`, `Sentar eles perto da porta por dez minutos, como diz o Dario.`), { do: { soc: -3, time: 10, flag: ['gav_dario', 'gav_wait_ready'] }, next: 'wait' }),
           K('bold', t(`"They're fine. I'll vouch for them."`, `«Están bien. Yo respondo por ellos».`, `«Eles estão bem. Eu garanto por eles».`), { do: { weird: 8, flag: 'gav_done' }, next: null, react: t(`Dario gives you one look that goes a long way. Four of them go in. Within a minute there is a noise, a sharp word, and Dario removing a man by the elbow. Your name is in somebody's mouth.`, `Dario te da una mirada que llega lejos. Cuatro entran. En un minuto hay un ruido, una palabra seca y Dario sacando a un hombre del codo. Tu nombre anda en la boca de alguien.`, `O Dario te dá um olhar que vai longe. Quatro entram. Em um minuto tem um barulho, uma palavra seca e o Dario tirando um homem pelo cotovelo. Seu nome tá na boca de alguém.`) }),
           K('chill', t(`"Not my group."`, `«No es mi grupo».`, `«Não é meu grupo».`), { do: { weird: 2, fun: -3, flag: 'gav_done' }, next: null, react: t(`Dario nods once. "Then they can leave." They are walked to the door without a word.`, `Dario asiente una vez. «Entonces pueden irse». Los acompaña hasta la puerta sin decir palabra.`, `O Dario assente uma vez. «Então podem ir». Ele leva eles até a porta sem dizer palavra.`) })
         ]
       },
       wait: {
         text: t(`They file past the curtain and sit in a row on the floor. After ten minutes Gav stands, thoughtful. "Best night of my life, and I saw nothing." He hands you a sticker. "It was on my shirt. It says ASK FIRST. I think it's meant for you."`, `Pasan frente a la cortina y se sientan en fila en el suelo. A los diez minutos Gav se pone de pie, pensativo. «La mejor noche de mi vida y no vi nada». Te da una calcomanía. «Estaba en mi camisa. Dice PREGUNTA PRIMERO. Creo que es para ti».`, `Eles passam pela cortina e sentam em fila no chão. Depois de dez minutos o Gav levanta, pensativo. «A melhor noite da minha vida e eu não vi nada». Ele te entrega um adesivo. «Tava na minha camisa. Diz PERGUNTE PRIMEIRO. Acho que é pra você».`),
-        once: true, do: { flag: ['gav_done', 'dario_trust'], call: 'gav_sticker' }, next: null
+        choices: [K('care', t(`"Ask first." [Take the sticker]`, `«Pregunta primero». [Tomar la calcomanía]`, `«Pergunte primeiro». [Pegar o adesivo]`), { do: { flag: ['gav_done', 'dario_trust'], unflag: 'gav_wait_ready', call: 'gav_sticker' }, free: true, next: null })]
       }
     }
   };

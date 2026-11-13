@@ -257,7 +257,7 @@
   EM.CAST.colin = { name: 'COLIN', look: look({ skin: 0, hair: 1, hc: 4, expr: 1, top: 4, tc: 2, bottom: 1, bc: 1, acc: 7, ac: 1 }) };
   D.colin = {
     who: 'colin', role: t('FINDING THE SPOT', 'BUSCANDO EL PUNTO', 'PROCURANDO O PONTO'), start: 'st', nodes: {
-      st: { branch: [{ req: { flag: 'colin_done' }, to: 'again' }, { req: function () { return true; }, to: 'a' }] },
+      st: { branch: [{ req: { flag: 'colin_done' }, to: 'again' }, { req: { flag: 'sweet_spot' }, to: 'gift' }, { req: function () { return true; }, to: 'a' }] },
       again: { text: t(`Colin has not left the tape. "You can stand next to me. A little to the left. Left. There. That's the best two square metres in the building and I will not be taking questions."`, `Colin no se ha movido de la cinta. «Puedes pararte a mi lado. Un poco a la izquierda. Izquierda. Ahí. Son los mejores dos metros cuadrados del edificio y no voy a responder preguntas».`, `O Colin não saiu da fita. «Pode ficar do meu lado. Um pouco pra esquerda. Esquerda. Aí. São os melhores dois metros quadrados do prédio e não vou responder perguntas».`), choices: [LEAVE()] },
       a: {
         text: t(`A man stands on an X of gaffer tape with his phone held over his head. "Don't move. You're a person. That affects the low end."`, `Un hombre está parado sobre una X de cinta americana con el celular sobre la cabeza. «No te muevas. Eres una persona. Eso afecta los graves».`, `Um homem está em pé num X de fita crepe com o celular acima da cabeça. «Não se mexe. Você é uma pessoa. Isso afeta os graves».`),
@@ -289,7 +289,7 @@
             ? t(`Colin opens one eye. "You talked through the take, so I can't give you the good tape. I can give you the end of the roll."`, `Colin abre un ojo. «Hablaste en la toma, así que no puedo darte la cinta buena. Puedo darte el final del rollo».`, `O Colin abre um olho. «Você falou na gravação, então não posso te dar a fita boa. Posso te dar o final do rolo».`)
             : t(`"Take this. I carry three rolls. People don't ask why, and I appreciate that." He presses a short strip of tape into your hand. "Stick it on any dance floor. It will remember."`, `«Toma esto. Llevo tres rollos. La gente no pregunta por qué y lo agradezco». Te pone una tira corta de cinta en la mano. «Pégala en cualquier pista. Se acuerda».`, `«Pega isso. Carrego três rolos. As pessoas não perguntam por quê e eu agradeço». Ele põe uma tira curta de fita na sua mão. «Cole em qualquer pista. Ela lembra».`);
         },
-        once: true, do: { flag: 'colin_done', call: 'colin_gift' }, next: null
+        choices: [K('care', t(`"Thank you, Colin." [Take the tape]`, `«Gracias, Colin». [Tomar la cinta]`, `«{Obrigado|Obrigada|Valeu}, Colin». [Pegar a fita]`), { do: { flag: 'colin_done', call: 'colin_gift' }, free: true, next: null })]
       }
     }
   };
@@ -359,8 +359,7 @@
     who: 'gretchen', role: t('OFF DUTY', 'FUERA DE TURNO', 'FORA DO EXPEDIENTE'), forced: true, start: 'a', nodes: {
       a: {
         text: t(`She takes the sip, nods once and starts writing. "Water waives the fee. That's a policy I've just made. Here is a receipt for the transaction, which was a sip."`, `Toma el sorbo, asiente una vez y empieza a escribir. «El agua exime del cargo. Es una política que acabo de hacer. Aquí tienes un recibo de la transacción, que fue un sorbo».`, `Ela toma o gole, assente uma vez e começa a escrever. «Água isenta a taxa. É uma política que acabei de criar. Aqui está um recibo da transação, que foi um gole».`),
-        do: { soc: 2, flag: 'gretchen_rec', call: 'gretchen_rec_give' },
-        choices: [K('care', t(`"Thank you for the receipt."`, `«Gracias por el recibo».`, `«Obrigado pelo recibo».`), { free: true, next: null, react: t(`"Nobody thanks the receipt. You are on the right track."`, `«Nadie agradece el recibo. Vas por buen camino».`, `«Ninguém agradece o recibo. Você tá no caminho certo».`) })]
+        choices: [K('care', t(`"Thank you for the receipt."`, `«Gracias por el recibo».`, `«{Obrigado|Obrigada|Valeu} pelo recibo».`), { do: { soc: 2, flag: 'gretchen_rec', call: 'gretchen_rec_give' }, free: true, next: null, react: t(`"Nobody thanks the receipt. You are on the right track."`, `«Nadie agradece el recibo. Vas por buen camino».`, `«Ninguém agradece o recibo. Você tá no caminho certo».`) })]
       }
     }
   };
@@ -482,7 +481,7 @@
   EM.CAST.henrik = { name: 'HENRIK', look: look({ skin: 0, hair: 0, hc: 1, expr: 1, top: 7, tc: 1, bottom: 1, bc: 3, acc: 1, ac: 2 }) };
   D.henrik = {
     who: 'henrik', role: t('THE JUG', 'LA JARRA', 'A JARRA'), start: 'st', nodes: {
-      st: { branch: [{ req: { flag: 'henrik_done' }, to: 'again' }, { req: function () { return true; }, to: 'a' }] },
+      st: { branch: [{ req: { flag: 'henrik_done' }, to: 'again' }, { req: { flag: 'henrik_ready' }, to: 'gift' }, { req: function () { return true; }, to: 'a' }] },
       again: { text: t(`Henrik holds the jug up to the light. "Fifteen sips. A new personal best. I've written it on the side."`, `Henrik levanta la jarra a contraluz. «Quince sorbos. Nuevo récord personal. Lo anoté al costado».`, `O Henrik levanta a jarra contra a luz. «Quinze goles. Novo recorde pessoal. Anotei na lateral».`), choices: [LEAVE()] },
       a: {
         text: t(`A tall man at the end of the bar, four-litre jug on the counter, marked every half hour in marker. "Fourteen sips since midnight. Not a record. A personal best."`, `Un hombre alto al final de la barra, con una jarra de cuatro litros en el mostrador, marcada cada media hora con plumón. «Catorce sorbos desde medianoche. No es un récord. Es un máximo personal».`, `Um homem alto no fim do bar, jarra de quatro litros no balcão, marcada a cada meia hora com caneta. «Catorze goles desde a meia-noite. Não é recorde. É melhor marca pessoal».`),
@@ -505,11 +504,11 @@
       },
       sip3: {
         text: t(`He raises his cup. "To the long game." You drink together. The cold goes down all the way and the bar looks wider than it did.`, `Levanta su vaso. «Por el juego largo». Beben juntos. El frío baja hasta el fondo y la barra se ve más ancha.`, `Ele ergue o copo. «Ao jogo longo». Vocês bebem juntos. O frio desce até o fundo e o bar parece mais largo.`),
-        choices: [K('care', t(`Finish the third.`, `Terminar el tercero.`, `Terminar o terceiro.`), { do: { fun: 3, time: 6 }, next: 'gift' })]
+        choices: [K('care', t(`Finish the third.`, `Terminar el tercero.`, `Terminar o terceiro.`), { do: { fun: 3, time: 6, flag: 'henrik_ready' }, next: 'gift' })]
       },
       gift: {
         text: t(`Henrik refills your bottle from the jug. "A full bottle. And two sachets, in case you're ever less well than your schedule. Mix with a sip, not with a mood."`, `Henrik llena tu botella de la jarra. «Una botella llena. Y dos sobres, por si alguna vez estás peor que tu horario. Mezcla con un sorbo, no con un estado de ánimo».`, `O Henrik enche sua garrafa da jarra. «Uma garrafa cheia. E dois sachês, caso você fique pior que o seu cronograma. Mistura com um gole, não com um humor».`),
-        once: true, do: { flag: 'henrik_done', call: 'henrik_gift', time: 4 }, next: null
+        choices: [K('care', t(`"Thank you, Henrik." [Take the water and sachets]`, `«Gracias, Henrik». [Tomar el agua y los sobres]`, `«{Obrigado|Obrigada|Valeu}, Henrik». [Pegar a água e os sachês]`), { do: { flag: 'henrik_done', unflag: 'henrik_ready', call: 'henrik_gift', time: 4 }, free: true, next: null })]
       }
     }
   };

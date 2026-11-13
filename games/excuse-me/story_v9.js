@@ -36,6 +36,8 @@
 
   /* ============================================================ ROSA, TIGHTENED */
   cast('tavi', 'TAVI', { skin: 0, hair: 2, hc: 3, expr: 5, top: 1, tc: 11, bottom: 1, bc: 0, acc: 0 });
+  const rosaDoneCount = function (s) { return [1, 2, 3].filter(function (i) { return s.flags['rosa_e' + i] || s.flags['rr' + i]; }).length; };
+  const rosaHasNew = function (s) { return (s.flags.rosa_e1 && !s.flags.rr1) || (s.flags.rosa_e2 && !s.flags.rr2) || (s.flags.rosa_e3 && !s.flags.rr3); };
   D.rosa_again = {
     who: 'rosa', role: t('CLEANING', 'LIMPIEZA', 'LIMPEZA'), start: 'a', nodes: {
       a: {
@@ -76,8 +78,36 @@
           return t(`"Well?" Rosa keeps mopping and lists on her fingers. ${mk(s, 'rr1')} the green one. ${mk(s, 'rr2')} the key. ${mk(s, 'rr3')} the bucket. "I need ${need}."`, `«¿Y?» Rosa sigue trapeando y cuenta con los dedos. ${mk(s, 'rr1')} el verde. ${mk(s, 'rr2')} la llave. ${mk(s, 'rr3')} el balde. «Necesito ${need}».`, `«E aí?» A Rosa continua esfregando e conta nos dedos. ${mk(s, 'rr1')} a verde. ${mk(s, 'rr2')} a chave. ${mk(s, 'rr3')} o balde. «Preciso de ${need}».`);
         },
         choices: [
-          K('chill', t(`"Report in."`, `«Dar parte».`, `«Dar o relatório».`), { req: function (s) { return (s.flags.rosa_e1 && !s.flags.rr1) || (s.flags.rosa_e2 && !s.flags.rr2) || (s.flags.rosa_e3 && !s.flags.rr3); }, call: 'rosa_report', next: null, free: true }),
+          K('chill', t(`"Report in."`, `«Dar parte».`, `«Dar o relatório».`), { req: function (s) { return rosaHasNew(s) && rosaDoneCount(s) >= (s.flags.rosa_probation ? 1 : 2); }, next: 'report_done', free: true }),
+          K('chill', t(`"Report in."`, `«Dar parte».`, `«Dar o relatório».`), { req: function (s) { return rosaHasNew(s) && rosaDoneCount(s) < (s.flags.rosa_probation ? 1 : 2); }, next: 'report_part', free: true }),
           K('chill', t(`"Still working on it."`, `«Sigo en eso».`, `«Ainda estou nessa».`), { free: true, next: null })
+        ]
+      },
+      report_done: {
+        text: function (s) {
+          const f = s.flags, total = rosaDoneCount(s);
+          if (f.rosa_probation) return t(`Rosa ticks it off on her fingers. "Okay. We're square." She unhooks a lanyard from her belt and holds it out. "Stay out of my stalls with more than one person, and we'll never speak about it again."`, `Rosa lo tacha con los dedos. «Bueno. Estamos a mano». Desengancha una credencial de su cinturón y la extiende. «No entres a mis cabinas con más de una persona y jamás volveremos a hablar de esto».`, `A Rosa risca nos dedos. «Tá. Estamos quites». Ela solta um crachá do cinto e estende. «Não entre nas minhas cabines com mais de uma pessoa e nunca mais falamos disso».`);
+          if (total >= 3) return t(`Rosa ticks all three off on her fingers and looks at you with rare respect. "The best legs I've had in twenty years. Take this — STAFF. The door beside the sinks is yours, and the guards in the front rooms won't see you any more."`, `Rosa tacha las tres con los dedos y te mira con un respeto poco común. «Las mejores piernas que tuve en veinte años. Toma esto: STAFF. La puerta junto a los lavamanos es tuya, y los guardias de las salas del frente ya no te van a ver».`, `A Rosa risca as três nos dedos e te olha com um respeito raro. «As melhores pernas que tive em vinte anos. Pega isso — STAFF. A porta ao lado das pias é sua, e os seguranças das salas da frente não vão mais te ver».`);
+          return t(`Rosa ticks you off on her fingers and nods twice. "Good." She unhooks a lanyard from her belt and holds it out. "STAFF. Don't tell them I did it. The door beside the sinks is yours. The guards in the front rooms won't see you any more. Say hi to the DJ."`, `Rosa te tacha con los dedos y asiente dos veces. «Bien». Desengancha una credencial de su cinturón y la extiende. «STAFF. No les digas que lo hice yo. La puerta junto a los lavamanos es tuya. Los guardias de las salas del frente ya no te van a ver. Saluda al DJ».`, `A Rosa risca nos dedos e assente duas vezes. «Bom». Ela solta um crachá do cinto e estende. «STAFF. Não conta que fui eu. A porta ao lado das pias é sua. Os seguranças das salas da frente não vão mais te ver. Dá um oi pra DJ».`);
+        },
+        choices: [
+          K('care', t(`"Thank you, Rosa." [Take the lanyard]`, `«Gracias, Rosa». [Tomar la credencial]`, `«{Obrigado|Obrigada|Valeu}, Rosa». [Pegar o crachá]`), { do: { call: 'rosa_report' }, next: null })
+        ]
+      },
+      report_part: {
+        text: function (s) {
+          const f = s.flags;
+          const en = [], es = [], pt = [];
+          if (!f.rosa_e1 && !f.rr1) { en.push('the green one on the main floor'); es.push('el verde en la pista principal'); pt.push('quem está passando mal na pista'); }
+          if (!f.rosa_e2 && !f.rr2) { en.push('my closet key from Luca'); es.push('mi llave del clóset con Luca'); pt.push('minha chave do armário com o Luca'); }
+          if (!f.rosa_e3 && !f.rr3) { en.push('a bucket of clean water from the quiet room'); es.push('un balde de agua limpia de la sala tranquila'); pt.push('um balde de água limpa da sala de calma'); }
+          return t(`Rosa ticks it off on one finger. "Mm. Good. That's one. I still need another: ${en.join(', or ')}."`,
+            `Rosa lo tacha con un dedo. «Mm. Bien. Esa es una. Todavía necesito otra: ${es.join(', o ')}».`,
+            `A Rosa risca com um dedo. «Hm. Bom. Essa é uma. Ainda preciso de outra: ${pt.join(', ou ')}».`);
+        },
+        choices: [
+          K('chill', t(`"I'll finish the rest."`, `«Termino lo que falta».`, `«Vou terminar o resto».`), { do: { call: 'rosa_report' }, free: true, next: null }),
+          LEAVE()
         ]
       },
       after: {
@@ -122,7 +152,9 @@
   D.luca.nodes.keys_have = { text: t(`"You already have it. It's in your hand."`, `«Ya la tienes. Está en tu mano».`, `«Você já tem. Tá na sua mão».`) };
   D.luca.nodes.keys_ok = {
     text: t(`Luca does a double take. "You're the one who brought in Biscuit's phone. Biscuit's mum has been telling the whole foyer. Lost property is yours: take anything. …Rosa's ring? Yes. Third hook. Don't tell her it was on a hook labelled 'DREAD'."`, `Luca pestañea dos veces. «Tú eres quien trajo el celular de Biscuit. La mamá de Biscuit se lo ha contado a todo el foyer. Los objetos perdidos son tuyos: llévate lo que quieras. …¿El llavero de Rosa? Sí. Tercer gancho. No le cuentes que estaba en un gancho que decía “ANGUSTIA”».`, `O Luca dá uma segunda olhada. «Foi você que trouxe o celular do Biscuit. A mãe do Biscuit tá contando pro foyer inteiro. Os achados e perdidos são seus: leve o que quiser. …O chaveiro da Rosa? Sim. Terceiro gancho. Não conta pra ela que tava num gancho com a etiqueta “ANGÚSTIA”».`),
-    do: { flag: ['closet_key', 'rosa_e2'], soc: 3, fun: 2 }
+    choices: [
+      K('care', t(`"Thank you, Luca." [Take the key]`, `«Gracias, Luca». [Tomar la llave]`, `«{Obrigado|Obrigada|Valeu}, Luca». [Pegar a chave]`), { do: { flag: ['closet_key', 'rosa_e2'], soc: 3, fun: 2 }, next: null })
+    ]
   };
   D.luca.nodes.keys_fav = {
     text: t(`Luca folds his arms. "Lost property is sacred. I don't hand a ring of keys to a stranger. But I do take payment in time." He gestures at the stool. "Sit. Let me describe my dread. Four minutes. It has chapters."`, `Luca cruza los brazos. «Los objetos perdidos son sagrados. No le doy un llavero a un desconocido. Pero cobro en tiempo». Señala el taburete. «Siéntate. Déjame describirte mi angustia. Cuatro minutos. Tiene capítulos».`, `O Luca cruza os braços. «Achados e perdidos são sagrados. Não entrego um chaveiro pra um estranho. Mas aceito pagamento em tempo». Ele aponta o banquinho. «Senta. Deixa eu descrever minha angústia. Quatro minutos. Tem capítulos».`),
@@ -145,7 +177,9 @@
         ? t(`Luca takes the phone, turns it over, and looks at you for one second longer than is comfortable. "…It's warm. Somebody has been in this." He types a pin in four tries and calls MUM. "Hi. Yes. Your Biscuit's phone — no, your phone."`, `Luca toma el celular, lo da vuelta y te mira un segundo más de lo cómodo. «…Está tibio. Alguien estuvo metido en esto». Prueba un pin en cuatro intentos y llama a MAMÁ. «Hola. Sí. El celular de tu Biscuit — no, tu celular».`, `O Luca pega o celular, vira e te olha um segundo mais do que é confortável. «…Está morno. Alguém mexeu nisso». Ele tenta um PIN em quatro tentativas e liga pra MÃE. «Oi. Sim. O celular do seu Biscuit — não, o seu celular».`)
         : t(`Luca takes the phone with both hands, reverent. He types a pin in four tries and calls the number saved as MUM. "Hi. Yes. Your Biscuit's phone — no, your phone. Hello? She's sobbing. She says thank you. She says Biscuit says thank you."`, `Luca toma el celular con las dos manos, reverente. Prueba un pin en cuatro intentos y llama al número guardado como MAMÁ. «Hola. Sí. El celular de tu Biscuit — no, tu celular. ¿Hola? Está llorando. Dice gracias. Dice que Biscuit dice gracias».`, `O Luca pega o celular com as duas mãos, reverente. Ele tenta um PIN em quatro tentativas e liga pro número salvo como MÃE. «Oi. Sim. O celular do seu Biscuit — não, o seu celular. Alô? Ela tá soluçando. Ela diz obrigada. Diz que o Biscuit diz obrigado».`);
     },
-    do: { care: 1, soc: 2, flag: ['phone_returned', 'phone_done'], unflag: 'phone_held', quest: { sq_biscuit: 'done' } }
+    choices: [
+      K('care', t(`"Glad she's okay."`, `«Me alegra que esté bien».`, `«Ainda bem que ela tá bem».`), { do: { care: 1, soc: 2, flag: ['phone_returned', 'phone_done'], unflag: 'phone_held', quest: { sq_biscuit: 'done' } }, next: null })
+    ]
   };
   D.luca.nodes.a.choices.push(K('care', t(`Hand over the phone with the dog in a raincoat.`, `Entregar el celular del perro con impermeable.`, `Entregar o celular do cachorro de capa de chuva.`), { req: { flag: 'phone_held' }, next: 'phone' }));
 
@@ -158,7 +192,10 @@
     [1, 2, 3].forEach(function (i) { if (f['rosa_e' + i] && !f['rr' + i]) { f['rr' + i] = true; n++; } });
     const total = [1, 2, 3].filter(function (i) { return f['rr' + i]; }).length;
     const need = f.rosa_probation ? 1 : 2;
-    U.toast({ icon: 'cross', text: t(`Rosa ticks you off on her fingers, nods once per item. "Mm. Mm. Good."`, `Rosa te va tachando con los dedos, asiente una vez por cada cosa. «Mm. Mm. Bien».`, `A Rosa vai riscando nos dedos, assente uma vez por item. «Hm. Hm. Bom».`), kind: 'info' });
+    if (total < need) {
+      U.toast({ icon: 'cross', text: t(`Rosa ticks it off on her fingers. "Mm. Good."`, `Rosa lo tacha con los dedos. «Mm. Bien».`, `A Rosa risca nos dedos. «Hm. Bom».`), kind: 'info' });
+      return;
+    }
     if (total >= need && s.quests.sq_rosa !== 'done') {
       L.setQuest('sq_rosa', 'done');
       L.apply({ flag: ['rosa_lanyard', 'backstage_access', 'rosa_ally', 'rosa_ok', 'quiet_known'], unflag: ['rosa_cold', 'rosa_angry'], fun: 4, soc: 6 });
@@ -200,7 +237,7 @@
   };
   D.kai.nodes.battery_done = {
     text: t(`Kai snaps it in. The display lights up. They play four bars. Then the whole song. It is, you realise, yours. Somebody on the sidewalk starts dancing.`, `Kai la encaja. La pantalla se enciende. Toca cuatro compases. Luego toda la canción. Es, te das cuenta, la tuya. Alguien en la vereda empieza a bailar.`, `O Kai encaixa. O display acende. Toca quatro compassos. Depois a música inteira. É, você percebe, a sua. Alguém na calçada começa a dançar.`),
-    do: { fun: 10, soc: 4, flag: ['kai_battery', 'kai_tipped', 'kai_song'], unflag: 'battery', quest: { sq_kai: 'done' } }
+    choices: [K('care', t(`"Play it." [Listen with Kai]`, `«Tócala». [Escuchar con Kai]`, `«Toca ela». [Ouvir com o Kai]`), { do: { fun: 10, soc: 4, flag: ['kai_battery', 'kai_tipped', 'kai_song'], unflag: 'battery', quest: { sq_kai: 'done' } }, next: null })]
   };
   D.bruce.nodes.a.choices.push(K('ask', t(`"Kai on the sidewalk needs a 9-volt. Do you have a spare?"`, `«Kai, en la vereda, necesita una pila de 9 voltios. ¿Tienes una de repuesto?»`, `«O Kai da calçada precisa de uma pilha de 9 volts. Você tem uma reserva?»`), { req: { flag: 'kai_wants_battery', no: 'battery' }, do: { flag: 'battery', soc: 2 }, next: null, react: t(`Bruce unzips a pocket of the walkie bag carefully. "Spare. For Kai? Tell Kai the cat sends regards." He puts it in your hand.`, `Bruce abre un bolsillo de la bolsa del walkie con cuidado. «De repuesto. ¿Para Kai? Dile a Kai que el gato manda saludos». La pone en tu mano.`, `O Bruce abre um bolso da bolsa do walkie com cuidado. «Reserva. Pro Kai? Fala pro Kai que o gato manda lembranças». Ele coloca na sua mão.`) }));
   D.mina.nodes.a.choices.push(K('ask', t(`"Do you happen to have a spare 9-volt?"`, `«¿Tendrás por casualidad una pila de 9 voltios de repuesto?»`, `«Você por acaso tem uma pilha de 9 volts de reserva?»`), { req: { flag: 'kai_wants_battery', no: 'battery' }, do: { flag: 'battery', soc: 2, fun: 2 }, next: null, react: t(`Mina rummages in her bag, which clinks. "Nine volt. Always. For ears, for pedals, for emergencies of the heart." She hands it over with a wink.`, `Mina revuelve su bolso, que tintinea. «Nueve voltios. Siempre. Para oídos, para pedales, para emergencias del corazón». Te la da con un guiño.`, `A Mina remexe a bolsa, que tilinta. «Nove volts. Sempre. Pra ouvidos, pra pedais, pra emergências do coração». Ela entrega com uma piscadela.`) }));
@@ -214,12 +251,12 @@
       plain: { text: t(`Lamp is ten metres of cable up a ladder with a headlamp on, wiring a rig and humming. "Sorry. Hands full. Cables. It's all cables."`, `Lamp está diez metros de cable arriba de una escalera con una linterna en la frente, armando un set y tarareando. «Perdón. Manos ocupadas. Cables. Todo son cables».`, `O Lamp está dez metros de cabo acima numa escada com uma lanterna na testa, montando uma estrutura e cantarolando. «Desculpa. Mãos ocupadas. Cabos. É tudo cabo».`) },
       ask: {
         text: t(`Lamp climbs down one rung at a time. "Dani? Gold shirt, laughs like a firework? I'd say yes to a coffee if my brain weren't ten metres of cable." They point at the booth. "Rose-pink gel, number four, drawer backstage. Bring it and I'll bring myself."`, `Lamp baja un peldaño a la vez. «¿Dani? ¿La camisa dorada, la risa de fuego artificial? Diría que sí a un café si mi cabeza no fuera diez metros de cable». Señala la cabina del DJ. «Gel rosa, número cuatro, cajón del backstage. Tráelo y yo me traigo a mí».`, `Lamp desce um degrau de cada vez. «Dani? Camisa dourada, ri feito fogos de artifício? Eu diria sim a um café se minha cabeça não fosse dez metros de cabo». Aponta pra cabine do DJ. «Gel rosa, número quatro, gaveta do backstage. Traz que eu me trago».`),
-        do: { flag: 'lamp_met' }, next: null
+        choices: [K('care', t(`"I'll get the gel."`, `«Voy por el gel».`, `«Vou buscar o gel».`), { do: { flag: 'lamp_met' }, free: true, next: null })]
       },
       waiting: { text: t(`"The gel? Backstage. The drawer under the cables. Rose-pink, number four. I'll be here, not waiting."`, `«¿El gel? Backstage. El cajón bajo los cables. Rosa, número cuatro. Estaré aquí, sin esperar».`, `«O gel? Backstage. A gaveta embaixo dos cabos. Rosa, número quatro. Eu fico aqui, sem esperar».`) },
       deliver: {
         text: t(`Lamp takes the gel carefully and holds it up to the light. The whole attic goes the colour of a kind sunrise. "Tell Dani," they say, a little pink. "After close. The roof. I'll bring two coffees."`, `Lamp toma el gel con cuidado y lo levanta hacia la luz. Todo el ático se vuelve del color de un amanecer amable. «Dile a Dani», dice, algo rosada. «Después del cierre. El techo. Llevo dos cafés».`, `O Lamp pega o gel com cuidado e levanta contra a luz. O sótão inteiro fica da cor de um nascer do sol gentil. «Fala pro Dani», diz, um pouco rosa. «Depois do fechamento. O terraço. Levo dois cafés».`),
-        do: { fun: 8, soc: 4, bond: { dani: 3 }, flag: ['lamp_done'], unflag: 'lamp_gel', quest: { sq_lamp: 'done' } }
+        choices: [K('care', t(`"Two coffees on the roof."`, `«Dos cafés en el techo».`, `«Dois cafés no terraço».`), { do: { fun: 8, soc: 4, bond: { dani: 3 }, flag: ['lamp_done'], unflag: 'lamp_gel', quest: { sq_lamp: 'done' } }, next: null })]
       },
       after: { text: t(`Lamp waves from the ladder, pink-lit, humming. "Roof. After close. Two coffees."`, `Lamp saluda desde la escalera, iluminada de rosa, tarareando. «Techo. Después del cierre. Dos cafés».`, `O Lamp acena da escada, iluminado de rosa, cantarolando. «Terraço. Depois do fechamento. Dois cafés».`) }
     }
@@ -251,7 +288,7 @@
     text: function (s) {
       return t(`Sia takes the three words ("TEA", "STAY", "WOBBLE") and writes without breathing. Then she reads it aloud, very softly: "A room that was warm as TEA. / A voice in the dark that said STAY. / A bass line, somewhere, in the quiet room's heart / that was a WOBBLE (somebody's heard that all night). / And you, with your good shoes, / who carried the words." She lets the pen fall. "That's the last line. You were the last line."`, `Sia toma las tres palabras («TÉ», «QUÉDATE», «WOBBLE») y escribe sin respirar. Luego lo lee en voz muy baja: «Un cuarto cálido como el TÉ. / Una voz en la oscuridad que dijo QUÉDATE. / Un bajo, en algún lugar, en el corazón de la sala tranquila / que era un WOBBLE (alguien lo ha pedido toda la noche). / Y tú, con tus buenos zapatos, / que cargaste las palabras». Deja caer el lápiz. «Esa es la última línea. Tú fuiste la última línea».`, `A Sia pega as três palavras («CHÁ», «FICA», «WOBBLE») e escreve sem respirar. Depois lê em voz bem baixinha: «Uma sala quente como CHÁ. / Uma voz no escuro que disse FICA. / Um baixo, em algum lugar, no coração da sala de calma / que era um WOBBLE (alguém pediu isso a noite toda). / E você, com seus sapatos bons, / que carregou as palavras». Ela deixa a caneta cair. «Essa é a última linha. Você foi a última linha».`);
     },
-    do: { fun: 7, soc: 5, flag: ['sia_done', 'poem'], quest: { sq_sia: 'done' } }
+    choices: [K('care', t(`"Keep the pen."`, `«Quédate el lápiz».`, `«Fica com a caneta».`), { do: { fun: 7, soc: 5, flag: ['sia_done', 'poem'], quest: { sq_sia: 'done' } }, next: null })]
   };
   D.ruth.nodes.a.choices.push(K('ask', t(`"Ruth, what's a warm word?"`, `«Ruth, ¿cuál es una palabra cálida?»`, `«Ruth, qual é uma palavra quente?»`), { req: { flag: 'sia_task', no: 'word_warm' }, do: { flag: 'word_warm', soc: 2 }, next: null, react: t(`She does not look up from the wool. "Tea," says Ruth, immediately. "It's always tea. If you're asking for a poem, I never said that."`, `No levanta la vista de la lana. «Té», dice Ruth, de inmediato. «Siempre es té. Si me pides para un poema, yo no dije eso».`, `Ela não tira os olhos da lã. «Chá», diz a Ruth, na hora. «É sempre chá. Se você tá pedindo pra um poema, eu não disse isso».`) }));
   D.gus.nodes.a.choices.push(K('ask', t(`"Gus, give me a silly word."`, `«Gus, dame una palabra tonta».`, `«Gus, me dá uma palavra boba».`), { req: { flag: 'sia_task', no: 'word_silly' }, do: { flag: 'word_silly', fun: 2 }, next: null, react: t(`Gus freezes, one hand on an invisible fader, and stares at the ceiling. "WOBBLE," he whispers. "The silliest word. Say it with your whole face." You say it with your whole face.`, `Gus se congela, una mano en un fader invisible, y mira el techo. «WOBBLE», susurra. «La palabra más tonta. Dila con toda la cara». La dices con toda la cara.`, `O Gus congela, uma mão num fader invisível, e olha o teto. «WOBBLE», sussurra. «A palavra mais boba. Fala com o rosto inteiro». Você fala com o rosto inteiro.`) }));
@@ -271,7 +308,7 @@
         ? t(`Isi gets the prawn crackers and the cheese triangle and looks at them like a woman at a banquet. "SEAFOOD AND CHEESE. Oh, I could weep. TEAM! LOOK!" Two volunteers materialise from nowhere, wide-eyed, as at a feast. She presses a small paper wristband into your hand. "TESTED OK. For you. It means: we know you. The dealers' queue gets nervous around that. Don't ask me why it works."`, `Isi recibe las galletas de camarón y el triángulo de queso y los mira como una mujer en un banquete. «MARISCOS Y QUESO. Ay, podría llorar. ¡EQUIPO! ¡MIREN!» Dos voluntarios se materializan de la nada, con los ojos enormes, como ante un festín. Te pone una pulserita de papel en la mano. «PROBADO OK. Para ti. Significa: te conocemos. La fila de los vendedores se pone nerviosa con esto. No me preguntes por qué funciona».`, `A Isi recebe os biscoitos de camarão e o triângulo de queijo e olha pra eles como uma mulher num banquete. «FRUTO DO MAR E QUEIJO. Ai, eu podia chorar. EQUIPE! OLHEM!» Dois voluntários se materializam do nada, de olhos arregalados, como num banquete. Ela coloca uma pulseirinha de papel na sua mão. «TESTADO OK. Pra você. Significa: a gente te conhece. A fila dos vendedores fica nervosa com isso. Não me pergunta por que funciona».`)
         : t(`Isi takes it with both hands. "OH. This is SO kind." She splits it three ways with surgical fairness and the three of them eat in complete silence. She presses a small paper wristband into your hand. "TESTED OK. For you. It means: we know you. Dealers' queues go quiet around it. Don't ask me why it works."`, `Isi lo toma con las dos manos. «AY. Qué AMABLE». Lo reparte entre tres con justicia quirúrgica y los tres comen en silencio total. Te pone una pulserita de papel en la mano. «PROBADO OK. Para ti. Significa: te conocemos. Las filas de los vendedores se calman con esto. No me preguntes por qué funciona».`, `A Isi pega com as duas mãos. «AI. Que GENTIL». Ela divide em três com justiça cirúrgica e os três comem em silêncio total. Ela coloca uma pulseirinha de papel na sua mão. «TESTADO OK. Pra você. Significa: a gente te conhece. As filas dos vendedores ficam quietas com isso. Não me pergunta por que funciona».`);
     },
-    do: { hp: 6, soc: 6, fun: 3, flag: ['isi_fed', 'isi_wristband'], unflag: ['have_sandwich', 'have_prawn'], quest: { sq_isi: 'done' } }
+    choices: [K('care', t(`"Thank you, Isi." [Take the wristband]`, `«Gracias, Isi». [Tomar la pulsera]`, `«{Obrigado|Obrigada|Valeu}, Isi». [Pegar a pulseira]`), { do: { hp: 6, soc: 6, fun: 3, flag: ['isi_fed', 'isi_wristband'], unflag: ['have_sandwich', 'have_prawn'], quest: { sq_isi: 'done' } }, next: null })]
   };
   if (D.nuri_after) { D.nuri_after.nodes.hungry = D.nuri.nodes.hungry; D.nuri_after.nodes.fed = D.nuri.nodes.fed; }
   D.obj_vend.nodes.a.choices.splice(1, 0, K('care', t(`The cheese triangle: for Isi.`, `El triángulo de queso: para Isi.`, `O triângulo de queijo: pra Isi.`), { req: function (s) { return s.quests.sq_isi === 'active' && !s.flags.have_sandwich; }, do: { flag: 'have_sandwich', cool: { vend: 45 } }, next: null, react: t(`You carry it away carefully. The machine blinks OUT OF CHANGE behind you.`, `Te lo llevas con cuidado. La máquina parpadea SIN CAMBIO a tus espaldas.`, `Você leva com cuidado. A máquina pisca SEM TROCO atrás de você.`) }));

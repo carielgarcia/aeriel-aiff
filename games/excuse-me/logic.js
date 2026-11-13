@@ -26,7 +26,7 @@
   EM.LOW_HP = 40;
   /* staff: being rude to any of them costs an immense amount of WEIRDNESS, and the second time you are thrown out */
   /* HOSTS: people who give their time, energy and home to keep the night alive (every resident, and Anselm and Dot). Rudeness to a host is a warning, then OUT. */
-  EM.HOSTS = { anselm: 1, dot: 1, resident: 1, frames: 1 };
+  EM.HOSTS = { anselm: 1, dot: 1, resident: 1, frames: 1, apud: 1 };
   EM.AFTER_END = 840; /* THE AFTER runs from the sunrise to noon (minute 840) */
   EM.STAFF = { dragan: 1, luca: 1, nico: 1, mika: 1, rosa: 1, nuri: 1, camilo: 1, teo: 1, dario: 1, ofelia: 1, bruce: 1, beatriz: 1, ines: 1, lampie: 1, sub: 1, maya: 1, bea: 1 };
 

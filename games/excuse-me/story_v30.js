@@ -17,6 +17,9 @@
 
   /* ============================================================ APÜD */
   EM.CAST.apud = { name: 'APÜD', look: { skin: 1, hair: 6, hc: 0, expr: 1, top: 8, tc: 4, bottom: 1, bc: 1, acc: 4, wide: false } };
+  if (Z.a_living && !Z.a_living.ents.some(function (e) { return e.id === 'cam_apud'; })) {
+    Z.a_living.npc({ id: 'cam_apud', cast: 'apud', x: 18.5, y: 10.6, dlg: 'af_cam_apud', dir: 'd', reach: 16, when: function (s) { return !!(s.after && s.after.cameos.indexOf('apud') !== -1); } });
+  }
 
   /* ============================================================ THE ROOF */
   const R = Z.rooftop;
@@ -60,6 +63,7 @@
     dragan: [function () { return true; }, t(`DRAGAN, arms crossed, facing the light: "Nobody in there owes you a good night. You gave a few anyway."`, `DRAGAN, con los brazos cruzados, mirando la luz: «Nadie ahí adentro te debe una buena noche. Tú diste varias igual».`, `O DRAGAN, de braços cruzados, de frente pra luz: «Ninguém lá dentro te deve uma boa noite. Você deu algumas mesmo assim».`)]
   };
   const NAMES = { rosa: 'ROSA', luca: 'LUCA', nuri: 'ISI', mika: 'MIKA', dario: 'DARIO', dragan: 'DRAGAN' };
+  const CALL_NAMES = { rosa: 'Rosa', luca: 'Luca', nuri: 'Isi', mika: 'Mika', dario: 'Dario', dragan: 'Dragan' };
   Object.keys(LINES).forEach(function (id) {
     const ln = LINES[id];
     D['roof_' + id] = {
@@ -67,7 +71,7 @@
         st: { branch: [{ req: { flag: 'thanks_' + id }, to: 'again' }, { req: function () { return true; }, to: 'a' }] },
         a: {
           text: function (s) { return ln[0](s) ? ln[1] : ln[2]; },
-          choices: [K('care', t(`"Thank you. By name."`, `«Gracias. Por tu nombre».`, `«Obrigado. Pelo seu nome».`), { free: true, do: { flag: 'thanks_' + id, fun: 2, soc: 1 }, next: null }), LEAVE()]
+          choices: [K('care', t(`"Thank you, ${CALL_NAMES[id]}."`, `«Gracias, ${CALL_NAMES[id]}».`, `«{Obrigado|Obrigada|Valeu}, ${CALL_NAMES[id]}».`), { free: true, do: { flag: 'thanks_' + id, fun: 2, soc: 1 }, next: null }), LEAVE()]
         },
         again: { text: t(`${NAMES[id]} nods at the sky. You said it already. It still counts.`, `${NAMES[id]} asiente hacia el cielo. Ya lo dijiste. Igual cuenta.`, `${NAMES[id]} assente pro céu. Você já disse. Ainda conta.`), choices: [LEAVE()] }
       }
@@ -77,12 +81,24 @@
   /* the booth: nobody pushes anything on you */
   D.frames_roof_talk = {
     who: 'frames', role: t('ÆRIEL\'S PEOPLE', 'LA GENTE DE ÆRIEL', 'A GALERA DA ÆRIEL'), start: 'a', nodes: {
-      a: { text: t(`FRAMES SHELL, eyes on the sky: "Face the light. Everything else can wait five minutes."`, `FRAMES SHELL, con los ojos en el cielo: «Mira la luz. Todo lo demás puede esperar cinco minutos».`, `O FRAMES SHELL, de olho no céu: «Olha pra luz. O resto pode esperar cinco minutos».`), choices: [LEAVE()] }
+      a: {
+        text: function (s) {
+          if (s.flags.met_frames_attic) return t(`FRAMES SHELL, eyes on the sky, rolling his shoulders after the long run: "Sala 2 till 02:30, crate duty backstage, and now this roof. Good seeing you upstairs earlier. Face the light — everything else can wait five minutes."`, `FRAMES SHELL, con los ojos en el cielo, aflojando los hombros después de la maratón: «Sala 2 hasta las 02:30, el cajón en backstage y ahora este techo. Qué bueno verte arriba más temprano. Mira la luz — todo lo demás puede esperar cinco minutos».`, `O FRAMES SHELL, de olho no céu, soltando os ombros depois da maratona: «Sala 2 até 02:30, caixote no backstage e agora esse terraço. Bom ter te visto lá em cima mais cedo. Olha pra luz — o resto pode esperar cinco minutos».`);
+          return t(`FRAMES SHELL, eyes on the sky: "Warming up Sala 2 until 02:30 feels like yesterday from up here. Face the light. Everything else can wait five minutes."`, `FRAMES SHELL, con los ojos en el cielo: «Calentar Sala 2 hasta las 02:30 parece de ayer desde aquí arriba. Mira la luz. Todo lo demás puede esperar cinco minutos».`, `O FRAMES SHELL, de olho no céu: «Aquecer a Sala 2 até 02:30 parece que foi ontem daqui de cima. Olha pra luz. O resto pode esperar cinco minutos».`);
+        },
+        choices: [LEAVE()]
+      }
     }
   };
   D.apud_roof_talk = {
     who: 'apud', role: t('THE CLOSING SET', 'EL SET DE CIERRE', 'O SET DE ENCERRAMENTO'), start: 'a', nodes: {
-      a: { text: t(`APÜD, one hand on the mixer, not looking away from the horizon: "First light in a few minutes. Stand with your people. The middle is yours."`, `APÜD, con una mano en la mezcladora, sin apartar la vista del horizonte: «La primera luz llega en unos minutos. Párate con tu gente. El centro es tuyo».`, `O APÜD, com uma mão na mesa de mixagem, sem tirar os olhos do horizonte: «A primeira luz chega em poucos minutos. Fica com sua galera. O centro é de vocês».`), choices: [LEAVE()] }
+      a: {
+        text: function (s) {
+          if (s.flags.met_apud_attic) return t(`APÜD, one hand on the mixer, catches your eye from across the booth with a small grin: "From HardBounce in Sala 2 straight onto the roof without dropping a needle — glad you stopped by the upper booth earlier. First light in a few minutes. Stand with your people."`, `APÜD, con una mano en la mezcladora, te cruza la mirada desde la cabina con una sonrisa leve: «Del HardBounce en Sala 2 directo al techo sin soltar la aguja — qué bien que pasaste por la cabina de arriba. La primera luz llega en unos minutos. Párate con tu gente».`, `O APÜD, com uma mão na mesa de mixagem, encontra seu olhar da cabine com um sorriso leve: «Do HardBounce na Sala 2 direto pro terraço sem tirar a agulha — bom que você passou pela cabine de cima mais cedo. A primeira luz chega em poucos minutos. Fica com sua galera».`);
+          return t(`APÜD, one hand on the mixer, not looking away from the horizon: "Took over Sala 2 at 02:30 with HardBounce and rode it straight up to this closing booth. First light in a few minutes. Stand with your people. The middle is yours."`, `APÜD, con una mano en la mezcladora, sin apartar la vista del horizonte: «Tomé Sala 2 a las 02:30 con HardBounce y lo traje directo hasta esta cabina de cierre. La primera luz llega en unos minutos. Párate con tu gente. El centro es tuyo».`, `O APÜD, com uma mão na mesa de mixagem, sem tirar os olhos do horizonte: «Assumi a Sala 2 às 02:30 com HardBounce e vim direto até essa cabine de encerramento. A primeira luz chega em poucos minutos. Fica com sua galera. O centro é de vocês».`);
+        },
+        choices: [LEAVE()]
+      }
     }
   };
   D.afters_hosts_wait = {

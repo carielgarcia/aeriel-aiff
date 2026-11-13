@@ -144,12 +144,17 @@
   };
   H.owe = {
     text: t(`"Three things. Remember who built the floor: Black, queer, Latino, working-class people who needed somewhere safe. Keep it safe for whoever comes next. And never let a floor be shut because of what it sounds like. That's why we ask first. That's why we look after each other."`, `«Tres cosas. Recuerda quién construyó la pista: gente negra, queer, latina y trabajadora que necesitaba un lugar seguro. Mantenla segura para quien venga después. Y nunca dejes que cierren una pista por cómo suena. Por eso preguntamos primero. Por eso nos cuidamos».`, `«Três coisas. Lembra quem construiu a pista: gente negra, queer, latina e trabalhadora que precisava de um lugar seguro. Mantém ela segura pra quem vier depois. E nunca deixa fecharem uma pista por causa do som que ela tem. É por isso que a gente pergunta primeiro. É por isso que a gente cuida um do outro».`),
-    once: true, do: { soc: 4, fun: 3, care: 1, flag: 'hugo_roots' }, next: null
+    choices: [
+      K('care', t(`"We'll remember who built it."`, `«Nos acordaremos de quién la construyó».`, `«Vamos lembrar de quem construiu».`), { do: { soc: 4, fun: 3, care: 1, flag: 'hugo_roots', quest: { sq_roots: 'done' } }, next: null })
+    ]
   };
   H.a.choices.splice(1, 0, K('ask', t(`"Where does all of this come from?"`, `«¿De dónde viene todo esto?»`, `«De onde vem tudo isso?»`), { free: true, next: 'roots_gate' }));
   S.hugo_check = function () {
     const s = EM.state;
-    if (s.quests.sq_roots === 'active' && s.flags.hugo_s1 && s.flags.hugo_s2 && s.flags.hugo_s3) L.setQuest('sq_roots', 'done');
+    if (s.quests.sq_roots === 'active' && s.flags.hugo_s1 && s.flags.hugo_s2 && s.flags.hugo_s3 && !s.flags.hugo_roots && !s.flags.hugo_3_toast) {
+      s.flags.hugo_3_toast = true;
+      U.toast({ icon: 'star', kind: 'info', ms: 6000, text: t(`Three cities in your head. Ask Hugo what we owe them.`, `Tres ciudades en la cabeza. Pregúntale a Hugo qué les debemos.`, `Três cidades na cabeça. Pergunta pro Hugo o que a gente deve a elas.`) });
+    }
   };
   if (story.morningRefs) story.morningRefs.push({ id: 'hugo_roots', who: 'hugo', ok: function (s) { return !!s.flags.hugo_roots; }, t: t(`you asked where it all comes from. that made an old man's week. go dance. remember who built the floor.`, `preguntaste de dónde viene todo. eso le hizo la semana a un viejo. ve a bailar. recuerda quién construyó la pista.`, `você perguntou de onde vem tudo. isso fez a semana de um velho. vai dançar. lembra quem construiu a pista.`) });
 
@@ -182,7 +187,9 @@
       if (n === 2) return t(`Ofelia reads the two letters. "A year, with conditions. It is not nothing. It is not the whole thing."`, `Ofelia lee las dos cartas. «Un año, con condiciones. No es nada. No es todo».`, `A Ofelia lê as duas cartas. «Um ano, com condições. Não é nada. Não é tudo».`);
       return t(`Ofelia turns the one letter over. "Under review. We'll know on Monday." She is kind about it. It does not help.`, `Ofelia da vuelta a la única carta. «En revisión. Lo sabremos el lunes». Lo dice con cariño. No ayuda.`, `A Ofelia vira a única carta. «Em revisão. A gente sabe na segunda». Ela diz com carinho. Não ajuda.`);
     },
-    do: { call: 'lic_close' }, next: null
+    choices: [
+      K('care', t(`"Thank you, Ofelia."`, `«Gracias, Ofelia».`, `«{Obrigado|Obrigada|Valeu}, Ofelia».`), { do: { call: 'lic_close' }, next: null })
+    ]
   };
   S.lic_close = function () {
     const s = EM.state, n = ['lic_hugo', 'lic_luca', 'lic_neigh'].filter(function (f) { return s.flags[f]; }).length;
@@ -195,7 +202,10 @@
   /* the letters */
   D.hugo.nodes.lic_gate = { branch: [{ req: function (s) { return !!(s.flags.hugo_s1 || s.flags.hugo_s2 || s.flags.hugo_s3); }, to: 'lic_yes' }, { req: function () { return true; }, to: 'lic_no' }] };
   D.hugo.nodes.lic_no = { text: t(`"A letter needs a reason. Ask me where it all comes from first, and then I'll write you one that Monday will read."`, `«Una carta necesita una razón. Pregúntame primero de dónde viene todo esto y entonces te escribo una que el lunes lea».`, `«Uma carta precisa de um motivo. Pergunta primeiro de onde vem tudo isso e aí eu escrevo uma que a segunda leia».`), next: 'a' };
-  D.hugo.nodes.lic_yes = { text: t(`Hugo writes in pencil on the back of a flyer: "It was a floor, and then it was a home." He signs it: Hugo, forty years.`, `Hugo escribe a lápiz en el dorso de un volante: «Era una pista y luego fue un hogar». Firma: Hugo, cuarenta años.`, `O Hugo escreve a lápis no verso de um panfleto: «Era uma pista e depois virou um lar». Assina: Hugo, quarenta anos.`), once: true, do: { soc: 2, fun: 2, flag: 'lic_hugo' }, next: null };
+  D.hugo.nodes.lic_yes = {
+    text: t(`Hugo writes in pencil on the back of a flyer: "It was a floor, and then it was a home." He signs it: Hugo, forty years.`, `Hugo escribe a lápiz en el dorso de un volante: «Era una pista y luego fue un hogar». Firma: Hugo, cuarenta años.`, `O Hugo escreve a lápis no verso de um panfleto: «Era uma pista e depois virou um lar». Assina: Hugo, quarenta anos.`),
+    choices: [K('care', t(`"Thank you, Hugo." [Take the letter]`, `«Gracias, Hugo». [Tomar la carta]`, `«{Obrigado|Obrigada|Valeu}, Hugo». [Pegar a carta]`), { do: { soc: 2, fun: 2, flag: 'lic_hugo' }, next: null })]
+  };
   D.hugo.nodes.a.choices.splice(2, 0, K('care', t(`"Ofelia needs a letter for the licence."`, `«Ofelia necesita una carta para la licencia».`, `«A Ofelia precisa de uma carta pra licença».`), { req: function (s) { return s.quests.sq_licence === 'active' && !s.flags.lic_hugo; }, free: true, next: 'lic_gate' }));
   if (D.luca) {
     D.luca.nodes.lic = { text: t(`Luca folds his arms. "A letter. Fine. 'I have a job with a pension and a union card. It exists because this room does.'" He considers. "Sit. Let me describe my dread first. It is four chapters, and it is going to be in the letter."`, `Luca cruza los brazos. «Una carta. Bueno. 'Tengo un empleo con pensión y carnet sindical. Existe porque este local existe'». Lo piensa. «Siéntate. Primero déjame describirte mi angustia. Son cuatro capítulos y va a ir en la carta».`, `O Luca cruza os braços. «Uma carta. Tá. 'Tenho um emprego com previdência e carteirinha do sindicato. Ele existe porque esse lugar existe'». Ele pensa. «Senta. Primeiro deixa eu descrever minha angústia. São quatro capítulos e vai entrar na carta».`),
@@ -207,7 +217,7 @@
   }
   D.valdes = {
     who: 'valdes', role: t('NEIGHBOUR', 'VECINA', 'VIZINHA'), start: 'st', nodes: {
-      st: { branch: [{ req: { flag: 'lic_neigh' }, to: 'after' }, { req: function (s) { return (s.valdesShut || 0) > s.time; }, to: 'shut' }, { req: function () { return true; }, to: 'a' }] },
+      st: { branch: [{ req: { flag: 'lic_neigh' }, to: 'after' }, { req: function (s) { return ['lic_n1', 'lic_n2', 'lic_n3', 'lic_n4'].filter(function (f) { return s.flags[f]; }).length >= 2; }, to: 'ok' }, { req: function (s) { return (s.valdesShut || 0) > s.time; }, to: 'shut' }, { req: function () { return true; }, to: 'a' }] },
       after: { text: t(`Sra. Valdés raises the thermos a little. "Go home safe. And tell the one with the radio I'll call."`, `La Sra. Valdés levanta un poco el termo. «Vuelve a casa a salvo. Y dile a la de la radio que voy a llamar».`, `A Sra. Valdés levanta um pouco a garrafa térmica. «Volte pra casa em segurança. E diz pra da rádio que eu vou ligar».`), choices: [LEAVE()] },
       shut: { text: t(`"Not now." She does not look at you. "An hour. Then, if you still want to talk, I'll be here. I'm always here. It's my pavement."`, `«Ahora no». No te mira. «Una hora. Luego, si todavía quieres hablar, aquí estaré. Siempre estoy aquí. Es mi banqueta».`, `«Agora não». Ela não te olha. «Uma hora. Depois, se ainda quiser conversar, eu tô aqui. Eu sempre tô aqui. É a minha calçada».`), choices: [LEAVE()] },
       a: {
@@ -234,7 +244,7 @@
       check: { branch: [{ req: function (s) { return ['lic_n1', 'lic_n2', 'lic_n3', 'lic_n4'].filter(function (f) { return s.flags[f]; }).length >= 2; }, to: 'ok' }, { req: function () { return true; }, to: 'help' }] },
       ok: {
         text: t(`Sra. Valdés takes a card from her gown, writes three lines and signs. "I'm not saying yes to everything. I'm saying yes to the people who asked." She hands it over. "Tell them I wrote it myself."`, `La Sra. Valdés saca una tarjeta de la bata, escribe tres líneas y firma. «No digo que sí a todo. Digo que sí a quienes preguntaron». Te la entrega. «Diles que la escribí yo».`, `A Sra. Valdés tira um cartão do roupão, escreve três linhas e assina. «Não tô dizendo sim pra tudo. Tô dizendo sim pra quem perguntou». Ela entrega. «Diz que eu mesma escrevi».`),
-        once: true, do: { fun: 4, soc: 4, care: 1, flag: 'lic_neigh' }, next: null
+        choices: [K('care', t(`"Thank you, Sra. Valdés." [Take the card]`, `«Gracias, Sra. Valdés». [Tomar la tarjeta]`, `«{Obrigado|Obrigada|Valeu}, Sra. Valdés». [Pegar o cartão]`), { do: { fun: 4, soc: 4, care: 1, flag: 'lic_neigh' }, next: null })]
       }
     }
   };

@@ -168,25 +168,77 @@
     e2: { text: t(`ÆRIEL laughs out loud, the first real laugh of the morning. "The toilets. Of course. Eyeliner compliments." They write it down. "That's the part of the night nobody pays me for. Put it on the flyer."`, `ÆRIEL se ríe en voz alta, la primera risa de verdad de la mañana. «El baño. Claro. Los cumplidos al delineador». Lo anota. «Esa es la parte de la noche por la que nadie me paga. Ponlo en el volante».`, `A ÆRIEL ri alto, a primeira risada de verdade da manhã. «O banheiro. Claro. Elogios ao delineador». Anota. «Essa é a parte da noite pela qual ninguém me paga. Bota no panfleto».`), once: true, do: { soc: 4, fun: 3, flag: ['g_aeriel_open'] }, next: null }
   });
 
-  /* ============================================================ FRAMES SHELL: the one who carries the crate */
+  /* ============================================================ FRAMES SHELL: morning warmth + the "be a perra" lesson */
   G('frames', ROLE.floor, {
     a: {
-      text: t(`FRAMES SHELL has brought the crate and isn't opening it. "Anselm has the records tonight. I carry. It's fine. I'm practising not needing it."`, `FRAMES SHELL trajo el cajón y no lo abre. «Anselm tiene los discos esta noche. Yo cargo. Está bien. Estoy practicando no necesitarlo».`, `O FRAMES SHELL trouxe o caixote e não abre. «O Anselm tem os discos hoje. Eu carrego. Tá tudo bem. Tô treinando não precisar».`),
+      text: function (s) {
+        if (s.flags.frames_perra_learned) return t(`FRAMES SHELL leans back against the couch, crate latched at his heels. "Remember the rule: keep your spine straight and let them choke on the silence."`, `FRAMES SHELL se apoya contra el sofá con el cajón cerrado junto a los talones. «Acuérdate de la regla: espalda recta y deja que ellos se atraganten con el silencio».`, `O FRAMES SHELL encosta no sofá com o caixote travado perto dos pés. «Lembra da regra: coluna reta e deixa eles se engasgarem com o silêncio».`);
+        return t(`FRAMES SHELL has parked the crate beside the sofa with no intention of opening it before noon. His thermos is still warm. "Sala 2, backstage, rooftop wind — my ears are finally resting. How are you holding up in the daylight?"`, `FRAMES SHELL estacionó el cajón junto al sofá sin ninguna intención de abrirlo antes del mediodía. Su termo todavía está tibio. «Sala 2, backstage, viento del techo — por fin descansan mis oídos. ¿Cómo aguantas con esta luz del día?»`, `O FRAMES SHELL encostou o caixote perto do sofá sem nenhuma intenção de abrir antes do meio-dia. A garrafa térmica ainda tá morna. «Sala 2, backstage, vento do terraço — finalmente meus ouvidos tão descansando. Como você tá aguentando essa luz do dia?»`);
+      },
       choices: [
-        K('ask', t(`Ask what they'd play if they could.`, `Preguntarles qué pondrían si pudieran.`, `Perguntar o que tocariam se pudessem.`), { next: 'b' }),
-        K('care', t(`Thank them for something specific from tonight.`, `Agradecerles algo concreto de esta noche.`, `Agradecer uma coisa específica de hoje.`), { next: 'b0' }),
+        K('bold', t(`"Teach me how you handle pushy guys in rooms like these — you never flinch."`, `«Enséñame cómo manejas a los tipos pesados en lugares así — nunca te achicas».`, `«Me ensina como você lida com os caras sem noção nesses lugares — você nunca recua».`), { next: 'perra_intro' }),
+        K('care', t(`"Thank you for holding the crate tonight — and for the quiet morning records."`, `«Gracias por cargar el cajón esta noche — y por los discos tranquilos de la mañana».`, `«Obrigado por carregar o caixote hoje — e pelos discos calmos da manhã».`), { next: 'warm_morning' }),
         LEAVE()
       ]
     },
-    b0: { text: t(`They look up, surprised. "…You noticed." A short silence. "The carrying only gets noticed once the crate is gone."`, `Levantan la vista, sorprendidos. «…Te diste cuenta». Un silencio corto. «El acarreo solo se nota cuando falta el cajón».`, `Levantam o olhar, surpresos. «…Você reparou». Um silêncio curto. «O carregar só é notado quando o caixote some».`), next: 'b' },
-    b: {
-      text: t(`"One record. Quiet. A Brazilian one, 1979. I'd play it at ten in the morning for people who don't know yet that it's good."`, `«Un disco. Tranquilo. Uno brasileño, 1979. Lo pondría a las diez de la mañana para gente que todavía no sabe que es bueno».`, `«Um disco. Calmo. Um brasileiro, 1979. Eu tocaria às dez da manhã pra gente que ainda não sabe que é bom».`),
+    warm_morning: {
+      text: t(`He taps the lid twice with warm knuckles. "One Brazilian pressing from 1979 lives in here just for ten in the morning. No drops, no hustle — just chords for people slowly remembering they have bodies again."`, `Golpea dos veces la tapa con los nudillos tibios. «Aquí adentro vive una edición brasileña de 1979 pensada solo para las diez de la mañana. Sin drops ni apuro — solo acordes para gente que vuelve a recordar que tiene cuerpo».`, `Ele bate duas vezes na tampa com os dedos. «Aqui dentro mora uma prensagem brasileira de 1979 guardada só pras dez da manhã. Sem drop nem pressa — só acordes pra quem tá lembrando devagar que ainda tem corpo».`),
+      once: true,
+      do: { soc: 2, fun: 2, flag: 'g_frames_open' },
       choices: [
-        K('care', t(`Go and ask Anselm if they can play it.`, `Ir a pedirle a Anselm que los deje ponerlo.`, `Ir pedir pro Anselm deixar tocar.`), { next: 'e1' }),
-        K('chill', t(`Say next time.`, `Decir que la próxima.`, `Dizer que na próxima.`), { next: 'e2' })
+        K('bold', t(`"Speaking of rooms — teach me how you shut down entitled men without blinking."`, `«Hablando de salas — enséñame a frenar a los tipos creídos sin pestañear».`, `«Falando de pista — me ensina a cortar cara folgado sem nem piscar».`), { next: 'perra_intro' }),
+        LEAVE()
       ]
     },
-    e1: { text: t(`Anselm hesitates, then nods. "Edges." FRAMES plays one record: four minutes of something so warm that Marga stops counting plants. When it ends the room stays silent, and that is the review.`, `Anselm duda y asiente. «Por los bordes». FRAMES pone un disco: cuatro minutos de algo tan cálido que Marga deja de contar plantas. Cuando termina la sala se queda en silencio, y esa es la reseña.`, `O Anselm hesita e assente. «Pelas bordas». O FRAMES toca um disco: quatro minutos de algo tão quente que a Marga para de contar plantas. Quando acaba a sala fica em silêncio, e essa é a resenha.`), once: true, do: { fun: 4, soc: 3, care: 1, flag: ['g_frames_open', 'g_frames_played'], call: 'af_noise3' }, next: null },
-    e2: { text: t(`"Next time." They pat the crate. "I'm good at waiting. It's the only thing I'm better at than carrying."`, `«La próxima». Palmean el cajón. «Soy bueno esperando. Es lo único en lo que soy mejor que cargando».`, `«Na próxima». Dão um tapinha no caixote. «Sou bom em esperar. É a única coisa em que sou melhor do que em carregar».`), once: true, do: { soc: 2, flag: ['g_frames_open'] }, next: null }
+    perra_intro: {
+      text: t(`FRAMES sets his thermos down, eyes sharpening with real amusement. "Listen closely. Polite deference never stops patriarchal entitlement. In clubs, booths, and afterparties, toxic men read every polite smile as an open tab and every explanation as a debate. To push back against patriarchy in these spaces, sometimes you have to learn to be a perra — weaponize toxic masculinity's own cold swagger right back against toxic men."`,
+        `FRAMES deja el termo en el suelo y se le afila la mirada con una sonrisa filosa. «Escucha bien. La deferencia educada nunca frena el derecho que creen tener los tipos. En clubes, cabinas y afters, los hombres tóxicos leen cada sonrisa amable como barra libre y cada explicación como debate. Para enfrentar al patriarcado en estos espacios, a veces hay que saber ser una perra: usar la propia arrogancia fría de la masculinidad tóxica directo contra esos tipos».`,
+        `O FRAMES larga a térmica no chão, o olhar ficando afiado e divertido. «Escuta bem. Deferência educada nunca freia o sentimento de direito desses caras. Em clubs, cabines e afters, homens tóxicos leem todo sorriso gentil como passe livre e toda explicação como debate. Pra bater de frente com o patriarcado nesses lugares, às vezes você tem que saber ser uma perra: usar a própria marra fria da masculinidade tóxica de volta contra esses homens».`),
+      choices: [
+        K('bold', t(`"Show me the rules."`, `«Enséñame las reglas».`, `«Me ensina as regras».`), { next: 'perra_rules' }),
+        K('chill', t(`"Hold that thought for later."`, `«Guardémoslo para otro rato».`, `«Guarda isso pra depois».`), { free: true, next: 'a' })
+      ]
+    },
+    perra_rules: {
+      text: [
+        t(`He counts on four fingers. "Rule one: take up space — never shrink your shoulders when a guy expects you to fold. Rule two: never explain your no; reasons only invite negotiation. Rule three: refuse to smile to cushion his ego — let awkward silence rot in his lap. Rule four: flip his mansplaining straight back onto him with bored contempt."`,
+          `Cuenta con cuatro dedos. «Regla uno: ocupa espacio — jamás encojas los hombros cuando un tipo espera que te achiques. Regla dos: nunca expliques tu no; las razones invitan a negociar. Regla tres: niégate a sonreír para amortiguar su ego — deja que el silencio incómodo se pudra de su lado. Regla cuatro: devuélvele el mansplaining con desdén aburrido».`,
+          `Ele conta em quatro dedos. «Regra um: ocupe espaço — nunca encolha os ombros quando um cara espera que você se esconda. Regra dois: nunca explique o seu não; motivo só convida negociação. Regra três: recuse sorrir pra amortecer o ego dele — deixa o silêncio constrangedor apodrecer no colo dele. Regra quatro: devolva o mansplaining na cara dele com tédio afiado».`),
+        t(`"Test run. Scenario one: a random guy leans across your shoulders at the mixer and says, 'Let me fix that blend, sweetie, it's too technical for you.' What's your move?"`,
+          `«Prueba en vivo. Escenario uno: un tipo cualquiera se te encima frente al mixer y suelta: 'Deja que te arregle esa mezcla, linda, es muy técnica para ti'. ¿Qué haces?»`,
+          `«Teste ao vivo. Cenário um: um cara aleatório debruça por cima do seu ombro no mixer e manda: 'Deixa eu arrumar essa virada, gracinha, é técnica demais pra você'. Qual é a resposta?»`)
+      ],
+      choices: [
+        K('bold', t(`Hold your ground, drop the smile, and say flatly: "Hands off. Nobody invited you."`, `Mantener tu sitio, borrar la sonrisa y soltar seco: «Saca las manos. Nadie te invitó».`, `Manter sua posição, apagar o sorriso e mandar seco: «Tira a mão. Ninguém te chamou».`), { do: { fun: 1 }, next: 'perra_p2' }),
+        K('joke', t(`Look down your nose at him, bored: "Adorable that you confuse pushing buttons with ear. Run along."`, `Mirarlo por encima del hombro, aburrido: «Qué tierno que confundas tocar perillas con tener oído. Sigue caminando».`, `Olhar de cima a baixo com tédio: «Fofo você achar que mexer em botão é ter ouvido. Vai andando».`), { do: { fun: 2 }, next: 'perra_p2' }),
+        K('sorry', t(`"Oh, sorry, maybe my gain was a tiny bit off…"`, `«Ay, perdón, quizá se me pasó un poquito la ganancia…»`, `«Ai, desculpa, talvez meu ganho tenha passado um pouquinho…»`), { next: 'perra_coach' })
+      ]
+    },
+    perra_coach: {
+      text: t(`FRAMES winces on purpose. "No! You just apologised for breathing near his ego. Throw 'sorry' in the bin. Take his swagger, strip out every ounce of customer-service warmth, and try again."`,
+        `FRAMES hace una mueca a propósito. «¡No! Acabas de pedir perdón por respirar cerca de su ego. Tira el 'perdón' a la basura. Toma su misma seguridad, quítale cada gota de amabilidad obligatoria e inténtalo de nuevo».`,
+        `O FRAMES faz careta de propósito. «Não! Você acabou de pedir desculpa por respirar perto do ego dele. Joga o 'desculpa' no lixo. Pega a marra dele, tira cada gota de simpatia automática e tenta de novo».`),
+      choices: [
+        K('bold', t(`Hold your ground, drop the smile, and say flatly: "Hands off. Nobody invited you."`, `Mantener tu sitio, borrar la sonrisa y soltar seco: «Saca las manos. Nadie te invitó».`, `Manter sua posição, apagar o sorriso e mandar seco: «Tira a mão. Ninguém te chamou».`), { do: { fun: 1 }, next: 'perra_p2' }),
+        K('joke', t(`Look down your nose at him, bored: "Adorable that you confuse pushing buttons with ear. Run along."`, `Mirarlo por encima del hombro, aburrido: «Qué tierno que confundas tocar perillas con tener oído. Sigue caminando».`, `Olhar de cima a baixo com tédio: «Fofo você achar que mexer em botão é ter ouvido. Vai andando».`), { do: { fun: 2 }, next: 'perra_p2' })
+      ]
+    },
+    perra_p2: {
+      text: t(`"Yes. Zero apology, zero padding, and he's stuck holding his own embarrassment." FRAMES leans in for round two. "Now he follows you by the kitchen trying the classic guilt trip: 'Whoa, smile a bit, why so aggressive? I was just trying to help.' Finish him."`,
+        `«Así. Cero disculpa, cero colchón, y se queda sosteniendo su propia vergüenza». FRAMES se inclina para la segunda vuelta. «Ahora te sigue cerca de la cocina con la culpa clásica: 'Epa, sonríe un poco, ¿por qué tan agresiva? Solo quería ayudar'. Remátalo».`,
+        `«Isso. Zero desculpa, zero amortecedor, e ele fica segurando o próprio vexame». O FRAMES inclina pro segundo round. «Agora ele te segue perto da cozinha na chantagem clássica: 'Opa, sorri um pouco, pra que essa agressividade? Só queria ajudar'. Fecha a conta».`),
+      choices: [
+        K('silent', t(`Hold dead silence for three long seconds, then say once: "I don't owe your ego comfort. Move."`, `Sostener tres segundos de silencio helado y decir una vez: «No le debo comodidad a tu ego. Muévete».`, `Segurar três segundos de silêncio gelado e dizer uma vez: «Não devo conforto pro seu ego. Dá licença».`), { next: 'perra_done' }),
+        K('bold', t(`Throw his condescension straight back: "Relax, don't get so emotional. You clearly can't take direct feedback."`, `Devolverle la condescendencia intacta: «Tranquilo, no te pongas tan emocional. Se nota que no aguantas una respuesta directa».`, `Devolver a arrogância inteira: «Calma, não fica tão emotivo. Dá pra ver que você não aguenta retorno direto».`), { next: 'perra_done' })
+      ]
+    },
+    perra_done: {
+      text: t(`FRAMES laughs out loud and raises his thermos in salute. "Masterclass. Being a perra isn't cruelty — it's self-defense with teeth. Toxic men expect free emotional labor and smallness; hand them back the exact cold swagger they worship and keep your floor."`,
+        `FRAMES suelta una carcajada y levanta el termo en señal de brindis. «Clase magistral. Ser una perra no es crueldad — es defensa propia con dientes. Los tipos tóxicos esperan trabajo emocional gratis y que te hagas chica; devuélveles la misma arrogancia fría que adoran y quédate con tu pista».`,
+        `O FRAMES cai na risada e ergue a garrafa térmica num brinde. «Aula magna. Ser uma perra não é crueldade — é autodefesa com dentes. Homens tóxicos esperam trabalho emocional de graça e que você encolha; devolve na cara deles a mesma marra fria que eles idolatram e fica com a sua pista».`),
+      once: true,
+      do: { soc: 4, fun: 4, weird: -4, flag: ['g_frames_open', 'frames_perra_learned'] },
+      next: null
+    }
   });
 })();

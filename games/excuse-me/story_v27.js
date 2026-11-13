@@ -160,7 +160,7 @@
           return [t(`The roof is open. On the stairs, in lanyards, with mops and clipboards and a first-aid bag, are the people who held the night up so everyone could dance on it.`, `El techo está abierto. En la escalera, con credenciales, trapeadores, carpetas y un botiquín, están quienes sostuvieron la noche para que todos bailaran encima.`, `O terraço tá aberto. Na escada, de crachá, com esfregões, pranchetas e uma maleta de primeiros socorros, estão as pessoas que sustentaram a noite pra todo mundo dançar em cima dela.`)]
             .concat(lines, t(`That is what the ticket is for. Cleaning, doors, medics, harm reduction, the DJ's fee: all of it is somebody's work, and all of it is fairly paid. Say thank you out loud.`, `Para eso es la entrada. Limpieza, puertas, paramédicos, reducción de daños, el cachet de ÆRIEL: todo es el trabajo de alguien, y todo se paga justo. Dilo en voz alta: gracias.`, `É pra isso que serve o ingresso. Limpeza, portas, paramédicos, redução de danos, o cachê da ÆRIEL: tudo é trabalho de alguém, e tudo é pago de forma justa. Diga em voz alta: obrigado.`));
         },
-        choices: [K('care', t(`"Thank you. All of you. By name."`, `«Gracias. A todos. Por su nombre».`, `«Obrigado. A todos vocês. Pelo nome».`), { free: true, call: 'team_apply', next: null })]
+        choices: [K('care', t(`"Thank you — Rosa, Luca, Isi, Mika, Dario, Dragan."`, `«Gracias — Rosa, Luca, Isi, Mika, Dario, Dragan».`, `«{Obrigado|Obrigada|Valeu} — Rosa, Luca, Isi, Mika, Dario, Dragan».`), { free: true, call: 'team_apply', next: null })]
       }
     }
   };
@@ -169,6 +169,16 @@
     s.flags.team_thanks_done = true;
     L.apply({ fun: 2 * n, soc: n, care: 1 });
   };
+
+  if (D.need_maru && D.need_maru.nodes && D.need_maru.nodes.a) {
+    D.need_maru.nodes.tell = {
+      text: t(`MARU, smiling without stopping: "You got me to the toilet in time. I owe you one, no dance needed. What I need from the last hour: warm. A long chord. Nothing sudden."`, `MARU, sonriendo sin detenerse: «Me llevaste al baño a tiempo. Te debo una, sin baile. Lo que necesito de la última hora: cálido. Un acorde largo. Nada brusco».`, `A MARU, sorrindo sem parar: «Você me levou ao banheiro a tempo. Te devo uma, sem dança. O que eu preciso da última hora: quente. Um acorde longo. Nada brusco».`),
+      choices: [
+        K('care', t(`"Warm, a long chord. Got it."`, `«Cálido, un acorde largo. Entendido».`, `«Quente, um acorde longo. Entendi».`), { do: { flag: ['need_done_maru', 'learned_maru', 'maru_owes_paid'], fun: 4, bond: { maru: 1 } }, call: 'v22_q10check', next: null })
+      ]
+    };
+    D.need_maru.nodes.a.choices.splice(1, 0, K('care', t(`"You owe me one from the toilets. Tell me without the dance."`, `«Me debes una de los baños. Dímelo sin bailar».`, `«Você me deve uma do banheiro. Me fala sem dançar».`), { req: function (s) { return !!s.flags.maru_owes && !s.flags.maru_owes_paid; }, free: true, next: 'tell' }));
+  }
 
   const tick0 = story.tick;
   story.tick = function (dt) {
@@ -181,11 +191,6 @@
       if (gate !== undefined && q2t >= gate) { U.toast({ icon: 'exclam', kind: 'info', ms: 5200, text: MARU[q2n] }); q2n++; }
     }
     if (s.quests.q2 === 'done' && !s.flags.maru_owes) s.flags.maru_owes = true;
-    /* ...and she pays you back with what she needs from the last hour */
-    if (s.quests.q10 === 'active' && s.flags.maru_owes && !s.flags.maru_owes_paid && L.hasFriend('maru')) {
-      s.flags.maru_owes_paid = true; s.flags.learned_maru = true;
-      U.toast({ icon: 'heart', kind: 'good', ms: 7000, text: t(`MARU: "You got me to the toilet in time. I owe you. What I need from the last hour: warm. A long chord. Nothing sudden."`, `MARU: «Me llevaste al baño a tiempo. Te debo una. Lo que necesito de la última hora: cálido. Un acorde largo. Nada brusco».`, `MARU: «Você me levou ao banheiro a tempo. Te devo uma. O que eu preciso da última hora: quente. Um acorde longo. Nada brusco».`) });
-    }
     if (s.flags.team_pending && s.zone === 'rooftop' && !U.D) { s.flags.team_pending = false; U.startDialogue('team_thanks', {}); }
   };
 })();

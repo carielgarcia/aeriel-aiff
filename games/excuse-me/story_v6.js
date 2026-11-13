@@ -108,7 +108,7 @@
   O('foyer', { id: 'photobooth', kind: 'photo', x: 25, y: 2, w: 1, h: 2, label: t('PHOTO BOOTH', 'CABINA DE FOTOS', 'CABINE DE FOTOS') });
   O('foyer', { id: 'vend', kind: 'vend', x: 25, y: 8, w: 1, h: 1, label: t('VENDING MACHINE', 'MÁQUINA EXPENDEDORA', 'MÁQUINA DE VENDA') });
   O('foyer', { id: 'lostphone', kind: 'phone', x: 9, y: 5, w: 1, h: 1, label: t('A PHONE ON THE BENCH', 'UN CELULAR EN EL BANCO', 'UM CELULAR NO BANCO'), when: NF('phone_done') });
-  O('restrooms', { id: 'mirror2', kind: 'mirror', x: 16, y: 3, w: 2, h: 1, label: t('THE LONG MIRROR', 'EL ESPEJO LARGO', 'O ESPELHO COMPRIDO') });
+  O('restrooms', { id: 'mirror2', kind: 'mirror', x: 15, y: 2, w: 4, h: 1, label: t('THE LONG MIRROR', 'EL ESPEJO LARGO', 'O ESPELHO COMPRIDO') });
   O('main', { id: 'djpeek', kind: 'djpeek', x: 21, y: 6, w: 2, h: 1, label: t('THE TRACKLIST', 'EL TRACKLIST', 'A TRACKLIST') });
 
   /* ============================================================ MOMENTS YOUR FRIENDS BRING YOU */
@@ -193,7 +193,7 @@
     { z: ['attic'], k: 'good', t: t(`The DJ drops the pitch by a semitone. Fifty people exhale at the same time like one large, relieved animal.`, `El DJ baja el tono un semitono. Cincuenta personas exhalan al mismo tiempo como un solo animal grande y aliviado.`, `O DJ abaixa o tom em um semitom. Cinquenta pessoas expiram ao mesmo tempo como um animal grande e aliviado.`), d: { fun: 2 } },
     { z: ['darkroom'], k: 'good', t: t(`Someone whispers "thank you" into the dark, unprompted. A second voice, further away, says "you too."`, `Alguien susurra «gracias» a la oscuridad, sin que nadie lo pida. Una segunda voz, más lejos, dice «tú también».`, `Alguém sussurra «obrigado» no escuro, sem ninguém pedir. Uma segunda voz, mais longe, diz «você também».`), d: { soc: 1 } },
     { z: ['welfare'], k: 'info', t: t(`Teo is teaching someone to take a pulse with a laminated card and enormous patience. The someone is, impossibly, taking his.`, `Teo le enseña a alguien a tomar el pulso con una tarjeta laminada y una paciencia enorme. El alguien, de forma imposible, le toma el suyo.`, `O Teo está ensinando alguém a medir o pulso com um cartão plastificado e enorme paciência. A pessoa, impossivelmente, está medindo o dele.`) },
-    { z: ['backstage'], k: 'good', t: t(`A cable cracks. The lights stutter. Somebody out front gasps. FRAMES SHELL, sipping tea, says: "We meant that."`, `Un cable truena. Las luces tartamudean. Alguien al frente se asusta. FRAMES SHELL, tomando té, dice: «Eso lo hicimos a propósito».`, `Um cabo estala. As luzes gaguejam. Alguém lá na frente se assusta. FRAMES SHELL, tomando chá, diz: «Isso foi de propósito».`), d: { fun: 1 } },
+    { z: ['backstage'], ok: function (s) { return s.time >= 270 && !s.flags.roof_open; }, k: 'good', t: t(`A cable cracks. The lights stutter. Somebody out front gasps. FRAMES SHELL, sipping tea, says: "We meant that."`, `Un cable truena. Las luces tartamudean. Alguien al frente se asusta. FRAMES SHELL, tomando té, dice: «Eso lo hicimos a propósito».`, `Um cabo estala. As luzes gaguejam. Alguém lá na frente se assusta. FRAMES SHELL, tomando chá, diz: «Isso foi de propósito».`), d: { fun: 1 } },
     { z: ['main', 'foyer', 'courtyard', 'attic', 'tunnel'], k: 'good', t: t(`A stranger offers you a high-five from across the room. You take it. Both of you instantly feel two centimetres taller.`, `Un desconocido te ofrece un choque de manos desde el otro lado de la sala. Lo aceptas. Los dos se sienten al instante dos centímetros más altos.`, `Um desconhecido te oferece um high-five do outro lado da sala. Você aceita. Os dois se sentem na hora dois centímetros mais altos.`), d: { fun: 1 } },
     { z: ['main', 'courtyard', 'foyer'], k: 'info', t: t(`Two people argue passionately about whether a hot dog is a sandwich. A third person sits between them, eating a hot dog, saying nothing.`, `Dos personas discuten con pasión si un hot dog es un sándwich. Una tercera, sentada entre ellas, come un hot dog sin decir nada.`, `Duas pessoas discutem com paixão se um cachorro-quente é um sanduíche. Uma terceira, sentada entre elas, come um cachorro-quente sem dizer nada.`) }
   ];
@@ -205,7 +205,7 @@
     ambT -= dt;
     if (ambT > 0) return;
     ambT = 75 + Math.random() * 70;
-    const pool = AMB2.filter(function (a) { return a.z.indexOf(s.zone) !== -1; });
+    const pool = AMB2.filter(function (a) { return a.z.indexOf(s.zone) !== -1 && (!a.ok || a.ok(s)); });
     if (!pool.length) return;
     const a = EM.pick(pool);
     if (a.d) L.apply(a.d);

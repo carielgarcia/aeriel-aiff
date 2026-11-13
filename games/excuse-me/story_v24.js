@@ -100,7 +100,10 @@
           if (l >= 2) return t(`"You lied twice. It's fine. People do." She looks at you with real interest. "I'd still like you to stay."`, `«Mentiste dos veces. Está bien. La gente lo hace». Te mira con interés de verdad. «Igual me gustaría que te quedaras».`, `«Você mentiu duas vezes. Tudo bem. As pessoas mentem». Ela te olha com interesse de verdade. «Mesmo assim queria que você ficasse».`);
           return t(`"A mix. That's honest too." She moves her coat off the bench. "Sit."`, `«Una mezcla. Eso también es honesto». Quita el abrigo de la banca. «Siéntate».`, `«Uma mistura. Isso também é honesto». Ela tira o casaco do banco. «Senta».`);
         },
-        once: true, do: { flag: ['soledad_hub', 'sol_asked'], call: 'sol_verdict' }, next: null
+        choices: [
+          K('care', t(`"Thank you, Soledad." [Take the paperback]`, `«Gracias, Soledad». [Tomar el libro]`, `«{Obrigado|Obrigada|Valeu}, Soledad». [Pegar o livro]`), { req: function (s) { return n(s, 'sol_h') >= 2; }, do: { flag: ['soledad_hub', 'sol_asked'], call: 'sol_verdict' }, next: null }),
+          K('care', t(`"Thank you."`, `«Gracias».`, `«{Obrigado|Obrigada|Valeu}».`), { req: function (s) { return n(s, 'sol_h') < 2; }, do: { flag: ['soledad_hub', 'sol_asked'] }, next: null })
+        ]
       },
       hub: {
         text: t(`Soledad shifts over on the bench without looking away. "Sit. Or ask. Either is allowed."`, `Soledad se corre en la banca sin dejar de mirar. «Siéntate. O pregunta. Cualquiera de las dos vale».`, `A Soledad se desloca no banco sem parar de olhar. «Senta. Ou pergunta. As duas valem».`),
@@ -258,8 +261,7 @@
     who: 'odalys', role: t('DANCES ALONE', 'BAILA SOLA', 'DANÇA SOZINHA'), forced: true, start: 'a', nodes: {
       a: {
         text: t(`The song ends and so does her silence. "That was a good floor. Here." She presses a folded paper fan into your hand. "It breaks after three dances. Everything good does."`, `Termina la canción y también su silencio. «Fue una buena pista. Toma». Te pone en la mano un abanico de papel plegado. «Se rompe después de tres bailes. Todo lo bueno se rompe».`, `A música acaba e o silêncio dela também. «Foi uma boa pista. Toma». Ela põe na sua mão um leque de papel dobrado. «Quebra depois de três danças. Tudo que é bom quebra».`),
-        once: true, do: { call: 'odalys_fan_give' },
-        choices: [K('care', t(`"Thank you."`, `«Gracias».`, `«Obrigado».`), { free: true, next: null })]
+        choices: [K('care', t(`"Thank you."`, `«Gracias».`, `«{Obrigado|Obrigada|Valeu}».`), { do: { call: 'odalys_fan_give' }, free: true, next: null })]
       }
     }
   };
@@ -299,8 +301,7 @@
       },
       result: {
         text: t(`Bart comes back at a half-run, both hands in his hair. "She said yes to a coffee. I've never been so frightened." He presses a laminated card into your hand. "Take my line. I laminated it. It deserves a better owner."`, `Bart vuelve casi corriendo, con las dos manos en el pelo. «Dijo que sí a un café. Nunca había tenido tanto miedo». Te pone una tarjeta plastificada en la mano. «Quédate mi frase. La plastifiqué. Merece un dueño mejor».`, `O Bart volta quase correndo, com as duas mãos no cabelo. «Ela disse sim pra um café. Nunca tive tanto medo». Ele põe um cartão plastificado na sua mão. «Fica com a minha cantada. Plastifiquei. Merece um dono melhor».`),
-        once: true, do: { fun: 10, soc: 4, flag: ['bart_hub', 'bart_done'], call: 'bart_line' },
-        choices: [K('care', t(`"Congratulations."`, `«Felicitaciones».`, `«Parabéns».`), { free: true, next: null, react: t(`"Thank you. I'm going to sit down before I fall down."`, `«Gracias. Me voy a sentar antes de caerme».`, `«Obrigado. Vou sentar antes de cair».`) })]
+        choices: [K('care', t(`"Congratulations." [Take the card]`, `«Felicitaciones». [Tomar la tarjeta]`, `«Parabéns». [Pegar o cartão]`), { do: { fun: 10, soc: 4, flag: ['bart_hub', 'bart_done'], call: 'bart_line' }, free: true, next: null, react: t(`"Thank you. I'm going to sit down before I fall down."`, `«Gracias. Me voy a sentar antes de caerme».`, `«{Obrigado|Obrigada|Valeu}. Vou sentar antes de cair».`) })]
       },
       hub: {
         text: t(`Bart is stirring a drink with a straw and a new calm. "Hello. I've decided to enjoy tonight. Would you like to—" He stops. "That wasn't a line. I just wanted to ask if you'd like anything."`, `Bart revuelve un trago con una pajilla y una calma nueva. «Hola. Decidí disfrutar esta noche. ¿Quieres…» Se detiene. «Eso no era una frase. Solo quería preguntar si querías algo».`, `O Bart mexe um drinque com um canudo e uma calma nova. «Oi. Decidi curtir essa noite. Você quer…» Ele para. «Isso não era uma cantada. Só queria perguntar se você queria alguma coisa».`),
@@ -371,12 +372,13 @@
     who: 'tilda', role: t('HAS A PENSION', 'TIENE PENSIÓN', 'TEM PREVIDÊNCIA'), forced: true, start: 'a', nodes: {
       a: {
         text: t(`She is limping on the right foot and radiant. "I'm not saying this is a proposal. I'm saying the option exists." She digs in her bag. "Blister plasters. Three. I buy them in bulk. I have, I think, a plan."`, `Cojea del pie derecho y está radiante. «No digo que esto sea una propuesta. Digo que la opción existe». Busca en su bolso. «Parches para ampollas. Tres. Los compro al por mayor. Tengo, creo, un plan».`, `Ela manca do pé direito e tá radiante. «Não tô dizendo que isso é um pedido. Tô dizendo que a opção existe». Ela procura na bolsa. «Curativos pra bolha. Três. Compro no atacado. Tenho, acho, um plano».`),
-        once: true, do: { call: 'tilda_plasters', flag: 'tilda_done_dance' },
-        choices: [K('care', t(`"Thank you. I'll wear them."`, `«Gracias. Los voy a usar».`, `«Obrigado. Vou usar».`), { free: true, next: null })]
+        choices: [K('care', t(`"Thank you. I'll wear them." [Take the plasters]`, `«Gracias. Los voy a usar». [Tomar los parches]`, `«{Obrigado|Obrigada|Valeu}. Vou usar». [Pegar os curativos]`), { do: { call: 'tilda_plasters', flag: 'tilda_done_dance' }, free: true, next: null })]
       }
     }
   };
   S.tilda_plasters = function () { I.gain('plasters', 3); };
+  D.soledad.nodes.s.branch.splice(2, 0, { req: function (s) { return !!(s.flags.sol_h3 || s.flags.sol_j3 || s.flags.sol_l3) && !s.flags.soledad_hub; }, to: 'verdict' });
+  D.bart.nodes.s.branch.splice(2, 0, { req: function (s) { return !!s.flags.bart_coached && !s.flags.bart_done; }, to: 'result' });
   Z.courtyard.npc({ id: 'tilda', x: 6, y: 3.5, dlg: 'tilda', dir: 'r', reach: 16, when: win(180, 360) });
 
   /* ---- morning texts ---- */

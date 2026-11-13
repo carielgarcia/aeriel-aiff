@@ -22,11 +22,26 @@
   EM.CAST.frames = { name: 'FRAMES SHELL', look: { skin: 2, hair: 4, hc: 3, expr: 1, top: 3, tc: 2, bottom: 1, bc: 1, acc: 2, wide: false } };
 
   /* ============================================================ PLACEMENT
-     The DJ is in the booth, at the top of the main floor, and can be talked to. FRAMES SHELL sits on the backstage flight case. */
+     The DJ is in the booth, at the top of the main floor, and can be talked to.
+     FRAMES SHELL spins Sala 2 until 02:30 (270), then moves backstage with the crate when APÜD takes over. */
   const dj = EM.zones.main.ents.filter(function (e) { return e.id === 'dj'; })[0];
   if (dj) { dj.cast = 'resident'; dj.y = 4.4; dj.dlg = 'resident'; dj.reach = 30; dj.decor = false; }
   const bs = EM.zones.backstage.ents.filter(function (e) { return e.id === 'resident'; })[0];
-  if (bs) { bs.id = 'frames'; bs.cast = 'frames'; bs.dlg = 'frames'; }
+  if (bs) {
+    bs.id = 'frames'; bs.cast = 'frames'; bs.dlg = 'frames';
+    bs.when = function (s) { return s.time >= 270 && !s.flags.roof_open; };
+  }
+  EM.zones.backstage.obj({
+    id: 'frames_crate_early', kind: 'vinyl_crate', sp: 'vinyl_crate', x: 11, y: 7, w: 1, h: 1,
+    dlg: 'frames_crate_early', label: t('RECORD CRATE', 'CAJÓN DE DISCOS', 'CAIXOTE DE DISCOS'),
+    when: function (s) { return s.time < 270 && !s.flags.roof_open; }
+  });
+  EM.objects.vinyl_crate = function (ent) {
+    if (ent && ent.def && ent.def.dlg) U.startDialogue(ent.def.dlg, {});
+  };
+  EM.objects.DJ = function (ent) {
+    if (ent && ent.def && ent.def.dlg) U.startDialogue(ent.def.dlg, {});
+  };
 
   /* ============================================================ THE QUESTS */
   const Q = {
@@ -46,7 +61,10 @@
     },
     q12: {
       title: t('THE REQUEST LINE', 'LA LÍNEA DE PEDIDOS', 'A LINHA DE PEDIDOS'),
-      desc: t(`ÆRIEL doesn't take requests. Backstage, FRAMES SHELL does, and pitches the set to ÆRIEL. Bring what people asked you to carry, and say what the room needs.`, `ÆRIEL no acepta pedidos. En el backstage, FRAMES SHELL sí, y le propone el set a ÆRIEL. Lleva lo que te pidieron cargar y di qué necesita la sala.`, `A ÆRIEL não aceita pedidos. No backstage, quem recebe é FRAMES SHELL, que sugere o set pra ÆRIEL. Leve o que te pediram pra carregar e diga do que a sala precisa.`),
+      desc: function (s) {
+        if (s && s.time < 270) return t(`ÆRIEL doesn't take requests. FRAMES SHELL is spinning Sala 2 until 02:30 AM, then brings the request crate backstage. Catch him upstairs or meet him backstage after 02:30.`, `ÆRIEL no acepta pedidos. FRAMES SHELL pincha en Sala 2 hasta las 02:30 AM y luego baja al backstage con el cajón. Alcánzalo arriba o encuéntralo en backstage después de las 02:30.`, `A ÆRIEL não aceita pedidos. O FRAMES SHELL toca na Sala 2 até 02:30 AM e depois desce pro backstage com o caixote. Fale com ele lá em cima ou encontre ele no backstage depois das 02:30.`);
+        return t(`ÆRIEL doesn't take requests. Backstage, FRAMES SHELL does, and pitches the set to ÆRIEL. Bring what people asked you to carry, and say what the room needs.`, `ÆRIEL no acepta pedidos. En el backstage, FRAMES SHELL sí, y le propone el set a ÆRIEL. Lleva lo que te pidieron cargar y di qué necesita la sala.`, `A ÆRIEL não aceita pedidos. No backstage, quem recebe é FRAMES SHELL, que sugere o set pra ÆRIEL. Leve o que te pediram pra carregar e diga do que a sala precisa.`);
+      },
       doneText: t(`Pitched. Whether ÆRIEL listens is ÆRIEL's call.`, `Propuesto. Que ÆRIEL escuche es decisión de ÆRIEL.`, `Sugerido. Se a ÆRIEL escuta é com a ÆRIEL.`)
     }
   };
@@ -66,7 +84,9 @@
     if (q.q9 !== 'active') {
       if (q.q10 === 'active') return t('Dance with your people on the main floor. Find out what each one needs.', 'Baila con tu gente en la pista principal. Averigua qué necesita cada quien.', 'Dance com sua galera na pista principal. Descubra do que cada pessoa precisa.');
       if (q.q11 === 'active') return t('Reach the booth at the top of the main floor. Thank ÆRIEL.', 'Llega a la cabina al fondo de la pista principal. Agradécele a ÆRIEL.', 'Chegue à cabine no fundo da pista principal. Agradeça à ÆRIEL.');
-      if (q.q12 === 'active') return t('Go backstage. Give FRAMES SHELL the requests.', 'Ve al backstage. Dale los pedidos a FRAMES SHELL.', 'Vá ao backstage. Entregue os pedidos pro FRAMES SHELL.');
+      if (q.q12 === 'active') return s.time < 270
+        ? t('FRAMES SHELL spins Sala 2 until 02:30 AM, then moves backstage. Catch him upstairs or meet him backstage after 02:30.', 'FRAMES SHELL pincha en Sala 2 hasta las 02:30 AM y luego baja al backstage. Alcánzalo arriba o ve al backstage después de las 02:30.', 'O FRAMES SHELL toca na Sala 2 até 02:30 AM e depois desce pro backstage. Fale com ele lá em cima ou vá pro backstage depois das 02:30.')
+        : t('Go backstage. Give FRAMES SHELL the requests.', 'Ve al backstage. Dale los pedidos a FRAMES SHELL.', 'Vá ao backstage. Entregue os pedidos pro FRAMES SHELL.');
     }
     return obj0(s);
   };
@@ -75,7 +95,7 @@
   EM.seekers.push(function (s) {
     const q = s.quests, res = [];
     if (q.q11 === 'active') res.push({ key: 'dj', zone: 'main', label: '★' });
-    if (q.q12 === 'active') res.push({ key: 'frames', zone: 'backstage', label: '★' });
+    if (q.q12 === 'active') res.push(s.time < 270 ? { key: 'frames_attic', zone: 'attic', label: '★' } : { key: 'frames', zone: 'backstage', label: '★' });
     return res;
   });
 
@@ -173,7 +193,10 @@
   R.nodes.a.choices.push(K('care', t(`"Thank you. For the drop."`, `«Gracias. Por el drop».`, `«Valeu. Pelo drop».`), { req: { quest: { q11: 'active' } }, next: 'thank' }));
   /* the old free pick of the closing mood is gone: the set comes from what you carried */
   R.nodes.play = {
-    text: t(`"I don't decide until I look at the room." ÆRIEL's eyes stay on the mixer. "FRAMES SHELL keeps the crate backstage and takes requests. Tell FRAMES what you hear. I listen to FRAMES about half the time."`, `«No decido hasta mirar la sala». Los ojos de ÆRIEL siguen en el mixer. «FRAMES SHELL guarda el cajón en el backstage y recibe pedidos. Dile a FRAMES lo que oyes. Escucho a FRAMES más o menos la mitad de las veces».`, `«Eu só decido depois de olhar a sala». Os olhos da ÆRIEL continuam no mixer. «O FRAMES SHELL guarda o caixote no backstage e recebe pedidos. Fala pro FRAMES o que você ouve. Eu escuto o FRAMES mais ou menos metade das vezes».`),
+    text: function (s) {
+      if (s.time < 270) return t(`"I don't decide until I look at the room." ÆRIEL's eyes stay on the mixer. "FRAMES SHELL is spinning Sala 2 until 02:30 AM, then he brings the crate backstage and takes requests. I listen to him about half the time."`, `«No decido hasta mirar la sala». Los ojos de ÆRIEL siguen en el mixer. «FRAMES SHELL pincha en Sala 2 hasta las 02:30 AM, y luego baja al backstage con el cajón para recibir pedidos. Lo escucho más o menos la mitad de las veces».`, `«Eu só decido depois de olhar a sala». Os olhos da ÆRIEL continuam no mixer. «O FRAMES SHELL toca na Sala 2 até 02:30 AM e depois desce pro backstage com o caixote pra receber pedidos. Eu escuto ele mais ou menos metade das vezes».`);
+      return t(`"I don't decide until I look at the room." ÆRIEL's eyes stay on the mixer. "FRAMES SHELL has the crate backstage now and takes requests. Tell FRAMES what you hear. I listen to FRAMES about half the time."`, `«No decido hasta mirar la sala». Los ojos de ÆRIEL siguen en el mixer. «FRAMES SHELL ya tiene el cajón en el backstage y recibe pedidos. Dile a FRAMES lo que oyes. Escucho a FRAMES más o menos la mitad de las veces».`, `«Eu só decido depois de olhar a sala». Os olhos da ÆRIEL continuam no mixer. «O FRAMES SHELL já tá com o caixote no backstage e recebe pedidos. Fala pro FRAMES o que você ouve. Eu escuto o FRAMES mais ou menos metade das vezes».`);
+    },
     choices: [
       K('ask', t(`"How do I get backstage?"`, `«¿Cómo llego al backstage?»`, `«Como eu chego ao backstage?»`), { next: 'back' }),
       K('chill', t(`"Thanks."`, `«Gracias».`, `«Valeu».`), { free: true, next: null })
@@ -184,7 +207,10 @@
     next: null
   };
   R.nodes.friend = {
-    text: t(`ÆRIEL drinks half the bottle without looking up. "Nobody brings the DJ water. People bring the DJ shots." A pause. "The staff door is right of the booth. Tell FRAMES I sent you."`, `ÆRIEL se toma la mitad de la botella sin levantar la vista. «Nadie le trae agua al DJ. La gente le trae shots». Una pausa. «La puerta de staff está a la derecha de la cabina. Dile a FRAMES que te mando yo».`, `A ÆRIEL bebe metade da garrafa sem levantar os olhos. «Ninguém traz água pro DJ. O pessoal traz shot». Uma pausa. «A porta do staff fica à direita da cabine. Fala pro FRAMES que fui eu que mandei».`),
+    text: function (s) {
+      if (s.time < 270) return t(`ÆRIEL drinks half the bottle without looking up. "Nobody brings the DJ water. People bring the DJ shots." A pause. "The staff door is right of the booth. FRAMES is spinning Sala 2 until 02:30 AM; after that he's backstage with the crate."`, `ÆRIEL se toma la mitad de la botella sin levantar la vista. «Nadie le trae agua al DJ. La gente le trae shots». Una pausa. «La puerta de staff está a la derecha de la cabina. FRAMES pincha en Sala 2 hasta las 02:30 AM; después baja al backstage con el cajón».`, `A ÆRIEL bebe metade da garrafa sem levantar os olhos. «Ninguém traz água pro DJ. O pessoal traz shot». Uma pausa. «A porta do staff fica à direita da cabine. O FRAMES toca na Sala 2 até 02:30 AM; depois ele desce pro backstage com o caixote».`);
+      return t(`ÆRIEL drinks half the bottle without looking up. "Nobody brings the DJ water. People bring the DJ shots." A pause. "The staff door is right of the booth. Tell FRAMES I sent you."`, `ÆRIEL se toma la mitad de la botella sin levantar la vista. «Nadie le trae agua al DJ. La gente le trae shots». Una pausa. «La puerta de staff está a la derecha de la cabina. Dile a FRAMES que te mando yo».`, `A ÆRIEL bebe metade da garrafa sem levantar os olhos. «Ninguém traz água pro DJ. O pessoal traz shot». Uma pausa. «A porta do staff fica à direita da cabine. Fala pro FRAMES que fui eu que mandei».`);
+    },
     choices: [K('chill', t(`"Thanks."`, `«Gracias».`, `«Valeu».`), { free: true, next: null })]
   };
 
@@ -248,11 +274,16 @@
   }
   D.frames = {
     who: 'frames', role: t('THE REQUEST LINE', 'LA LÍNEA DE PEDIDOS', 'A LINHA DE PEDIDOS'), start: 'st', nodes: {
-      st: { branch: [{ req: { flag: 'frames_met' }, to: 'again' }, { req: function () { return true; }, to: 'meet' }] },
+      st: { branch: [{ req: { flag: 'frames_met' }, to: 'again' }, { req: { flag: 'frames_told' }, to: 'again' }, { req: function () { return true; }, to: 'meet' }] },
       meet: {
-        text: t(`A person sits on a flight case by the couch, a thermos at their feet, a crate of records between their knees. The crate has a sticker: FRAMES SHELL. "That's me. I'm one of ÆRIEL's people. I carry the crate and I take requests. ÆRIEL doesn't take requests. ÆRIEL takes my suggestions about half the time."`,
-          `Una persona está sentada en una caja de transporte junto al sofá, con un termo a los pies y un cajón de discos entre las rodillas. El cajón tiene un sticker: FRAMES SHELL. «Ese soy yo. Soy de la gente de ÆRIEL. Cargo el cajón y recibo pedidos. ÆRIEL no recibe pedidos. ÆRIEL toma mis sugerencias más o menos la mitad de las veces».`,
-          `Uma pessoa está sentada numa caixa de transporte perto do sofá, com uma garrafa térmica aos pés e um caixote de discos entre os joelhos. O caixote tem um adesivo: FRAMES SHELL. «Sou eu. Sou da turma da ÆRIEL. Eu carrego o caixote e recebo pedidos. A ÆRIEL não recebe pedidos. A ÆRIEL aceita minhas sugestões mais ou menos metade das vezes».`),
+        text: function (s) {
+          if (s.flags.met_frames_attic) return t(`FRAMES SHELL is stretched out on a flight case by the couch, a thermos at his feet, the Sala 2 crate back between his knees. "Made it down at 02:30. APÜD has the upper decks on HardBounce now. Backstage is where the real request line lives — I carry for ÆRIEL and pitch the closing mood. ÆRIEL listens about half the time."`,
+            `FRAMES SHELL está estirado en una caja de transporte junto al sofá, con un termo a los pies y el cajón de Sala 2 otra vez entre las rodillas. «Bajé a las 02:30. APÜD quedó arriba con el HardBounce. Aquí en backstage es donde va en serio la línea de pedidos: cargo para ÆRIEL y le propongo el pulso del cierre. Me hace caso más o menos la mitad de las veces».`,
+            `O FRAMES SHELL tá esparramado numa caixa de transporte perto do sofá, com a garrafa térmica aos pés e o caixote da Sala 2 de volta entre os joelhos. «Desci às 02:30. O APÜD assumiu lá em cima com HardBounce. Aqui no backstage é que a linha de pedidos funciona de verdade: carrego pra ÆRIEL e sugiro o clima do encerramento. A ÆRIEL aceita mais ou menos metade das vezes».`);
+          return t(`A person sits on a flight case by the couch, still catching his breath from upstairs, a thermos at his feet, a crate of records between his knees. The crate has a sticker: FRAMES SHELL. "Just came down from Sala 2 at 02:30 — APÜD took over up there. I'm one of ÆRIEL's people. I carry the crate and I take requests. ÆRIEL doesn't take requests, and takes my suggestions about half the time."`,
+            `Una persona está sentada en una caja de transporte junto al sofá, recuperando el aire de arriba, con un termo a los pies y un cajón de discos entre las rodillas. El cajón tiene un sticker: FRAMES SHELL. «Acabo de bajar de Sala 2 a las 02:30 — APÜD tomó el relevo allá arriba. Soy de la gente de ÆRIEL. Cargo el cajón y recibo pedidos. ÆRIEL no recibe pedidos, y toma mis sugerencias más o menos la mitad de las veces».`,
+            `Uma pessoa está sentada numa caixa de transporte perto do sofá, ainda tomando fôlego lá de cima, com uma garrafa térmica aos pés e um caixote de discos entre os joelhos. O caixote tem um adesivo: FRAMES SHELL. «Acabei de descer da Sala 2 às 02:30 — o APÜD assumiu lá em cima. Sou da turma da ÆRIEL. Eu carrego o caixote e recebo pedidos. A ÆRIEL não recebe pedidos, e aceita minhas sugestões mais ou menos metade das vezes».`);
+        },
         do: { flag: 'frames_met', soc: 1 },
         choices: [
           K('ask', t(`"What do I tell you?"`, `«¿Qué te digo?»`, `«O que eu te falo?»`), { next: 'menu' }),
@@ -279,6 +310,107 @@
       }
     }
   };
+
+  /* early backstage crate note (< 02:30) */
+  D.frames_crate_early = {
+    who: null, role: t('RECORD CRATE', 'CAJÓN DE DISCOS', 'CAIXOTE DE DISCOS'), start: 'a', nodes: {
+      a: {
+        text: t(`A heavy vinyl crate latched beside the backstage couch. White gaffer tape runs across the lid in black marker: "FRAMES SHELL — SPINNING SALA 2 UNTIL 02:30 AM. BACK HERE WITH THE CRATE AFTER 02:30 WHEN APÜD TAKES OVER. — F.S."`, `Un cajón pesado de vinilos cerrado junto al sofá del backstage. Una cinta gaffer blanca cruza la tapa en marcador negro: «FRAMES SHELL — PINCHANDO EN SALA 2 HASTA LAS 02:30 AM. VUELVO ACÁ CON EL CAJÓN DESPUÉS DE LAS 02:30 CUANDO TOMA EL MANDO APÜD. — F.S.»`, `Um caixote pesado de vinil travado ao lado do sofá do backstage. Uma fita gaffer branca cruza a tampa em pincel preto: «FRAMES SHELL — TOCANDO NA SALA 2 ATÉ 02:30 AM. VOLTO PRA CÁ COM O CAIXOTE DEPOIS DAS 02:30 QUANDO O APÜD ASSUME. — F.S.»`),
+        choices: [K('chill', t(`Leave the latch alone.`, `Dejar el seguro quieto.`, `Deixar a trava quieta.`), { free: true, next: null })]
+      }
+    }
+  };
+
+  /* Sala 2 booth (01:00-02:30): FRAMES SHELL spinning percussive techno */
+  D.frames_attic = {
+    who: 'frames', role: t('SALA 2 // PERCUSSIVE TECHNO', 'SALA 2 // TECHNO PERCUSIVO', 'SALA 2 // TECHNO PERCUSSIVO'), start: 'st', nodes: {
+      st: { branch: [{ req: { flag: 'met_frames_attic' }, to: 'again' }, { req: function () { return true; }, to: 'a' }] },
+      a: {
+        text: t(`FRAMES SHELL locks a rolling percussive techno groove between two decks, shoulders loose over the mixer. "Warm-up duty upstairs until 02:30 AM — driving drums, no fluff, priming the room before APÜD brings HardBounce at half past two. Then I haul my crate down backstage for ÆRIEL's requests."`,
+          `FRAMES SHELL encaja un groove de techno percusivo entre dos bandejas, hombros sueltos sobre el mixer. «Calentando Sala 2 hasta las 02:30 AM: pura percusión seca preparando el cuarto antes de que APÜD entre con HardBounce a las dos y media. Después bajo con mi cajón al backstage para los pedidos de ÆRIEL».`,
+          `O FRAMES SHELL trava um groove de techno percussivo entre dois toca-discos, ombros soltos sobre o mixer. «Aquecendo a Sala 2 até 02:30 AM: bateria seca abrindo o caminho antes de o APÜD entrar com HardBounce às duas e meia. Depois desço com meu caixote pro backstage pros pedidos da ÆRIEL».`),
+        do: { flag: 'met_frames_attic', soc: 1 },
+        choices: [
+          K('ask', t(`"About the track requests for ÆRIEL…"`, `«Sobre los pedidos de temas para ÆRIEL…»`, `«Sobre os pedidos de música pra ÆRIEL…»`), { req: function (s) { return s.quests.q12 === 'active' || !!s.flags.thanked_dj || !!s.flags.frames_told; }, next: 'req_info' }),
+          K('chill', t(`"Keep the drums rolling."`, `«Sigue rodando esas percusiones».`, `«Continua rodando essa bateria».`), { free: true, next: null })
+        ]
+      },
+      again: {
+        text: t(`FRAMES SHELL cues the next percussive cut on one ear without missing a bar. "Holding Sala 2 tight until 02:30 AM, then passing the booth to APÜD and taking the crate backstage."`,
+          `FRAMES SHELL preescucha el siguiente corte percusivo en un oído sin perder un compás. «Sosteniendo Sala 2 firme hasta las 02:30 AM; después le paso la cabina a APÜD y bajo el cajón al backstage».`,
+          `O FRAMES SHELL pré-escuta o próximo corte percussivo num ouvido só sem perder o compasso. «Segurando a Sala 2 firme até 02:30 AM; depois passo a cabine pro APÜD e desço o caixote pro backstage».`),
+        choices: [
+          K('ask', t(`"About the track requests for ÆRIEL…"`, `«Sobre los pedidos de temas para ÆRIEL…»`, `«Sobre os pedidos de música pra ÆRIEL…»`), { req: function (s) { return s.quests.q12 === 'active' || !!s.flags.thanked_dj || !!s.flags.frames_told; }, next: 'req_info' }),
+          K('chill', t(`"Let him mix."`, `«Dejarlo mezclar».`, `«Deixar ele mixar».`), { free: true, next: null })
+        ]
+      },
+      req_info: {
+        text: function (s) {
+          if (s.flags.frames_told) return t(`"I have your sleeve tucked behind the channel strip. Meet me backstage after 02:30 if you want to swap anything once the big crate is open."`, `«Tengo tu funda guardada detrás de los canales. Búscame en el backstage después de las 02:30 si quieres cambiar algo cuando abra el cajón grande».`, `«Guardei sua capa atrás dos canais. Me procura no backstage depois das 02:30 se quiser mudar algo quando eu abrir o caixote grande».`);
+          return t(`"At 02:30 AM I hand Sala 2 over to APÜD and bring the full crate backstage by the couch — that's where I normally take ÆRIEL's pitches. Want to catch me down there after 02:30, or lock your pitch onto a sleeve right now?"`, `«A las 02:30 AM le entrego Sala 2 a APÜD y bajo el cajón completo junto al sofá del backstage: ahí armo los pedidos para ÆRIEL. ¿Nos vemos abajo después de las 02:30 o dejamos tu pedido anotado en una funda ahora?»`, `«Às 02:30 AM entrego a Sala 2 pro APÜD e desço com o caixote completo pro sofá do backstage — é lá que eu monto os pedidos pra ÆRIEL. A gente se vê lá embaixo depois das 02:30 ou quer já deixar anotado numa capa agora?»`);
+        },
+        choices: [
+          K('chill', t(`"I'll catch you backstage after 02:30."`, `«Te alcanzo en el backstage después de las 02:30».`, `«Te encontro no backstage depois das 02:30».`), { req: function (s) { return !s.flags.frames_told; }, free: true, next: null, react: t(`"Smart. See you by the couch as soon as APÜD drops the first HardBounce kick."`, `«Perfecto. Nos vemos junto al sofá en cuanto APÜD suelte el primer bombo de HardBounce».`, `«Fechou. A gente se vê perto do sofá assim que o APÜD soltar o primeiro bumbo de HardBounce».`) }),
+          K('yes', t(`"Let me pitch the sleeve right now."`, `«Anotemos el pedido en la funda ahora».`, `«Vamos anotar o pedido na capa agora».`), { next: 'menu' }),
+          K('chill', t(`"All set."`, `«Todo listo».`, `«Tudo certo».`), { req: function (s) { return !!s.flags.frames_told; }, free: true, next: null })
+        ]
+      },
+      menu: {
+        text: t(`"Quick then, two bars left on this record. What the room needs, in a word, and up to two requests people gave you to carry."`, `«Rápido entonces, quedan dos compases en este disco. Lo que necesita la sala en una palabra, y hasta dos pedidos que te dieron para cargar».`, `«Rápido então, faltam dois compassos nesse disco. O que a sala precisa numa palavra, e até dois pedidos que te deram pra carregar».`),
+        choices: menuChoices()
+      },
+      menu2: {
+        text: t(`"Pencilled in on a spare sleeve. Anything else before this loop runs out?"`, `«Anotado en una funda suelta. ¿Algo más antes de que se acabe este loop?»`, `«Anotado numa capa avulsa. Mais alguma coisa antes desse loop acabar?»`),
+        choices: menuChoices()
+      },
+      done: {
+        text: t(`FRAMES SHELL tucks the sleeve beside the cue headphones. "Pitched and locked in. I'll haul this down backstage at 02:30 AM and put it in front of ÆRIEL before sunrise."`, `FRAMES SHELL guarda la funda junto a los auriculares. «Propuesto y asegurado. Bajo esto al backstage a las 02:30 AM y lo pongo frente a ÆRIEL antes del amanecer».`, `O FRAMES SHELL guarda a capa perto dos fones. «Sugerido e garantido. Desço com isso pro backstage às 02:30 AM e coloco na frente da ÆRIEL antes do amanhecer».`)
+      }
+    }
+  };
+
+  /* Sala 2 front monitor / booth inspect & djattic fallback */
+  S.talk_attic_dj = function () {
+    const s = EM.state; if (!s || s.flags.roof_open) return;
+    const id = s.time >= 270 ? 'apud_attic' : 'frames_attic';
+    U.startDialogue(id, { npc: id });
+  };
+  D.attic_booth_inspect = {
+    who: null, role: t('SALA 2 BOOTH', 'CABINA DE SALA 2', 'CABINE DA SALA 2'), start: 'st', nodes: {
+      st: {
+        branch: [
+          { req: function (s) { return !!s.flags.roof_open; }, to: 'roof' },
+          { req: function (s) { return s.time >= 270; }, to: 'apud' },
+          { req: function () { return true; }, to: 'frames' }
+        ]
+      },
+      frames: {
+        text: t(`Twin turntables and a warm rotary monitor humming under green LEDs. FRAMES SHELL is riding percussive techno at the top of the booth until 02:30 AM.`,
+          `Dos tornamesas y un monitor rotatorio zumbando bajo LEDs verdes. FRAMES SHELL lleva techno percusivo al frente de la cabina hasta las 02:30 AM.`,
+          `Dois toca-discos e um monitor rotativo zumbindo sob LEDs verdes. O FRAMES SHELL conduz techno percussivo na cabine até 02:30 AM.`),
+        choices: [
+          K('ask', t(`Step closer and talk to FRAMES SHELL.`, `Acercarse a hablar con FRAMES SHELL.`, `Chegar mais perto pra falar com o FRAMES SHELL.`), { call: 'talk_attic_dj', next: null }),
+          K('chill', t(`Leave him to the blend.`, `Dejarlo con la mezcla.`, `Deixar ele na mixagem.`), { free: true, next: null })
+        ]
+      },
+      apud: {
+        text: t(`The redliners on the Sala 2 monitor are bouncing hard: APÜD took over at 02:30 AM and is driving high-velocity HardBounce straight through the room until dawn.`,
+          `Los vúmetros del monitor de Sala 2 rebotan fuerte: APÜD tomó el relevo a las 02:30 AM y empuja HardBounce de alta velocidad por toda la sala hasta el amanecer.`,
+          `Os medidores do monitor da Sala 2 pulam forte: o APÜD assumiu às 02:30 AM e tá empurrando HardBounce em alta velocidade pela sala até o amanhecer.`),
+        choices: [
+          K('ask', t(`Step closer and talk to APÜD.`, `Acercarse a hablar con APÜD.`, `Chegar mais perto pra falar com o APÜD.`), { call: 'talk_attic_dj', next: null }),
+          K('chill', t(`Let him ride the kick.`, `Dejarlo con el bombo.`, `Deixar ele seguir no bumbo.`), { free: true, next: null })
+        ]
+      },
+      roof: {
+        text: t(`The Sala 2 monitor is dark and the needles are lifted. Everyone moved upstairs for the closing set on the rooftop.`,
+          `El monitor de Sala 2 está apagado y las agujas levantadas. Todo el equipo subió al techo para el set de cierre.`,
+          `O monitor da Sala 2 tá desligado e as agulhas levantadas. Todo mundo subiu pro terraço pro set de encerramento.`),
+        choices: [K('chill', t(`Step back.`, `Retroceder.`, `Voltar.`), { free: true, next: null })]
+      }
+    }
+  };
+  D.djattic = D.attic_booth_inspect;
   S.v22_frames_told = function () { if (EM.state.quests.q12 === 'active') L.setQuest('q12', 'done'); };
   S.v22_frames_clear = function () {
     L.apply({ unflag: ['frames_told', 'frames_warm', 'frames_wild', 'frames_soft'].concat(REQS.map(function (r) { return r.f; })) });

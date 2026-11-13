@@ -39,10 +39,6 @@
   story.enter = function (zone) {
     enter0(zone);
     const s = EM.state; if (!s) return;
-    /* walking back into the toilets reports your errands: no need to find the right button */
-    if (zone === 'restrooms' && s.quests.sq_rosa === 'active' && [1, 2, 3].some(function (i) { return s.flags['rosa_e' + i] && !s.flags['rr' + i]; })) {
-      setTimeout(function () { if (!EM.state.ended && EM.state.quests.sq_rosa === 'active') S.rosa_report(); }, 700);
-    }
     if (zone === 'main' && s.flags.dark_explored && s.quests.q8d === 'active') s.flags.dark_regroup_pending = true;
   };
 
@@ -85,8 +81,13 @@
     });
     /* the bug: the backstage door could stay locked for THE REQUEST LINE. Thanking ÆRIEL now opens it. */
     if (R.nodes.rp_done) {
+      const rp0 = R.nodes.rp_done.text;
       R.nodes.rp_done.do.flag = [].concat(R.nodes.rp_done.do.flag, 'backstage_access');
-      R.nodes.rp_done.text = [R.nodes.rp_done.text, t(`"Staff door, right of the booth. Tell FRAMES I sent you."`, `«Puerta de staff, a la derecha de la cabina. Dile a FRAMES que te mandé yo».`, `«Porta do staff, à direita da cabine. Fala pro FRAMES que fui eu que mandei».`)];
+      R.nodes.rp_done.text = function (s) {
+        return [rp0, s.time < 270
+          ? t(`"Staff door, right of the booth. FRAMES is spinning Sala 2 until 02:30 AM, then brings the crate backstage."`, `«Puerta de staff, a la derecha de la cabina. FRAMES pincha en Sala 2 hasta las 02:30 AM y luego baja el cajón al backstage».`, `«Porta do staff, à direita da cabine. O FRAMES toca na Sala 2 até 02:30 AM e depois desce o caixote pro backstage».`)
+          : t(`"Staff door, right of the booth. Tell FRAMES I sent you."`, `«Puerta de staff, a la derecha de la cabina. Dile a FRAMES que te mandé yo».`, `«Porta do staff, à direita da cabine. Fala pro FRAMES que fui eu que mandei».`)];
+      };
     }
   }
   /* the quest log remembers what you learned */
@@ -115,7 +116,6 @@
       U.toast({ icon: 'spark', kind: 'info', ms: 4200, text: t(`FRAMES SHELL looks over what you carry and writes it on the sleeve.`, `FRAMES SHELL revisa lo que llevas y lo anota en la funda.`, `O FRAMES SHELL confere o que você carrega e anota na capa.`) });
     }
   };
-  if (D.frames && D.frames.nodes.menu) D.frames.nodes.menu.do = { call: 'v26_auto_req' };
 
   /* ============================================================ THE DARK ROOM */
   EM.QUESTS.q8d = {
