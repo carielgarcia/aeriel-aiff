@@ -176,11 +176,20 @@
   };
 
   function applyAudio() {
-    const a = Z.audio;
+    const a = Z && Z.audio;
+    if (!a) return;
+    const s = S || EM.state;
+    const flags = (s && s.flags) || {};
     let style = a.style;
-    const ph = EM.phaseOf(S.time);
-    if (style === 'auto') style = ph;
-    else if (style === 'attic') style = ph === 'warm' ? 'techno' : (ph === 'techno' ? 'hard' : (ph === 'hard' ? 'hard' : 'closing'));
+    if (style === 'auto') style = s ? EM.phaseOf(s.time) : 'warm';
+    else if (style === 'attic') {
+      if (flags.roof_open) style = 'closing';
+      else if (s && s.time < 270) style = 'frames';
+      else style = 'apud';
+    } else if (style === 'after') {
+      const m = flags.af_music;
+      style = m === 'hypnotic' ? 'after_hypnotic' : (m === 'hardgroove' ? 'after_hardgroove' : (m === 'bossa' ? 'after_bossa' : 'after'));
+    }
     EM.audio.setStyle(style);
     EM.audio.setZone(a.lp, a.wet);
   }

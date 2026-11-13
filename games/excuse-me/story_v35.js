@@ -211,6 +211,7 @@
     if (!s || s.ended || s.flags.after_go || s.flags.roof_open) return;
     if (s.time >= 270 && !s.flags.sala2_shift_toast) {
       s.flags.sala2_shift_toast = true;
+      if (EM.engine && EM.engine.applyAudio) EM.engine.applyAudio();
       U.toast({
         icon: 'note',
         kind: 'info',

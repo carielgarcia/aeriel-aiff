@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>EXCUSE ME — Soundtrack by ÆRIEL</title>
-  <meta name="description" content="The EXCUSE ME soundtrack: fifteen records from one night at club LA GRIETA, played by the game's own engine.">
+  <meta name="description" content="The EXCUSE ME soundtrack: twenty-six records from one night at club LA GRIETA and the after, played by the game's own engine.">
   <meta name="author" content="ÆRIEL">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ÆRIEL">
   <meta property="og:title" content="EXCUSE ME — Soundtrack by ÆRIEL">
-  <meta property="og:description" content="Fifteen records from one night at club LA GRIETA, played by the game's own engine.">
+  <meta property="og:description" content="Twenty-six records from one night at club LA GRIETA and the after, played by the game's own engine.">
   <meta property="og:url" content="https://aeriel.net/games/excuse-me/soundtrack.html">
   <meta property="og:image" content="https://aeriel.net/og-image.jpg">
   <meta property="og:image:width" content="1024">
@@ -30,6 +30,7 @@
     .now { border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; padding: 12px; background: #121212; }
     .now .t { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px; min-height: 1.4em; }
     .now .m { font-size: 0.75rem; color: #7F7F7F; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+    .now .d { font-size: 0.74rem; color: #FFFFFF; line-height: 1.45; margin-top: 6px; min-height: 1.4em; }
     .prog { margin-top: 10px; height: 10px; border: 1px solid #FFFFFF; }
     .prog i { display: block; height: 100%; width: 0; background: #FFFFFF; }
     .ctl { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #FFFFFF; }
@@ -43,9 +44,12 @@
     ol { list-style: none; margin: 0; padding: 0; }
     .tr { display: grid; grid-template-columns: 2.4em 1fr auto; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 8px 12px; border-bottom: 1px solid #FFFFFF; text-align: left; font-size: 0.85rem; }
     .tr .n { color: #7F7F7F; }
-    .tr .b { color: #7F7F7F; font-size: 0.72rem; }
+    .tr .info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .tr .rm { color: #7F7F7F; font-size: 0.68rem; letter-spacing: 0.5px; }
+    .tr .b { color: #7F7F7F; font-size: 0.72rem; white-space: nowrap; }
     .tr[aria-current="true"] { background: #FFFFFF; color: #0A0A0A; }
-    .tr[aria-current="true"] .n, .tr[aria-current="true"] .b { color: #0A0A0A; }
+    .tr[aria-current="true"] .n, .tr[aria-current="true"] .b, .tr[aria-current="true"] .rm { color: #0A0A0A; }
+    .tr:hover .n, .tr:hover .b, .tr:hover .rm, .tr:focus-visible .n, .tr:focus-visible .b, .tr:focus-visible .rm { color: #0A0A0A; }
     .note { padding: 12px; font-size: 0.72rem; color: #7F7F7F; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.5px; }
     .lang button { min-height: 32px; padding: 0 10px; border: 1px solid #FFFFFF; font-size: 0.72rem; }
     .lang { display: flex; gap: 4px; }
@@ -62,6 +66,7 @@
   <div class="now" aria-live="polite">
     <div class="t" id="nt"></div>
     <div class="m" id="nm"></div>
+    <div class="d" id="nd"></div>
     <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="pg"><i id="pgi"></i></div>
   </div>
   <div class="ctl">
@@ -75,7 +80,7 @@
   <p class="note" id="note"></p>
 </main>
 <script src="core.js?v=13"></script>
-<script src="audio.js?v=3"></script>
+<script src="audio.js?v=4"></script>
 <script>
 'use strict';
 (function () {
@@ -83,25 +88,166 @@
   const $ = function (id) { return document.getElementById(id); };
   /* one record per voicing in the game's engine, in the order of the night */
   const TRACKS = [
-    { v: 'warm',    n: T('FOYER WARM-UP', 'CALENTAMIENTO EN EL FOYER', 'AQUECIMENTO NO FOYER') },
-    { v: 'house',   n: T('COAT CHECK HOUSE', 'HOUSE DEL GUARDARROPA', 'HOUSE DA CHAPELARIA') },
-    { v: 'disco',   n: T('GLITTER ON THE STAIRS', 'DIAMANTINA EN LAS ESCALERAS', 'GLITTER NA ESCADA') },
-    { v: 'techno',  n: T('MAIN FLOOR', 'PISTA PRINCIPAL', 'PISTA PRINCIPAL') },
-    { v: 'acid',    n: T('ACID IN THE TOILET QUEUE', 'ACID EN LA FILA DEL BAÑO', 'ACID NA FILA DO BANHEIRO') },
-    { v: 'minimal', n: T('DARK ROOM TICKS', 'TICS DEL CUARTO OSCURO', 'TIQUES DA DARK ROOM') },
-    { v: 'hard',    n: T('PEAK TIME', 'HORA PICO', 'HORÁRIO DE PICO') },
-    { v: 'hg1',     n: T('PEAK ROLL (HARDGROOVE, 8-BIT)', 'RODADO DE LA HORA PICO (HARDGROOVE, 8 BITS)', 'ROLÊ DO PICO (HARDGROOVE, 8 BITS)') },
-    { v: 'hg2',     n: T('SHUFFLE AT THE SPEAKERS (HARDGROOVE, 8-BIT)', 'SHUFFLE JUNTO A LAS BOCINAS (HARDGROOVE, 8 BITS)', 'SHUFFLE PERTO DAS CAIXAS (HARDGROOVE, 8 BITS)') },
-    { v: 'trance',  n: T('ATTIC, ALMOST SUNRISE', 'ÁTICO, CASI AMANECE', 'SÓTÃO, QUASE AMANHECE') },
-    { v: 'tr1',     n: T('ARPS ON THE FLOOR (TRANCE, 8-BIT)', 'ARPEGIOS EN LA PISTA (TRANCE, 8 BITS)', 'ARPEJOS NA PISTA (TRANCE, 8 BITS)') },
-    { v: 'tr2',     n: T('GATED SUNRISE (TRANCE, 8-BIT)', 'AMANECER EN COMPUERTA (TRANCE, 8 BITS)', 'AMANHECER EM PORTÃO (TRANCE, 8 BITS)') },
-    { v: 'dub',     n: T('A WOBBLE FOR ISI', 'UN WOBBLE PARA ISI', 'UM WOBBLE PRA ISI') },
-    { v: 'closing', n: T('CLOSING TIME', 'HORA DE CERRAR', 'HORA DE FECHAR') },
-    { v: 'chill',   n: T('QUIET ROOM', 'SALA TRANQUILA', 'SALA DE CALMA') }
+    {
+      v: 'warm', bpm: 120,
+      n: T('FOYER WARM-UP', 'CALENTAMIENTO EN EL FOYER', 'AQUECIMENTO NO FOYER'),
+      room: T('FOYER // 22:00', 'FOYER // 22:00', 'FOYER // 22:00'),
+      note: T('First kicks through the coat check wall while stamps dry on wrists.', 'Primeros bombos tras la pared del guardarropa mientras se seca el sello.', 'Primeiros bumbos pela parede da chapelaria enquanto o carimbo seca no pulso.')
+    },
+    {
+      v: 'house', bpm: 124,
+      n: T('COAT CHECK HOUSE', 'HOUSE DEL GUARDARROPA', 'HOUSE DA CHAPELARIA'),
+      room: T('FOYER // EARLY', 'FOYER // INICIO', 'FOYER // INÍCIO'),
+      note: T('Warm chord stabs and an unhurried clap before the main room opens up.', 'Acordes cálidos y una palma sin apuro antes de que abra la pista principal.', 'Acordes quentes e palma sem pressa antes de a pista principal abrir.')
+    },
+    {
+      v: 'disco', bpm: 118,
+      n: T('GLITTER ON THE STAIRS', 'DIAMANTINA EN LAS ESCALERAS', 'GLITTER NA ESCADA'),
+      room: T('STAIRS & FOYER', 'ESCALERAS Y FOYER', 'ESCADA E FOYER'),
+      note: T('Octave bassline and busy hi-hats bouncing off the concrete stairwell.', 'Bajo a octavas y hi-hats inquietos rebotando en la escalera de concreto.', 'Baixo oitavado e hi-hats inquietos batendo na escada de concreto.')
+    },
+    {
+      v: 'techno', bpm: 132,
+      n: T('MAIN FLOOR', 'PISTA PRINCIPAL', 'PISTA PRINCIPAL'),
+      room: T('MAIN FLOOR // MIDNIGHT', 'PISTA PRINCIPAL // MEDIANOCHE', 'PISTA PRINCIPAL // MEIA-NOITE'),
+      note: T('Locked sub, dry rimshots and four-to-the-floor weight once the room fills.', 'Subgrave cerrado, rimshots secos y peso constante cuando se llena la sala.', 'Sub fechado, rimshots secos e peso firme quando a sala enche.')
+    },
+    {
+      v: 'acid', bpm: 128,
+      n: T('ACID IN THE TOILET QUEUE', 'ACID EN LA FILA DEL BAÑO', 'ACID NA FILA DO BANHEIRO'),
+      room: T('RESTROOMS & ATTIC', 'BAÑOS Y SALA 2', 'BANHEIROS E SALA 2'),
+      note: T('Resonant 303 sweep drifting through half-shut stall doors.', 'Barrido ácido resonante colándose entre las puertas entornadas del baño.', 'Varredura ácida ressonante atravessando as portas entreabertas do banheiro.')
+    },
+    {
+      v: 'minimal', bpm: 126,
+      n: T('DARK ROOM TICKS', 'TICS DEL CUARTO OSCURO', 'TIQUES DA DARK ROOM'),
+      room: T('DARK ROOM', 'CUARTO OSCURO', 'DARK ROOM'),
+      note: T('Sparse clicks, low-passed sub and wide silence between cues.', 'Clics espaciados, subgrave filtrado y silencio amplio entre señales.', 'Cliques espaçados, sub filtrado e silêncio largo entre sinais.')
+    },
+    {
+      v: 'fs1', bpm: 132,
+      n: T('NO PHOTOS ON THE CARPET (GROOVY I)', 'SIN FOTOS EN LA ALFOMBRA (GROOVY I)', 'SEM FOTO NO TAPETE (GROOVY I)'),
+      room: T('SALA 2 // FRAMES SHELL (UNTIL 02:30)', 'SALA 2 // FRAMES SHELL (HASTA 02:30)', 'SALA 2 // FRAMES SHELL (ATÉ 02:30)'),
+      note: T('FRAMES SHELL opens Sala 2 with rolling groovy techno and crisp rim accents.', 'FRAMES SHELL abre Sala 2 con techno groovy rodado y rimshots nítidos.', 'FRAMES SHELL abre a Sala 2 com techno groovy rolado e rimshots nítidos.')
+    },
+    {
+      v: 'fs2', bpm: 134,
+      n: T('THE CRATE STAYS SHUT (GROOVY II)', 'EL CAJÓN SIGUE CERRADO (GROOVY II)', 'O CAIXOTE FICA FECHADO (GROOVY II)'),
+      room: T('SALA 2 // FRAMES SHELL (UNTIL 02:30)', 'SALA 2 // FRAMES SHELL (HASTA 02:30)', 'SALA 2 // FRAMES SHELL (ATÉ 02:30)'),
+      note: T('Tighter percussion shuffle and warm mid-bass pressure before the handover.', 'Percusión más apretada y presión cálida en el medio-bajo antes del relevo.', 'Percussão mais justa e pressão quente no médio-grave antes da troca.')
+    },
+    {
+      v: 'fs3', bpm: 138,
+      n: T('SILVER STAIRS 1996 (90S TRANCE)', 'ESCALERA PLATEADA 1996 (TRANCE 90S)', 'ESCADA PRATEADA 1996 (TRANCE 90S)'),
+      room: T('SALA 2 // FRAMES SHELL (UNTIL 02:30)', 'SALA 2 // FRAMES SHELL (HASTA 02:30)', 'SALA 2 // FRAMES SHELL (ATÉ 02:30)'),
+      note: T('Wide nineties trance pads and lifted arps lighting up the attic beams.', 'Colchones amplios de trance noventero y arpegios iluminando las vigas del ático.', 'Pads largos de trance dos anos 90 e arpejos acendendo as vigas do sótão.')
+    },
+    {
+      v: 'hard', bpm: 142,
+      n: T('PEAK TIME', 'HORA PICO', 'HORÁRIO DE PICO'),
+      room: T('MAIN FLOOR // PEAK', 'PISTA PRINCIPAL // PICO', 'PISTA PRINCIPAL // PICO'),
+      note: T('Double-time hats and driving bass when the fog machine never rests.', 'Hi-hats doblados y bajo incisivo cuando la máquina de humo no para.', 'Hi-hats dobrados e baixo direto quando a máquina de fumaça não para.')
+    },
+    {
+      v: 'hg1', bpm: 148,
+      n: T('PEAK ROLL (HARDGROOVE, 8-BIT)', 'RODADO DE LA HORA PICO (HARDGROOVE, 8 BITS)', 'ROLÊ DO PICO (HARDGROOVE, 8 BITS)'),
+      room: T('MAIN FLOOR // PEAK', 'PISTA PRINCIPAL // PICO', 'PISTA PRINCIPAL // PICO'),
+      note: T('Shuffled 8-bit pulse lead locked over relentless hardgroove kicks.', 'Melodía 8 bits sincopada sobre bombos incansables de hardgroove.', 'Linha 8 bits sincopada em cima de bumbos incansáveis de hardgroove.')
+    },
+    {
+      v: 'hg2', bpm: 152,
+      n: T('SHUFFLE AT THE SPEAKERS (HARDGROOVE, 8-BIT)', 'SHUFFLE JUNTO A LAS BOCINAS (HARDGROOVE, 8 BITS)', 'SHUFFLE PERTO DAS CAIXAS (HARDGROOVE, 8 BITS)'),
+      room: T('MAIN FLOOR // PEAK', 'PISTA PRINCIPAL // PICO', 'PISTA PRINCIPAL // PICO'),
+      note: T('Sweeping filter and double-kick turnarounds in front of the stacks.', 'Filtro en barrido y doble bombo al final de cada frase frente a las cajas.', 'Filtro varrendo e bumbo duplo na virada bem na frente das caixas.')
+    },
+    {
+      v: 'trance', bpm: 138,
+      n: T('ATTIC, ALMOST SUNRISE', 'ÁTICO, CASI AMANECE', 'SÓTÃO, QUASE AMANHECE'),
+      room: T('MAIN FLOOR & SALA 2', 'PISTA PRINCIPAL Y SALA 2', 'PISTA PRINCIPAL E SALA 2'),
+      note: T('Galloping offbeat bass and open pads holding the whole room aloft.', 'Bajo a contratiempo y pads abiertos sosteniendo toda la sala en el aire.', 'Baixo no contratempo e pads abertos segurando a sala inteira no ar.')
+    },
+    {
+      v: 'tr1', bpm: 138,
+      n: T('ARPS ON THE FLOOR (TRANCE, 8-BIT)', 'ARPEGIOS EN LA PISTA (TRANCE, 8 BITS)', 'ARPEJOS NA PISTA (TRANCE, 8 BITS)'),
+      room: T('MAIN FLOOR // PEAK', 'PISTA PRINCIPAL // PICO', 'PISTA PRINCIPAL // PICO'),
+      note: T('Bright square-wave arpeggios cutting clean through the room haze.', 'Arpegios brillantes de onda cuadrada cortando limpio la bruma de la pista.', 'Arpejos brilhantes de onda quadrada cortando limpo a fumaça da pista.')
+    },
+    {
+      v: 'tr2', bpm: 142,
+      n: T('GATED SUNRISE (TRANCE, 8-BIT)', 'AMANECER EN COMPUERTA (TRANCE, 8 BITS)', 'AMANHECER EM PORTÃO (TRANCE, 8 BITS)'),
+      room: T('MAIN FLOOR // LATE', 'PISTA PRINCIPAL // TARDE', 'PISTA PRINCIPAL // FIM DE NOITE'),
+      note: T('Longer melodic sustain anticipating the stairwell doors to the roof.', 'Sostén melódico más largo anticipando las puertas hacia la azotea.', 'Sustentação melódica longa anunciando as portas pro terraço.')
+    },
+    {
+      v: 'ap1', bpm: 148,
+      n: T('KNEE SPRING AT 02:30 (HARDBOUNCE)', 'RODILLAS SUELTAS A LAS 02:30 (HARDBOUNCE)', 'JOELHO SOLTO ÀS 02:30 (HARDBOUNCE)'),
+      room: T('SALA 2 // APÜD (02:30–05:30)', 'SALA 2 // APÜD (02:30–05:30)', 'SALA 2 // APÜD (02:30–05:30)'),
+      note: T('APÜD takes the Sala 2 booth with elastic offbeat bounce and punchy claps.', 'APÜD toma la cabina de Sala 2 con rebote elástico y palmas firmes.', 'O APÜD assume a cabine da Sala 2 com pulo elástico e palmas secas.')
+    },
+    {
+      v: 'ap2', bpm: 145,
+      n: T('MEDITERRANEAN HORIZON (HARD TRANCE)', 'HORIZONTE MEDITERRÁNEO (HARD TRANCE)', 'HORIZONTE MEDITERRÂNEO (HARD TRANCE)'),
+      room: T('SALA 2 // APÜD (02:30–05:30)', 'SALA 2 // APÜD (02:30–05:30)', 'SALA 2 // APÜD (02:30–05:30)'),
+      note: T('Soaring hard trance lead cutting across heavy four-on-the-floor weight.', 'Línea alta de hard trance cruzando por encima de bombos contundentes.', 'Linha alta de hard trance cortando por cima do peso dos bumbos.')
+    },
+    {
+      v: 'ap3', bpm: 152,
+      n: T('CONCRETE AT FULL TILT (HARD TECHNO)', 'CONCRETO A TOPE (HARD TECHNO)', 'CONCRETO NO TALO (HARD TECHNO)'),
+      room: T('SALA 2 // APÜD (02:30–05:30)', 'SALA 2 // APÜD (02:30–05:30)', 'SALA 2 // APÜD (02:30–05:30)'),
+      note: T('Relentless 152 BPM kick and industrial grit until the rooftop latch opens.', 'Bombo implacable a 152 BPM y filo industrial hasta que abre el techo.', 'Bumbo implacável a 152 BPM e textura industrial até abrir o terraço.')
+    },
+    {
+      v: 'dub', bpm: 140,
+      n: T('A WOBBLE FOR ISI', 'UN WOBBLE PARA ISI', 'UM WOBBLE PRA ISI'),
+      room: T('MAIN FLOOR // RARE CUE', 'PISTA PRINCIPAL // SEÑAL RARA', 'PISTA PRINCIPAL // SINAL RARO'),
+      note: T('Half-time step and LFO sub wobble that makes ISI smile from the quiet room.', 'Medio tiempo y bajo wobble que hacen sonreír a ISI desde la sala tranquila.', 'Meio-tempo e sub wobble que fazem a ISI sorrir lá da sala de calma.')
+    },
+    {
+      v: 'closing', bpm: 124,
+      n: T('CLOSING TIME', 'HORA DE CERRAR', 'HORA DE FECHAR'),
+      room: T('THE ROOF // SUNRISE', 'EL TECHO // AMANECER', 'O TERRAÇO // NASCER DO SOL'),
+      note: T('Soft pads and an unhurried kick under cold morning air on the roof.', 'Pads suaves y bombo calmo bajo el aire frío de la mañana en la azotea.', 'Pads suaves e bumbo calmo sob o ar frio da manhã no terraço.')
+    },
+    {
+      v: 'af_hyp1', bpm: 129,
+      n: T('WOODEN FLOOR PULSE (HYPNOTIC I)', 'PULSO EN EL PISO DE MADERA (HIPNÓTICO I)', 'PULSO NO ASSOALHO (HIPNÓTICO I)'),
+      room: T('THE AFTER // LIVING ROOM', 'EL AFTER // SALA', 'O AFTER // SALA DO APÊ'),
+      note: T('Anselm drops a white-label hypnotic loop gentle enough to keep Quiroga asleep.', 'Anselm pone un loop hipnótico de etiqueta blanca sin despertar a Quiroga.', 'O Anselm solta um loop hipnótico de selo branco sem acordar o Quiroga.')
+    },
+    {
+      v: 'af_hyp2', bpm: 131,
+      n: T('THIN WALLS, DEEP GROOVE (HYPNOTIC II)', 'PAREDES FINAS, SURCO PROFUNDO (HIPNÓTICO II)', 'PAREDES FINAS, SULCO FUNDO (HIPNÓTICO II)'),
+      room: T('THE AFTER // LIVING ROOM', 'EL AFTER // SALA', 'O AFTER // SALA DO APÊ'),
+      note: T('Locked polyrhythmic accents and restrained sub tuned for apartment speakers.', 'Acentos polirrítmicos y sub medido pensados para bocinas de departamento.', 'Acentos polirrítmicos e sub contido pensados pra caixas de apartamento.')
+    },
+    {
+      v: 'af_hg1', bpm: 136,
+      n: T('SECOND WIND ON THE KILIM (HARDGROOVE I)', 'SEGUNDO AIRE EN LA ALFOMBRA (HARDGROOVE I)', 'SEGUNDO FÔLEGO NO TAPETE (HARDGROOVE I)'),
+      room: T('THE AFTER // LIVING ROOM', 'EL AFTER // SALA', 'O AFTER // SALA DO APÊ'),
+      note: T('Warm low-mid swing and brushed percussion pulling socks across the floorboards.', 'Vaivén cálido y percusión rodada moviendo calcetines sobre la madera.', 'Balanço quente e percussão corrida puxando as meias pelo assoalho.')
+    },
+    {
+      v: 'af_hg2', bpm: 138,
+      n: T('WATCH THE NOISE BAR (HARDGROOVE II)', 'MIRA LA BARRA DE RUIDO (HARDGROOVE II)', 'OLHA A BARRA DE BARULHO (HARDGROOVE II)'),
+      room: T('THE AFTER // LIVING ROOM', 'EL AFTER // SALA', 'O AFTER // SALA DO APÊ'),
+      note: T('A scuffed twelve-inch at volume two that tests the broom handle downstairs.', 'Un doce pulgadas gastado a volumen dos que tienta a la escoba de abajo.', 'Um doze polegadas gasto no volume dois que provoca o cabo de vassoura.')
+    },
+    {
+      v: 'af_bossa', bpm: 104,
+      n: T('SUNLIGHT ON THE KETTLE (BOSSA NOVA)', 'SOL SOBRE LA TETERA (BOSSA NOVA)', 'SOL NA CHALEIRA (BOSSA NOVA)'),
+      room: T('THE AFTER // MORNING CRATE', 'EL AFTER // CAJÓN DE MAÑANA', 'O AFTER // CAIXOTE DA MANHÃ'),
+      note: T('Syncopated nylon chords, soft upright bass and brushed snare for toast and tea.', 'Acordes sincopados de nailon, contrabajo suave y escobillas para el té.', 'Acordes sincopados de nylon, contrabaixo leve e vassourinha pro chá.')
+    },
+    {
+      v: 'chill', bpm: 100,
+      n: T('QUIET ROOM', 'SALA TRANQUILA', 'SALA DE CALMA'),
+      room: T('QUIET ROOM // WELFARE', 'SALA TRANQUILA // CUIDADO', 'SALA DE CALMA // CUIDADO'),
+      note: T('Beatless harmonic drift for water, blankets and catching your breath.', 'Deriva armónica sin bombo para agua, mantas y recuperar el aliento.', 'Deriva harmônica sem bumbo pra água, cobertor e retomar o fôlego.')
+    }
   ];
   const PHRASES = 6; /* bars of 8 per phrase: a record plays six phrases, then the next one starts */
   const UI = {
-    sub: T('Fifteen records from one night at club LA GRIETA, played live by the game\'s own engine.', 'Quince discos de una noche en el club LA GRIETA, tocados en vivo por el motor del propio juego.', 'Quinze discos de uma noite no clube LA GRIETA, tocados ao vivo pelo motor do próprio jogo.'),
+    sub: T('Twenty-six records from one night at club LA GRIETA and the after, played live by the game\'s own engine.', 'Veintiséis discos de una noche en el club LA GRIETA y el after, tocados en vivo por el motor del propio juego.', 'Vinte e seis discos de uma noite no clube LA GRIETA e no after, tocados ao vivo pelo motor do próprio jogo.'),
     play: T('PLAY', 'REPRODUCIR', 'TOCAR'), pause: T('PAUSE', 'PAUSA', 'PAUSAR'), prev: T('◀ PREV', '◀ ANT.', '◀ ANT.'), next: T('NEXT ▶', 'SIG. ▶', 'PRÓX. ▶'),
     auto: T('AUTO: ON', 'AUTO: SÍ', 'AUTO: SIM'), autoOff: T('AUTO: OFF', 'AUTO: NO', 'AUTO: NÃO'), vol: T('VOLUME', 'VOLUMEN', 'VOLUME'),
     idle: T('PICK A TRACK', 'ELIGE UN TEMA', 'ESCOLHA UMA FAIXA'), paused: T('PAUSED', 'EN PAUSA', 'PAUSADO'),
@@ -110,15 +256,16 @@
   };
   let cur = -1, playing = false, auto = true, t0 = 0, dur = 1;
   const tr = function (k) { return EM.tr(UI[k]); };
+  const trackBpm = function (k) { return (EM.STYLES && EM.STYLES[k.v] && EM.STYLES[k.v].bpm) || k.bpm || 120; };
 
   function load(i) {
     cur = (i + TRACKS.length) % TRACKS.length;
-    const v = TRACKS[cur].v;
+    const k = TRACKS[cur], v = k.v, bpm = trackBpm(k);
     A.hold = true;
     A.style = v;
-    A.setBpm(EM.STYLES[v].bpm);
+    A.setBpm(bpm);
     t0 = performance.now();
-    dur = PHRASES * 32 * 60 / EM.STYLES[v].bpm * 1000;
+    dur = PHRASES * 32 * 60 / bpm * 1000;
     paint();
   }
   function play(i) {
@@ -138,7 +285,8 @@
     $('l-vol').textContent = tr('vol'); $('sub').textContent = tr('sub'); $('note').textContent = tr('note'); $('back').textContent = tr('back');
     $('back').href = '/games/excuse-me/' + (EM.lang === 'en' ? '' : '?lang=' + EM.lang);
     $('nt').textContent = cur < 0 ? tr('idle') : (String(cur + 1).padStart(2, '0') + '  ' + EM.tr(TRACKS[cur].n));
-    $('nm').textContent = cur < 0 ? '' : EM.STYLES[TRACKS[cur].v].bpm + ' ' + tr('bpm') + (playing ? '' : '  //  ' + tr('paused'));
+    $('nm').textContent = cur < 0 ? '' : EM.tr(TRACKS[cur].room) + '  //  ' + trackBpm(TRACKS[cur]) + ' ' + tr('bpm') + (playing ? '' : '  //  ' + tr('paused'));
+    $('nd').textContent = cur < 0 ? '' : EM.tr(TRACKS[cur].note);
     document.title = (cur < 0 ? '' : EM.tr(TRACKS[cur].n) + ' — ') + 'EXCUSE ME — Soundtrack by ÆRIEL';
     document.querySelectorAll('#lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.l === EM.lang)); });
     const had = document.activeElement && document.activeElement.classList.contains('tr') ? Array.prototype.indexOf.call(document.querySelectorAll('#list .tr'), document.activeElement) : -1;
@@ -147,9 +295,11 @@
       const li = document.createElement('li'), b = document.createElement('button');
       b.type = 'button'; b.className = 'tr';
       if (i === cur) b.setAttribute('aria-current', 'true');
-      b.innerHTML = '<span class="n"></span><span class="x"></span><span class="b"></span>';
-      b.children[0].textContent = String(i + 1).padStart(2, '0'); b.children[1].textContent = EM.tr(k.n);
-      b.children[2].textContent = EM.STYLES[k.v].bpm + ' ' + tr('bpm');
+      b.innerHTML = '<span class="n"></span><span class="info"><span class="x"></span><span class="rm"></span></span><span class="b"></span>';
+      b.children[0].textContent = String(i + 1).padStart(2, '0');
+      b.children[1].children[0].textContent = EM.tr(k.n);
+      b.children[1].children[1].textContent = EM.tr(k.room);
+      b.children[2].textContent = trackBpm(k) + ' ' + tr('bpm');
       b.addEventListener('click', function () { play(i); });
       li.appendChild(b); $('list').appendChild(li);
       if (i === had) b.focus();

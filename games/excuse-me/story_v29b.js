@@ -17,7 +17,12 @@
   S.af_arrive = function () { EM.hooks.travel({ zone: 'a_living', x: 13, y: 13, dir: 'u' }); };
   S.af_rules = function () { U.startDialogue('af_rules', { npc: 'dot' }); };
   S.af_front = function () { U.startDialogue('af_front', {}); };
-  S.af_set0 = function () { AF.vol(0); }; S.af_set1 = function () { AF.vol(1); }; S.af_set2 = function () { AF.vol(2); };
+  function applyAfAudio() { if (EM.engine && EM.engine.applyAudio) EM.engine.applyAudio(); }
+  S.af_set0 = function () { AF.vol(0); applyAfAudio(); }; S.af_set1 = function () { AF.vol(1); applyAfAudio(); }; S.af_set2 = function () { AF.vol(2); applyAfAudio(); };
+  S.af_pick_hypnotic = function () { if (EM.state) EM.state.flags.af_music = 'hypnotic'; applyAfAudio(); };
+  S.af_pick_hardgroove = function () { if (EM.state) EM.state.flags.af_music = 'hardgroove'; applyAfAudio(); };
+  S.af_pick_bossa = function () { if (EM.state) EM.state.flags.af_music = 'bossa'; applyAfAudio(); };
+  S.af_pick_mix = function () { if (EM.state) EM.state.flags.af_music = ''; applyAfAudio(); };
   S.af_vol0 = function () { AF.vol(0); AF.noise(-30); };
   S.af_dn15 = function () { AF.noise(-15); }; S.af_dn25 = function () { AF.noise(-25); }; S.af_dn30 = function () { AF.noise(-30); }; S.af_dn35 = function () { AF.noise(-35); };
   S.af_up8 = function () { AF.noise(10); };

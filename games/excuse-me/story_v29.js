@@ -38,7 +38,7 @@
   /* ============================================================ the six rooms (daylight, quiet records) */
   const WARM = { a: '#FFB020', b: '#FF7AB8' };
   const mk = function (id, w, h, name, extra) {
-    const z = new Zone(id, w, h, Object.assign({ theme: WARM, name: name, audio: { lp: 1500, wet: 0.1, style: 'closing' }, dark: 0 }, extra || {}));
+    const z = new Zone(id, w, h, Object.assign({ theme: WARM, name: name, audio: { lp: 1500, wet: 0.1, style: 'after' }, dark: 0 }, extra || {}));
     return z;
   };
   const NAME = {
@@ -179,7 +179,7 @@
 
   /* the balcony: the neighbours */
   (function () {
-    const Z = mk('a_balcony', 16, 8, NAME.a_balcony, { outdoor: true, audio: { lp: 2400, wet: 0.2, style: 'closing' } });
+    const Z = mk('a_balcony', 16, 8, NAME.a_balcony, { outdoor: true, audio: { lp: 2400, wet: 0.2, style: 'after' } });
     Z.fill(0, 0, 16, 8, TL.VOID); Z.fill(0, 0, 16, 2, TL.HSKY); Z.fill(0, 2, 16, 1, TL.HRAIL); Z.fill(1, 3, 14, 4, TL.HBALC);
     Z.fill(2, 4, 4, 2, TL.HRUG);
     Z.fill(3, 5, 2, 1, TL.HTABLE);
@@ -198,7 +198,7 @@
 
   /* the master bedroom (designed in story_v29c.js) */
   (function () {
-    const Z = mk('a_master', 14, 10, NAME.a_master, { quiet: 0.03, audio: { lp: 900, wet: 0.15, style: 'closing' } });
+    const Z = mk('a_master', 14, 10, NAME.a_master, { quiet: 0.03, audio: { lp: 900, wet: 0.15, style: 'after' } });
     home(Z, 14, 10, TL.HFLOOR);
     Z.fill(1, 3, 4, 2, TL.HRUG); Z.fill(6, 4, 7, 4, TL.HRUG);
     Z.fill(8, 3, 4, 3, TL.HBED); Z.fill(2, 3, 2, 1, TL.HCOUCH);

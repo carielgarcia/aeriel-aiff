@@ -102,8 +102,33 @@
   };
 
   /* ============================================================ ANSELM and the records */
+  function crateNodes(backTo) {
+    return {
+      crate: {
+        text: function (s) {
+          const cur = s.flags.af_music || '';
+          const mode = cur === 'hypnotic' ? t('Hypnotic Techno', 'Techno hipnótico', 'Techno hipnótico')
+            : cur === 'hardgroove' ? t('Hardgroove', 'Hardgroove', 'Hardgroove')
+            : cur === 'bossa' ? t('Bossa Nova', 'Bossa nova', 'Bossa nova')
+            : t('full crate rotation', 'rotación completa del cajón', 'rotação completa do caixote');
+          return t(`Anselm lifts the tonearm and checks the stack. Right now the flat is on ${mode}. "Which side are we playing?"`, `Anselm levanta el brazo y revisa la pila. Ahora el departamento está en ${mode}. «¿Qué lado ponemos?»`, `O Anselm levanta o braço e confere a pilha. Agora o apê tá em ${mode}. «Qual lado a gente bota?»`);
+        },
+        choices: [
+          K('chill', t(`Hypnotic Techno — steady, deep, locked grooves.`, `Techno hipnótico — firme, profundo, loops cerrados.`, `Techno hipnótico — firme, profundo, loops fechados.`), { free: true, call: 'af_pick_hypnotic', next: 'picked_hyp' }),
+          K('bold', t(`Hardgroove — rolling percussion, warm drive.`, `Hardgroove — percusión fluida, empuje cálido.`, `Hardgroove — percussão fluida, balanço quente.`), { free: true, call: 'af_pick_hardgroove', next: 'picked_hg' }),
+          K('care', t(`Bossa Nova — soft nylon chords, brushed snare.`, `Bossa nova — acordes suaves de nailon, escobillas.`, `Bossa nova — acordes suaves de nylon, vassourinha.`), { free: true, call: 'af_pick_bossa', next: 'picked_bossa' }),
+          K('plan', t(`Full crate — rotate across everything.`, `Cajón completo — rotar por todo.`, `Caixote inteiro — rodar por tudo.`), { free: true, call: 'af_pick_mix', next: 'picked_mix' }),
+          K('chill', t(`Back.`, `Volver.`, `Voltar.`), { free: true, next: backTo })
+        ]
+      },
+      picked_hyp: { text: t(`He drops the needle onto a plain white label. A deep, hypnotic pulse settles into the floorboards without waking the ceiling.`, `Apoya la púa sobre una etiqueta blanca sin texto. Un pulso hipnótico y profundo se asienta en las tablas sin despertar al techo.`, `Ele pousa a agulha num selo branco sem texto. Um pulso hipnótico e fundo se assenta no assoalho sem acordar o teto.`), next: null },
+      picked_hg: { text: t(`He cues up a scuffed twelve-inch. Rolled percussion and warm low end tug the living room back onto its feet.`, `Prepara un doce pulgadas gastado. Percusión rodada y graves cálidos vuelven a poner la sala de pie.`, `Ele prepara um doze polegadas gasto. Percussão corrida e grave quente botam a sala de pé de novo.`), next: null },
+      picked_bossa: { text: t(`He pulls a worn sleeve from the back of the crate. Soft nylon chords and brushed snare spill across the kilim rug like sunlight.`, `Saca una funda gastada del fondo del cajón. Acordes suaves de nailon y escobillas se derraman por la alfombra como luz de sol.`, `Ele puxa uma capa gasta do fundo do caixote. Acordes suaves de nylon e vassourinha se espalham pelo tapete feito luz do sol.`), next: null },
+      picked_mix: { text: t(`"Back to the full crate, then." He leans three sleeves against the lamp so the needle keeps moving between worlds.`, `«De vuelta al cajón completo, entonces». Apoya tres fundas contra la lámpara para que la púa siga viajando entre mundos.`, `«De volta ao caixote inteiro, então». Ele apoia três capas no abajur pra agulha continuar viajando entre mundos.`), next: null }
+    };
+  }
   D.af_anselm = {
-    who: 'anselm', role: t('HOST', 'ANFITRIÓN', 'ANFITRIÃO'), start: 'st', nodes: {
+    who: 'anselm', role: t('HOST', 'ANFITRIÓN', 'ANFITRIÃO'), start: 'st', nodes: Object.assign({
       st: { branch: [{ req: function (s) { return !!s.flags.rem_met && !s.flags.rem_played && !!s.flags.rec_ok; }, to: 'rem' }, { req: function () { return true; }, to: 'a' }] },
       a: {
         text: t(`Anselm has his hands flat on the table, guarding the records. "I'll play anything you ask for, as long as it's quiet. If you want to hold one, ask me first. I'm going to watch you hold it. I'm sorry. It's a flaw."`, `Anselm tiene las manos planas sobre la mesa, guardando los discos. «Pongo lo que me pidan, mientras sea bajito. Si quieres sostener uno, pregúntame antes. Te voy a mirar sostenerlo. Perdón. Es un defecto».`, `O Anselm tem as mãos espalmadas na mesa, guardando os discos. «Eu toco o que pedirem, desde que seja baixinho. Se quiser segurar um, pergunta antes. Vou ficar te olhando segurar. Desculpa. É um defeito».`),
@@ -111,6 +136,7 @@
           K('care', t(`"May I look through them? I'll ask for each one."`, `«¿Puedo mirarlos? Te pregunto por cada uno».`, `«Posso olhar? Eu pergunto de cada um».`), { req: NF('rec_ok'), do: { flag: 'rec_ok', fun: 2, soc: 2, time: 4 }, next: 'rec' }),
           K('chill', t(`Ask for something quiet.`, `Pedirle algo tranquilo.`, `Pedir algo calmo.`), { call: 'af_set0', next: 'quiet' }),
           K('joke', t(`Ask for something loud.`, `Pedirle algo fuerte.`, `Pedir algo alto.`), { do: { fun: 2 }, call: 'af_set2', next: 'loud' }),
+          K('ask', t(`Pick what goes on the turntable.`, `Elegir qué suena en el tocadiscos.`, `Escolher o que toca na vitrola.`), { free: true, next: 'crate' }),
           K('ask', t(`Ask how he's doing with all this.`, `Preguntarle cómo lleva todo esto.`, `Perguntar como ele tá lidando com tudo isso.`), { req: F('rec_ok'), next: 'c' }),
           K('chill', t(`Go and help Dot.`, `Ir a ayudar a Dot.`, `Ir ajudar a Dot.`), { free: true, next: null })
         ]
@@ -136,20 +162,21 @@
         text: t(`You tell him what Doña Remedios asked for: cumbia, 1974, anything with a guiro. He is quiet for a while. "I have one. It's worth more than a month's rent." He takes it out slowly, reluctantly. "Tell her to sit on the balcony side. I'll put the volume at two."`, `Le cuentas lo que pidió doña Remedios: cumbia, 1974, cualquier cosa con güiro. Se queda callado un rato. «Tengo uno. Vale más que un mes de alquiler». Lo saca despacio, con reticencia. «Dile que se siente del lado del balcón. Pongo el volumen en dos».`, `Você conta o que a dona Remedios pediu: cumbia, 1974, qualquer coisa com güiro. Ele fica quieto um tempo. «Tenho um. Vale mais que um mês de aluguel». Ele tira da capa devagar, relutante. «Diz pra ela sentar do lado da varanda. Eu ponho o volume em dois».`),
         once: true, do: { flag: 'rem_played', soc: 4, fun: 3, time: 8, call: 'af_rem_played' }, next: null
       }
-    }
+    }, crateNodes('a'))
   };
   D.af_records = {
-    start: 'a', nodes: {
+    start: 'a', nodes: Object.assign({
       a: {
         text: t(`A table of records in plain sleeves. Anselm keeps one eye on them from across the room.`, `Una mesa con discos en fundas lisas. Anselm los vigila con un ojo desde el otro lado del cuarto.`, `Uma mesa com discos em capas lisas. O Anselm vigia com um olho do outro lado da sala.`),
         choices: [
           K('care', t(`Ask Anselm first.`, `Preguntarle a Anselm primero.`, `Perguntar ao Anselm primeiro.`), { free: true, next: null, call: 'af_ask_rec' }),
+          K('ask', t(`Choose a record for the turntable.`, `Elegir un disco para el tocadiscos.`, `Escolher um disco pra vitrola.`), { req: F('rec_ok'), free: true, next: 'crate' }),
           K('push', t(`Flip through them without asking.`, `Revisarlos sin preguntar.`, `Fuçar sem perguntar.`), { bad: true, next: 'touched' }),
           K('chill', t(`Leave them alone.`, `Dejarlos en paz.`, `Deixar em paz.`), { free: true, next: null })
         ]
       },
       touched: { text: t(`Anselm's hand is on yours before you reach the third sleeve. He doesn't say anything. He doesn't have to.`, `La mano de Anselm está sobre la tuya antes de que llegues a la tercera funda. No dice nada. No necesita.`, `A mão do Anselm tá sobre a sua antes de você chegar na terceira capa. Ele não diz nada. Não precisa.`), do: { soc: -6 }, next: null }
-    }
+    }, crateNodes('a'))
   };
 
   /* ============================================================ DOT in the kitchen: what hosting costs */
