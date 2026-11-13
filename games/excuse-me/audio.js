@@ -149,6 +149,7 @@
     A.style = v;
     const s = STYLES[v] || STYLES.warm;
     if (s.bpm !== A.bpm) A.setBpm(s.bpm);
+    if (bus.bass && !s.sweep && !s.wobble) bus.bass.frequency.setTargetAtTime(420, A.ctx.currentTime, 0.05);
     if (v === 'dub' && EM.hooks && EM.hooks.toast) EM.hooks.toast({ icon: 'note', text: EM.T('A wobble bass cuts through the room. Somewhere in the quiet room, ISI whispers: "FINALLY."', 'Un bajo wobble corta la sala. En algún lugar de la sala tranquila, ISI susurra: «POR FIN».', 'Um baixo wobble corta a sala. Em algum lugar da sala de calma, a ISI sussurra: «ATÉ QUE ENFIM».'), kind: 'good', ms: 5000 });
   }
   /* every few phrases the DJ moves to another record from the same part of the night (never while you are dancing) */

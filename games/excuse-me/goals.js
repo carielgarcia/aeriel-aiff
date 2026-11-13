@@ -17,6 +17,7 @@
     q4: function () { return [{ ent: 'rosa' }]; },
     q5: function (s) { return s.pill && s.pill.tested ? [{ zone: 'main' }] : [{ ent: 'nuri' }]; },
     q7: function () { return [{ ent: 'peak_spot' }]; },
+    q8d: function (s) { return [{ zone: F(s, 'dark_explored') ? 'main' : 'darkroom' }]; },
     q10: function () { return [{ zone: 'main' }]; }, /* dance with your people on the main floor */
     q9: function () { return [{ ent: 'sunrise_spot' }]; },
     q13: function () { return [{ ent: 'af_inviter' }]; },
@@ -59,6 +60,15 @@
       if (!F(s, 'lic_luca')) out.push({ ent: 'luca' });
       if (!F(s, 'lic_neigh')) out.push({ ent: 'valdes' });
       return out.length ? out : [{ ent: 'ofelia' }];
+    },
+    sq_ae1: function () { return [{ ent: 'resident' }]; },
+    sq_ae2: function () { return [{ ent: 'resident' }]; },
+    sq_ae3: function () { return [{ ent: 'resident' }]; },
+    sq_ae4: function () { return [{ ent: 'resident' }]; },
+    sq_eloy: function (s) {
+      if (!F(s, 'eloy_danced')) return [{ ent: 'eloy' }];
+      if (!F(s, 'eloy_has_drink') && !F(s, 'eloy_drink_given')) return [{ ent: 'nico' }];
+      return [{ ent: 'eloy' }];
     }
   };
 

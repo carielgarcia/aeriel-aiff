@@ -301,7 +301,7 @@
     if (st.soc <= 0) { L.end('burnout'); return; }
     if ((s.boredFor || 0) >= 45 && !s.flags.afters_open && !s.flags.after_go) { L.end('bored'); return; }
     if (s.flags.after_go) { if (s.time >= EM.AFTER_END) { L.end('after'); return; } } /* THE AFTER (story_v29*.js) runs to noon */
-    else if (s.time >= 600 && !s.flags.afters_open) { L.end('closing'); return; } /* afters_open: the sunrise is over and THE AFTERS mission decides how it ends */
+    else if (s.time >= (s.flags.afters_open ? 660 : 600)) { L.end('closing'); return; } /* afters_open gives a 1h grace window after sunrise to answer THE AFTERS */
   };
 
   /* an accumulation of bad decisions: friends notice, then the night collapses */

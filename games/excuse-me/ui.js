@@ -443,6 +443,7 @@
     else if (L.isRude(c) && EM.HOSTS && EM.HOSTS[curWho()]) L.hostRude();
     if (c.bad) { L.addBad(1); L.rep(1); }
     else if (c.tone === 'care' || c.tone === 'sorry' || c.tone === 'hug') L.rep(-0.4);
+    if (EM.state.ended && !D.def.endingScene) { U.D = null; return; }
     if (c.do) applyDo(c.do);
     logDeltas(snap);
     if (EM.state.ended && !D.def.endingScene) { U.D = null; return; }
@@ -500,7 +501,7 @@
     Object.keys(def.nodes || {}).forEach(function (k) {
       const n = def.nodes[k], ds = [n.do].concat((n.choices || []).map(function (c) { return c.do; }));
       ds.forEach(function (d) { if (d && typeof d === 'object' && SERVICE_DO.some(function (key) { return d[key] !== undefined; })) svc = true; });
-      if (n.call) svc = true;
+      if (n.call || (n.choices || []).some(function (c) { return !!c.call; })) svc = true;
     });
     return (serviceCache[id] = svc);
   }
@@ -722,7 +723,7 @@
     } else if (menuTab === 'quests') {
       const list = Object.keys(EM.QUESTS || {}).filter(function (id) { return s.quests[id]; });
       if (!list.length) box.appendChild(el('p', 'mnote', EM.tr(UI.none)));
-      const side = function (id) { return /^sq_/.test(id); };
+      const side = function (id) { return /^(sq_|rv_)/.test(id); };
       const sections = [[T('MAIN MISSIONS', 'MISIONES PRINCIPALES', 'MISSÕES PRINCIPAIS'), list.filter(function (id) { return !side(id); })], [T('SIDE QUESTS', 'MISIONES SECUNDARIAS', 'MISSÕES SECUNDÁRIAS'), list.filter(side)]];
       /* opened from the SIDE QUESTS button: side quests first, and a line on how the blue guides work */
       if (U.questFocus === 'side') {

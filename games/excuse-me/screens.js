@@ -8,7 +8,7 @@
   /* ------------------------------------------------------------ strings */
   const S = EM.SCR = {
     sub: T('A NIGHT AT LA GRIETA // 22:00 — 08:00', 'UNA NOCHE EN LA GRIETA // 22:00 — 08:00', 'UMA NOITE NA GRIETA // 22:00 — 08:00'),
-    tag: T('Cross the crowd. Take care of your people. Don\'t get thrown out. An 16-bit role-playing game about moving through a club, one "excuse me" at a time.',
+    tag: T('Cross the crowd. Take care of your people. Don\'t get thrown out. A 16-bit role-playing game about moving through a club, one "excuse me" at a time.',
       'Cruza la multitud. Cuida a tu gente. Que no te echen. Un juego de rol de 16 bits sobre moverse por un club, un «con permiso» a la vez.',
       'Atravesse a multidão. Cuide da sua gente. Não se deixe expulsar. Um RPG de 16 bits sobre se mover por um club, um «com licença» de cada vez.'),
     notice: T('18+ // Drugs, alcohol, sex and strong language. Fiction, written for people who have been there. No fast flashing lights; sway and shake can be switched off in SETTINGS.',
@@ -538,7 +538,7 @@
     let last = performance.now(), slow = 0, fast = 0, frames = 0;
     function frame(now) {
       const dt = Math.min(0.05, (now - last) / 1000); last = now; frames++;
-      if (dt > 0.034) { slow++; fast = 0; } else { fast++; if (fast > 120) slow = 0; }
+      if (dt > 0.034) { slow++; fast = 0; } else { fast++; if (fast > 120) { slow = 0; EM.audio.setLite(false); } }
       if (slow > 90) { EM.audio.setLite(true); }
       if (EM.state && (U.mode === 'play' || U.mode === 'dialog' || U.mode === 'rhythm' || U.mode === 'menu')) {
         E.update(dt); E.draw(); U.hud(); if (frames % 6 === 0) U.hint(); if (U.mode === 'play' && EM.story.tick) EM.story.tick(dt);

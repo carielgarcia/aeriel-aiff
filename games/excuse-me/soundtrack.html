@@ -74,7 +74,7 @@
   <ol id="list"></ol>
   <p class="note" id="note"></p>
 </main>
-<script src="core.js?v=3"></script>
+<script src="core.js?v=13"></script>
 <script src="audio.js?v=3"></script>
 <script>
 'use strict';
@@ -136,6 +136,7 @@
     $('b-prev').textContent = tr('prev'); $('b-next').textContent = tr('next');
     const ab = $('b-auto'); ab.textContent = tr(auto ? 'auto' : 'autoOff'); ab.setAttribute('aria-pressed', String(auto));
     $('l-vol').textContent = tr('vol'); $('sub').textContent = tr('sub'); $('note').textContent = tr('note'); $('back').textContent = tr('back');
+    $('back').href = '/games/excuse-me/' + (EM.lang === 'en' ? '' : '?lang=' + EM.lang);
     $('nt').textContent = cur < 0 ? tr('idle') : (String(cur + 1).padStart(2, '0') + '  ' + EM.tr(TRACKS[cur].n));
     $('nm').textContent = cur < 0 ? '' : EM.STYLES[TRACKS[cur].v].bpm + ' ' + tr('bpm') + (playing ? '' : '  //  ' + tr('paused'));
     document.title = (cur < 0 ? '' : EM.tr(TRACKS[cur].n) + ' — ') + 'EXCUSE ME — Soundtrack by ÆRIEL';

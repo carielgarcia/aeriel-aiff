@@ -56,10 +56,13 @@
   /* phones: ordinary dialogue is a sheet under the stage that borrows the D-pad's space and carries its own X and Z.
      Dance dialogues (node.pd) keep the arrow pad and the overlay. */
   function syncDialogSheet() {
-    const g = $('screen-game'); if (!g) return;
+    const g = $('screen-game'); if (!g) return false;
     const d = U.mode === 'dialog' && U.D, pd = !!(d && U.D.node && U.D.node.pd);
-    g.classList.toggle('dlg-sheet', !!d && !pd);
+    const want = !!d && !pd;
+    const changed = g.classList.contains('dlg-sheet') !== want;
+    g.classList.toggle('dlg-sheet', want);
     const x = $('dlg-x'); if (x) x.hidden = !(d && !U.D.def.forced);
+    return changed;
   }
   /* the real screen height. Inside the games hub the iframe is as tall as the game itself, so its own innerHeight says
      nothing about the screen: ask the same-origin parent (minus the host's fixed bottom tab bar). */
@@ -87,17 +90,26 @@
     }
     if (Math.abs(c - (parseFloat(root.getPropertyValue('--chrome')) || 0)) > 1) root.setProperty('--chrome', c + 'px');
   }
+  let lastLabelsKey = '';
   function labels() {
-    const b = { 'btn-pause': UI.pause, 'log-expand': UI.expand };
-    Object.keys(b).forEach(function (id) { const e = $(id); if (e) e.textContent = EM.tr(b[id]); });
-    const gl = $('goal-l'); if (gl) gl.textContent = EM.tr(UI.goal);
-    const gs = $('goal-side'), st = EM.state;
-    if (gs && st) { const n = Object.keys(st.quests || {}).filter(function (k) { return /^sq_/.test(k) && st.quests[k] === 'active'; }).length; gs.hidden = !n; if (n) gs.textContent = EM.tr(UI.side) + ': ' + n; }
-    stripKeyHints(); syncDialogSheet();
-    const p = $('pause'); if (p && !p.hidden) { p.querySelector('h2').textContent = EM.tr(UI.paused); p.querySelector('p').textContent = EM.tr(UI.pausedBody); p.querySelector('button').textContent = EM.tr(UI.resume); }
+    const st = EM.state, p = $('pause'), pVis = !!(p && !p.hidden);
+    const n = st ? Object.keys(st.quests || {}).filter(function (k) { return /^(sq_|rv_)/.test(k) && st.quests[k] === 'active'; }).length : 0;
+    const sheetChanged = syncDialogSheet();
+    const key = EM.lang + '|' + n + '|' + (pVis ? 1 : 0);
+    if (key !== lastLabelsKey) {
+      lastLabelsKey = key;
+      const b = { 'btn-pause': UI.pause, 'log-expand': UI.expand };
+      Object.keys(b).forEach(function (id) { const e = $(id); if (e) e.textContent = EM.tr(b[id]); });
+      const gl = $('goal-l'); if (gl) gl.textContent = EM.tr(UI.goal);
+      const gs = $('goal-side');
+      if (gs && st) { gs.hidden = !n; if (n) gs.textContent = EM.tr(UI.side) + ': ' + n; }
+      stripKeyHints();
+      if (pVis) { p.querySelector('h2').textContent = EM.tr(UI.paused); p.querySelector('p').textContent = EM.tr(UI.pausedBody); p.querySelector('button').textContent = EM.tr(UI.resume); }
+    }
+    if (sheetChanged) fit();
   }
   const hud0 = U.hud;
-  U.hud = function () { hud0.apply(this, arguments); labels(); fit(); };
+  U.hud = function () { hud0.apply(this, arguments); labels(); };
 
   function wire() {
     const bp = $('btn-pause'), be = $('log-expand'), pb = $('pause') && $('pause').querySelector('button');
@@ -114,6 +126,7 @@
       if (e.code === 'KeyO' || e.code === 'Pause') { if (U.mode === 'pause') U.resume(); else if (U.mode === 'play') U.pause(); e.preventDefault(); }
       else if (U.mode === 'pause' && (e.code === 'Escape' || e.code === 'Space' || e.code === 'Enter')) { U.resume(); e.preventDefault(); }
       else if (e.code === 'KeyL' && U.mode === 'play') U.openMenu('nightlog');
+      else if (e.code === 'KeyL' && U.mode === 'menu') U.closeMenu();
     });
     labels(); fit(); window.addEventListener('resize', fit); window.addEventListener('orientationchange', fit);
   }
