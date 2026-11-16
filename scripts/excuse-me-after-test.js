@@ -27,6 +27,9 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.goto('http://localhost:' + port + '/games/excuse-me/index.html', { waitUntil: 'load' });
   await page.waitForFunction('window.EM && EM.ui && EM.scripts && EM.scripts.af_begin');
 
+  /* story_v40.js: Maru leaves your side now and then. The older sections are scripted around her being with you, so they start with that switched off. */
+  await page.evaluate(function () { const ns = EM.newState; EM.newState = function () { const s = ns.apply(this, arguments); s.flags.maru_hold = true; return s; }; });
+
   /* helpers living in the page */
   await page.evaluate(function () {
     window.H = {
@@ -425,6 +428,39 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   ok(/MASTER BEDROOM IS CLOSED/.test(r11.mb) && /house rules/i.test(r11.mb), 'the master bedroom door says what it needs');
   ok(/NOISE \d+ ▲ LOUD MUSIC/.test(r11.cap) && /NOISE \+12/.test(r11.tst), 'the noise bar says why it moves: caption and a toast with the cause (' + r11.cap + ')');
   ok(r11.tag === 'FRONT DOOR' && r11.people >= 15, 'the front door is tagged, and the flat is full of dancers and circles (' + r11.people + ' guests)');
+
+  /* ------------------------------------------------ 12. Maru is her own person (story_v40.js) */
+  await page.waitForTimeout(1500);
+  await page.evaluate(function () {
+    const player = { name: 'TEST', gender: 'x', look: Object.assign({}, EM.CHAR.random()) };
+    EM.settings.speed = 0.25; EM.ui.startNight(player, { venue: 'club' });
+  });
+  await page.waitForTimeout(700);
+  const r12 = await page.evaluate(function () {
+    EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true;
+    const s = EM.state, out = {}; delete s.flags.maru_hold; s.time = 520; s.party = ['maru', 'dani', 'tato']; s.away = {}; s.flags.after_go = true; s.flags.afters_open = true; EM.scripts.af_begin();
+    EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true; EM.engine.enter('a_living', 13, 12, 'u'); EM.story.enter('a_living');
+    const calm = function () { EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true; };
+    const here = function () { return s.party.indexOf('maru') !== -1; };
+    EM.logic.apply({ flag: ['af_rules', 'phone_basket'], quest: { q_af1: 'done', q_af2: 'done', q_af3: 'active' } }); calm(); EM.logic.minute(); calm();
+    out.kitchen = s.away.maru; out.kDlg = EM.story.friendDialogue('maru', s);
+    EM.logic.apply({ flag: ['sam_done', 'sam_ok', 'rey_done', 'rey_ok'] }); calm(); EM.logic.minute(); calm(); EM.logic.minute(); calm();
+    out.dance = s.away.maru; out.dDlg = EM.story.friendDialogue('maru', s);
+    out.coatsActive = s.quests.q_af4; calm(); EM.logic.minute(); calm();
+    out.balcony = s.away.maru; out.bDlg = EM.story.friendDialogue('maru', s);
+    EM.engine.enter('a_master', 3, 7, 'u'); EM.story.enter('a_master'); out.inMaster = EM.zones.a_master && s.party.indexOf('dani') === -1;
+    EM.engine.enter('a_living', 13, 12, 'u'); EM.story.enter('a_living'); calm();
+    EM.logic.apply({ flag: ['lio_done'], quest: { q_af4: 'done' } }); EM.logic.minute(); calm(); EM.logic.minute(); calm();
+    out.back = here(); out.q7 = s.quests.q_af7; out.uncounted = !!s.flags.maru_uncounted;
+    out.dialogs = ['maru_af_kitchen', 'maru_af_dance', 'maru_af_balcony', 'maru_break_found'].every(function (id) { return !!EM.DIALOGUES[id]; });
+    return out;
+  });
+  ok(r12.kitchen === 'a_kitchen' && r12.kDlg === 'maru_af_kitchen', 'THE AFTER: after the house rules Maru goes to help Dot in the kitchen, on her own (' + r12.kitchen + ')');
+  ok(r12.dance === 'a_living' && r12.dDlg === 'maru_af_dance', 'the kitchen done, she is dancing on the rug without counting anybody (' + r12.dance + ')');
+  ok(r12.coatsActive === 'active' && r12.balcony === 'a_balcony' && r12.bDlg === 'maru_af_balcony', 'while you look in on the coats room she takes her call on the balcony (' + r12.balcony + ')');
+  ok(r12.inMaster, 'the master bedroom is yours alone: nobody follows you in');
+  ok(r12.back && r12.q7 === 'active' && r12.uncounted, 'she comes back by herself for THE QUESTION, which still needs her');
+  ok(r12.dialogs, 'her own scenes exist in all four places');
 
   ok(errors.length === 0, 'no page errors' + (errors.length ? ': ' + errors.slice(0, 4).join(' | ') : ''));
   await browser.close(); server.close();
