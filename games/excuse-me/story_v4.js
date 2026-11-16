@@ -139,16 +139,16 @@
         T('MARU: "At this point I should just run the door."', 'MARU: «A estas alturas debería manejar yo la puerta».', 'MARU: «A essa altura eu devia tocar a porta».')
       ],
       dani: [
-        T('DANI: "Have we done this before? I have the strangest feeling about the toilets."', 'DANI: «¿Ya hicimos esto antes? Tengo la sensación más rara con los baños».', 'DANI: «A gente já fez isso antes? Tô com a sensação mais estranha sobre os banheiros».'),
-        T('DANI: "I think I\'ve already hugged that exact person. It was great both times."', 'DANI: «Creo que ya abracé a esa persona exacta. Estuvo genial las dos veces».', 'DANI: «Acho que eu já abracei exatamente essa pessoa. Foi ótimo nas duas vezes».'),
-        T('DANI: "Déjà vu is just the universe going: you again! I love that for us."', 'DANI: «El déjà vu es el universo diciendo: ¡tú otra vez! Eso me encanta para nosotros».', 'DANI: «Déjà vu é o universo falando: você de novo! Eu amo isso pra nós».'),
-        T('DANI: "Okay but what if it\'s the same night forever and it keeps being good?"', 'DANI: «Pero ¿y si es la misma noche para siempre y sigue siendo buena?»', 'DANI: «Mas e se for a mesma noite pra sempre e continuar sendo boa?»')
+        T('BENJA: "Have we done this before? I have the strangest feeling about the toilets."', 'BENJA: «¿Ya hicimos esto antes? Tengo la sensación más rara con los baños».', 'BENJA: «A gente já fez isso antes? Tô com a sensação mais estranha sobre os banheiros».'),
+        T('BENJA: "I think I\'ve already hugged that exact person. It was great both times."', 'BENJA: «Creo que ya abracé a esa persona exacta. Estuvo genial las dos veces».', 'BENJA: «Acho que eu já abracei exatamente essa pessoa. Foi ótimo nas duas vezes».'),
+        T('BENJA: "Déjà vu is just the universe going: you again! I love that for us."', 'BENJA: «El déjà vu es el universo diciendo: ¡tú otra vez! Eso me encanta para nosotros».', 'BENJA: «Déjà vu é o universo falando: você de novo! Eu amo isso pra nós».'),
+        T('BENJA: "Okay but what if it\'s the same night forever and it keeps being good?"', 'BENJA: «Pero ¿y si es la misma noche para siempre y sigue siendo buena?»', 'BENJA: «Mas e se for a mesma noite pra sempre e continuar sendo boa?»')
       ],
       tato: [
-        T('TATO: "I know I said I\'m fine. I\'m fine in a way that feels rehearsed."', 'TATO: «Sé que dije que estoy bien. Estoy bien de una forma que se siente ensayada».', 'TATO: «Sei que falei que tô bem. Tô bem de um jeito que parece ensaiado».'),
-        T('TATO: "Is it weird that I know where the water is?"', 'TATO: «¿Es raro que sepa dónde está el agua?»', 'TATO: «É estranho eu saber onde tá a água?»'),
-        T('TATO: "I think the DJ knows us. That\'s not a thing, right?"', 'TATO: «Creo que el DJ nos conoce. Eso no es una cosa, ¿verdad?»', 'TATO: «Acho que a DJ conhece a gente. Isso não é uma coisa, né?»'),
-        T('TATO: "Next time I want a different coat. For continuity."', 'TATO: «La próxima quiero otra chaqueta. Por continuidad».', 'TATO: «Da próxima quero outro casaco. Por continuidade».')
+        T('FEÑA: "I know I said I\'m fine. I\'m fine in a way that feels rehearsed."', 'FEÑA: «Sé que dije que estoy bien. Estoy bien de una forma que se siente ensayada».', 'FEÑA: «Sei que falei que tô bem. Tô bem de um jeito que parece ensaiado».'),
+        T('FEÑA: "Is it weird that I know where the water is?"', 'FEÑA: «¿Es raro que sepa dónde está el agua?»', 'FEÑA: «É estranho eu saber onde tá a água?»'),
+        T('FEÑA: "I think the DJ knows us. That\'s not a thing, right?"', 'FEÑA: «Creo que el DJ nos conoce. Eso no es una cosa, ¿verdad?»', 'FEÑA: «Acho que a DJ conhece a gente. Isso não é uma coisa, né?»'),
+        T('FEÑA: "Next time I want a different coat. For continuity."', 'FEÑA: «La próxima quiero otra chaqueta. Por continuidad».', 'FEÑA: «Da próxima quero outro casaco. Por continuidade».')
       ]
     };
     const pool = LINES[f]; if (pool) U.toast({ text: pool[lvl - 1], kind: 'bark', ms: 4200 });

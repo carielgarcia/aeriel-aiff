@@ -340,7 +340,7 @@
   D.mateo = {
     who: 'mateo', role: T('AN EX', 'UN EX', 'UM EX'), start: 'a', nodes: {
       a: {
-        text: T('"I only wanted to say hi. I\'m not here to ruin anything." Mateo\'s hands are visible, open, and slightly too still. "Is he okay? Is Tato okay?"', '«Solo quería saludar. No vine a arruinar nada». Las manos de Mateo se ven, abiertas y un poco demasiado quietas. «¿Está bien? ¿Tato está bien?»', '«Só queria dar um oi. Não vim estragar nada». As mãos do Mateo estão à vista, abertas e um pouco paradas demais. «Ele tá bem? O Tato tá bem?»'),
+        text: T('"I only wanted to say hi. I\'m not here to ruin anything." Mateo\'s hands are visible, open, and slightly too still. "Is he okay? Is Feña okay?"', '«Solo quería saludar. No vine a arruinar nada». Las manos de Mateo se ven, abiertas y un poco demasiado quietas. «¿Está bien? ¿Feña está bien?»', '«Só queria dar um oi. Não vim estragar nada». As mãos do Mateo estão à vista, abertas e um pouco paradas demais. «Ele tá bem? O Feña tá bem?»'),
         choices: [
           { tone: 'honest', t: T('"Ask him. Let him decide how much to give you."', '«Pregúntale a él. Que decida cuánto darte».', '«Pergunta pra ele. Deixa ele decidir quanto te dar».'), do: { soc: -1 }, next: null },
           { tone: 'blunt', t: T('"Leave him alone."', '«Déjalo en paz».', '«Deixa ele em paz».'), do: { weird: 4, soc: -3 }, next: null, bad: true }

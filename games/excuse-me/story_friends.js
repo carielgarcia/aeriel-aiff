@@ -11,20 +11,20 @@
       a: {
         text: [
           T('"THERE you are. We started a search party."', '«AHÍ estás. Habíamos armado una búsqueda».', '«AÍ está você. A gente já tinha montado uma busca».'),
-          T('DANI: "You smell like outside! I love outside! Do you want a gum? I am so happy to see you I could cry. I might."', 'DANI: «¡Hueles a la calle! ¡Amo la calle! ¿Quieres un chicle? Estoy tan feliz de verte que podría llorar. Capaz lloro».', 'DANI: «Você cheira a rua! Eu amo a rua! Quer um chiclete? Tô tão feliz de te ver que podia chorar. Talvez eu chore».'),
-          T('TATO: "Hey. You came. Good. Is there something to sit on? My legs are doing a thing."', 'TATO: «Hola. Viniste. Bien. ¿Hay algo para sentarse? Mis piernas están haciendo algo».', 'TATO: «Oi. Você veio. Que bom. Tem algo pra sentar? Minhas pernas tão fazendo uma coisa».')
+          T('BENJA: "You smell like outside! I love outside! Do you want a gum? I am so happy to see you I could cry. I might."', 'BENJA: «¡Hueles a la calle! ¡Amo la calle! ¿Quieres un chicle? Estoy tan feliz de verte que podría llorar. Capaz lloro».', 'BENJA: «Você cheira a rua! Eu amo a rua! Quer um chiclete? Tô tão feliz de te ver que podia chorar. Talvez eu chore».'),
+          T('FEÑA: "Hey. You came. Good. Is there something to sit on? My legs are doing a thing."', 'FEÑA: «Hola. Viniste. Bien. ¿Hay algo para sentarse? Mis piernas están haciendo algo».', 'FEÑA: «Oi. Você veio. Que bom. Tem algo pra sentar? Minhas pernas tão fazendo uma coisa».')
         ],
         choices: [
           { tone: 'chill', t: T('"Sorry I\'m late. Bus 14 is a liar."', '«Perdón por llegar tarde. El bus 14 es un mentiroso».', '«Desculpa o atraso. O ônibus 14 é um mentiroso».'), do: { fun: 2, soc: 2, bond: { maru: 1 } }, next: 'b' },
           { tone: 'hug', t: T('"Group hug. Right now."', '«Abrazo grupal. Ahora mismo».', '«Abraço coletivo. Agora mesmo».'), do: { fun: 3, soc: 4, bond: { maru: 1, dani: 1, tato: 1 } }, next: 'b' },
-          { tone: 'care', t: T('(To Tato) "You okay? You look pale."', '(A Tato) «¿Estás bien? Estás pálido».', '(Pro Tato) «Você tá bem? Tá pálido».'), do: { care: 1, bond: { tato: 2 }, flag: 'tato_checked' }, next: 'b', react: T(`Tato's face relaxes. "…A bit. Thank you for asking."`, `El rostro de Tato se relaja. «…Un poco. Gracias por preguntar».`, `O rosto do Tato relaxa. «…Um pouco. Valeu por perguntar».`) },
+          { tone: 'care', t: T('(To Feña) "You okay? You look pale."', '(A Feña) «¿Estás bien? Estás pálido».', '(Pro Feña) «Você tá bem? Tá pálido».'), do: { care: 1, bond: { tato: 2 }, flag: 'tato_checked' }, next: 'b', react: T(`Feña's face relaxes. "…A bit. Thank you for asking."`, `El rostro de Feña se relaja. «…Un poco. Gracias por preguntar».`, `O rosto do Feña relaxa. «…Um pouco. Valeu por perguntar».`) },
           { tone: 'joke', t: T('"A search party? Where\'s the flyer?"', '«¿Una búsqueda? ¿Dónde está el afiche?»', '«Uma busca? Cadê o cartaz?»'), do: { fun: 3, bond: { dani: 1 } }, next: 'b' }
         ]
       },
       b: {
         text: [
           T('MARU: "Okay. I need to pee. Urgently. It is the kind of emergency that has a face."', 'MARU: «Bueno. Tengo que hacer pipí. Urgente. Es el tipo de emergencia que tiene cara».', 'MARU: «Tá. Preciso fazer xixi. Urgente. É o tipo de emergência que tem cara».'),
-          T('DANI: "I\'ll come! Moral support!" TATO: "I\'m not staying alone out here." MARU: "Then we move together. Nobody gets lost. Say it."', 'DANI: «¡Voy yo! ¡Apoyo moral!» TATO: «No me quedo solo aquí». MARU: «Entonces nos movemos juntos. Nadie se pierde. Díganlo».', 'DANI: «Eu vou! Apoio moral!» TATO: «Não fico sozinho aqui». MARU: «Então a gente se move junto. Ninguém se perde. Falem».')
+          T('BENJA: "I\'ll come! Moral support!" FEÑA: "I\'m not staying alone out here." MARU: "Then we move together. Nobody gets lost. Say it."', 'BENJA: «¡Voy yo! ¡Apoyo moral!» FEÑA: «No me quedo solo aquí». MARU: «Entonces nos movemos juntos. Nadie se pierde. Díganlo».', 'BENJA: «Eu vou! Apoio moral!» FEÑA: «Não fico sozinho aqui». MARU: «Então a gente se move junto. Ninguém se perde. Falem».')
         ],
         choices: [
           { tone: 'chill', t: T('"Nobody gets lost."', '«Nadie se pierde».', '«Ninguém se perde».'), do: { flag: 'promised_together', bond: { maru: 1, dani: 1, tato: 1 } }, next: 'c' },
@@ -68,7 +68,7 @@
     tato: T(`"I stood by a wall. The wall was nice."`, `«Me quedé junto a una pared. La pared era amable».`, `«Fiquei perto de uma parede. A parede era legal».`),
   };
   EM.FRIENDS.forEach(function (f) {
-    const names = { maru: 'MARU', dani: 'DANI', tato: 'TATO' };
+    const names = { maru: 'MARU', dani: 'BENJA', tato: 'FEÑA' };
     D['found_generic_' + f] = {
       who: f, start: 'a', nodes: {
         a: {
@@ -91,16 +91,16 @@
       T('MARU: "If I lose my shoe tonight, I am blaming the floor."', 'MARU: «Si pierdo un zapato esta noche, le echo la culpa al piso».', 'MARU: «Se eu perder um sapato hoje, a culpa é do chão».')
     ],
     dani: [
-      T('DANI: "I LOVE EVERYONE IN THIS ROOM."', 'DANI: «AMO A TODOS EN ESTE CUARTO».', 'DANI: «AMO TODO MUNDO NESTA SALA».'),
-      T('DANI: "Is anyone else\'s heart a drum? No? Just mine?"', 'DANI: «¿Alguien más tiene el corazón de tambor? ¿No? ¿Solo yo?»', 'DANI: «Mais alguém tem o coração tipo tambor? Não? Só eu?»'),
-      T('DANI: "Quick: what is the opposite of a hug? …Another hug."', 'DANI: «Rápido: ¿cuál es lo contrario de un abrazo? …Otro abrazo».', 'DANI: «Rápido: qual é o contrário de um abraço? …Outro abraço».'),
-      T('DANI: "That guy over there has beautiful hands. Don\'t look. LOOK."', 'DANI: «Ese de allá tiene manos hermosas. No mires. MIRA».', 'DANI: «Aquele cara ali tem mãos lindas. Não olha. OLHA».')
+      T('BENJA: "I LOVE EVERYONE IN THIS ROOM."', 'BENJA: «AMO A TODOS EN ESTE CUARTO».', 'BENJA: «AMO TODO MUNDO NESTA SALA».'),
+      T('BENJA: "Is anyone else\'s heart a drum? No? Just mine?"', 'BENJA: «¿Alguien más tiene el corazón de tambor? ¿No? ¿Solo yo?»', 'BENJA: «Mais alguém tem o coração tipo tambor? Não? Só eu?»'),
+      T('BENJA: "Quick: what is the opposite of a hug? …Another hug."', 'BENJA: «Rápido: ¿cuál es lo contrario de un abrazo? …Otro abrazo».', 'BENJA: «Rápido: qual é o contrário de um abraço? …Outro abraço».'),
+      T('BENJA: "That guy over there has beautiful hands. Don\'t look. LOOK."', 'BENJA: «Ese de allá tiene manos hermosas. No mires. MIRA».', 'BENJA: «Aquele cara ali tem mãos lindas. Não olha. OLHA».')
     ],
     tato: [
-      T('TATO: "Sorry. It\'s a lot of people."', 'TATO: «Perdón. Hay mucha gente».', 'TATO: «Desculpa. É muita gente».'),
-      T('TATO: "Can we stand near a wall for a minute?"', 'TATO: «¿Podemos pararnos cerca de una pared un minuto?»', 'TATO: «Podemos ficar perto de uma parede um minuto?»'),
-      T('TATO: "I\'m fine. I\'m just… loudly fine."', 'TATO: «Estoy bien. Solo estoy… ruidosamente bien».', 'TATO: «Tô bem. Só tô… barulhentamente bem».'),
-      T('TATO: "Thanks for not leaving me with the crowd."', 'TATO: «Gracias por no dejarme con la multitud».', 'TATO: «Valeu por não me deixar com a multidão».')
+      T('FEÑA: "Sorry. It\'s a lot of people."', 'FEÑA: «Perdón. Hay mucha gente».', 'FEÑA: «Desculpa. É muita gente».'),
+      T('FEÑA: "Can we stand near a wall for a minute?"', 'FEÑA: «¿Podemos pararnos cerca de una pared un minuto?»', 'FEÑA: «Podemos ficar perto de uma parede um minuto?»'),
+      T('FEÑA: "I\'m fine. I\'m just… loudly fine."', 'FEÑA: «Estoy bien. Solo estoy… ruidosamente bien».', 'FEÑA: «Tô bem. Só tô… barulhentamente bem».'),
+      T('FEÑA: "Thanks for not leaving me with the crowd."', 'FEÑA: «Gracias por no dejarme con la multitud».', 'FEÑA: «Valeu por não me deixar com a multidão».')
     ]
   };
   story.barks = BARKS;

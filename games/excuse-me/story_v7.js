@@ -25,26 +25,26 @@
     },
     dani: {
       ok: [
-        t(`DANI (a whisper-scream): "I SAW THAT. I SAW ALL OF THAT. THIS IS THE BEST DAY OF MY LIFE."`, `DANI (un grito susurrado): «VI ESO. VI TODO ESO. ES EL MEJOR DÍA DE MI VIDA».`, `DANI (um grito sussurrado): «EU VI ISSO. EU VI TUDO ISSO. É O MELHOR DIA DA MINHA VIDA».`),
-        t(`DANI is slow-clapping from behind a speaker.`, `DANI aplaude lento desde detrás de un parlante.`, `O DANI aplaude devagar atrás de uma caixa de som.`),
-        t(`DANI: "Tell me everything. Not now. Later. Now: hold my hand, I'm shaking with joy."`, `DANI: «Cuéntamelo todo. Ahora no. Después. Ahora: tómame de la mano, estoy temblando de alegría».`, `DANI: «Me conta tudo. Agora não. Depois. Agora: segura minha mão, tô tremendo de alegria».`)
+        t(`BENJA (a whisper-scream): "I SAW THAT. I SAW ALL OF THAT. THIS IS THE BEST DAY OF MY LIFE."`, `BENJA (un grito susurrado): «VI ESO. VI TODO ESO. ES EL MEJOR DÍA DE MI VIDA».`, `BENJA (um grito sussurrado): «EU VI ISSO. EU VI TUDO ISSO. É O MELHOR DIA DA MINHA VIDA».`),
+        t(`BENJA is slow-clapping from behind a speaker.`, `BENJA aplaude lento desde detrás de un parlante.`, `O BENJA aplaude devagar atrás de uma caixa de som.`),
+        t(`BENJA: "Tell me everything. Not now. Later. Now: hold my hand, I'm shaking with joy."`, `BENJA: «Cuéntamelo todo. Ahora no. Después. Ahora: tómame de la mano, estoy temblando de alegría».`, `BENJA: «Me conta tudo. Agora não. Depois. Agora: segura minha mão, tô tremendo de alegria».`)
       ],
       flop: [
-        t(`DANI (very gently): "Oh, babe. Okay. Come here. Hug. Walk it off. We'll all pretend it was a dance move."`, `DANI (muy suave): «Ay, cariño. Bueno. Ven. Abrazo. Camínalo. Todos vamos a fingir que fue un paso de baile».`, `DANI (bem suave): «Ai, amor. Tá. Vem cá. Abraço. Anda um pouco. A gente vai fingir que foi um passo de dança».`),
-        t(`DANI is already telling a stranger a version of the story in which you were incredibly smooth.`, `DANI ya le está contando a un desconocido una versión de la historia en la que fuiste increíblemente suave.`, `O DANI já está contando pra um estranho uma versão da história em que você foi incrivelmente suave.`),
-        t(`DANI: "That's the thing about being brave: sometimes it goes crunch. Do you want a mint? Do you want a hug? I have both."`, `DANI: «Lo de ser valiente es que a veces hace crunch. ¿Quieres una menta? ¿Quieres un abrazo? Tengo las dos».`, `DANI: «O lance de ser corajoso é que às vezes faz crec. Quer uma bala de menta? Quer um abraço? Eu tenho os dois».`)
+        t(`BENJA (very gently): "Oh, babe. Okay. Come here. Hug. Walk it off. We'll all pretend it was a dance move."`, `BENJA (muy suave): «Ay, cariño. Bueno. Ven. Abrazo. Camínalo. Todos vamos a fingir que fue un paso de baile».`, `BENJA (bem suave): «Ai, amor. Tá. Vem cá. Abraço. Anda um pouco. A gente vai fingir que foi um passo de dança».`),
+        t(`BENJA is already telling a stranger a version of the story in which you were incredibly smooth.`, `BENJA ya le está contando a un desconocido una versión de la historia en la que fuiste increíblemente suave.`, `O BENJA já está contando pra um estranho uma versão da história em que você foi incrivelmente suave.`),
+        t(`BENJA: "That's the thing about being brave: sometimes it goes crunch. Do you want a mint? Do you want a hug? I have both."`, `BENJA: «Lo de ser valiente es que a veces hace crunch. ¿Quieres una menta? ¿Quieres un abrazo? Tengo las dos».`, `BENJA: «O lance de ser corajoso é que às vezes faz crec. Quer uma bala de menta? Quer um abraço? Eu tenho os dois».`)
       ]
     },
     tato: {
       ok: [
-        t(`TATO (low, a little stunned): "…You just did that? In front of people? I'm so proud of you I could lie down."`, `TATO (en voz baja, un poco atónito): «…¿Acabas de hacer eso? ¿Delante de gente? Estoy tan orgulloso que podría acostarme».`, `TATO (em voz baixa, meio atônito): «…Você acabou de fazer isso? Na frente de gente? Tô tão orgulhoso que podia deitar no chão».`),
-        t(`TATO gives you a small, serious thumbs-up from the wall he's leaning on.`, `TATO te hace un pulgar arriba chico y serio desde la pared donde se apoya.`, `O TATO te faz um joinha pequeno e sério da parede em que está encostado.`),
-        t(`TATO: "I'd never be able to. I mean it as a compliment. I mean it as the highest compliment."`, `TATO: «Yo jamás podría. Lo digo como un cumplido. Lo digo como el cumplido más alto».`, `TATO: «Eu nunca conseguiria. Falo isso como elogio. Falo como o maior elogio».`)
+        t(`FEÑA (low, a little stunned): "…You just did that? In front of people? I'm so proud of you I could lie down."`, `FEÑA (en voz baja, un poco atónito): «…¿Acabas de hacer eso? ¿Delante de gente? Estoy tan orgulloso que podría acostarme».`, `FEÑA (em voz baixa, meio atônito): «…Você acabou de fazer isso? Na frente de gente? Tô tão orgulhoso que podia deitar no chão».`),
+        t(`FEÑA gives you a small, serious thumbs-up from the wall he's leaning on.`, `FEÑA te hace un pulgar arriba chico y serio desde la pared donde se apoya.`, `O FEÑA te faz um joinha pequeno e sério da parede em que está encostado.`),
+        t(`FEÑA: "I'd never be able to. I mean it as a compliment. I mean it as the highest compliment."`, `FEÑA: «Yo jamás podría. Lo digo como un cumplido. Lo digo como el cumplido más alto».`, `FEÑA: «Eu nunca conseguiria. Falo isso como elogio. Falo como o maior elogio».`)
       ],
       flop: [
-        t(`TATO (immediately, sincerely): "That could have happened to anybody. It happened to you. That's all."`, `TATO (de inmediato, sincero): «Le podría haber pasado a cualquiera. Te pasó a ti. Eso es todo».`, `TATO (na hora, sincero): «Isso podia ter acontecido com qualquer um. Aconteceu com você. É só isso».`),
-        t(`TATO sits down next to you without a word and offers you half a granola bar.`, `TATO se sienta a tu lado sin una palabra y te ofrece la mitad de una barra de cereal.`, `O TATO senta do seu lado sem falar nada e te oferece metade de uma barra de cereal.`),
-        t(`TATO: "For what it's worth, I was too scared to even look at the person I like. Your version was better."`, `TATO: «Por si sirve, yo tuve demasiado miedo hasta de mirar a la persona que me gusta. Tu versión fue mejor».`, `TATO: «Pro que serve, eu tive medo demais até de olhar pra pessoa de quem eu gosto. A sua versão foi melhor».`)
+        t(`FEÑA (immediately, sincerely): "That could have happened to anybody. It happened to you. That's all."`, `FEÑA (de inmediato, sincero): «Le podría haber pasado a cualquiera. Te pasó a ti. Eso es todo».`, `FEÑA (na hora, sincero): «Isso podia ter acontecido com qualquer um. Aconteceu com você. É só isso».`),
+        t(`FEÑA sits down next to you without a word and offers you half a granola bar.`, `FEÑA se sienta a tu lado sin una palabra y te ofrece la mitad de una barra de cereal.`, `O FEÑA senta do seu lado sem falar nada e te oferece metade de uma barra de cereal.`),
+        t(`FEÑA: "For what it's worth, I was too scared to even look at the person I like. Your version was better."`, `FEÑA: «Por si sirve, yo tuve demasiado miedo hasta de mirar a la persona que me gusta. Tu versión fue mejor».`, `FEÑA: «Pro que serve, eu tive medo demais até de olhar pra pessoa de quem eu gosto. A sua versão foi melhor».`)
       ]
     }
   };

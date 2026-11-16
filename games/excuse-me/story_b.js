@@ -93,7 +93,7 @@
           T('"One person per stall. Nobody goes in two at a time. Nobody does anything in there that I would have to explain to the owner. The line is behind you."', '«Una persona por cabina. Nadie entra de a dos. Nadie hace ahí nada que yo tenga que explicarle al dueño. La fila está detrás de ti».', '«Uma pessoa por cabine. Ninguém entra de dois em dois. Ninguém faz ali nada que eu precise explicar pro dono. A fila é atrás de você».')
         ],
         choices: [
-          { tone: 'honest', t: T('"We\'re a group, and we need one stall. Maru has to go. Tato gets overwhelmed and shouldn\'t be alone. We can keep it quick and clean."', '«Somos un grupo y necesitamos una cabina. Maru tiene que ir. Tato se abruma y no debería estar solo. Podemos hacerlo rápido y limpio».', '«A gente é um grupo e precisa de uma cabine. A Maru precisa ir. O Tato fica sobrecarregado e não deveria ficar sozinho. A gente faz rápido e limpo».'),
+          { tone: 'honest', t: T('"We\'re a group, and we need one stall. Maru has to go. Feña gets overwhelmed and shouldn\'t be alone. We can keep it quick and clean."', '«Somos un grupo y necesitamos una cabina. Maru tiene que ir. Feña se abruma y no debería estar solo. Podemos hacerlo rápido y limpio».', '«A gente é um grupo e precisa de uma cabine. A Maru precisa ir. O Feña fica sobrecarregado e não deveria ficar sozinho. A gente faz rápido e limpo».'),
             next: 'honest_check' },
           { tone: 'smooth', t: T('"You have an impossible job and you\'re doing it beautifully. Give us ninety seconds of grace."', '«Tienes un trabajo imposible y lo haces hermoso. Danos noventa segundos de gracia».', '«Você tem um trabalho impossível e tá fazendo lindamente. Nos dá noventa segundos de graça».'),
             next: 'charm_check' },
@@ -161,8 +161,8 @@
     forced: true, who: 'maru', start: 'a', nodes: {
       a: {
         text: [
-          T(`Maru goes in. You, Dani and Tato stand against the wall, looking at the ceiling. Behind the door: a long, grateful sigh.`, `Maru entra. Tú, Dani y Tato esperan contra la pared, mirando al techo. Detrás de la puerta: un suspiro largo y agradecido.`, `A Maru entra. Você, o Dani e o Tato esperam encostados na parede, olhando pro teto. Atrás da porta: um suspiro longo e agradecido.`),
-          T('DANI, whispering, grinning, bouncing on his heels: "Okay okay okay. Look what I got."', 'DANI, susurrando, sonriendo, rebotando en los talones: «Ok ok ok. Mira lo que conseguí».', 'DANI, sussurrando, sorrindo, quicando nos calcanhares: «Tá tá tá. Olha o que eu consegui».')
+          T(`Maru goes in. You, Benja and Feña stand against the wall, looking at the ceiling. Behind the door: a long, grateful sigh.`, `Maru entra. Tú, Benja y Feña esperan contra la pared, mirando al techo. Detrás de la puerta: un suspiro largo y agradecido.`, `A Maru entra. Você, o Benja e o Feña esperam encostados na parede, olhando pro teto. Atrás da porta: um suspiro longo e agradecido.`),
+          T('BENJA, whispering, grinning, bouncing on his heels: "Okay okay okay. Look what I got."', 'BENJA, susurrando, sonriendo, rebotando en los talones: «Ok ok ok. Mira lo que conseguí».', 'BENJA, sussurrando, sorrindo, quicando nos calcanhares: «Tá tá tá. Olha o que eu consegui».')
         ],
         do: { call: 'stall_pill_node' },
         next: 'pill'
@@ -181,7 +181,7 @@
       },
       ask: {
         who: 'dani',
-        text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket." Dani looks at the pill like it might answer for itself.', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una chaqueta muy linda». Dani mira la pastilla como si pudiera responder por sí misma.', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal». O Dani olha pro comprimido como se ele pudesse responder por si.'),
+        text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket." Benja looks at the pill like it might answer for itself.', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una chaqueta muy linda». Benja mira la pastilla como si pudiera responder por sí misma.', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal». O Benja olha pro comprimido como se ele pudesse responder por si.'),
         choices: [
           { tone: 'care', t: T('"A nice jacket is not an ingredient list. Let\'s get it checked."', '«Una chaqueta linda no es una lista de ingredientes. Hagámosla chequear».', '«Uma jaqueta bonita não é lista de ingredientes. Vamos mandar checar».'), do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'agree' },
           { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la chaqueta».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 3 }, call: 'take_pill_untested', next: null },
@@ -206,18 +206,18 @@
     forced: true, who: 'maru', after: 'rosa_start', start: 'a', nodes: {
       a: {
         text: [
-          T('Stall three. A single toilet, three or four people, zero dignity. Maru sits. Dani leans against the door. Tato\'s breathing is a bellows. Your elbow is inside a coat hook.', 'Cabina tres. Un solo inodoro, tres o cuatro personas, cero dignidad. Maru se sienta. Dani se apoya contra la puerta. La respiración de Tato es un fuelle. Tu codo está dentro de un perchero.', 'Cabine três. Um único vaso, três ou quatro pessoas, zero dignidade. A Maru senta. O Dani encosta na porta. A respiração do Tato é um fole. Seu cotovelo está dentro de um cabide.'),
+          T('Stall three. A single toilet, three or four people, zero dignity. Maru sits. Benja leans against the door. Feña\'s breathing is a bellows. Your elbow is inside a coat hook.', 'Cabina tres. Un solo inodoro, tres o cuatro personas, cero dignidad. Maru se sienta. Benja se apoya contra la puerta. La respiración de Feña es un fuelle. Tu codo está dentro de un perchero.', 'Cabine três. Um único vaso, três ou quatro pessoas, zero dignidade. A Maru senta. O Benja encosta na porta. A respiração do Feña é um fole. Seu cotovelo está dentro de um cabide.'),
           T('MARU: "Nobody. Look. At me."', 'MARU: «Nadie. Me. Mire».', 'MARU: «Ninguém. Olha. Pra mim».')
         ],
         choices: [
           { tone: 'chill', t: T('Hum loudly, eyes fixed on the ceiling.', 'Tararear fuerte, ojos fijos en el techo.', 'Cantarolar alto, olhos fixos no teto.'), do: { soc: 1 }, next: 'pill', react: T('You hum the national anthem of nowhere. Maru laughs so hard she has to stop.', 'Tarareas el himno nacional de ninguna parte. Maru se ríe tanto que tiene que parar.', 'Você cantarola o hino nacional de lugar nenhum. A Maru ri tanto que precisa parar.') },
-          { tone: 'joke', t: T('Narrate it like a sports commentator, whispered.', 'Narrarlo como comentarista deportivo, susurrando.', 'Narrar como comentarista esportivo, sussurrando.'), do: { fun: 4, bond: { maru: 1, dani: 1 } }, next: 'pill', react: T('"And she\'s going for it, folks — Dani, I need you to be professional — and — YES. The crowd goes wild."', '«Y va por ella, señores — Dani, te necesito profesional — y — SÍ. El público enloquece».', '«E ela vai pra cima, senhores — Dani, preciso que você seja profissional — e — SIM. A torcida vai à loucura».') },
+          { tone: 'joke', t: T('Narrate it like a sports commentator, whispered.', 'Narrarlo como comentarista deportivo, susurrando.', 'Narrar como comentarista esportivo, sussurrando.'), do: { fun: 4, bond: { maru: 1, dani: 1 } }, next: 'pill', react: T('"And she\'s going for it, folks — Benja, I need you to be professional — and — YES. The crowd goes wild."', '«Y va por ella, señores — Benja, te necesito profesional — y — SÍ. El público enloquece».', '«E ela vai pra cima, senhores — Benja, preciso que você seja profissional — e — SIM. A torcida vai à loucura».') },
           { tone: 'care', t: T('Hold the door shut with your back. "I\'ve got the door."', 'Sostener la puerta con la espalda. «Yo cuido la puerta».', 'Segurar a porta com as costas. «Eu seguro a porta».'), do: { bond: { maru: 1 }, soc: 1 }, next: 'pill' }
         ]
       },
       pill: {
         who: 'dani',
-        text: T('DANI, bouncing, whispering: "Okay okay okay. While nobody can see — look what I got." He opens his palm. A pale pill with a tiny crown stamped on it. "A guy in the queue outside sold it to me. Said it\'s the good stuff. I have never been so happy or so scared."', 'DANI, rebotando, susurrando: «Ok ok ok. Mientras nadie ve — mira lo que conseguí». Abre la palma. Una pastilla pálida con una coronita estampada. «Un tipo de la fila de afuera me la vendió. Dijo que es de la buena. Nunca estuve tan feliz ni tan asustado».', 'DANI, quicando, sussurrando: «Tá tá tá. Enquanto ninguém vê — olha o que eu consegui». Abre a palma. Um comprimido pálido com uma coroinha estampada. «Um cara da fila lá fora me vendeu. Disse que é do bom. Nunca fiquei tão feliz nem tão assustado».'),
+        text: T('BENJA, bouncing, whispering: "Okay okay okay. While nobody can see — look what I got." He opens his palm. A pale pill with a tiny crown stamped on it. "A guy in the queue outside sold it to me. Said it\'s the good stuff. I have never been so happy or so scared."', 'BENJA, rebotando, susurrando: «Ok ok ok. Mientras nadie ve — mira lo que conseguí». Abre la palma. Una pastilla pálida con una coronita estampada. «Un tipo de la fila de afuera me la vendió. Dijo que es de la buena. Nunca estuve tan feliz ni tan asustado».', 'BENJA, quicando, sussurrando: «Tá tá tá. Enquanto ninguém vê — olha o que eu consegui». Abre a palma. Um comprimido pálido com uma coroinha estampada. «Um cara da fila lá fora me vendeu. Disse que é do bom. Nunca fiquei tão feliz nem tão assustado».'),
         do: { flag: 'pill_known' },
         choices: [
           { tone: 'ask', t: T('"Who sold you that? What\'s in it?"', '«¿Quién te la vendió? ¿Qué tiene?»', '«Quem te vendeu? O que tem nisso?»'), next: 'ask' },
@@ -238,11 +238,11 @@
       },
       tato: {
         who: 'tato',
-        text: T(`In the corner by the bin, Tato is breathing fast and shallow, his hand flat on his chest. "I'm fine. I'm fine. It's just— small. And loud. And I can't—"`, `En la esquina junto al basurero, Tato respira rápido y poco, con la mano plana sobre el pecho. «Estoy bien. Estoy bien. Es solo… chico. Y fuerte. Y no puedo…»`, `No canto, perto da lixeira, o Tato respira rápido e raso, com a mão aberta no peito. «Tô bem. Tô bem. É só… pequeno. E alto. E eu não consigo…»`),
+        text: T(`In the corner by the bin, Feña is breathing fast and shallow, his hand flat on his chest. "I'm fine. I'm fine. It's just— small. And loud. And I can't—"`, `En la esquina junto al basurero, Feña respira rápido y poco, con la mano plana sobre el pecho. «Estoy bien. Estoy bien. Es solo… chico. Y fuerte. Y no puedo…»`, `No canto, perto da lixeira, o Feña respira rápido e raso, com a mão aberta no peito. «Tô bem. Tô bem. É só… pequeno. E alto. E eu não consigo…»`),
         choices: [
           { tone: 'care', t: T('Breathe with him. In, out. Slow. "Follow me."', 'Respirar con él. Adentro, afuera. Lento. «Sígueme».', 'Respirar com ele. Entra, sai. Devagar. «Me acompanha».'), call: 'stall_breath', do: { flag: 'breath_pending' }, next: null, free: true },
           { tone: 'water', t: T('Hand him your water bottle.', 'Darle tu botella de agua.', 'Passar sua garrafa de água pra ele.'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, bond: { tato: 1 }, flag: 'tato_water' }, next: 'tato2', react: T(`He drinks, holding the bottle with both hands. Some of the shaking leaves his shoulders.`, `Bebe, sosteniendo la botella con las dos manos. Parte del temblor sale de sus hombros.`, `Ele bebe, segurando a garrafa com as duas mãos. Parte do tremor sai dos ombros dele.`) },
-          { tone: 'blunt', t: T('"Relax, bro. It\'s a toilet."', '«Relájate, bro. Es un baño».', '«Relaxa, mano. É um banheiro».'), do: { bond: { tato: -2 }, soc: -2, flag: 'tato_rough' }, next: 'knock', bad: true, react: T(`Tato's face closes. "…Right. Sorry."`, `La cara de Tato se cierra. «…Cierto. Perdón».`, `O rosto do Tato se fecha. «…Certo. Desculpa».`) }
+          { tone: 'blunt', t: T('"Relax, bro. It\'s a toilet."', '«Relájate, bro. Es un baño».', '«Relaxa, mano. É um banheiro».'), do: { bond: { tato: -2 }, soc: -2, flag: 'tato_rough' }, next: 'knock', bad: true, react: T(`Feña's face closes. "…Right. Sorry."`, `La cara de Feña se cierra. «…Cierto. Perdón».`, `O rosto do Feña se fecha. «…Certo. Desculpa».`) }
         ]
       },
       tato2: {

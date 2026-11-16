@@ -48,9 +48,9 @@
     q10: {
       title: t('THE SET FOR YOUR PEOPLE', 'EL SET PARA TU GENTE', 'O SET PRA SUA GALERA'),
       desc: function (s) {
-        return t(`ÆRIEL will ask what your people need from the last hour. Dance with each of them on the main floor and find out. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Dani ${mk(s, 'need_done_tato')} Tato`,
-          `ÆRIEL va a preguntar qué necesita tu gente de la última hora. Baila con cada quien en la pista principal y averígualo. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Dani ${mk(s, 'need_done_tato')} Tato`,
-          `A ÆRIEL vai perguntar do que sua galera precisa na última hora. Dance com cada pessoa na pista principal e descubra. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Dani ${mk(s, 'need_done_tato')} Tato`);
+        return t(`ÆRIEL will ask what your people need from the last hour. Dance with each of them on the main floor and find out. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`,
+          `ÆRIEL va a preguntar qué necesita tu gente de la última hora. Baila con cada quien en la pista principal y averígualo. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`,
+          `A ÆRIEL vai perguntar do que sua galera precisa na última hora. Dance com cada pessoa na pista principal e descubra. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`);
       },
       doneText: t(`You know what your people need, or you know you don't. Either way, ÆRIEL will ask.`, `Sabes qué necesita tu gente, o sabes que no lo sabes. De cualquier forma, ÆRIEL va a preguntar.`, `Você sabe do que sua galera precisa, ou sabe que não sabe. De qualquer jeito, a ÆRIEL vai perguntar.`)
     },
@@ -110,16 +110,16 @@
       tell: t(`MARU, out of breath: "Okay. I need everyone where I can count them. A long chord, nothing sudden. Warm. That's all."`, `MARU, sin aire: «Bueno. Necesito a todos donde pueda contarlos. Un acorde largo, nada brusco. Cálido. Eso es todo».`, `A MARU, sem fôlego: «Tá. Preciso de todo mundo onde eu possa contar. Um acorde longo, nada brusco. Quente. É só isso».`)
     },
     dani: {
-      ask: t(`DANI: "ONE SONG. Then I'll tell you what I need. It's a secret and it's loud."`, `DANI: «UNA CANCIÓN. Después te digo qué necesito. Es un secreto y es fuerte».`, `DANI: «UMA MÚSICA. Depois eu falo do que preciso. É segredo e é alto».`),
-      dance: t(`Dance with Dani.`, `Bailar con Dani.`, `Dançar com o Dani.`),
+      ask: t(`BENJA: "ONE SONG. Then I'll tell you what I need. It's a secret and it's loud."`, `BENJA: «UNA CANCIÓN. Después te digo qué necesito. Es un secreto y es fuerte».`, `BENJA: «UMA MÚSICA. Depois eu falo do que preciso. É segredo e é alto».`),
+      dance: t(`Dance with Benja.`, `Bailar con Benja.`, `Dançar com o Benja.`),
       skip: t(`"Okay! Guess right, though."`, `«¡Bueno! Pero adivina bien».`, `«Beleza! Mas chuta certo».`),
-      tell: t(`DANI, still bouncing: "LOUD. I want to scream at the sky and have the sky scream back. Tell the DJ. Tell EVERYONE."`, `DANI, todavía rebotando: «FUERTE. Quiero gritarle al cielo y que el cielo me grite de vuelta. Dile al DJ. Díselo a TODOS».`, `O DANI, ainda pulando: «ALTO. Quero gritar pro céu e o céu gritar de volta. Fala pro DJ. Fala pra TODO MUNDO».`)
+      tell: t(`BENJA, still bouncing: "LOUD. I want to scream at the sky and have the sky scream back. Tell the DJ. Tell EVERYONE."`, `BENJA, todavía rebotando: «FUERTE. Quiero gritarle al cielo y que el cielo me grite de vuelta. Dile al DJ. Díselo a TODOS».`, `O BENJA, ainda pulando: «ALTO. Quero gritar pro céu e o céu gritar de volta. Fala pro DJ. Fala pra TODO MUNDO».`)
     },
     tato: {
-      ask: t(`TATO: "Would you… one song? Slow. I'll tell you after."`, `TATO: «¿Podrías… una canción? Lenta. Después te cuento».`, `TATO: «Você poderia… uma música? Lenta. Depois eu conto».`),
-      dance: t(`Dance with Tato.`, `Bailar con Tato.`, `Dançar com o Tato.`),
+      ask: t(`FEÑA: "Would you… one song? Slow. I'll tell you after."`, `FEÑA: «¿Podrías… una canción? Lenta. Después te cuento».`, `FEÑA: «Você poderia… uma música? Lenta. Depois eu conto».`),
+      dance: t(`Dance with Feña.`, `Bailar con Feña.`, `Dançar com o Feña.`),
       skip: t(`"…Okay. Guess carefully."`, `«…Bueno. Adivina con cuidado».`, `«…Tá. Chuta com cuidado».`),
-      tell: t(`TATO, low: "Something soft. I've been loud all night. I'd like the rest to be quiet. Not empty. Quiet."`, `TATO, bajito: «Algo suave. Estuve fuerte toda la noche. Quisiera que el resto fuera tranquilo. No vacío. Tranquilo».`, `O TATO, baixinho: «Algo suave. Fiquei alto a noite toda. Queria que o resto fosse quieto. Não vazio. Quieto».`)
+      tell: t(`FEÑA, low: "Something soft. I've been loud all night. I'd like the rest to be quiet. Not empty. Quiet."`, `FEÑA, bajito: «Algo suave. Estuve fuerte toda la noche. Quisiera que el resto fuera tranquilo. No vacío. Tranquilo».`, `O FEÑA, baixinho: «Algo suave. Fiquei alto a noite toda. Queria que o resto fosse quieto. Não vazio. Quieto».`)
     }
   };
   CORE.forEach(function (f) {
@@ -222,8 +222,8 @@
   const ORDER = ['maru', 'dani', 'tato'];
   const ASK = {
     maru: t(`"Maru. What does she need from the last hour?"`, `«Maru. ¿Qué necesita de la última hora?»`, `«Maru. Do que ela precisa na última hora?»`),
-    dani: t(`"Dani. And him?"`, `«Dani. ¿Y él?»`, `«Dani. E ele?»`),
-    tato: t(`"Tato. And him?"`, `«Tato. ¿Y él?»`, `«Tato. E ele?»`)
+    dani: t(`"Benja. And him?"`, `«Benja. ¿Y él?»`, `«Benja. E ele?»`),
+    tato: t(`"Feña. And him?"`, `«Feña. ¿Y él?»`, `«Feña. E ele?»`)
   };
   const SAY = {
     warm: t(`"Warm. A long chord."`, `«Cálido. Un acorde largo».`, `«Quente. Um acorde longo».`),
@@ -474,13 +474,13 @@
   };
   const HIT = {
     maru: t(`Maru gets the long chord and never says so. She counts the rail with her eyes: everyone, once.`, `Maru recibe el acorde largo y nunca lo menciona. Cuenta la baranda con los ojos: todos, una vez.`, `A Maru ganha o acorde longo e nunca fala nada. Ela conta o parapeito com os olhos: todo mundo, uma vez.`),
-    dani: t(`Dani screams at the sky and the roof screams back. He looks at you, delighted.`, `Dani le grita al cielo y el techo le grita de vuelta. Te mira, feliz.`, `O Dani grita pro céu e o terraço grita de volta. Ele te olha, feliz.`),
-    tato: t(`Tato closes his eyes. The set is quiet and it isn't empty.`, `Tato cierra los ojos. El set es tranquilo y no está vacío.`, `O Tato fecha os olhos. O set é quieto e não é vazio.`)
+    dani: t(`Benja screams at the sky and the roof screams back. He looks at you, delighted.`, `Benja le grita al cielo y el techo le grita de vuelta. Te mira, feliz.`, `O Benja grita pro céu e o terraço grita de volta. Ele te olha, feliz.`),
+    tato: t(`Feña closes his eyes. The set is quiet and it isn't empty.`, `Feña cierra los ojos. El set es tranquilo y no está vacío.`, `O Feña fecha os olhos. O set é quieto e não é vazio.`)
   };
   const MISS = {
     maru: t(`Maru gets something she didn't ask for. She counts the rail twice.`, `Maru recibe algo que no pidió. Cuenta la baranda dos veces.`, `A Maru ganha algo que não pediu. Ela conta o parapeito duas vezes.`),
-    dani: t(`Dani waits for the loud part. It doesn't come. He holds the rail and decides it is fine.`, `Dani espera la parte fuerte. No llega. Se agarra a la baranda y decide que está bien.`, `O Dani espera a parte alta. Ela não vem. Ele se segura no parapeito e decide que tá bom.`),
-    tato: t(`Tato flinches at the first kick, then lowers his shoulders on purpose.`, `Tato se sobresalta con el primer bombo y luego baja los hombros a propósito.`, `O Tato se assusta com o primeiro bumbo e depois abaixa os ombros de propósito.`)
+    dani: t(`Benja waits for the loud part. It doesn't come. He holds the rail and decides it is fine.`, `Benja espera la parte fuerte. No llega. Se agarra a la baranda y decide que está bien.`, `O Benja espera a parte alta. Ela não vem. Ele se segura no parapeito e decide que tá bom.`),
+    tato: t(`Feña flinches at the first kick, then lowers his shoulders on purpose.`, `Feña se sobresalta con el primer bombo y luego baja los hombros a propósito.`, `O Feña se assusta com o primeiro bumbo e depois abaixa os ombros de propósito.`)
   };
   SD.src_friends = {
     text: function (s) {

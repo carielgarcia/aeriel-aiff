@@ -100,8 +100,8 @@
   /* barks about Æ000.X from your friends */
   story.extraBarks = {
     maru: [T('MARU: "I got onto the Æ000.X list once. I told everyone for a month."', 'MARU: «Una vez entré a la lista de Æ000.X. Se lo conté a todo el mundo durante un mes».', 'MARU: «Uma vez entrei na lista da Æ000.X. Contei pra todo mundo por um mês».')],
-    dani: [T('DANI: "Æ000.X rejected me twice and I respect it so much."', 'DANI: «Æ000.X me rechazó dos veces y lo respeto muchísimo».', 'DANI: «A Æ000.X me recusou duas vezes e eu respeito demais».')],
-    tato: [T('TATO: "I read the Æ000.X FAQ. It cared about me more than my last relationship."', 'TATO: «Leí el FAQ de Æ000.X. Se preocupó más por mí que mi última relación».', 'TATO: «Li o FAQ da Æ000.X. Ele se preocupou mais comigo do que meu último relacionamento».')]
+    dani: [T('BENJA: "Æ000.X rejected me twice and I respect it so much."', 'BENJA: «Æ000.X me rechazó dos veces y lo respeto muchísimo».', 'BENJA: «A Æ000.X me recusou duas vezes e eu respeito demais».')],
+    tato: [T('FEÑA: "I read the Æ000.X FAQ. It cared about me more than my last relationship."', 'FEÑA: «Leí el FAQ de Æ000.X. Se preocupó más por mí que mi última relación».', 'FEÑA: «Li o FAQ da Æ000.X. Ele se preocupou mais comigo do que meu último relacionamento».')]
   };
 
   /* posters you can read */
@@ -219,7 +219,7 @@
     { x: 19, y: 5.5, r: 4.5, icon: 'spark', text: T('Warm air. Breathing in a rhythm of three. Something sweet in the dark: grapes.', 'Aire tibio. Respiración en un ritmo de tres. Algo dulce en la oscuridad: uvas.', 'Ar morno. Respiração num ritmo de três. Algo doce no escuro: uvas.') },
     { x: 4, y: 13.5, r: 2.6, icon: 'sweat', text: T('A small, tight breath by the wall. Someone trying to take up less space than they have.', 'Una respiración pequeña y tensa junto a la pared. Alguien tratando de ocupar menos espacio del que tiene.', 'Uma respiração pequena e tensa perto da parede. Alguém tentando ocupar menos espaço do que tem.') },
     { x: 3, y: 4.5, r: 3, icon: 'zzz', text: T('An empty couch. Old leather, somebody\'s quiet afternoon. A place to sit and let your eyes learn the dark.', 'Un sofá vacío. Cuero viejo, la tarde tranquila de alguien. Un lugar para sentarse y dejar que los ojos aprendan la oscuridad.', 'Um sofá vazio. Couro velho, a tarde tranquila de alguém. Um lugar pra sentar e deixar os olhos aprenderem o escuro.') },
-    { x: 6.5, y: 6.5, r: 5, icon: 'hug', text: T('A laugh you know. A hug that smells like mesh and sunglasses. That is Dani.', 'Una risa que conoces. Un abrazo que huele a malla y a lentes. Eso es Dani.', 'Uma risada que você conhece. Um abraço que cheira a tela e óculos. Esse é o Dani.'), when: function (s) { return s.away.dani === 'darkroom'; } }
+    { x: 6.5, y: 6.5, r: 5, icon: 'hug', text: T('A laugh you know. A hug that smells like mesh and sunglasses. That is Benja.', 'Una risa que conoces. Un abrazo que huele a malla y a lentes. Eso es Benja.', 'Uma risada que você conhece. Um abraço que cheira a tela e óculos. Esse é o Benja.'), when: function (s) { return s.away.dani === 'darkroom'; } }
   ];
   Z.darkroom.obj({ id: 'rest_dr', kind: 'rest', x: 2, y: 4, w: 3, h: 1, label: T('SIT ON THE COUCH', 'SENTARSE EN EL SOFÁ', 'SENTAR NO SOFÁ') });
   S.enter_darkroom = function () {
@@ -247,11 +247,11 @@
       group: {
         text: [
           T(`Maru says your name softly. "I love you. I can't do this tonight."`, `Maru dice tu nombre bajito. «Te quiero. No puedo con esto esta noche».`, `A Maru diz seu nome baixinho. «Eu te amo. Eu não consigo com isso hoje».`),
-          T('Dani looks at his shoes. Tato has already put his hood up. Nobody shouts. They go out through the foyer, in a line, with the dignity of people leaving a theatre. Maru looks back once, and her face says: call me when you are yourself again.', 'Dani mira sus zapatos. Tato ya se puso la capucha. Nadie grita. Salen por el foyer, en fila, con la dignidad de quienes dejan un teatro. Maru mira atrás una vez, y su cara dice: llámame cuando vuelvas a ser tú.', 'O Dani olha pros sapatos. O Tato já pôs o capuz. Ninguém grita. Eles saem pelo foyer, em fila, com a dignidade de quem deixa um teatro. A Maru olha pra trás uma vez, e o rosto dela diz: me liga quando você voltar a ser você.')
+          T('Benja looks at his shoes. Feña has already put his hood up. Nobody shouts. They go out through the foyer, in a line, with the dignity of people leaving a theatre. Maru looks back once, and her face says: call me when you are yourself again.', 'Benja mira sus zapatos. Feña ya se puso la capucha. Nadie grita. Salen por el foyer, en fila, con la dignidad de quienes dejan un teatro. Maru mira atrás una vez, y su cara dice: llámame cuando vuelvas a ser tú.', 'O Benja olha pros sapatos. O Feña já pôs o capuz. Ninguém grita. Eles saem pelo foyer, em fila, com a dignidade de quem deixa um teatro. A Maru olha pra trás uma vez, e o rosto dela diz: me liga quando você voltar a ser você.')
         ]
       },
       alone: {
-        text: T('Your phone buzzes in your pocket. MARU: "we left. we love you. call me when you\'re yourself again." DANI: "( ◡̀_◡́)ᕤ i am sorry and also not sorry." TATO: "get home safe."', 'Tu celular vibra en el bolsillo. MARU: «nos fuimos. te queremos. llámame cuando vuelvas a ser tú». DANI: «( ◡̀_◡́)ᕤ perdón y tampoco perdón». TATO: «llega bien a casa».', 'Seu celular vibra no bolso. MARU: «a gente foi. a gente te ama. me liga quando você voltar a ser você». DANI: «( ◡̀_◡́)ᕤ desculpa e também não desculpa». TATO: «chega bem em casa».')
+        text: T('Your phone buzzes in your pocket. MARU: "we left. we love you. call me when you\'re yourself again." BENJA: "( ◡̀_◡́)ᕤ i am sorry and also not sorry." FEÑA: "get home safe."', 'Tu celular vibra en el bolsillo. MARU: «nos fuimos. te queremos. llámame cuando vuelvas a ser tú». BENJA: «( ◡̀_◡́)ᕤ perdón y tampoco perdón». FEÑA: «llega bien a casa».', 'Seu celular vibra no bolso. MARU: «a gente foi. a gente te ama. me liga quando você voltar a ser você». BENJA: «( ◡̀_◡́)ᕤ desculpa e também não desculpa». FEÑA: «chega bem em casa».')
       }
     }
   };
