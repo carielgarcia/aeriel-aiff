@@ -1028,7 +1028,6 @@ html[lang="pt"] [lang="es"] {
 
   h1, h2, h3, h4, h5, h6,
   .intent-header,
-  .subsite-header-title,
   .dj-card-name,
   .article-card-title,
   .reader-title {
@@ -1320,10 +1319,6 @@ html[lang="pt"] [lang="es"] {
     align-items: stretch;
     text-align: center;
     padding: var(--spacing-sm);
-  }
-
-  .subsite-header-title {
-    font-size: 1.4rem;
   }
 
   .subsite-back-btn {
@@ -1955,30 +1950,6 @@ body[data-view="ae000x"] #ae000x-subsite {
   display: block !important;
 }
 
-/* Sub-Website Sticky Header Bar */
-.subsite-header-bar {
-  position: static;
-  background: var(--bg-secondary);
-  border-bottom: var(--border-thick);
-  border-left: 10px solid var(--text-primary); /* monochrome sub-site marker */
-  padding: var(--spacing-xs) 0;
-}
-
-.subsite-header-layout {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.subsite-header-title {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 900;
-  font-size: 0.9rem;
-  letter-spacing: -0.02em;
-  color: var(--text-muted);
-}
-
 .back-btn {
   font-size: 0.85rem;
   padding: 8px 16px;
@@ -2153,34 +2124,31 @@ body[data-view="ae000x"] #ae000x-subsite {
 }
 
 /* Disco Mode Subsite Theme Overrides */
-html.disco-mode .subsite-header-bar { background: #170421 !important; border-bottom-color: #D94E1F !important; }
 html.disco-mode .portal-cta-box, html.disco-mode .dj-card, html.disco-mode .disclaimer-box, html.disco-mode .intent-portrait-frame { background: #260734 !important; border-color: #D94E1F !important; }
 html.disco-mode .intent-portrait-media { border-color: #D94E1F !important; }
 html.disco-mode .dj-link { border-color: #D94E1F !important; color: #FFC72C !important; }
 html.disco-mode .dj-link:hover { background: #D94E1F !important; color: #170421 !important; }
 html.disco-mode .notice-privacy { border-left-color: #FFC72C !important; }
 html.disco-mode .notice-vetting { border-left-color: #D94E1F !important; }
-html.disco-mode .portal-cta-tag, html.disco-mode .subsite-header-title, html.disco-mode .dj-card-role, html.disco-mode .disclaimer-tag { color: #FF9F1C !important; }
+html.disco-mode .portal-cta-tag, html.disco-mode .dj-card-role, html.disco-mode .disclaimer-tag { color: #FF9F1C !important; }
 
 /* Trance Mode Subsite Theme Overrides */
-html.trance-mode .subsite-header-bar { background: #040814 !important; border-bottom-color: #00F0FF !important; }
 html.trance-mode .portal-cta-box, html.trance-mode .dj-card, html.trance-mode .disclaimer-box, html.trance-mode .intent-portrait-frame { background: #0A1224 !important; border-color: #00F0FF !important; }
 html.trance-mode .intent-portrait-media { border-color: #00F0FF !important; }
 html.trance-mode .dj-link { border-color: #00F0FF !important; color: #E0F2FE !important; }
 html.trance-mode .dj-link:hover { background: #00F0FF !important; color: #040814 !important; }
 html.trance-mode .notice-privacy { border-left-color: #00F0FF !important; }
 html.trance-mode .notice-vetting { border-left-color: #FF007F !important; }
-html.trance-mode .portal-cta-tag, html.trance-mode .subsite-header-title, html.trance-mode .dj-card-role, html.trance-mode .disclaimer-tag { color: #00F0FF !important; }
+html.trance-mode .portal-cta-tag, html.trance-mode .dj-card-role, html.trance-mode .disclaimer-tag { color: #00F0FF !important; }
 
 /* House Mode Subsite Theme Overrides */
-html.house-mode .subsite-header-bar { background: #12080A !important; border-bottom-color: #B81D24 !important; }
 html.house-mode .portal-cta-box, html.house-mode .dj-card, html.house-mode .disclaimer-box, html.house-mode .intent-portrait-frame { background: #1F0E13 !important; border-color: #B81D24 !important; }
 html.house-mode .intent-portrait-media { border-color: #B81D24 !important; }
 html.house-mode .dj-link { border-color: #B81D24 !important; color: #FFF8E7 !important; }
 html.house-mode .dj-link:hover { background: #B81D24 !important; color: #FFF8E7 !important; }
 html.house-mode .notice-privacy { border-left-color: #B81D24 !important; }
 html.house-mode .notice-vetting { border-left-color: #FF7B00 !important; }
-html.house-mode .portal-cta-tag, html.house-mode .subsite-header-title, html.house-mode .dj-card-role, html.house-mode .disclaimer-tag { color: #FF7B00 !important; }
+html.house-mode .portal-cta-tag, html.house-mode .dj-card-role, html.house-mode .disclaimer-tag { color: #FF7B00 !important; }
 
 /* ==========================================================================
    WRITING / ESSAYS SUB-WEBSITE STYLES & READER COMPONENTS
@@ -4714,36 +4682,6 @@ body[data-view="writing"].reading .reader-progress { display: block; }
     white-space: nowrap;
   }
 }
-
-/* Sub-site wayfinding: compact native-style top bar on phones */
-.back-short { display: none; }
-
-@media (max-width: 600px) {
-  .back-long { display: none; }
-  .back-short { display: inline; }
-
-  .subsite-header-bar {
-    padding: 0;
-  }
-  .subsite-header-layout {
-    min-height: 44px;
-    gap: 12px;
-  }
-  .subsite-header-bar .back-btn {
-    width: auto;
-    min-width: 44px;
-    min-height: 44px;
-    padding: 0 14px;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    margin: 4px 0;
-  }
-  .subsite-header-title {
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-  }
-}
-
 
 /* Sub-site wayfinding: the top bar marks the active destination; on phones the header also carries a crumb chip (ÆRIEL / ESSAYS) */
 .header-crumb { display: none; }
