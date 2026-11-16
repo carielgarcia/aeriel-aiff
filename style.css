@@ -4388,21 +4388,23 @@ body[data-view="message"] #message-subsite {
     display: none;
   }
 
+  /* the strip needs no visible label: the <nav> keeps aria-label="On this page" for assistive tech */
   .page-rail-heading {
-    display: flex;
-    align-items: center;
-    flex: 0 0 auto;
-    padding: 0 20px 0 0;
-    border-bottom: none;
-    white-space: nowrap;
+    display: none;
   }
 
   .page-rail-list {
     display: flex;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+  }
+
+  /* cells share the whole width: the strip starts and ends on the frame edges */
+  .page-rail-list li {
+    flex: 1 1 auto;
   }
 
   .page-rail-list a {
+    height: 100%;
     border-top: none;
     border-left: var(--border-thin);
     padding: 0 16px;
@@ -4413,14 +4415,12 @@ body[data-view="message"] #message-subsite {
   }
 
   .page-rail-list .rail-arrow {
-    margin-left: 10px;
+    margin-left: auto;
   }
 
   /* Narrow laptops: tighter spacing so the longest (ES/PT) labels fit without scrolling */
   @media (max-width: 1199px) {
-    .page-rail-heading { padding-right: 12px; }
     .page-rail-list a { padding: 0 10px; gap: 6px; }
-    .page-rail-list .rail-arrow { margin-left: 4px; }
   }
 
   /* Footer: two rows locked to the frame edges */

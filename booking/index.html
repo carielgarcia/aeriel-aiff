@@ -45,7 +45,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800;800;800;800&amp;display=swap" rel="stylesheet">
 
   <!-- Linking Main Brutalist Stylesheet -->
-  <link rel="stylesheet" href="/style.css?v=21.0">
+  <link rel="stylesheet" href="/style.css?v=21.1">
 
   <style>
     body { min-height: 100vh; display: flex; flex-direction: column; background: var(--pk-bg); color: var(--pk-fg); font-family: var(--font-mono); padding: 0; margin: 0; }
@@ -78,6 +78,11 @@
 
       <!-- Navigation Links -->
       <nav id="main-navigation" class="nav-links" aria-label="Site destinations">
+        <a href="/" class="nav-link" id="nav-system" data-nav-view="main">
+          <span lang="en">SYSTEM</span>
+          <span lang="es">SISTEMA</span>
+          <span lang="pt">SISTEMA</span>
+        </a>
         <a href="/booking" class="nav-link" id="nav-booking" data-nav-view="booking" aria-current="page">BOOKING</a>
         <a href="/ae000x" class="nav-link" id="nav-brand" data-nav-view="ae000x">Æ000.X</a>
         <a href="/writing" class="nav-link" id="nav-writing" data-nav-view="writing">
@@ -320,7 +325,7 @@
   </a>
 
   <nav class="tab-bar" id="tab-bar" aria-label="Primary">
-    <a href="/" class="tab-link" data-tab="home">ÆRIEL</a>
+    <a href="/" class="tab-link" data-tab="home"><span lang="en">SYSTEM</span><span lang="es">SISTEMA</span><span lang="pt">SISTEMA</span></a>
     <a href="/booking" class="tab-link active" data-tab="booking" aria-current="page">BOOKING</a>
     <a href="/ae000x" class="tab-link" data-tab="ae000x">Æ000.X</a>
     <a href="/writing" class="tab-link" data-tab="writing">

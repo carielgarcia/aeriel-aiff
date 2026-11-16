@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=21.0">
+  <link rel="stylesheet" href="style.css?v=21.1">
   <!-- Inclusive mode (ADHD / neurodivergent-friendly redesign), activated by html.inclusive-mode -->
   <link rel="stylesheet" href="inclusive.css?v=1.0">
   <!-- DISABLED: no toggle is shown. To re-enable, restore the #inclusive-toggle button in .header-actions and the line that adds html.inclusive-mode from localStorage('inclusive-mode'). Clears any stale saved choice. -->
@@ -85,6 +85,11 @@
 
       <!-- Navigation Links -->
       <nav id="main-navigation" class="nav-links" aria-label="Site destinations">
+        <a href="/" class="nav-link" id="nav-system" data-nav-view="main" onclick="openMainPortfolio(event);">
+          <span lang="en">SYSTEM</span>
+          <span lang="es">SISTEMA</span>
+          <span lang="pt">SISTEMA</span>
+        </a>
         <a href="/booking" class="nav-link" id="nav-booking" data-nav-view="booking">BOOKING</a>
         <a href="/ae000x" class="nav-link" id="nav-brand" data-nav-view="ae000x" onclick="openAe000xSubsite(event);">Æ000.X</a>
         <a href="/writing" class="nav-link" id="nav-writing" data-nav-view="writing" onclick="openWritingSubsite(event);">
@@ -2422,7 +2427,11 @@
 
       <ul class="footer-nav" id="footer-navigation-links">
         <li>
-          <a href="/" class="footer-nav-link" onclick="openMainPortfolio(event)">ÆRIEL</a>
+          <a href="/" class="footer-nav-link" onclick="openMainPortfolio(event)">
+            <span lang="en">SYSTEM</span>
+            <span lang="es">SISTEMA</span>
+            <span lang="pt">SISTEMA</span>
+          </a>
         </li>
         <li>
           <a href="/booking" class="footer-nav-link">BOOKING</a>
@@ -2483,7 +2492,7 @@
 
   <!-- Mobile Bottom Tab Bar (thumb-reach navigation, <=600px) -->
   <nav class="tab-bar" id="tab-bar" aria-label="Primary">
-    <a href="/" class="tab-link" data-tab="home" onclick="tabNav(event, 'home')">ÆRIEL</a>
+    <a href="/" class="tab-link" data-tab="home" onclick="tabNav(event, 'home')"><span lang="en">SYSTEM</span><span lang="es">SISTEMA</span><span lang="pt">SISTEMA</span></a>
     <a href="/booking" class="tab-link" data-tab="booking">BOOKING</a>
     <a href="/ae000x" class="tab-link" data-tab="ae000x" onclick="tabNav(event, 'ae000x')">Æ000.X</a>
     <a href="/writing" class="tab-link" data-tab="writing" onclick="tabNav(event, 'writing')">
