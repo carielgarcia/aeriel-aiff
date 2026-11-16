@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Linking Monochromatic Brutalist Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="style.css?v=20.7">
+  <link rel="stylesheet" href="style.css?v=21.0">
   <!-- Inclusive mode (ADHD / neurodivergent-friendly redesign), activated by html.inclusive-mode -->
   <link rel="stylesheet" href="inclusive.css?v=1.0">
   <!-- DISABLED: no toggle is shown. To re-enable, restore the #inclusive-toggle button in .header-actions and the line that adds html.inclusive-mode from localStorage('inclusive-mode'). Clears any stale saved choice. -->
@@ -3790,30 +3790,12 @@
       btn.querySelector('.page-rail-caret').textContent = open ? '▲' : '▼';
     }
 
-    // Desktop rail: starts below the hero title (about 40% of the viewport at most), glides up as the
-    // page scrolls and then sticks under the header; it never covers the title or leaves the viewport.
-    const PAGE_RAIL_HERO = { main: '#hero', ae000x: '#ae000x-hero' };
-    function positionPageRail() {
-      const rail = document.getElementById('page-rail');
-      if (!rail || rail.hidden) return;
-      if (!window.matchMedia('(min-width: 1100px)').matches) { rail.style.top = ''; return; }
-      const header = document.getElementById('site-header');
-      const minTop = (header ? header.offsetHeight : 70) + 16;
-      const hero = document.querySelector(PAGE_RAIL_HERO[pageRailView] || '');
-      const heroBottom = hero ? hero.getBoundingClientRect().bottom + 28 : minTop;
-      const vh = window.innerHeight;
-      let top = Math.max(minTop, Math.min(heroBottom, vh * 0.4));
-      top = Math.min(top, vh - rail.offsetHeight - 16);
-      rail.style.top = Math.max(minTop, Math.round(top)) + 'px';
-    }
-
     let railSpyQueued = false;
     function updateRailSpy() {
       if (railSpyQueued) return;
       railSpyQueued = true;
       requestAnimationFrame(() => {
         railSpyQueued = false;
-        positionPageRail();
         if (!pageRailItems.length) return;
         const line = pageRailOffset() + 24;
         let active = null;

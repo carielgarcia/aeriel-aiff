@@ -4345,21 +4345,99 @@ body[data-view="message"] #message-subsite {
   color: inherit;
 }
 
-/* Desktop: sticky left rail */
+/* Desktop (>=1100px): one centred frame (1200px box, 24px padding => 1152px of content at wide screens).
+   Header, ON THIS PAGE strip, content and footer all share the frame's left and right edges. */
 @media (min-width: 1100px) {
-  .page-rail {
-    position: fixed;
-    top: calc(var(--header-h, 70px) + 16px);
-    left: 16px;
-    width: 190px;
-    z-index: 900;
-    border: var(--border-thin);
+  /* Header: logo on the left edge, language switch on the right edge, nav truly centred */
+  .header-container.container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
   }
 
-  body.has-page-rail #main-content,
-  body.has-page-rail .subsite-container {
-    padding-left: 222px;
+  .header-container .logo-block {
+    justify-self: start;
+    border-right: none;
+    padding-right: 0;
   }
+
+  .header-container #main-navigation {
+    margin: 0;
+  }
+
+  .header-container .header-actions {
+    justify-self: end;
+    border-left: none;
+    padding-left: 0;
+  }
+
+  /* ON THIS PAGE: a sticky one-line strip under the header, aligned to the frame */
+  .page-rail {
+    position: sticky;
+    top: calc(var(--header-h, 72px) - 1px);
+    z-index: 980;
+    display: flex;
+    align-items: stretch;
+    padding: 0 max(24px, calc((100% - 1200px) / 2 + 24px));
+    border-bottom: var(--border-thick);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .page-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page-rail-heading {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    padding: 0 20px 0 0;
+    border-bottom: none;
+    white-space: nowrap;
+  }
+
+  .page-rail-list {
+    display: flex;
+    flex: 0 0 auto;
+  }
+
+  .page-rail-list a {
+    border-top: none;
+    border-left: var(--border-thin);
+    padding: 0 16px;
+  }
+
+  .page-rail-list li:last-child a {
+    border-right: var(--border-thin);
+  }
+
+  .page-rail-list .rail-arrow {
+    margin-left: 10px;
+  }
+
+  /* Narrow laptops: tighter spacing so the longest (ES/PT) labels fit without scrolling */
+  @media (max-width: 1199px) {
+    .page-rail-heading { padding-right: 12px; }
+    .page-rail-list a { padding: 0 10px; gap: 6px; }
+    .page-rail-list .rail-arrow { margin-left: 4px; }
+  }
+
+  /* Footer: two rows locked to the frame edges */
+  .footer-layout.container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "mark nav" "copy ost";
+    row-gap: 28px;
+    column-gap: 24px;
+    align-items: center;
+    text-align: left;
+  }
+
+  .footer-layout .footer-photo-mark { grid-area: mark; justify-self: start; margin-left: -8px; } /* cancels its 8px touch padding so the glyph sits on the frame edge */
+  .footer-layout .footer-nav { grid-area: nav; justify-self: end; }
+  .footer-layout .footer-copy { grid-area: copy; justify-self: start; }
+  .footer-layout .footer-ost-btn { grid-area: ost; justify-self: end; }
 }
 
 /* Tablet / mobile: compact bar under the header */
