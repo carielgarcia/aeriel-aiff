@@ -2003,6 +2003,66 @@ body[data-view="ae000x"] #ae000x-subsite {
   margin-top: var(--spacing-md);
 }
 
+/* Essays Horizontal Carousel (keeps homepage compact while showing 3 cards on desktop) */
+.essays-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.essays-header-row .intent-header {
+  margin-bottom: 0;
+}
+
+.essays-carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.essays-carousel-controls .gallery-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.essays-carousel-container {
+  margin-top: var(--spacing-md);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.essays-carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.essays-carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2 * var(--spacing-md)) / 3);
+  gap: var(--spacing-md);
+  align-items: stretch;
+}
+
+.essays-carousel-track > .dj-card {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 1024px) {
+  .essays-carousel-track {
+    grid-auto-columns: calc((100% - var(--spacing-md)) / 2);
+  }
+}
+
+@media (max-width: 768px) {
+  .essays-carousel-track {
+    grid-auto-columns: 88%;
+  }
+}
+
 .dj-card {
   border: var(--border-thin);
   background: var(--bg-secondary);

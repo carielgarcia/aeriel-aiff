@@ -348,13 +348,23 @@
     <!-- SECTION 5: WRITING PREVIEW -->
     <section class="structural-row" id="writing">
       <div class="container">
-        <h2 class="intent-header">
-          <span lang="en">ESSAYS</span>
-          <span lang="es">ENSAYOS</span>
-          <span lang="pt">ENSAIOS</span>
-        </h2>
+        <div class="essays-header-row">
+          <h2 class="intent-header">
+            <span lang="en">ESSAYS</span>
+            <span lang="es">ENSAYOS</span>
+            <span lang="pt">ENSAIOS</span>
+          </h2>
+          <div class="essays-carousel-controls">
+            <span class="gallery-counter" id="essays-slide-counter" aria-live="polite">01 / 04</span>
+            <div class="gallery-nav-buttons">
+              <button type="button" class="btn-brutal gallery-nav-btn" id="essays-prev-btn" onclick="prevEssaySlide()" aria-label="Previous Essay" aria-controls="essays-carousel-track">←</button>
+              <button type="button" class="btn-brutal gallery-nav-btn" id="essays-next-btn" onclick="nextEssaySlide()" aria-label="Next Essay" aria-controls="essays-carousel-track">→</button>
+            </div>
+          </div>
+        </div>
         
-        <div class="dj-grid">
+        <div class="essays-carousel-container" id="essays-carousel-container" role="region" aria-roledescription="carousel" aria-label="Essays Carousel" tabindex="0">
+          <div class="essays-carousel-track" id="essays-carousel-track">
           <!-- Essay Snippet Card 1: We're an Underground Party, really -->
           <div class="dj-card dj-card-clickable" tabindex="0" role="button" aria-label="Read essay: We’re an Underground Party, really" onclick="openWritingSubsiteAndArticle('essay-underground-party')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openWritingSubsiteAndArticle('essay-underground-party');}">
             <span class="dj-card-role">
@@ -388,11 +398,19 @@
               Chamar uma festa de Underground afirma uma posição política além da estética ou da escassez. Definir o underground é como acertar um alvo em movimento.
             </p>
 
-            <span class="read-more-tag">
-              <span lang="en">[ READ FULL ESSAY → ]</span>
-              <span lang="es">[ LEER ENSAYO COMPLETO → ]</span>
-              <span lang="pt">[ LER ENSAIO COMPLETO → ]</span>
-            </span>
+            <div class="article-card-meta">
+              <span class="article-tag">#UNDERGROUND</span>
+              <span class="article-tag">#CLUB_CULTURE</span>
+              <span class="article-tag">#ESSAY</span>
+            </div>
+
+            <div class="dj-links dj-links-auto">
+              <span class="dj-link dj-link-full">
+                <span lang="en">READ ESSAY →</span>
+                <span lang="es">LEER ENSAYO →</span>
+                <span lang="pt">LER ENSAIO →</span>
+              </span>
+            </div>
           </div>
 
           <!-- Essay Snippet Card 2: Inevitable Nightlife Economy -->
@@ -537,6 +555,7 @@
                 <span lang="pt">LER ENSAIO →</span>
               </span>
             </div>
+          </div>
           </div>
         </div>
 
@@ -2822,7 +2841,10 @@
       'Copy Essay Link': { es: 'Copiar enlace del ensayo', pt: 'Copiar link do ensaio' },
       'Poster Fullscreen View': { es: 'Vista del afiche a pantalla completa', pt: 'Visualização do cartaz em tela cheia' },
       'Close Poster Lightbox': { es: 'Cerrar visor de afiches', pt: 'Fechar visualizador de cartazes' },
-      'Back to Top': { es: 'Volver arriba', pt: 'Voltar ao topo' }
+      'Back to Top': { es: 'Volver arriba', pt: 'Voltar ao topo' },
+      'Essays Carousel': { es: 'Carrusel de ensayos', pt: 'Carrossel de ensaios' },
+      'Previous Essay': { es: 'Ensayo anterior', pt: 'Ensaio anterior' },
+      'Next Essay': { es: 'Siguiente ensayo', pt: 'Próximo ensaio' }
     };
     const ESSAY_TITLES_I18N = {
       'We’re an Underground Party, really': { es: 'Somos una fiesta Underground, de verdad', pt: 'Somos uma festa Underground, de verdade' },
@@ -3509,6 +3531,65 @@
     window.openPosterLightbox = openPosterLightbox;
     window.navigatePosterLightbox = navigatePosterLightbox;
     window.closePosterLightbox = closePosterLightbox;
+
+    // Essays Homepage Carousel
+    let currentEssayIndex = 0;
+    function getEssayCarouselEls() {
+      const container = document.getElementById('essays-carousel-container');
+      const track = document.getElementById('essays-carousel-track');
+      const cards = track ? Array.from(track.children) : [];
+      return { container, track, cards };
+    }
+    function updateEssaysCarouselUI(idx, total) {
+      const counter = document.getElementById('essays-slide-counter');
+      const prevBtn = document.getElementById('essays-prev-btn');
+      const nextBtn = document.getElementById('essays-next-btn');
+      const pad = (n) => (n < 10 ? '0' + n : '' + n);
+      if (counter) counter.textContent = `${pad(idx + 1)} / ${pad(total)}`;
+      if (prevBtn) prevBtn.disabled = idx <= 0;
+      if (nextBtn) nextBtn.disabled = idx >= total - 1;
+    }
+    function goToEssaySlide(index) {
+      const { container, cards } = getEssayCarouselEls();
+      if (!container || !cards.length) return;
+      const clamped = Math.max(0, Math.min(cards.length - 1, index));
+      currentEssayIndex = clamped;
+      const card = cards[clamped];
+      const left = card.offsetLeft - container.offsetLeft;
+      container.scrollTo({ left, behavior: typeof scrollBehavior === 'function' ? scrollBehavior() : 'smooth' });
+      updateEssaysCarouselUI(clamped, cards.length);
+    }
+    function prevEssaySlide() { goToEssaySlide(currentEssayIndex - 1); }
+    function nextEssaySlide() { goToEssaySlide(currentEssayIndex + 1); }
+    window.prevEssaySlide = prevEssaySlide;
+    window.nextEssaySlide = nextEssaySlide;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const { container, cards } = getEssayCarouselEls();
+      if (!container || !cards.length) return;
+      updateEssaysCarouselUI(0, cards.length);
+      let essayScrollTicking = false;
+      container.addEventListener('scroll', () => {
+        if (essayScrollTicking) return;
+        essayScrollTicking = true;
+        window.requestAnimationFrame(() => {
+          const scrollLeft = container.scrollLeft;
+          let closest = 0;
+          let minDiff = Infinity;
+          cards.forEach((card, i) => {
+            const diff = Math.abs((card.offsetLeft - container.offsetLeft) - scrollLeft);
+            if (diff < minDiff) { minDiff = diff; closest = i; }
+          });
+          currentEssayIndex = closest;
+          updateEssaysCarouselUI(closest, cards.length);
+          essayScrollTicking = false;
+        });
+      }, { passive: true });
+      container.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); prevEssaySlide(); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); nextEssaySlide(); }
+      });
+    });
     const ESSAY_SLUGS = {
       'essay-harm-reduction': '20260728-harm-reduction',
       'essay-emancipation-desire': '20260728-emancipation-of-desire',
