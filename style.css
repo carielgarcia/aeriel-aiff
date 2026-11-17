@@ -938,7 +938,7 @@ html[lang="pt"] [lang="es"] {
 }
 
 .footer-ost-btn {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   min-height: 44px;
@@ -952,6 +952,10 @@ html[lang="pt"] [lang="es"] {
   text-transform: uppercase;
   text-decoration: none;
   transition: none;
+}
+
+body[data-view="games"] .footer-ost-btn {
+  display: inline-flex;
 }
 
 .footer-ost-btn:hover,
@@ -4647,7 +4651,7 @@ body[data-view="writing"].reading .reader-progress { display: block; }
   display: flex;
   gap: var(--spacing-sm);
   max-width: 900px;
-  margin: var(--spacing-md) 0 0;
+  margin: var(--spacing-md) auto 0;
 }
 
 .reader-pager-btn {
