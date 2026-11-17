@@ -18,7 +18,7 @@
   const t = function (en, es, pt) { return T(en, es, pt); };
   const K = function (tone, tx, o) { return Object.assign({ tone: tone, t: tx }, o || {}); };
   const FR = EM.FRIENDS;
-  const NM = { maru: ['MARU', 'MARU', 'MARU'], dani: ['BENJAMIN', 'BENJAMIN', 'BENJAMIN'], tato: ['FERNANDO', 'FEÑA', 'FERNANDO'] };
+  const NM = { maru: ['LUISA', 'LUISA', 'LUISA'], dani: ['BENJAMIN', 'BENJAMIN', 'BENJAMIN'], tato: ['FERNANDO', 'FEÑA', 'FERNANDO'] };
   const gen = function (f, en, es, pt) { return t(en.replace(/\{n\}/g, NM[f][0]), es.replace(/\{n\}/g, NM[f][1]), pt.replace(/\{n\}/g, NM[f][2])); };
   const MU = function (s) { return s.mu || (s.mu = { wait: {}, brk: null, last: -999, n: 0, prev: null, b: {} }); };
   const Qd = function (s, id) { return s.quests[id] === 'done'; };
@@ -46,21 +46,21 @@
   };
   /* what Maru says at each door, and what the others say */
   const MARU_STAYS = {
-    darkroom: t(`MARU stops at the curtain. "This one's yours. I'll be on the main floor, counting nothing." She mimes locking her lips.`, `MARU se detiene en la cortina. «Este es tuyo. Estaré en la pista, sin contar nada». Hace como que cierra los labios con llave.`, `A MARU para na cortina. «Esse é seu. Vou ficar na pista, sem contar nada». Ela finge trancar os lábios.`),
-    backstage: t(`MARU, at the door marked STAFF: "I'm not going in there. It has clipboard energy. Go on."`, `MARU, en la puerta que dice STAFF: «Yo ahí no entro. Tiene energía de carpeta. Anda».`, `A MARU, na porta que diz STAFF: «Eu não entro aí. Tem energia de prancheta. Vai lá».`),
-    welfare: t(`MARU stays at the door of the quiet room. "The pill is yours, Benjamin's and Isi's business. I'll hold the door and do my silent worrying out here."`, `MARU se queda en la puerta de la sala tranquila. «La pastilla es asunto tuyo, de Benjamin y de Isi. Yo cuido la puerta y me preocupo en silencio aquí afuera».`, `A MARU fica na porta da sala de calma. «O comprimido é assunto seu, do Benjamin e da Isi. Eu seguro a porta e me preocupo em silêncio aqui fora».`),
-    restrooms: t(`MARU waits outside the toilets. "Some things we do alone. I'll be by the sinks of life."`, `MARU espera afuera de los baños. «Hay cosas que se hacen solo. Estaré junto a los lavamanos de la vida».`, `A MARU espera fora dos banheiros. «Tem coisas que a gente faz sozinho. Vou ficar nas pias da vida».`),
-    a_master: t(`MARU, from the sofa: "That door is all yours. Text me if it goes well."`, `MARU, desde el sofá: «Esa puerta es toda tuya. Escríbeme si sale bien».`, `A MARU, do sofá: «Essa porta é toda sua. Me manda mensagem se for bom».`),
-    a_bedroom: t(`MARU stays in the doorway. "Fewer people is kinder. You go."`, `MARU se queda en la puerta. «Menos gente es más amable. Ve tú».`, `A MARU fica na porta. «Menos gente é mais gentil. Vai você».`),
-    a_bath: t(`MARU: "It's a one-person room. I'll be out here."`, `MARU: «Es un cuarto para una persona. Aquí afuera estaré».`, `A MARU: «É um banheiro pra uma pessoa. Vou ficar aqui fora».`)
+    darkroom: t(`LUISA stops at the curtain. "This one's yours. I'll be on the main floor, counting nothing." She mimes locking her lips.`, `LUISA se detiene en la cortina. «Este es tuyo. Estaré en la pista, sin contar nada». Hace como que cierra los labios con llave.`, `A LUISA para na cortina. «Esse é seu. Vou ficar na pista, sem contar nada». Ela finge trancar os lábios.`),
+    backstage: t(`LUISA, at the door marked STAFF: "I'm not going in there. It has clipboard energy. Go on."`, `LUISA, en la puerta que dice STAFF: «Yo ahí no entro. Tiene energía de carpeta. Anda».`, `A LUISA, na porta que diz STAFF: «Eu não entro aí. Tem energia de prancheta. Vai lá».`),
+    welfare: t(`LUISA stays at the door of the quiet room. "The pill is yours, Benjamin's and Isi's business. I'll hold the door and do my silent worrying out here."`, `LUISA se queda en la puerta de la sala tranquila. «La pastilla es asunto tuyo, de Benjamin y de Isi. Yo cuido la puerta y me preocupo en silencio aquí afuera».`, `A LUISA fica na porta da sala de calma. «O comprimido é assunto seu, do Benjamin e da Isi. Eu seguro a porta e me preocupo em silêncio aqui fora».`),
+    restrooms: t(`LUISA waits outside the toilets. "Some things we do alone. I'll be by the sinks of life."`, `LUISA espera afuera de los baños. «Hay cosas que se hacen solo. Estaré junto a los lavamanos de la vida».`, `A LUISA espera fora dos banheiros. «Tem coisas que a gente faz sozinho. Vou ficar nas pias da vida».`),
+    a_master: t(`LUISA, from the sofa: "That door is all yours. Text me if it goes well."`, `LUISA, desde el sofá: «Esa puerta es toda tuya. Escríbeme si sale bien».`, `A LUISA, do sofá: «Essa porta é toda sua. Me manda mensagem se for bom».`),
+    a_bedroom: t(`LUISA stays in the doorway. "Fewer people is kinder. You go."`, `LUISA se queda en la puerta. «Menos gente es más amable. Ve tú».`, `A LUISA fica na porta. «Menos gente é mais gentil. Vai você».`),
+    a_bath: t(`LUISA: "It's a one-person room. I'll be out here."`, `LUISA: «Es un cuarto para una persona. Aquí afuera estaré».`, `A LUISA: «É um banheiro pra uma pessoa. Vou ficar aqui fora».`)
   };
   const OTHER_STAYS = function (f, zone) {
     if (f === 'dani' && zone === 'darkroom') return t(`BENJAMIN peers past the curtain, sniffs the air and withdraws with great dignity. "I'll be at the bar being interesting. Go."`, `BENJAMIN se asoma por la cortina, huele el aire y se retira con gran dignidad. «Estaré en la barra siendo interesante. Ve».`, `O BENJAMIN espia pela cortina, cheira o ar e se retira com muita dignidade. «Vou ficar no bar sendo interessante. Vai».`);
     return gen(f, `{n} stays outside. "Go on. I'll be right here."`, `{n} se queda afuera. «Ve. Aquí estoy».`, `{n} fica do lado de fora. «Vai. Tô aqui».`);
   };
   const BACK = {
-    darkroom: t(`Maru is exactly where you left her, leaning on the wall with two waters. "Good?" "Good." "Don't tell me anything until Tuesday." (A bottle of water.)`, `Maru está exactamente donde la dejaste, apoyada en la pared con dos aguas. «¿Bien?» «Bien». «No me cuentes nada hasta el martes». (Una botella de agua.)`, `A Maru tá exatamente onde você deixou, encostada na parede com duas águas. «Bom?» «Bom». «Não me conta nada até terça». (Uma garrafa de água.)`),
-    ahead: t(`Maru waves from the rail, one arm over her head. "I saved us a spot. Nobody has stood in it. I checked. Twice."`, `Maru saluda desde la baranda con un brazo en alto. «Les guardé un lugar. Nadie se ha parado ahí. Lo revisé. Dos veces».`, `A Maru acena do parapeito com um braço pra cima. «Guardei um lugar pra gente. Ninguém ficou nele. Eu conferi. Duas vezes».`)
+    darkroom: t(`Luisa is exactly where you left her, leaning on the wall with two waters. "Good?" "Good." "Don't tell me anything until Tuesday." (A bottle of water.)`, `Luisa está exactamente donde la dejaste, apoyada en la pared con dos aguas. «¿Bien?» «Bien». «No me cuentes nada hasta el martes». (Una botella de agua.)`, `A Luisa tá exatamente onde você deixou, encostada na parede com duas águas. «Bom?» «Bom». «Não me conta nada até terça». (Uma garrafa de água.)`),
+    ahead: t(`Luisa waves from the rail, one arm over her head. "I saved us a spot. Nobody has stood in it. I checked. Twice."`, `Luisa saluda desde la baranda con un brazo en alto. «Les guardé un lugar. Nadie se ha parado ahí. Lo revisé. Dos veces».`, `A Luisa acena do parapeito com um braço pra cima. «Guardei um lugar pra gente. Ninguém ficou nele. Eu conferi. Duas vezes».`)
   };
   const BACK_GEN = function (f) { return gen(f, `{n} falls back into step beside you.`, `{n} vuelve a caminar a tu lado.`, `{n} volta a andar do seu lado.`); };
 
@@ -97,14 +97,14 @@
   /* ============================================================ 2. ERRANDS: Maru leaves your side for a while */
   const KINDS = [
     { k: 'water', where: 'main', dur: 9,
-      go: t(`MARU: "I'm getting water. Stay put. Actually don't, but nothing alarming."`, `MARU: «Voy por agua. Quédate aquí. O no, pero nada alarmante».`, `MARU: «Vou pegar água. Fica aqui. Ou não, mas nada alarmante».`),
-      back: t(`Maru is back with a cold bottle, pressing it into your hand. "You looked thirsty. I'm psychic about this." (A bottle of water.)`, `Maru vuelve con una botella fría y te la pone en la mano. «Se te veía con sed. Para esto soy psíquica». (Una botella de agua.)`, `A Maru volta com uma garrafa gelada e põe na sua mão. «Você tava com cara de sede. Pra isso eu sou vidente». (Uma garrafa de água.)`) },
+      go: t(`LUISA: "I'm getting water. Stay put. Actually don't, but nothing alarming."`, `LUISA: «Voy por agua. Quédate aquí. O no, pero nada alarmante».`, `LUISA: «Vou pegar água. Fica aqui. Ou não, mas nada alarmante».`),
+      back: t(`Luisa is back with a cold bottle, pressing it into your hand. "You looked thirsty. I'm psychic about this." (A bottle of water.)`, `Luisa vuelve con una botella fría y te la pone en la mano. «Se te veía con sed. Para esto soy psíquica». (Una botella de agua.)`, `A Luisa volta com uma garrafa gelada e põe na sua mão. «Você tava com cara de sede. Pra isso eu sou vidente». (Uma garrafa de água.)`) },
     { k: 'air', where: 'courtyard', dur: 11,
-      go: t(`MARU: "Five minutes of air. Alone. I love you. Go away."`, `MARU: «Cinco minutos de aire. Sola. Te quiero. Vete».`, `MARU: «Cinco minutos de ar. Sozinha. Te amo. Vai».`),
-      back: t(`Maru comes back with her shoulders an inch lower. "Better. Where were we?"`, `Maru vuelve con los hombros un dedo más abajo. «Mejor. ¿Dónde íbamos?»`, `A Maru volta com os ombros um dedo mais baixos. «Melhor. Onde a gente tava?»`) },
+      go: t(`LUISA: "Five minutes of air. Alone. I love you. Go away."`, `LUISA: «Cinco minutos de aire. Sola. Te quiero. Vete».`, `LUISA: «Cinco minutos de ar. Sozinha. Te amo. Vai».`),
+      back: t(`Luisa comes back with her shoulders an inch lower. "Better. Where were we?"`, `Luisa vuelve con los hombros un dedo más abajo. «Mejor. ¿Dónde íbamos?»`, `A Luisa volta com os ombros um dedo mais baixos. «Melhor. Onde a gente tava?»`) },
     { k: 'song', where: 'main', dur: 12,
-      go: t(`MARU: "This is my song. Don't follow me."`, `MARU: «Esta es mi canción. No me sigas».`, `MARU: «Essa é a minha música. Não me segue».`),
-      back: t(`Maru, glowing and out of breath: "Okay. I'm back. I was gone for a whole song and nobody died."`, `Maru, radiante y sin aire: «Listo. Volví. Estuve fuera una canción entera y nadie se murió».`, `A Maru, radiante e sem fôlego: «Pronto. Voltei. Fiquei fora uma música inteira e ninguém morreu».`) }
+      go: t(`LUISA: "This is my song. Don't follow me."`, `LUISA: «Esta es mi canción. No me sigas».`, `LUISA: «Essa é a minha música. Não me segue».`),
+      back: t(`Luisa, glowing and out of breath: "Okay. I'm back. I was gone for a whole song and nobody died."`, `Luisa, radiante y sin aire: «Listo. Volví. Estuve fuera una canción entera y nadie se murió».`, `A Luisa, radiante e sem fôlego: «Pronto. Voltei. Fiquei fora uma música inteira e ninguém morreu».`) }
   ];
   const kindOf = function (k) { return KINDS.filter(function (x) { return x.k === k; })[0]; };
   const okZone = { main: 1, foyer: 1, courtyard: 1, attic: 1, tunnel: 1 };
@@ -141,7 +141,7 @@
     if (s.quests.q9 === 'active' && s.flags.roof_open && !s.after && !s.flags.after_go && inParty(s, 'maru') && !m.b.ahead && s.zone !== 'rooftop' && !U.D && U.mode === 'play') {
       m.b.ahead = true; m.brk = null;
       L.leave('maru', 'rooftop'); m.wait.maru = { zone: 'rooftop', since: s.time, why: 'ahead' };
-      U.toast({ icon: 'star', kind: 'info', ms: 6500, text: t(`MARU: "The roof is open. I'll go up and save us a spot at the rail. Don't be long."`, `MARU: «El techo está abierto. Subo a guardarnos un lugar en la baranda. No tardes».`, `MARU: «O terraço abriu. Vou subir e guardar um lugar pra gente no parapeito. Não demora».`) });
+      U.toast({ icon: 'star', kind: 'info', ms: 6500, text: t(`LUISA: "The roof is open. I'll go up and save us a spot at the rail. Don't be long."`, `LUISA: «El techo está abierto. Subo a guardarnos un lugar en la baranda. No tardes».`, `LUISA: «O terraço abriu. Vou subir e guardar um lugar pra gente no parapeito. Não demora».`) });
       return;
     }
     /* an errand starts: only when nothing needs the group, in the club, in a room she can wander from */
@@ -166,7 +166,7 @@
   D.maru_break_found = {
     who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
       a: {
-        text: t(`Maru is mid-thought, one foot still on the beat. "Five more minutes? I'm having a moment. Don't make it a headcount."`, `Maru está a medio pensamiento, con un pie todavía en el ritmo. «¿Cinco minutos más? Estoy en mi momento. No lo conviertas en un conteo».`, `A Maru tá no meio de um pensamento, com um pé ainda na batida. «Mais cinco minutos? Tô num momento. Não transforma isso em contagem».`),
+        text: t(`Luisa is mid-thought, one foot still on the beat. "Five more minutes? I'm having a moment. Don't make it a headcount."`, `Luisa está a medio pensamiento, con un pie todavía en el ritmo. «¿Cinco minutos más? Estoy en mi momento. No lo conviertas en un conteo».`, `A Luisa tá no meio de um pensamento, com um pé ainda na batida. «Mais cinco minutos? Tô num momento. Não transforma isso em contagem».`),
         choices: [
           K('chill', t(`"Take your time."`, `«Tómate tu tiempo».`, `«Leva o tempo que precisar».`), { free: true, do: { bond: { maru: 1 }, soc: 1 }, next: null }),
           K('care', t(`"Come with me now."`, `«Ven conmigo ahora».`, `«Vem comigo agora».`), { free: true, call: 'mu_end', next: null })
@@ -178,10 +178,10 @@
   /* ============================================================ 4. THE AFTER: Maru's own night */
   if (AF && AF.schedule) {
     const BEAT = {
-      kitchen: t(`MARU: "Dot just gave me a job. A job that isn't counting. I'm going to the kitchen before she changes her mind."`, `MARU: «Dot me acaba de dar un trabajo. Uno que no es contar. Voy a la cocina antes de que cambie de idea».`, `MARU: «A Dot acabou de me dar um trabalho. Um que não é contar. Vou pra cozinha antes que ela mude de ideia».`),
-      dance: t(`Maru drifts toward the rug with her eyes half shut. "Don't come with me. If you count me I'll know."`, `Maru se desliza hacia la alfombra con los ojos medio cerrados. «No vengas conmigo. Si me cuentas, lo voy a notar».`, `A Maru vai em direção ao tapete com os olhos meio fechados. «Não vem comigo. Se você me contar, eu vou saber».`),
-      balcony: t(`Maru checks her phone, takes a breath and heads for the balcony. "Five minutes. It's the thing I said I'd tell you first. Not yet."`, `Maru mira el celular, respira y va hacia el balcón. «Cinco minutos. Es lo que dije que te diría primero. Todavía no».`, `A Maru olha o celular, respira e vai pra varanda. «Cinco minutos. É a coisa que eu disse que te contava primeiro. Ainda não».`),
-      back: t(`Maru comes in from the balcony, face washed, phone away. "Okay. I'm back. I'm not counting. I'm just here."`, `Maru entra desde el balcón, con la cara lavada y el celular guardado. «Listo. Volví. No estoy contando. Solo estoy aquí».`, `A Maru entra da varanda, de cara lavada e celular guardado. «Pronto. Voltei. Não tô contando. Só tô aqui».`)
+      kitchen: t(`LUISA: "Dot just gave me a job. A job that isn't counting. I'm going to the kitchen before she changes her mind."`, `LUISA: «Dot me acaba de dar un trabajo. Uno que no es contar. Voy a la cocina antes de que cambie de idea».`, `LUISA: «A Dot acabou de me dar um trabalho. Um que não é contar. Vou pra cozinha antes que ela mude de ideia».`),
+      dance: t(`Luisa drifts toward the rug with her eyes half shut. "Don't come with me. If you count me I'll know."`, `Luisa se desliza hacia la alfombra con los ojos medio cerrados. «No vengas conmigo. Si me cuentas, lo voy a notar».`, `A Luisa vai em direção ao tapete com os olhos meio fechados. «Não vem comigo. Se você me contar, eu vou saber».`),
+      balcony: t(`Luisa checks her phone, takes a breath and heads for the balcony. "Five minutes. It's the thing I said I'd tell you first. Not yet."`, `Luisa mira el celular, respira y va hacia el balcón. «Cinco minutos. Es lo que dije que te diría primero. Todavía no».`, `A Luisa olha o celular, respira e vai pra varanda. «Cinco minutos. É a coisa que eu disse que te contava primeiro. Ainda não».`),
+      back: t(`Luisa comes in from the balcony, face washed, phone away. "Okay. I'm back. I'm not counting. I'm just here."`, `Luisa entra desde el balcón, con la cara lavada y el celular guardado. «Listo. Volví. No estoy contando. Solo estoy aquí».`, `A Luisa entra da varanda, de cara lavada e celular guardado. «Pronto. Voltei. Não tô contando. Só tô aqui».`)
     };
     const go = function (s, m, at, zone, line) {
       m.at = at; s.flags.maru_uncounted = true;
@@ -206,7 +206,7 @@
     D.maru_af_kitchen = {
       who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
         a: {
-          text: t(`Maru has an apron on over her jacket and a spatula she was handed half a minute ago. "Dot gave me a job. A job that is not counting." She flips something. "I flipped it. Nobody died."`, `Maru tiene un delantal sobre la chaqueta y una espátula que le dieron hace medio minuto. «Dot me dio un trabajo. Un trabajo que no es contar». Da vuelta algo. «Lo di vuelta. Nadie se murió».`, `A Maru tá de avental por cima da jaqueta e com uma espátula que lhe deram meio minuto atrás. «A Dot me deu um trabalho. Um trabalho que não é contar». Ela vira alguma coisa. «Virei. Ninguém morreu».`),
+          text: t(`Luisa has an apron on over her jacket and a spatula she was handed half a minute ago. "Dot gave me a job. A job that is not counting." She flips something. "I flipped it. Nobody died."`, `Luisa tiene un delantal sobre la chaqueta y una espátula que le dieron hace medio minuto. «Dot me dio un trabajo. Un trabajo que no es contar». Da vuelta algo. «Lo di vuelta. Nadie se murió».`, `A Luisa tá de avental por cima da jaqueta e com uma espátula que lhe deram meio minuto atrás. «A Dot me deu um trabalho. Um trabalho que não é contar». Ela vira alguma coisa. «Virei. Ninguém morreu».`),
           choices: [
             K('care', t(`"You look happy."`, `«Te ves feliz».`, `«Você parece feliz».`), { next: 'b' }),
             K('ask', t(`"Do you want me to stay?"`, `«¿Quieres que me quede?»`, `«Quer que eu fique?»`), { next: 'c' }),
@@ -220,7 +220,7 @@
     D.maru_af_dance = {
       who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
         a: {
-          text: t(`Maru is dancing in the middle of the rug with her eyes shut and one hand in the air, among people who have no idea she organises their whole lives. She opens one eye at you. "Not now. This is my song." She closes it.`, `Maru baila en medio de la alfombra con los ojos cerrados y una mano en alto, entre gente que no tiene idea de que les organiza la vida entera. Te abre un ojo. «Ahora no. Esta es mi canción». Lo cierra.`, `A Maru dança no meio do tapete de olhos fechados e uma mão pra cima, no meio de gente que não faz ideia de que ela organiza a vida de todo mundo. Ela abre um olho pra você. «Agora não. Essa é a minha música». Fecha de novo.`),
+          text: t(`Luisa is dancing in the middle of the rug with her eyes shut and one hand in the air, among people who have no idea she organises their whole lives. She opens one eye at you. "Not now. This is my song." She closes it.`, `Luisa baila en medio de la alfombra con los ojos cerrados y una mano en alto, entre gente que no tiene idea de que les organiza la vida entera. Te abre un ojo. «Ahora no. Esta es mi canción». Lo cierra.`, `A Luisa dança no meio do tapete de olhos fechados e uma mão pra cima, no meio de gente que não faz ideia de que ela organiza a vida de todo mundo. Ela abre um olho pra você. «Agora não. Essa é a minha música». Fecha de novo.`),
           choices: [
             K('care', t(`Dance next to her for one song.`, `Bailar a su lado una canción.`, `Dançar do lado dela uma música.`), { do: { fun: 4, time: 6, bond: { maru: 1 } }, next: 'b' }),
             K('chill', t(`Leave her to it.`, `Dejarla en lo suyo.`, `Deixar ela na dela.`), { free: true, next: null })
@@ -232,7 +232,7 @@
     D.maru_af_balcony = {
       who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
         a: {
-          text: t(`Maru is on the balcony with the phone face down on the rail, looking at the street. "Don't ask me yet. It's the thing I said I'd tell you first. It isn't today. It's close." She breathes out. "Go do your thing. I'll be in for the hard part."`, `Maru está en el balcón con el celular boca abajo en la baranda, mirando la calle. «No me preguntes todavía. Es lo que dije que te contaría primero. No es hoy. Está cerca». Suelta el aire. «Ve a lo tuyo. Entro para la parte difícil».`, `A Maru tá na varanda com o celular virado pra baixo no parapeito, olhando a rua. «Não pergunta ainda. É a coisa que eu disse que te contava primeiro. Não é hoje. Tá perto». Ela solta o ar. «Vai fazer o que você tem que fazer. Eu entro pra parte difícil».`),
+          text: t(`Luisa is on the balcony with the phone face down on the rail, looking at the street. "Don't ask me yet. It's the thing I said I'd tell you first. It isn't today. It's close." She breathes out. "Go do your thing. I'll be in for the hard part."`, `Luisa está en el balcón con el celular boca abajo en la baranda, mirando la calle. «No me preguntes todavía. Es lo que dije que te contaría primero. No es hoy. Está cerca». Suelta el aire. «Ve a lo tuyo. Entro para la parte difícil».`, `A Luisa tá na varanda com o celular virado pra baixo no parapeito, olhando a rua. «Não pergunta ainda. É a coisa que eu disse que te contava primeiro. Não é hoje. Tá perto». Ela solta o ar. «Vai fazer o que você tem que fazer. Eu entro pra parte difícil».`),
           choices: [
             K('care', t(`"I'm here when you want."`, `«Aquí estoy cuando quieras».`, `«Tô aqui quando você quiser».`), { do: { soc: 2, bond: { maru: 1 } }, next: null }),
             K('chill', t(`"Take your hour."`, `«Tómate tu hora».`, `«Leva a sua hora».`), { free: true, next: null })

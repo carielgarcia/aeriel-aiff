@@ -99,7 +99,7 @@
 
   /* barks about Æ000.X from your friends */
   story.extraBarks = {
-    maru: [T('MARU: "I got onto the Æ000.X list once. I told everyone for a month."', 'MARU: «Una vez entré a la lista de Æ000.X. Se lo conté a todo el mundo durante un mes».', 'MARU: «Uma vez entrei na lista da Æ000.X. Contei pra todo mundo por um mês».')],
+    maru: [T('LUISA: "I got onto the Æ000.X list once. I told everyone for a month."', 'LUISA: «Una vez entré a la lista de Æ000.X. Se lo conté a todo el mundo durante un mes».', 'LUISA: «Uma vez entrei na lista da Æ000.X. Contei pra todo mundo por um mês».')],
     dani: [T('BENJA: "Æ000.X rejected me twice and I respect it so much."', 'BENJA: «Æ000.X me rechazó dos veces y lo respeto muchísimo».', 'BENJA: «A Æ000.X me recusou duas vezes e eu respeito demais».')],
     tato: [T('FEÑA: "I read the Æ000.X FAQ. It cared about me more than my last relationship."', 'FEÑA: «Leí el FAQ de Æ000.X. Se preocupó más por mí que mi última relación».', 'FEÑA: «Li o FAQ da Æ000.X. Ele se preocupou mais comigo do que meu último relacionamento».')]
   };
@@ -246,12 +246,12 @@
       },
       group: {
         text: [
-          T(`Maru says your name softly. "I love you. I can't do this tonight."`, `Maru dice tu nombre bajito. «Te quiero. No puedo con esto esta noche».`, `A Maru diz seu nome baixinho. «Eu te amo. Eu não consigo com isso hoje».`),
-          T('Benja looks at his shoes. Feña has already put his hood up. Nobody shouts. They go out through the foyer, in a line, with the dignity of people leaving a theatre. Maru looks back once, and her face says: call me when you are yourself again.', 'Benja mira sus zapatos. Feña ya se puso la capucha. Nadie grita. Salen por el foyer, en fila, con la dignidad de quienes dejan un teatro. Maru mira atrás una vez, y su cara dice: llámame cuando vuelvas a ser tú.', 'O Benja olha pros sapatos. O Feña já pôs o capuz. Ninguém grita. Eles saem pelo foyer, em fila, com a dignidade de quem deixa um teatro. A Maru olha pra trás uma vez, e o rosto dela diz: me liga quando você voltar a ser você.')
+          T(`Luisa says your name softly. "I love you. I can't do this tonight."`, `Luisa dice tu nombre bajito. «Te quiero. No puedo con esto esta noche».`, `A Luisa diz seu nome baixinho. «Eu te amo. Eu não consigo com isso hoje».`),
+          T('Benja looks at his shoes. Feña has already put his hood up. Nobody shouts. They go out through the foyer, in a line, with the dignity of people leaving a theatre. Luisa looks back once, and her face says: call me when you are yourself again.', 'Benja mira sus zapatos. Feña ya se puso la capucha. Nadie grita. Salen por el foyer, en fila, con la dignidad de quienes dejan un teatro. Luisa mira atrás una vez, y su cara dice: llámame cuando vuelvas a ser tú.', 'O Benja olha pros sapatos. O Feña já pôs o capuz. Ninguém grita. Eles saem pelo foyer, em fila, com a dignidade de quem deixa um teatro. A Luisa olha pra trás uma vez, e o rosto dela diz: me liga quando você voltar a ser você.')
         ]
       },
       alone: {
-        text: T('Your phone buzzes in your pocket. MARU: "we left. we love you. call me when you\'re yourself again." BENJA: "( ◡̀_◡́)ᕤ i am sorry and also not sorry." FEÑA: "get home safe."', 'Tu celular vibra en el bolsillo. MARU: «nos fuimos. te queremos. llámame cuando vuelvas a ser tú». BENJA: «( ◡̀_◡́)ᕤ perdón y tampoco perdón». FEÑA: «llega bien a casa».', 'Seu celular vibra no bolso. MARU: «a gente foi. a gente te ama. me liga quando você voltar a ser você». BENJA: «( ◡̀_◡́)ᕤ desculpa e também não desculpa». FEÑA: «chega bem em casa».')
+        text: T('Your phone buzzes in your pocket. LUISA: "we left. we love you. call me when you\'re yourself again." BENJA: "( ◡̀_◡́)ᕤ i am sorry and also not sorry." FEÑA: "get home safe."', 'Tu celular vibra en el bolsillo. LUISA: «nos fuimos. te queremos. llámame cuando vuelvas a ser tú». BENJA: «( ◡̀_◡́)ᕤ perdón y tampoco perdón». FEÑA: «llega bien a casa».', 'Seu celular vibra no bolso. LUISA: «a gente foi. a gente te ama. me liga quando você voltar a ser você». BENJA: «( ◡̀_◡́)ᕤ desculpa e também não desculpa». FEÑA: «chega bem em casa».')
       }
     }
   };

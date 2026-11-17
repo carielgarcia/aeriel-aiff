@@ -141,7 +141,7 @@
   story.morningRefs = REF;
   /* a chain that already paid off in the night can skip the morning */
   story.morningPay = function (s, id) { return !s.flags['pay_' + id] || s.flags['pay_' + id] !== 'night'; };
-  const PREF = { maru: 'MARU', dani: 'BENJA', tato: 'FEÑA' };
+  const PREF = { maru: 'LUISA', dani: 'BENJA', tato: 'FEÑA' };
   story.morning = function (s) {
     const msgs = [];
     const seed = (s.seed || 1) + (s.attempt || 1) * 13;

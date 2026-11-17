@@ -23,12 +23,12 @@
       },
       b: {
         text: [
-          T('MARU: "Okay. I need to pee. Urgently. It is the kind of emergency that has a face."', 'MARU: «Bueno. Tengo que hacer pipí. Urgente. Es el tipo de emergencia que tiene cara».', 'MARU: «Tá. Preciso fazer xixi. Urgente. É o tipo de emergência que tem cara».'),
-          T('BENJA: "I\'ll come! Moral support!" FEÑA: "I\'m not staying alone out here." MARU: "Then we move together. Nobody gets lost. Say it."', 'BENJA: «¡Voy yo! ¡Apoyo moral!» FEÑA: «No me quedo solo aquí». MARU: «Entonces nos movemos juntos. Nadie se pierde. Díganlo».', 'BENJA: «Eu vou! Apoio moral!» FEÑA: «Não fico sozinho aqui». MARU: «Então a gente se move junto. Ninguém se perde. Falem».')
+          T('LUISA: "Okay. I need to pee. Urgently. It is the kind of emergency that has a face."', 'LUISA: «Bueno. Tengo que hacer pipí. Urgente. Es el tipo de emergencia que tiene cara».', 'LUISA: «Tá. Preciso fazer xixi. Urgente. É o tipo de emergência que tem cara».'),
+          T('BENJA: "I\'ll come! Moral support!" FEÑA: "I\'m not staying alone out here." LUISA: "Then we move together. Nobody gets lost. Say it."', 'BENJA: «¡Voy yo! ¡Apoyo moral!» FEÑA: «No me quedo solo aquí». LUISA: «Entonces nos movemos juntos. Nadie se pierde. Díganlo».', 'BENJA: «Eu vou! Apoio moral!» FEÑA: «Não fico sozinho aqui». LUISA: «Então a gente se move junto. Ninguém se perde. Falem».')
         ],
         choices: [
           { tone: 'chill', t: T('"Nobody gets lost."', '«Nadie se pierde».', '«Ninguém se perde».'), do: { flag: 'promised_together', bond: { maru: 1, dani: 1, tato: 1 } }, next: 'c' },
-          { tone: 'blunt', t: T('"You\'re adults. Go pee."', '«Son adultos. Vayan a hacer pipí».', '«Vocês são adultos. Vão fazer xixi».'), do: { soc: -1, bond: { maru: -1 } }, next: 'c', react: T('Maru raises an eyebrow. "We are going together. That was not a question."', 'Maru levanta una ceja. «Vamos juntos. No era una pregunta».', 'A Maru levanta uma sobrancelha. «A gente vai junto. Não era uma pergunta».') }
+          { tone: 'blunt', t: T('"You\'re adults. Go pee."', '«Son adultos. Vayan a hacer pipí».', '«Vocês são adultos. Vão fazer xixi».'), do: { soc: -1, bond: { maru: -1 } }, next: 'c', react: T('Luisa raises an eyebrow. "We are going together. That was not a question."', 'Luisa levanta una ceja. «Vamos juntos. No era una pregunta».', 'A Luisa levanta uma sobrancelha. «A gente vai junto. Não era uma pergunta».') }
         ]
       },
       c: {
@@ -68,7 +68,7 @@
     tato: T(`"I stood by a wall. The wall was nice."`, `«Me quedé junto a una pared. La pared era amable».`, `«Fiquei perto de uma parede. A parede era legal».`),
   };
   EM.FRIENDS.forEach(function (f) {
-    const names = { maru: 'MARU', dani: 'BENJA', tato: 'FEÑA' };
+    const names = { maru: 'LUISA', dani: 'BENJA', tato: 'FEÑA' };
     D['found_generic_' + f] = {
       who: f, start: 'a', nodes: {
         a: {
@@ -85,10 +85,10 @@
   /* ------------------------------------------------------------ friend barks */
   const BARKS = {
     maru: [
-      T('MARU: "Keep moving. I can feel the queue growing."', 'MARU: «Sigue. Siento cómo crece la fila».', 'MARU: «Continua. Sinto a fila crescendo».'),
-      T('MARU: "I love this song. I hate this song. I love it."', 'MARU: «Amo esta canción. Odio esta canción. La amo».', 'MARU: «Amo essa música. Odeio essa música. Amo».'),
-      T('MARU: "Water. Somebody remind me about water."', 'MARU: «Agua. Que alguien me recuerde el agua».', 'MARU: «Água. Alguém me lembra da água».'),
-      T('MARU: "If I lose my shoe tonight, I am blaming the floor."', 'MARU: «Si pierdo un zapato esta noche, le echo la culpa al piso».', 'MARU: «Se eu perder um sapato hoje, a culpa é do chão».')
+      T('LUISA: "Keep moving. I can feel the queue growing."', 'LUISA: «Sigue. Siento cómo crece la fila».', 'LUISA: «Continua. Sinto a fila crescendo».'),
+      T('LUISA: "I love this song. I hate this song. I love it."', 'LUISA: «Amo esta canción. Odio esta canción. La amo».', 'LUISA: «Amo essa música. Odeio essa música. Amo».'),
+      T('LUISA: "Water. Somebody remind me about water."', 'LUISA: «Agua. Que alguien me recuerde el agua».', 'LUISA: «Água. Alguém me lembra da água».'),
+      T('LUISA: "If I lose my shoe tonight, I am blaming the floor."', 'LUISA: «Si pierdo un zapato esta noche, le echo la culpa al piso».', 'LUISA: «Se eu perder um sapato hoje, a culpa é do chão».')
     ],
     dani: [
       T('BENJA: "I LOVE EVERYONE IN THIS ROOM."', 'BENJA: «AMO A TODOS EN ESTE CUARTO».', 'BENJA: «AMO TODO MUNDO NESTA SALA».'),

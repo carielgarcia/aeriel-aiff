@@ -13,7 +13,7 @@
   const F = function (f) { return function (s) { return !!s.flags[f]; }; };
   const NF = function (f) { return function (s) { return !s.flags[f]; }; };
   const LEAVE = function () { return K('chill', t(`Leave it there.`, `Dejarlo ahí.`, `Deixar por aqui.`), { free: true, next: null }); };
-  const deep = function (s) { return EM.mulberry32((s.seed | 0) + 777)() < 0.3; };
+  const deep = function (s) { return !!(s.flags.one_yes || (s.after && s.after.st >= 2 && !s.flags.one_no)); };
 
   S.af_noise12 = function () { AF.noise(12); };
   S.af_lio_cost = function () {

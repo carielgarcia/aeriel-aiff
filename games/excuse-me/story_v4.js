@@ -133,10 +133,10 @@
     const f = EM.pick(s.party);
     const LINES = {
       maru: [
-        T('MARU: "Weird. I\'ve had this exact thought about the queue before."', 'MARU: «Qué raro. Ya tuve exactamente este pensamiento sobre la fila».', 'MARU: «Estranho. Já tive exatamente esse pensamento sobre a fila antes».'),
-        T('MARU: "Have we done this before? Do not answer. I will get sad."', 'MARU: «¿Ya hicimos esto antes? No contestes. Me voy a poner triste».', 'MARU: «A gente já fez isso antes? Não responde. Vou ficar triste».'),
-        T('MARU: "I am going to start writing notes to myself on my arm. The note says: believe them."', 'MARU: «Voy a empezar a escribirme notas en el brazo. La nota dice: créeles».', 'MARU: «Vou começar a escrever bilhetes pra mim no braço. O bilhete diz: acredita neles».'),
-        T('MARU: "At this point I should just run the door."', 'MARU: «A estas alturas debería manejar yo la puerta».', 'MARU: «A essa altura eu devia tocar a porta».')
+        T('LUISA: "Weird. I\'ve had this exact thought about the queue before."', 'LUISA: «Qué raro. Ya tuve exactamente este pensamiento sobre la fila».', 'LUISA: «Estranho. Já tive exatamente esse pensamento sobre a fila antes».'),
+        T('LUISA: "Have we done this before? Do not answer. I will get sad."', 'LUISA: «¿Ya hicimos esto antes? No contestes. Me voy a poner triste».', 'LUISA: «A gente já fez isso antes? Não responde. Vou ficar triste».'),
+        T('LUISA: "I am going to start writing notes to myself on my arm. The note says: believe them."', 'LUISA: «Voy a empezar a escribirme notas en el brazo. La nota dice: créeles».', 'LUISA: «Vou começar a escrever bilhetes pra mim no braço. O bilhete diz: acredita neles».'),
+        T('LUISA: "At this point I should just run the door."', 'LUISA: «A estas alturas debería manejar yo la puerta».', 'LUISA: «A essa altura eu devia tocar a porta».')
       ],
       dani: [
         T('BENJA: "Have we done this before? I have the strangest feeling about the toilets."', 'BENJA: «¿Ya hicimos esto antes? Tengo la sensación más rara con los baños».', 'BENJA: «A gente já fez isso antes? Tô com a sensação mais estranha sobre os banheiros».'),

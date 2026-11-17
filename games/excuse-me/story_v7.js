@@ -13,14 +13,14 @@
   const KR = {
     maru: {
       ok: [
-        t(`MARU (low, delighted): "I saw that. I'm going to pretend I didn't. I saw it, though."`, `MARU (bajito, encantada): «Vi eso. Voy a fingir que no. Lo vi, igual».`, `MARU (baixinho, encantada): «Eu vi isso. Vou fingir que não vi. Mas eu vi».`),
-        t(`MARU: "Ten out of ten. Perfect landing. I'd like to speak to the manager about your confidence."`, `MARU: «Diez de diez. Aterrizaje perfecto. Quiero hablar con el gerente sobre tu seguridad».`, `MARU: «Dez de dez. Pouso perfeito. Quero falar com o gerente sobre a sua confiança».`),
-        t(`MARU just raises both eyebrows at you from across the room and mouths "WOW".`, `MARU solo te levanta las dos cejas desde el otro lado de la sala y articula «GUAU».`, `A MARU só levanta as duas sobrancelhas pra você do outro lado da sala e diz «NOSSA» sem voz.`)
+        t(`LUISA (low, delighted): "I saw that. I'm going to pretend I didn't. I saw it, though."`, `LUISA (bajito, encantada): «Vi eso. Voy a fingir que no. Lo vi, igual».`, `LUISA (baixinho, encantada): «Eu vi isso. Vou fingir que não vi. Mas eu vi».`),
+        t(`LUISA: "Ten out of ten. Perfect landing. I'd like to speak to the manager about your confidence."`, `LUISA: «Diez de diez. Aterrizaje perfecto. Quiero hablar con el gerente sobre tu seguridad».`, `LUISA: «Dez de dez. Pouso perfeito. Quero falar com o gerente sobre a sua confiança».`),
+        t(`LUISA just raises both eyebrows at you from across the room and mouths "WOW".`, `LUISA solo te levanta las dos cejas desde el otro lado de la sala y articula «GUAU».`, `A LUISA só levanta as duas sobrancelhas pra você do outro lado da sala e diz «NOSSA» sem voz.`)
       ],
       flop: [
-        t(`MARU (kindly): "I saw the whole thing. We don't need to discuss it. Ever. I love you."`, `MARU (con cariño): «Vi todo. No hace falta hablarlo. Nunca. Te quiero».`, `MARU (com carinho): «Eu vi tudo. A gente não precisa falar disso. Nunca. Eu te amo».`),
-        t(`MARU: "That was brave. Not successful. Brave. Here, have some water."`, `MARU: «Eso fue valiente. No exitoso. Valiente. Toma, un poco de agua».`, `MARU: «Isso foi corajoso. Não bem-sucedido. Corajoso. Toma, um pouco de água».`),
-        t(`MARU makes a tiny teeth-clash sound effect with her mouth, then puts a hand on your shoulder. "Sorry. Reflex."`, `MARU hace con la boca un efecto de sonido de choque de dientes, y luego te pone una mano en el hombro. «Perdón. Reflejo».`, `A MARU faz com a boca um efeito sonoro de batida de dentes e depois põe uma mão no seu ombro. «Desculpa. Reflexo».`)
+        t(`LUISA (kindly): "I saw the whole thing. We don't need to discuss it. Ever. I love you."`, `LUISA (con cariño): «Vi todo. No hace falta hablarlo. Nunca. Te quiero».`, `LUISA (com carinho): «Eu vi tudo. A gente não precisa falar disso. Nunca. Eu te amo».`),
+        t(`LUISA: "That was brave. Not successful. Brave. Here, have some water."`, `LUISA: «Eso fue valiente. No exitoso. Valiente. Toma, un poco de agua».`, `LUISA: «Isso foi corajoso. Não bem-sucedido. Corajoso. Toma, um pouco de água».`),
+        t(`LUISA makes a tiny teeth-clash sound effect with her mouth, then puts a hand on your shoulder. "Sorry. Reflex."`, `LUISA hace con la boca un efecto de sonido de choque de dientes, y luego te pone una mano en el hombro. «Perdón. Reflejo».`, `A LUISA faz com a boca um efeito sonoro de batida de dentes e depois põe uma mão no seu ombro. «Desculpa. Reflexo».`)
       ]
     },
     dani: {

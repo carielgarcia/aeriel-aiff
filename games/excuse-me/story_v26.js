@@ -94,7 +94,7 @@
   (function () {
     const q = EM.QUESTS.q11; if (!q) return;
     const base = q.desc;
-    const NAMES = { maru: ['Maru', 'Maru', 'Maru'], dani: ['Benjamin', 'Benjamin', 'Benjamin'], tato: ['Fernando', 'Feña', 'Fernando'] };
+    const NAMES = { maru: ['Luisa', 'Luisa', 'Luisa'], dani: ['Benjamin', 'Benjamin', 'Benjamin'], tato: ['Fernando', 'Feña', 'Fernando'] };
     const W = { warm: ['warm', 'cálido', 'quente'], wild: ['loud', 'fuerte', 'alto'], soft: ['soft', 'suave', 'suave'] };
     q.desc = function (s) {
       const got = ORDER.filter(function (f) { return s.flags['learned_' + f]; });

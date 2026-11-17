@@ -192,8 +192,8 @@
       },
       ashamed: {
         who: 'rico',
-        text: T(`Rico's grin drops. "…Okay. That's — okay. I buy from a guy. I don't test. I should. I really should." He rubs the back of his neck. "I'm going to hold off on the rest of mine tonight. And — I'm sorry. Tell your friend. I'm sorry."`, `La sonrisa de Rico se cae. «…Bueno. Eso es… bueno. Le compro a un tipo. No testeo. Debería. En serio, debería». Se frota la nuca. «Esta noche no voy a vender el resto. Y… perdón. Díselo a tu amigo. Perdón».`, `O sorriso do Rico some. «…Tá. Isso é… tá. Eu compro de um cara. Não testo. Eu devia. Devia mesmo». Ele esfrega a nuca. «Hoje eu seguro o resto do que tenho. E… desculpa. Fala pro seu amigo. Desculpa».`),
-        do: { fun: 2, soc: 2, flag: 'rico_sorry' }
+        text: T(`Rico's jaw tightens. "I buy what I get. You think I have a lab in my kitchen?" He looks away, pockets his pouch, and mutters: "Fine. I'll stop moving the rest tonight. Keep your voice down."`, `A Rico se le tensa la mandíbula. «Compro lo que hay. ¿Crees que tengo un laboratorio en la cocina?» Desvía la mirada, guarda la bolsa y murmura: «Ya, dejo de mover el resto esta noche. Baja la voz».`, `O maxilar do Rico trava. «Eu compro o que tem. Acha que eu tenho um laboratório na cozinha?» Ele desvia o olhar, guarda o saquinho e resmunga: «Tá, paro de passar o resto hoje. Abaixa a voz».`),
+        do: { soc: 1, flag: 'rico_sorry' }
       }
     }
   };

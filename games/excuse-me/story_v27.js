@@ -29,7 +29,7 @@
       a: {
         text: t(`A stranger holds a phone over the dancers, panning slowly, mouthing a caption. "Sorry, it's for my story. It's a vibe." The camera sticker on the back is peeled off.`, `Un desconocido sostiene un celular sobre los bailarines, paneando despacio y murmurando un texto. «Perdón, es para mi historia. Es un vibe». La pegatina de la cámara está despegada.`, `Um desconhecido segura um celular acima de quem dança, fazendo uma panorâmica lenta e murmurando uma legenda. «Desculpa, é pro meu story. É uma vibe». O adesivo da câmera foi arrancado.`),
         choices: [
-          K('honest', t(`"Ask first. They didn't agree to be in your story. Please put it away."`, `«Pregunta primero. Nadie aceptó salir en tu historia. Guárdalo, por favor».`, `«Pergunta primeiro. Ninguém aceitou aparecer no seu story. Guarda isso, por favor».`), { do: { soc: 2, fun: 3, flag: 'filmer_done', care: 1 }, next: null, react: t(`"Oh. Oh no. I thought this was a museum." He deletes the clip while you watch, apologises to a pillar, and puts the phone in his sock.`, `«Ay. Ay no. Pensé que esto era un museo». Borra el video mientras miras, le pide perdón a un pilar y se guarda el celular en el calcetín.`, `«Ai. Ai não. Achei que isso era um museu». Ele apaga o vídeo enquanto você olha, pede desculpa pra um pilar e guarda o celular na meia.`) }),
+          K('honest', t(`"Ask first. They didn't agree to be in your story. Please put it away."`, `«Pregunta primero. Nadie aceptó salir en tu historia. Guárdalo, por favor».`, `«Pergunta primeiro. Ninguém aceitou aparecer no seu story. Guarda isso, por favor».`), { do: { soc: 2, fun: 3, flag: 'filmer_done', care: 1 }, next: null, react: t(`"Fine, chill." He locks the screen with a sharp click, pockets the phone, and drifts back toward the bar.`, `«Ya, tranquilo». Bloquea la pantalla con un clic seco, se guarda el celular y se pierde hacia la barra.`, `«Tá, calma». Ele trava a tela com um clique seco, guarda o celular no bolso e some pro lado do bar.`) }),
           K('joke', t(`"Nine percent battery. Mine. Yours is going to die in the first chorus."`, `«Nueve por ciento de batería. La mía. La tuya se muere en el primer estribillo».`, `«Nove por cento de bateria. A minha. A sua vai morrer no primeiro refrão».`), { do: { fun: 3, flag: 'filmer_done' }, next: null, react: t(`He checks his battery. It is at 4%. He lowers the phone with something like relief.`, `Mira su batería. Tiene 4%. Baja el celular con algo parecido al alivio.`, `Ele confere a bateria. Tá em 4%. Abaixa o celular com algo parecido com alívio.`) }),
           K('chill', t(`Let it go.`, `Dejarlo pasar.`, `Deixar pra lá.`), { free: true, next: null })
         ]
@@ -40,9 +40,9 @@
 
   /* ============================================================ Maru's bladder, and what she owes you */
   const MARU = [
-    t(`MARU: "I'm fine. Everything is fine. Where is the toilet. Is the toilet a myth."`, `MARU: «Estoy bien. Todo está bien. ¿Dónde está el baño? ¿El baño es un mito?»`, `MARU: «Tô bem. Tá tudo bem. Cadê o banheiro? O banheiro é um mito?»`),
-    t(`MARU: "I'm composing a eulogy for my bladder. It was brave. It was loved."`, `MARU: «Estoy componiendo un elogio fúnebre para mi vejiga. Fue valiente. Fue querida».`, `MARU: «Tô compondo um elogio fúnebre pra minha bexiga. Foi corajosa. Foi amada».`),
-    t(`MARU: "Tell my mother I was brave. Then tell her I need a stall."`, `MARU: «Dile a mi mamá que fui valiente. Luego dile que necesito una cabina».`, `MARU: «Fala pra minha mãe que eu fui corajosa. Depois fala que eu preciso de uma cabine».`)
+    t(`LUISA: "I'm fine. Everything is fine. Where is the toilet. Is the toilet a myth."`, `LUISA: «Estoy bien. Todo está bien. ¿Dónde está el baño? ¿El baño es un mito?»`, `LUISA: «Tô bem. Tá tudo bem. Cadê o banheiro? O banheiro é um mito?»`),
+    t(`LUISA: "I'm composing a eulogy for my bladder. It was brave. It was loved."`, `LUISA: «Estoy componiendo un elogio fúnebre para mi vejiga. Fue valiente. Fue querida».`, `LUISA: «Tô compondo um elogio fúnebre pra minha bexiga. Foi corajosa. Foi amada».`),
+    t(`LUISA: "Tell my mother I was brave. Then tell her I need a stall."`, `LUISA: «Dile a mi mamá que fui valiente. Luego dile que necesito una cabina».`, `LUISA: «Fala pra minha mãe que eu fui corajosa. Depois fala que eu preciso de uma cabine».`)
   ];
   let q2t = 0, q2n = 0;
   /* ============================================================ Mika remembers a lie; Rosa nods on the short route */
@@ -158,7 +158,7 @@
         text: function (s) {
           const lines = TEAM.filter(function (m) { return m.ok(s); }).map(function (m) { return m.t; });
           return [t(`The roof is open. On the stairs, in lanyards, with mops and clipboards and a first-aid bag, are the people who held the night up so everyone could dance on it.`, `El techo está abierto. En la escalera, con credenciales, trapeadores, carpetas y un botiquín, están quienes sostuvieron la noche para que todos bailaran encima.`, `O terraço tá aberto. Na escada, de crachá, com esfregões, pranchetas e uma maleta de primeiros socorros, estão as pessoas que sustentaram a noite pra todo mundo dançar em cima dela.`)]
-            .concat(lines, t(`That is what the ticket is for. Cleaning, doors, medics, harm reduction, the DJ's fee: all of it is somebody's work, and all of it is fairly paid. Say thank you out loud.`, `Para eso es la entrada. Limpieza, puertas, paramédicos, reducción de daños, el cachet de ÆRIEL: todo es el trabajo de alguien, y todo se paga justo. Dilo en voz alta: gracias.`, `É pra isso que serve o ingresso. Limpeza, portas, paramédicos, redução de danos, o cachê da ÆRIEL: tudo é trabalho de alguém, e tudo é pago de forma justa. Diga em voz alta: obrigado.`));
+            .concat(lines);
         },
         choices: [K('care', t(`"Thank you — Rosa, Luca, Isi, Mika, Dario, Dragan."`, `«Gracias — Rosa, Luca, Isi, Mika, Dario, Dragan».`, `«{Obrigado|Obrigada|Valeu} — Rosa, Luca, Isi, Mika, Dario, Dragan».`), { free: true, call: 'team_apply', next: null })]
       }
@@ -172,7 +172,7 @@
 
   if (D.need_maru && D.need_maru.nodes && D.need_maru.nodes.a) {
     D.need_maru.nodes.tell = {
-      text: t(`MARU, smiling without stopping: "You got me to the toilet in time. I owe you one, no dance needed. What I need from the last hour: warm. A long chord. Nothing sudden."`, `MARU, sonriendo sin detenerse: «Me llevaste al baño a tiempo. Te debo una, sin baile. Lo que necesito de la última hora: cálido. Un acorde largo. Nada brusco».`, `A MARU, sorrindo sem parar: «Você me levou ao banheiro a tempo. Te devo uma, sem dança. O que eu preciso da última hora: quente. Um acorde longo. Nada brusco».`),
+      text: t(`LUISA, smiling without stopping: "You got me to the toilet in time. I owe you one, no dance needed. What I need from the last hour: warm. A long chord. Nothing sudden."`, `LUISA, sonriendo sin detenerse: «Me llevaste al baño a tiempo. Te debo una, sin baile. Lo que necesito de la última hora: cálido. Un acorde largo. Nada brusco».`, `A LUISA, sorrindo sem parar: «Você me levou ao banheiro a tempo. Te devo uma, sem dança. O que eu preciso da última hora: quente. Um acorde longo. Nada brusco».`),
       choices: [
         K('care', t(`"Warm, a long chord. Got it."`, `«Cálido, un acorde largo. Entendido».`, `«Quente, um acorde longo. Entendi».`), { do: { flag: ['need_done_maru', 'learned_maru', 'maru_owes_paid'], fun: 4, bond: { maru: 1 } }, call: 'v22_q10check', next: null })
       ]

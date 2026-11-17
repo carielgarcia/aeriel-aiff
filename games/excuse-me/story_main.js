@@ -45,10 +45,10 @@
       },
       e: {
         text: [
-          T('BROH goes stiff. Then limp. Then damp. "…bro. Bro. My dad never… okay. Okay. I\'m just so scared she\'ll leave."', 'BROH se pone rígido. Luego flojo. Luego húmedo. «…bro. Bro. Mi papá nunca… ok. Ok. Es que me da tanto miedo que se vaya».', 'O BROH fica duro. Depois mole. Depois molhado. «…mano. Mano. Meu pai nunca… tá. Tá. É que eu tenho tanto medo dela ir embora».'),
-          T('Sofi mouths "thank you" over his shoulder and, for the first time all night, relaxes her face. He lets her go to wipe his eyes. She is already stretching.', 'Sofi articula «gracias» por encima de su hombro y, por primera vez en toda la noche, relaja la cara. Él la suelta para secarse los ojos. Ella ya se está estirando.', 'A Sofi diz «obrigada» por cima do ombro dele e, pela primeira vez na noite, relaxa o rosto. Ele a solta pra secar os olhos. Ela já está se alongando.')
+          T('BROH goes rigid for a second, caught off guard. "Hey—what are you doing?" He nudges your shoulder back, confused rather than swinging.', 'BROH se queda rígido un segundo, descolocado. «Eh, ¿qué haces?» Te aparta el hombro despacio, más confundido que buscando pelea.', 'O BROH fica travado por um segundo, sem jeito. «Ei, o que você tá fazendo?» Ele empurra seu ombro de leve, mais confuso do que brigando.'),
+          T('The surprise makes him loosen his grip on Sofi just enough. She steps clear before he recovers his posture and slips a look of quiet thanks your way.', 'La sorpresa hace que suelte el brazo de Sofi lo justo. Ella da un paso afuera antes de que él recupere la postura y te dedica una mirada rápida de alivio.', 'A surpresa faz ele afrouxar o braço da Sofi o suficiente. Ela dá um passo pro lado antes que ele recupere a postura e te manda um olhar rápido de alívio.')
         ],
-        do: { open: 'broh', flag: ['broh_friend', 'broh_hugged'], care: 1, soc: 2 }
+        do: { open: 'broh', flag: ['broh_friend', 'broh_hugged'], care: 1, soc: 1, weird: 1 }
       },
       f: {
         text: [

@@ -243,7 +243,7 @@
       },
       check: { branch: [{ req: function (s) { return ['lic_n1', 'lic_n2', 'lic_n3', 'lic_n4'].filter(function (f) { return s.flags[f]; }).length >= 2; }, to: 'ok' }, { req: function () { return true; }, to: 'help' }] },
       ok: {
-        text: t(`Sra. Valdés takes a card from her gown, writes three lines and signs. "I'm not saying yes to everything. I'm saying yes to the people who asked." She hands it over. "Tell them I wrote it myself."`, `La Sra. Valdés saca una tarjeta de la bata, escribe tres líneas y firma. «No digo que sí a todo. Digo que sí a quienes preguntaron». Te la entrega. «Diles que la escribí yo».`, `A Sra. Valdés tira um cartão do roupão, escreve três linhas e assina. «Não tô dizendo sim pra tudo. Tô dizendo sim pra quem perguntou». Ela entrega. «Diz que eu mesma escrevi».`),
+        text: t(`Sra. Valdés writes three lines on a card and underlines twice: for tonight, she'll hold off until Monday. "Keep the smokers off my balcony and the roof low, and we'll see how Monday goes." She hands it over.`, `La Sra. Valdés escribe tres líneas en una tarjeta y subraya dos veces: por esta noche, espera hasta el lunes. «Saquen a los fumadores de mi balcón, bajen el techo, y el lunes vemos». Te la entrega.`, `A Sra. Valdés escreve três linhas num cartão e sublinha duas vezes: por hoje, ela segura até segunda. «Tirem os fumantes da minha varanda, baixem o terraço, e segunda a gente vê». Ela entrega.`),
         choices: [K('care', t(`"Thank you, Sra. Valdés." [Take the card]`, `«Gracias, Sra. Valdés». [Tomar la tarjeta]`, `«{Obrigado|Obrigada|Valeu}, Sra. Valdés». [Pegar o cartão]`), { do: { fun: 4, soc: 4, care: 1, flag: 'lic_neigh' }, next: null })]
       }
     }

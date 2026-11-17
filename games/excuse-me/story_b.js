@@ -93,14 +93,14 @@
           T('"One person per stall. Nobody goes in two at a time. Nobody does anything in there that I would have to explain to the owner. The line is behind you."', '«Una persona por cabina. Nadie entra de a dos. Nadie hace ahí nada que yo tenga que explicarle al dueño. La fila está detrás de ti».', '«Uma pessoa por cabine. Ninguém entra de dois em dois. Ninguém faz ali nada que eu precise explicar pro dono. A fila é atrás de você».')
         ],
         choices: [
-          { tone: 'honest', t: T('"We\'re a group, and we need one stall. Maru has to go. Feña gets overwhelmed and shouldn\'t be alone. We can keep it quick and clean."', '«Somos un grupo y necesitamos una cabina. Maru tiene que ir. Feña se abruma y no debería estar solo. Podemos hacerlo rápido y limpio».', '«A gente é um grupo e precisa de uma cabine. A Maru precisa ir. O Feña fica sobrecarregado e não deveria ficar sozinho. A gente faz rápido e limpo».'),
+          { tone: 'honest', t: T('"We\'re a group, and we need one stall. Luisa has to go. Feña gets overwhelmed and shouldn\'t be alone. We can keep it quick and clean."', '«Somos un grupo y necesitamos una cabina. Luisa tiene que ir. Feña se abruma y no debería estar solo. Podemos hacerlo rápido y limpio».', '«A gente é um grupo e precisa de uma cabine. A Luisa precisa ir. O Feña fica sobrecarregado e não deveria ficar sozinho. A gente faz rápido e limpo».'),
             next: 'honest_check' },
           { tone: 'smooth', t: T('"You have an impossible job and you\'re doing it beautifully. Give us ninety seconds of grace."', '«Tienes un trabajo imposible y lo haces hermoso. Danos noventa segundos de gracia».', '«Você tem um trabalho impossível e tá fazendo lindamente. Nos dá noventa segundos de graça».'),
             next: 'charm_check' },
           { tone: 'lie', t: T('"My friend is sick. Throwing-up sick."', '«Mi amigo está enfermo. De vomitar».', '«Meu amigo tá passando mal. De vomitar».'),
             do: { weird: 4 }, next: 'ok_lie' },
           { tone: 'honest', t: T('"Radio chatter says somebody gave a guy water by the speakers. That was me."', '«Dicen por radio que alguien le dio agua a un tipo junto a los parlantes. Fui yo».', '«Dizem no rádio que alguém deu água pra um cara perto das caixas. Fui eu».'), req: { any: ['tobi_water', 'tobi_people', 'kiki_friend', 'bruno_advised'] }, next: 'ok_group' },
-          { tone: 'plan', t: T('"Fine. Maru goes alone. We wait here."', '«Bien. Maru va sola. Esperamos aquí».', '«Tá. A Maru vai sozinha. A gente espera aqui».'), next: 'split' }
+          { tone: 'plan', t: T('"Fine. Luisa goes alone. We wait here."', '«Bien. Luisa va sola. Esperamos aquí».', '«Tá. A Luisa vai sozinha. A gente espera aqui».'), next: 'split' }
         ]
       },
       honest_check: {
@@ -134,7 +134,7 @@
         text: T('"One person per stall. That is the rule, and rules are what keeps this room from becoming a documentary."', '«Una persona por cabina. Esa es la regla, y las reglas son lo que impide que este baño se convierta en un documental».', '«Uma pessoa por cabine. Essa é a regra, e as regras evitam que esta sala vire um documentário».'),
         choices: [
           { tone: 'chill', t: T('"Okay. Let me rephrase."', '«Bien. Déjame reformular».', '«Tá. Deixa eu reformular».'), next: 'a', do: { soc: -1 } },
-          { tone: 'plan', t: T('"Fine. Maru goes alone."', '«Bien. Maru va sola».', '«Tá. A Maru vai sozinha».'), next: 'split' }
+          { tone: 'plan', t: T('"Fine. Luisa goes alone."', '«Bien. Luisa va sola».', '«Tá. A Luisa vai sozinha».'), next: 'split' }
         ]
       },
       split: {
@@ -161,7 +161,7 @@
     forced: true, who: 'maru', start: 'a', nodes: {
       a: {
         text: [
-          T(`Maru goes in. You, Benja and Feña stand against the wall, looking at the ceiling. Behind the door: a long, grateful sigh.`, `Maru entra. Tú, Benja y Feña esperan contra la pared, mirando al techo. Detrás de la puerta: un suspiro largo y agradecido.`, `A Maru entra. Você, o Benja e o Feña esperam encostados na parede, olhando pro teto. Atrás da porta: um suspiro longo e agradecido.`),
+          T(`Luisa goes in. You, Benja and Feña stand against the wall, looking at the ceiling. Behind the door: a long, grateful sigh.`, `Luisa entra. Tú, Benja y Feña esperan contra la pared, mirando al techo. Detrás de la puerta: un suspiro largo y agradecido.`, `A Luisa entra. Você, o Benja e o Feña esperam encostados na parede, olhando pro teto. Atrás da porta: um suspiro longo e agradecido.`),
           T('BENJA, whispering, grinning, bouncing on his heels: "Okay okay okay. Look what I got."', 'BENJA, susurrando, sonriendo, rebotando en los talones: «Ok ok ok. Mira lo que conseguí».', 'BENJA, sussurrando, sorrindo, quicando nos calcanhares: «Tá tá tá. Olha o que eu consegui».')
         ],
         do: { call: 'stall_pill_node' },
@@ -206,11 +206,11 @@
     forced: true, who: 'maru', after: 'rosa_start', start: 'a', nodes: {
       a: {
         text: [
-          T('Stall three. A single toilet, three or four people, zero dignity. Maru sits. Benja leans against the door. Feña\'s breathing is a bellows. Your elbow is inside a coat hook.', 'Cabina tres. Un solo inodoro, tres o cuatro personas, cero dignidad. Maru se sienta. Benja se apoya contra la puerta. La respiración de Feña es un fuelle. Tu codo está dentro de un perchero.', 'Cabine três. Um único vaso, três ou quatro pessoas, zero dignidade. A Maru senta. O Benja encosta na porta. A respiração do Feña é um fole. Seu cotovelo está dentro de um cabide.'),
-          T('MARU: "Nobody. Look. At me."', 'MARU: «Nadie. Me. Mire».', 'MARU: «Ninguém. Olha. Pra mim».')
+          T('Stall three. A single toilet, three or four people, zero dignity. Luisa sits. Benja leans against the door. Feña\'s breathing is a bellows. Your elbow is inside a coat hook.', 'Cabina tres. Un solo inodoro, tres o cuatro personas, cero dignidad. Luisa se sienta. Benja se apoya contra la puerta. La respiración de Feña es un fuelle. Tu codo está dentro de un perchero.', 'Cabine três. Um único vaso, três ou quatro pessoas, zero dignidade. A Luisa senta. O Benja encosta na porta. A respiração do Feña é um fole. Seu cotovelo está dentro de um cabide.'),
+          T('LUISA: "Nobody. Look. At me."', 'LUISA: «Nadie. Me. Mire».', 'LUISA: «Ninguém. Olha. Pra mim».')
         ],
         choices: [
-          { tone: 'chill', t: T('Hum loudly, eyes fixed on the ceiling.', 'Tararear fuerte, ojos fijos en el techo.', 'Cantarolar alto, olhos fixos no teto.'), do: { soc: 1 }, next: 'pill', react: T('You hum the national anthem of nowhere. Maru laughs so hard she has to stop.', 'Tarareas el himno nacional de ninguna parte. Maru se ríe tanto que tiene que parar.', 'Você cantarola o hino nacional de lugar nenhum. A Maru ri tanto que precisa parar.') },
+          { tone: 'chill', t: T('Hum loudly, eyes fixed on the ceiling.', 'Tararear fuerte, ojos fijos en el techo.', 'Cantarolar alto, olhos fixos no teto.'), do: { soc: 1 }, next: 'pill', react: T('You hum the national anthem of nowhere. Luisa laughs so hard she has to stop.', 'Tarareas el himno nacional de ninguna parte. Luisa se ríe tanto que tiene que parar.', 'Você cantarola o hino nacional de lugar nenhum. A Luisa ri tanto que precisa parar.') },
           { tone: 'joke', t: T('Narrate it like a sports commentator, whispered.', 'Narrarlo como comentarista deportivo, susurrando.', 'Narrar como comentarista esportivo, sussurrando.'), do: { fun: 4, bond: { maru: 1, dani: 1 } }, next: 'pill', react: T('"And she\'s going for it, folks — Benja, I need you to be professional — and — YES. The crowd goes wild."', '«Y va por ella, señores — Benja, te necesito profesional — y — SÍ. El público enloquece».', '«E ela vai pra cima, senhores — Benja, preciso que você seja profissional — e — SIM. A torcida vai à loucura».') },
           { tone: 'care', t: T('Hold the door shut with your back. "I\'ve got the door."', 'Sostener la puerta con la espalda. «Yo cuido la puerta».', 'Segurar a porta com as costas. «Eu seguro a porta».'), do: { bond: { maru: 1 }, soc: 1 }, next: 'pill' }
         ]
@@ -362,12 +362,12 @@
         do: { flag: 'rosa_met' },
         choices: [
           { tone: 'honest', t: T('"We\'re sorry. One of us was panicking and we didn\'t want to leave him alone."', '«Lo sentimos. Uno de nosotros estaba en pánico y no queríamos dejarlo solo».', '«A gente sente muito. Um de nós tava em pânico e a gente não queria deixar sozinho».'), req: { any: ['tato_checked', 'tato_calm', 'tato_water', 'tato_rough'] }, next: 'honest' },
-          { tone: 'honest', t: T('"Maru had to pee, and we move together. We should have thought about you."', '«Maru tenía que hacer pipí y nos movemos juntos. Deberíamos haber pensado en ti».', '«A Maru precisava fazer xixi e a gente se move junto. A gente devia ter pensado em você».'), next: 'honest' },
+          { tone: 'honest', t: T('"Luisa had to pee, and we move together. We should have thought about you."', '«Luisa tenía que hacer pipí y nos movemos juntos. Deberíamos haber pensado en ti».', '«A Luisa precisava fazer xixi e a gente se move junto. A gente devia ter pensado em você».'), next: 'honest' },
           { tone: 'care', t: T('"Have you had any water today? Please, take this."', '«¿Tomaste agua hoy? Por favor, toma esto».', '«Você bebeu água hoje? Por favor, pega isso».'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, flag: 'rosa_water' }, next: 'warm' },
           { tone: 'care', t: T('"Let us help you clean up. We left it tidy, but let us check."', '«Déjanos ayudarte a limpiar. Lo dejamos ordenado, pero déjanos revisar».', '«Deixa a gente ajudar a limpar. A gente deixou arrumado, mas deixa conferir».'), do: { care: 1, time: 5, soc: -1, flag: 'rosa_helped_clean' }, next: 'warm' },
           { tone: 'joke', t: T('"Team-building exercise."', '«Ejercicio de integración de equipo».', '«Dinâmica de integração de equipe».'), next: 'joke' },
           { tone: 'lie', t: T('"It was just me and my friend. These two were waiting."', '«Éramos solo yo y mi amigo. Estos dos esperaban».', '«Era só eu e meu amigo. Esses dois estavam esperando».'), do: { weird: 5, soc: -2, flag: 'rosa_lied' }, next: 'cold' },
-          { tone: 'blunt', t: T('"It\'s a toilet. Relax."', '«Es un baño. Relájate».', '«É um banheiro. Relaxa».'), do: { weird: 15, soc: -5, flag: 'rosa_angry' }, next: 'angry', bad: true }
+          { tone: 'blunt', t: T('"We all paid to get in, Rosa. We\'re in a hurry."', '«Todos pagamos entrada, Rosa. Estamos apurados».', '«Todo mundo pagou pra entrar, Rosa. Estamos com pressa».'), do: { weird: 8, soc: -4, flag: 'rosa_angry' }, next: 'angry', bad: true }
         ]
       },
       honest: {
@@ -414,10 +414,10 @@
       },
       angry: {
         text: [
-          T('Rosa does not raise her voice. She lifts one hand and a radio crackles on her hip. "Ofelia. Third stall. Troublemaker. No, I will say it nicely: a person who needs to leave."', 'Rosa no levanta la voz. Levanta una mano y una radio crepita en su cadera. «Ofelia. Tercera cabina. Problemático. No, lo voy a decir bien: una persona que necesita irse».', 'A Rosa não levanta a voz. Ela ergue uma mão e um rádio chia no quadril. «Ofelia. Terceira cabine. Encrenqueiro. Não, vou dizer com educação: uma pessoa que precisa sair».'),
-          T('Ofelia arrives with a walk that ends conversations. She does not touch you. She only stands very close to where you are about to go. You are escorted out of the toilets, with your people behind you, to the main floor. Your name has been written in a very small book.', 'Ofelia llega con un andar que termina conversaciones. No te toca. Solo se pone muy cerca del lugar adonde vas a ir. Te acompañan fuera de los baños, con tu gente detrás, hasta la pista principal. Tu nombre quedó escrito en un libro muy pequeño.', 'A Ofelia chega com um andar que encerra conversas. Não te toca. Só fica muito perto do lugar pra onde você vai. Você é acompanhado pra fora dos banheiros, com sua galera atrás, até a pista principal. Seu nome foi escrito num livro muito pequeno.')
+          T('Rosa does not raise her voice. She rests one hand on the staff-door handle and turns the deadbolt. "Then hurry somewhere else."', 'Rosa no levanta la voz. Apoya una mano en el picaporte de staff y gira la llave. «Entonces apúrense en otro lado».', 'A Rosa não levanta a voz. Ela apoia uma mão na maçaneta do staff e gira a chave. «Então se apressem em outro lugar».'),
+          T('She looks past you, already back at the floor. "The corridor is closed for you tonight. Next time you rush past me, Ofelia walks you out."', 'Mira más allá de ti, ya vuelta al piso. «El pasillo queda cerrado para ustedes esta noche. La próxima vez que me pasen por encima, Ofelia los saca».', 'Ela olha além de você, já de volta pro chão. «O corredor tá fechado pra vocês hoje. Da próxima vez que passarem por cima de mim, a Ofelia tira vocês».')
         ],
-        do: { quest: { q4: 'done', q5: 'active' }, at: 212, goto: { zone: 'main', x: 42, y: 26, dir: 'l' } }
+        do: { quest: { q4: 'done', q5: 'active' }, at: 212 }
       }
     }
   };

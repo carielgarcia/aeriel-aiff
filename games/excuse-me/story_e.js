@@ -272,7 +272,7 @@
         next: 'allthree'
       },
       allthree: {
-        text: T(`Maru is on your left, Benja on your right, Feña in front, one hand on the rail. Nobody says anything for a long time. At some point, Benja whispers "I love everyone," and nobody laughs, because he means it.`, `Maru está a tu izquierda, Benja a tu derecha, Feña delante, con una mano en la baranda. Nadie dice nada durante un buen rato. En algún momento Benja susurra «quiero a todos» y nadie se ríe, porque lo dice en serio.`, `A Maru está à sua esquerda, o Benja à direita, o Feña na frente, com uma mão no parapeito. Ninguém diz nada por um bom tempo. Em algum momento o Benja sussurra «eu amo todo mundo» e ninguém ri, porque ele fala sério.`),
+        text: T(`Luisa is on your left, Benja on your right, Feña in front, one hand on the rail. Nobody says anything for a long time. At some point, Benja whispers "I love everyone," and nobody laughs, because he means it.`, `Luisa está a tu izquierda, Benja a tu derecha, Feña delante, con una mano en la baranda. Nadie dice nada durante un buen rato. En algún momento Benja susurra «quiero a todos» y nadie se ríe, porque lo dice en serio.`, `A Luisa está à sua esquerda, o Benja à direita, o Feña na frente, com uma mão no parapeito. Ninguém diz nada por um bom tempo. Em algum momento o Benja sussurra «eu amo todo mundo» e ninguém ri, porque ele fala sério.`),
         do: { flag: 'sunrise_all', fun: 10, soc: 6 },
         next: 'end'
       },

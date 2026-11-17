@@ -48,9 +48,9 @@
     q10: {
       title: t('THE SET FOR YOUR PEOPLE', 'EL SET PARA TU GENTE', 'O SET PRA SUA GALERA'),
       desc: function (s) {
-        return t(`ÆRIEL will ask what your people need from the last hour. Dance with each of them on the main floor and find out. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`,
-          `ÆRIEL va a preguntar qué necesita tu gente de la última hora. Baila con cada quien en la pista principal y averígualo. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`,
-          `A ÆRIEL vai perguntar do que sua galera precisa na última hora. Dance com cada pessoa na pista principal e descubra. ${mk(s, 'need_done_maru')} Maru ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`);
+        return t(`ÆRIEL will ask what your people need from the last hour. Dance with each of them on the main floor and find out. ${mk(s, 'need_done_maru')} Luisa ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`,
+          `ÆRIEL va a preguntar qué necesita tu gente de la última hora. Baila con cada quien en la pista principal y averígualo. ${mk(s, 'need_done_maru')} Luisa ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`,
+          `A ÆRIEL vai perguntar do que sua galera precisa na última hora. Dance com cada pessoa na pista principal e descubra. ${mk(s, 'need_done_maru')} Luisa ${mk(s, 'need_done_dani')} Benja ${mk(s, 'need_done_tato')} Feña`);
       },
       doneText: t(`You know what your people need, or you know you don't. Either way, ÆRIEL will ask.`, `Sabes qué necesita tu gente, o sabes que no lo sabes. De cualquier forma, ÆRIEL va a preguntar.`, `Você sabe do que sua galera precisa, ou sabe que não sabe. De qualquer jeito, a ÆRIEL vai perguntar.`)
     },
@@ -104,10 +104,10 @@
      "not tonight" skips them and you will have to guess. */
   const NEEDS = {
     maru: {
-      ask: t(`MARU puts her phone in her back pocket. "Okay. One song with me. After that I'll tell you what I need from the rest of tonight."`, `MARU se guarda el celular en el bolsillo de atrás. «Bueno. Una canción conmigo. Después te digo qué necesito del resto de esta noche».`, `A MARU guarda o celular no bolso de trás. «Tá. Uma música comigo. Depois te digo do que eu preciso no resto da noite».`),
-      dance: t(`Dance with Maru.`, `Bailar con Maru.`, `Dançar com a Maru.`),
+      ask: t(`LUISA puts her phone in her back pocket. "Okay. One song with me. After that I'll tell you what I need from the rest of tonight."`, `LUISA se guarda el celular en el bolsillo de atrás. «Bueno. Una canción conmigo. Después te digo qué necesito del resto de esta noche».`, `A LUISA guarda o celular no bolso de trás. «Tá. Uma música comigo. Depois te digo do que eu preciso no resto da noite».`),
+      dance: t(`Dance with Luisa.`, `Bailar con Luisa.`, `Dançar com a Luisa.`),
       skip: t(`"Okay. Guess well."`, `«Bueno. Adivina bien».`, `«Tá. Chuta bem».`),
-      tell: t(`MARU, out of breath: "Okay. I need everyone where I can count them. A long chord, nothing sudden. Warm. That's all."`, `MARU, sin aire: «Bueno. Necesito a todos donde pueda contarlos. Un acorde largo, nada brusco. Cálido. Eso es todo».`, `A MARU, sem fôlego: «Tá. Preciso de todo mundo onde eu possa contar. Um acorde longo, nada brusco. Quente. É só isso».`)
+      tell: t(`LUISA, out of breath: "Okay. I need everyone where I can count them. A long chord, nothing sudden. Warm. That's all."`, `LUISA, sin aire: «Bueno. Necesito a todos donde pueda contarlos. Un acorde largo, nada brusco. Cálido. Eso es todo».`, `A LUISA, sem fôlego: «Tá. Preciso de todo mundo onde eu possa contar. Um acorde longo, nada brusco. Quente. É só isso».`)
     },
     dani: {
       ask: t(`BENJA: "ONE SONG. Then I'll tell you what I need. It's a secret and it's loud."`, `BENJA: «UNA CANCIÓN. Después te digo qué necesito. Es un secreto y es fuerte».`, `BENJA: «UMA MÚSICA. Depois eu falo do que preciso. É segredo e é alto».`),
@@ -221,7 +221,7 @@
   /* one question per friend who is with you, in the same order every time */
   const ORDER = ['maru', 'dani', 'tato'];
   const ASK = {
-    maru: t(`"Maru. What does she need from the last hour?"`, `«Maru. ¿Qué necesita de la última hora?»`, `«Maru. Do que ela precisa na última hora?»`),
+    maru: t(`"Luisa. What does she need from the last hour?"`, `«Luisa. ¿Qué necesita de la última hora?»`, `«Luisa. Do que ela precisa na última hora?»`),
     dani: t(`"Benja. And him?"`, `«Benja. ¿Y él?»`, `«Benja. E ele?»`),
     tato: t(`"Feña. And him?"`, `«Feña. ¿Y él?»`, `«Feña. E ele?»`)
   };
@@ -432,9 +432,8 @@
     const reported = CORE.filter(function (x) { return f['told_' + x]; }).length > 0;
     const framed = !!f.frames_told;
     let src = 'none';
-    if (reported && framed) src = EM.mulberry32((s.seed | 0) + 7731)() < 0.5 ? 'frames' : 'friends';
+    if (reported) src = 'friends';
     else if (framed) src = 'frames';
-    else if (reported) src = 'friends';
     let mood = 'warm';
     if (src === 'friends') {
       const c = { warm: 0, wild: 0, soft: 0 };
@@ -448,7 +447,7 @@
     }
     const flags = ['closing_' + mood, 'src_' + src];
     CORE.forEach(function (x) { flags.push((told[x] === NEED[x] ? 'hit_' : 'miss_') + x); });
-    if (src === 'frames') {
+    if (src === 'frames' || framed) {
       if (f.fr_req_wobble) flags.push('wobble_played');
       if (f.fr_req_melody) flags.push('melody_played');
       if (f.fr_req_nervous) flags.push('kai_played');
@@ -473,12 +472,12 @@
     next: 'mine'
   };
   const HIT = {
-    maru: t(`Maru gets the long chord and never says so. She counts the rail with her eyes: everyone, once.`, `Maru recibe el acorde largo y nunca lo menciona. Cuenta la baranda con los ojos: todos, una vez.`, `A Maru ganha o acorde longo e nunca fala nada. Ela conta o parapeito com os olhos: todo mundo, uma vez.`),
+    maru: t(`Luisa gets the long chord and never says so. She counts the rail with her eyes: everyone, once.`, `Luisa recibe el acorde largo y nunca lo menciona. Cuenta la baranda con los ojos: todos, una vez.`, `A Luisa ganha o acorde longo e nunca fala nada. Ela conta o parapeito com os olhos: todo mundo, uma vez.`),
     dani: t(`Benja screams at the sky and the roof screams back. He looks at you, delighted.`, `Benja le grita al cielo y el techo le grita de vuelta. Te mira, feliz.`, `O Benja grita pro céu e o terraço grita de volta. Ele te olha, feliz.`),
     tato: t(`Feña closes his eyes. The set is quiet and it isn't empty.`, `Feña cierra los ojos. El set es tranquilo y no está vacío.`, `O Feña fecha os olhos. O set é quieto e não é vazio.`)
   };
   const MISS = {
-    maru: t(`Maru gets something she didn't ask for. She counts the rail twice.`, `Maru recibe algo que no pidió. Cuenta la baranda dos veces.`, `A Maru ganha algo que não pediu. Ela conta o parapeito duas vezes.`),
+    maru: t(`Luisa gets something she didn't ask for. She counts the rail twice.`, `Luisa recibe algo que no pidió. Cuenta la baranda dos veces.`, `A Luisa ganha algo que não pediu. Ela conta o parapeito duas vezes.`),
     dani: t(`Benja waits for the loud part. It doesn't come. He holds the rail and decides it is fine.`, `Benja espera la parte fuerte. No llega. Se agarra a la baranda y decide que está bien.`, `O Benja espera a parte alta. Ela não vem. Ele se segura no parapeito e decide que tá bom.`),
     tato: t(`Feña flinches at the first kick, then lowers his shoulders on purpose.`, `Feña se sobresalta con el primer bombo y luego baja los hombros a propósito.`, `O Feña se assusta com o primeiro bumbo e depois abaixa os ombros de propósito.`)
   };
