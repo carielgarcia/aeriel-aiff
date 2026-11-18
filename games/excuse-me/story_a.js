@@ -82,20 +82,12 @@
         ]
       },
       b: {
-        text: T('He finds you on a clipboard that is clearly decorative. "Camera sticker. Nobody films inside. Phone stays in your pocket on the floor, or it stays with me. Understood?"', 'Te encuentra en una carpeta claramente decorativa. «Pegatina en la cámara. Aquí adentro nadie filma. En la pista el celular va en el bolsillo o se queda conmigo. ¿Entendido?»', 'Ele te encontra numa prancheta claramente decorativa. «Adesivo na câmera. Ninguém filma aqui dentro. Na pista o celular fica no bolso ou fica comigo. Entendido?»'),
+        text: T('He finds you on a clipboard that is clearly decorative, then holds out a sheet of black circles. "Take your phone out. Put a sticker over the cameras. Nobody films inside, and on the floor it stays in your pocket. Understood?"', 'Te encuentra en una carpeta claramente decorativa y te tiende una plancha de círculos negros. «Saca tu teléfono. Pégale un sticker en las cámaras. Aquí adentro nadie filma, y en la pista va en el bolsillo. ¿Entendido?»', 'Ele te acha numa prancheta claramente decorativa e estende uma cartela de círculos pretos. «Tira o celular do bolso. Cola um adesivo nas câmeras. Ninguém filma aqui dentro, e na pista ele fica no bolso. Entendido?»'),
         do: { flag: 'sticker' },
         choices: [
-          { tone: 'chill', t: T('"Understood. Respect."', '«Entendido. Respeto».', '«Entendido. Respeito».'), next: 'c' },
-          { tone: 'blunt', t: T('"Is the sticker really necessary?"', '«¿De verdad hace falta la pegatina?»', '«O adesivo é mesmo necessário?»'), next: 'c', react: T(`"Everybody asks about the sticker. Keep it on."`, `«Todos preguntan por el sticker. Déjatelo puesto».`, `«Todo mundo pergunta do adesivo. Deixa colado».`), do: { soc: -1 } },
-          { tone: 'joke', t: T('"My phone has 9%. It couldn\'t film a sandwich."', '«Mi teléfono tiene 9%. No podría filmar ni un sándwich».', '«Meu celular tem 9%. Não filmaria nem um sanduíche».'), next: 'c', react: T('"Nine is a good number." He peels the sticker for you himself.', '«Nueve es un buen número». Él mismo te pega la pegatina.', '«Nove é um bom número». Ele mesmo cola o adesivo pra você.'), do: { fun: 2 } }
-        ]
-      },
-      c: {
-        text: T('"Last one. Anything in you tonight? I do not need a lecture. I need a number so I know how to look at you."', '«Última. ¿Algo en tu cuerpo esta noche? No quiero un sermón. Quiero un número para saber cómo mirarte».', '«Última. Alguma coisa no seu corpo hoje? Não quero sermão. Quero um número pra saber como te olhar».'),
-        choices: [
-          { tone: 'honest', t: T('"Nothing. Water and good intentions."', '«Nada. Agua y buenas intenciones».', '«Nada. Água e boas intenções».'), next: 'd' },
-          { tone: 'honest', t: T('"Two drinks before I got here."', '«Dos tragos antes de llegar».', '«Duas doses antes de chegar».'), next: 'd', do: { drink: 1 } },
-          { tone: 'honest', t: T('"A few. I am fine, though. Mostly fine."', '«Algunos. Estoy bien, igual. Más o menos bien».', '«Algumas. Estou bem, mesmo assim. Mais ou menos bem».'), next: 'd', do: { drink: 3, fun: 6 }, react: T('He looks you over for one slow second. "Fine means walking in a straight line. Straight."', 'Te mira un segundo lento. «Bien significa caminar en línea recta. Recta».', 'Ele te olha por um segundo lento. «Bem significa andar em linha reta. Reta».') }
+          { tone: 'chill', t: T('(Take your phone out and stick it on.) "Done. Respect."', '(Sacar el teléfono y pegarlo.) «Listo. Respeto».', '(Tirar o celular e colar.) «Pronto. Respeito».'), next: 'd' },
+          { tone: 'blunt', t: T('"Is the sticker really necessary?"', '«¿De verdad hace falta la pegatina?»', '«O adesivo é mesmo necessário?»'), next: 'd', react: T(`"Everybody asks about the sticker. Cover the lens and keep it on."`, `«Todos preguntan por el sticker. Tapa el lente y déjatelo puesto».`, `«Todo mundo pergunta do adesivo. Tampa a lente e deixa colado».`), do: { soc: -1 } },
+          { tone: 'joke', t: T('"My phone has 9%. It couldn\'t film a sandwich."', '«Mi teléfono tiene 9%. No podría filmar ni un sándwich».', '«Meu celular tem 9%. Não filmaria nem um sanduíche».'), next: 'd', react: T('"Nine is a good number. Still goes on." He peels the sticker for you himself.', '«Nueve es un buen número. Igual se pega». Él mismo te pega la pegatina.', '«Nove é um bom número. Cola mesmo assim». Ele mesmo cola o adesivo pra você.'), do: { fun: 2 } }
         ]
       },
       d: {

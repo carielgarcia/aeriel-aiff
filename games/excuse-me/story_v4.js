@@ -39,10 +39,6 @@
   S.powder_coke = function () { takePowder('coke'); };
   S.powder_ket = function () { takePowder('ket'); };
 
-  /* Dragan is honest about the label, and honest that labels are a loose concept */
-  D.dragan.nodes.b.text = T('He lowers his voice a little. "Small things that make the night go faster. Small, as in: be careful what you ask for. I never push. If you want a bump of coke to get through the night, I have one. I label my bags. I also label my labels. About one time in five the labels have a disagreement, and I will not pretend otherwise."', 'Baja un poco la voz. «Cosas chicas que aceleran la noche. Chicas, en el sentido de: ten cuidado con lo que pides. Yo no empujo a nadie. Si quieres una línea de coca para aguantar la noche, tengo una. Yo etiqueto mis bolsitas. También etiqueto mis etiquetas. Una de cada cinco veces las etiquetas no se ponen de acuerdo, y no voy a fingir lo contrario».', 'Ele baixa um pouco a voz. «Coisas pequenas que fazem a noite andar mais rápido. Pequenas no sentido de: cuidado com o que você pede. Eu nunca empurro. Se quiser um teco de coca pra aguentar a noite, eu tenho. Eu etiqueto meus saquinhos. Também etiqueto minhas etiquetas. Umas uma a cada cinco vezes as etiquetas discordam entre si, e eu não vou fingir o contrário».');
-  D.dragan.nodes.b.choices[0] = { tone: 'bold', t: T('"One bump. Just one."', '«Una línea. Solo una».', '«Um teco. Só um».'), do: { flag: 'bought_bump' }, call: 'powder_coke', next: null, react: T('A tiny key, a tiny mountain, a tiny sound. "Good luck," he says, and means it.', 'Una llavecita, una montañita, un sonido chiquito. «Suerte», dice, y lo dice en serio.', 'Uma chavinha, uma montanhazinha, um som pequenininho. «Boa sorte», diz ele, e fala sério.') };
-
   /* other people offer, too */
   function offer(dlg, node, choice) {
     const n = D[dlg] && D[dlg].nodes[node];
