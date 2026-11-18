@@ -37,7 +37,7 @@
       },
       taxi: {
         text: t(`Four of you in the back of a Skoda, the fare split in thirds on three phones. Tomi sits in the front with his forehead on the window and is asleep before the first light changes. Nobody has to be brave.`, `Cuatro en el asiento de atrás de un Skoda, la tarifa dividida en tres partes en tres celulares. Tomi va adelante con la frente en la ventana y se duerme antes del primer semáforo. Nadie tiene que ser valiente.`, `Quatro no banco de trás de um Skoda, a corrida dividida em três em três celulares. O Tomi vai na frente com a testa na janela e dorme antes do primeiro sinal. Ninguém precisa ser corajoso.`),
-        do: { care: 1, time: 25, soc: -2, pb: { maru: 1, dani: 1, tato: 1 }, flag: 'af_taxi' }, next: 'arrive'
+        do: { care: 1, time: 25, soc: -2, pb: { luisa: 1, benjamin: 1, fena: 1 }, flag: 'af_taxi' }, next: 'arrive'
       },
       walk: {
         text: t(`Cold light on wet streets, a bakery with its shutter half up, someone's shoes squeaking. You walk because it's ten minutes and because none of you can sit still. Fernando hugs a lamp post for about four seconds and says it was holding him up.`, `Luz fría sobre calles mojadas, una panadería con la cortina a medias, el chillido de unos zapatos. Caminan porque son diez minutos y porque ninguno puede quedarse quieto. Feña abraza un poste cuatro segundos y dice que lo estaba sosteniendo.`, `Luz fria em ruas molhadas, uma padaria com a porta de enrolar pela metade, o chiado de um sapato. Vocês andam porque são dez minutos e porque ninguém consegue ficar parado. O Fernando abraça um poste por uns quatro segundos e diz que o poste tava segurando ele.`),
@@ -46,7 +46,7 @@
       lift: {
         text: t(`Tomi's car smells of energy drink and wet dog. His hands drum the wheel. His eyes keep closing, long enough to count.`, `El auto de Tomi huele a bebida energética y perro mojado. Sus manos tamborilean el volante. Los ojos se le cierran, lo bastante largo como para contar.`, `O carro do Tomi cheira a energético e cachorro molhado. As mãos dele tamborilam no volante. Os olhos fecham, tempo suficiente pra contar.`),
         choices: [
-          K('honest', t(`Say it: "Not like this. A taxi, and I'll cover half."`, `Decirlo: «Así no. Un taxi, y yo pago la mitad».`, `Dizer: «Assim não. Um táxi, e eu pago metade».`), { do: { care: 1, soc: 3, time: 22, flag: ['af_taxi', 'tomi_slept'], pb: { maru: 1, dani: 1, tato: 1 } }, next: 'tomi' }),
+          K('honest', t(`Say it: "Not like this. A taxi, and I'll cover half."`, `Decirlo: «Así no. Un taxi, y yo pago la mitad».`, `Dizer: «Assim não. Um táxi, e eu pago metade».`), { do: { care: 1, soc: 3, time: 22, flag: ['af_taxi', 'tomi_slept'], pb: { luisa: 1, benjamin: 1, fena: 1 } }, next: 'tomi' }),
           K('chill', t(`Get in anyway. It's ten minutes.`, `Subirte igual. Son diez minutos.`, `Entrar mesmo assim. São dez minutos.`), { do: { hp: -8, soc: -4, time: 12, flag: 'tomi_drove' }, next: 'drove' })
         ]
       },
@@ -561,26 +561,26 @@
   };
 
   /* ============================================================ BENJAMIN: the next thing, and what it is for */
-  D.af_dani_next = {
-    forced: true, who: 'dani', role: t('THE NEXT THING', 'LO SIGUIENTE', 'A PRÓXIMA COISA'), start: 'a', nodes: {
+  D.af_benjamin_next = {
+    forced: true, who: 'benjamin', role: t('THE NEXT THING', 'LO SIGUIENTE', 'A PRÓXIMA COISA'), start: 'a', nodes: {
       a: {
         text: t(`Benjamin is rummaging for his shoes, vibrating gently. "What's the next thing? There's always a next thing. A park. A pool. A sunrise but later. Come on." He's smiling and his eyes aren't.`, `Benjamin busca sus zapatos, vibrando suavemente. «¿Qué es lo siguiente? Siempre hay algo siguiente. Un parque. Una pileta. Un amanecer pero más tarde. Vamos». Sonríe y los ojos no.`, `O Benjamin procura os sapatos, vibrando de leve. «Qual é a próxima coisa? Sempre tem uma próxima coisa. Um parque. Uma piscina. Um nascer do sol, só que mais tarde. Bora». Ele sorri e os olhos não.`),
         choices: [
-          K('care', t(`"The next thing is toast. And then a bed."`, `«Lo siguiente son tostadas. Y después una cama».`, `«A próxima coisa é torrada. E depois uma cama».`), { do: { bond: { dani: 1 }, soc: 2, fun: 2, flag: 'dani_toast' }, next: 'toast' }),
+          K('care', t(`"The next thing is toast. And then a bed."`, `«Lo siguiente son tostadas. Y después una cama».`, `«A próxima coisa é torrada. E depois uma cama».`), { do: { bond: { benjamin: 1 }, soc: 2, fun: 2, flag: 'benjamin_toast' }, next: 'toast' }),
           K('ask', t(`"What happens if you stop?"`, `«¿Qué pasa si paras?»`, `«O que acontece se você parar?»`), { next: 'ask' }),
-          K('care', t(`"I'm tired too. Let's say it out loud."`, `«Yo también estoy cansado. Digámoslo en voz alta».`, `«Eu também tô cansado. Vamos dizer em voz alta».`), { do: { care: 1, bond: { dani: 2 }, soc: 3, flag: 'dani_admit' }, next: 'admit' }),
-          K('bold', t(`"Let's find the next thing."`, `«Vamos a buscar lo siguiente».`, `«Vamos achar a próxima coisa».`), { do: { fun: 6, hp: -6, soc: -4, time: 30, flag: 'dani_chase' }, next: 'chase' })
+          K('care', t(`"I'm tired too. Let's say it out loud."`, `«Yo también estoy cansado. Digámoslo en voz alta».`, `«Eu também tô cansado. Vamos dizer em voz alta».`), { do: { care: 1, bond: { benjamin: 2 }, soc: 3, flag: 'benjamin_admit' }, next: 'admit' }),
+          K('bold', t(`"Let's find the next thing."`, `«Vamos a buscar lo siguiente».`, `«Vamos achar a próxima coisa».`), { do: { fun: 6, hp: -6, soc: -4, time: 30, flag: 'benjamin_chase' }, next: 'chase' })
         ]
       },
       ask: {
         text: t(`The shoes go down. "If I stop moving, someone's going to ask me how I am. And I'll say fine. And they'll know." He sits on the arm of the sofa. "I lost the contract in March. Everyone thinks it's going great. I'm so fucking good at going great."`, `Los zapatos bajan. «Si dejo de moverme, alguien me va a preguntar cómo estoy. Y diré que bien. Y lo sabrán». Se sienta en el brazo del sofá. «Perdí el contrato en marzo. Todos creen que me va genial. Soy buenísimo en que me vaya genial».`, `Os sapatos descem. «Se eu parar de me mexer, alguém vai me perguntar como eu tô. E eu vou dizer que bem. E vão saber». Ele senta no braço do sofá. «Perdi o contrato em março. Todo mundo acha que tá tudo ótimo. Eu sou muito bom em parecer ótimo».`),
         choices: [
-          K('care', t(`"I'm not going to ask if you're fine. I'm going to sit here."`, `«No te voy a preguntar si estás bien. Me voy a sentar aquí».`, `«Não vou perguntar se você tá bem. Vou sentar aqui».`), { do: { care: 1, bond: { dani: 2 }, soc: 4, flag: ['dani_open'] }, next: 'sit' }),
-          K('honest', t(`"Tell Luisa. She'd rather know than guess."`, `«Dile a Luisa. Prefiere saberlo a adivinarlo».`, `«Conta pra Luisa. Ela prefere saber a adivinhar».`), { do: { bond: { dani: 1, maru: 1 }, soc: 2, flag: ['dani_open', 'dani_tellmaru'] }, next: 'maru' })
+          K('care', t(`"I'm not going to ask if you're fine. I'm going to sit here."`, `«No te voy a preguntar si estás bien. Me voy a sentar aquí».`, `«Não vou perguntar se você tá bem. Vou sentar aqui».`), { do: { care: 1, bond: { benjamin: 2 }, soc: 4, flag: ['benjamin_open'] }, next: 'sit' }),
+          K('honest', t(`"Tell Luisa. She'd rather know than guess."`, `«Dile a Luisa. Prefiere saberlo a adivinarlo».`, `«Conta pra Luisa. Ela prefere saber a adivinhar».`), { do: { bond: { benjamin: 1, luisa: 1 }, soc: 2, flag: ['benjamin_open', 'benjamin_tellmaru'] }, next: 'luisa' })
         ]
       },
       sit: { text: t(`He doesn't say anything. You don't either. After a minute he leans his weight against your arm, the way he does when he's decided something. "Okay," he says. "Okay. Toast."`, `No dice nada. Tú tampoco. Después de un minuto apoya su peso en tu brazo, como cuando decidió algo. «Bueno», dice. «Bueno. Tostadas».`, `Ele não diz nada. Você também não. Depois de um minuto apoia o peso no seu braço, do jeito que faz quando decidiu alguma coisa. «Tá», diz. «Tá. Torrada».`), next: null },
-      maru: { text: t(`"She'll be kind about it. That's the worst part." He laughs, short. "Okay. Tomorrow. I'll tell her tomorrow, with food." He puts his shoes back on the rack.`, `«Será amable al respecto. Esa es la peor parte». Se ríe, corto. «Bueno. Mañana. Se lo digo mañana, con comida». Vuelve a poner los zapatos en el zapatero.`, `«Ela vai ser gentil com isso. Essa é a pior parte». Ele ri, curto. «Tá. Amanhã. Eu conto amanhã, com comida». Devolve os sapatos pra sapateira.`), next: null },
+      luisa: { text: t(`"She'll be kind about it. That's the worst part." He laughs, short. "Okay. Tomorrow. I'll tell her tomorrow, with food." He puts his shoes back on the rack.`, `«Será amable al respecto. Esa es la peor parte». Se ríe, corto. «Bueno. Mañana. Se lo digo mañana, con comida». Vuelve a poner los zapatos en el zapatero.`, `«Ela vai ser gentil com isso. Essa é a pior parte». Ele ri, curto. «Tá. Amanhã. Eu conto amanhã, com comida». Devolve os sapatos pra sapateira.`), next: null },
       toast: { text: t(`"Toast," Benjamin says, struck by the idea. He sits. He eats. After the second slice the shoes are forgotten.`, `«Tostadas», dice Benjamin, golpeado por la idea. Se sienta. Come. Después de la segunda rebanada se olvida de los zapatos.`, `«Torrada», diz o Benjamin, atingido pela ideia. Ele senta. Come. Na segunda fatia, esquece os sapatos.`), next: null },
       admit: { text: t(`"Oh," Benjamin says, and the whole body goes with it. "Oh. I'm so tired." He laughs, then yawns. "I thought it was a feeling. It's just sleep." He lies down on the floor with his shoes on.`, `«Ah», dice Benjamin, y el cuerpo entero lo acompaña. «Ah. Estoy tan cansado». Se ríe, luego bosteza. «Creí que era un sentimiento. Es solo sueño». Se acuesta en el piso con los zapatos puestos.`, `«Ah», diz o Benjamin, e o corpo inteiro vai junto. «Ah. Eu tô tão cansado». Ele ri, depois boceja. «Achei que era um sentimento. É só sono». Deita no chão de sapato e tudo.`), next: null },
       chase: { text: t(`You walk him to the park, sit on a wall, and watch dog walkers. It's fun for twenty minutes. Then the sleep debt arrives all at once, and the whole morning weighs more than the whole night did.`, `Lo llevas al parque, se sientan en un muro y miran a los paseadores de perros. Es divertido veinte minutos. Luego llega de golpe la deuda de sueño, y toda la mañana pesa más que toda la noche.`, `Você leva ele ao parque, vocês sentam num muro e olham quem passeia com cachorro. É divertido por vinte minutos. Depois a dívida de sono chega de uma vez, e a manhã inteira pesa mais do que a noite inteira.`), next: null }
@@ -588,23 +588,23 @@
   };
 
   /* ============================================================ FERNANDO, on the sofa */
-  D.af_tato_sofa = {
-    who: 'tato', role: t('ON THE SOFA', 'EN EL SOFÁ', 'NO SOFÁ'), start: 'a', nodes: {
+  D.af_fena_sofa = {
+    who: 'fena', role: t('ON THE SOFA', 'EN EL SOFÁ', 'NO SOFÁ'), start: 'a', nodes: {
       a: {
         text: t(`Fernando is on the sofa, one shoe on and one off, awake enough to watch you come in.`, `Feña está en el sofá, un zapato puesto y otro no, lo bastante despierto como para verte llegar.`, `O Fernando tá no sofá, um sapato calçado e outro não, acordado o bastante pra te ver chegar.`),
         choices: [
           K('care', t(`Sit on the floor next to him.`, `Sentarte en el piso junto a él.`, `Sentar no chão do lado dele.`), { next: 'b' }),
-          K('care', t(`Put a blanket over him. Let him sleep.`, `Taparlo con una manta. Dejarlo dormir.`, `Cobrir com um cobertor. Deixar dormir.`), { do: { care: 1, bond: { tato: 1 }, flag: 'tato_blanket' }, next: null }),
-          K('care', t(`Wake him properly and take him home.`, `Despertarlo bien y llevarlo a casa.`, `Acordar direito e levar pra casa.`), { do: { time: 35, bond: { tato: 2 }, call: 'af_tato_home', flag: 'tato_walked' }, next: null }),
-          K('care', t(`Ask Benjamin to take him home.`, `Pedirle a Benjamin que lo lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('dani'), do: { time: 6, bond: { tato: 1, dani: 1 }, call: 'af_tato_dani', flag: 'tato_dani' }, next: null }),
+          K('care', t(`Put a blanket over him. Let him sleep.`, `Taparlo con una manta. Dejarlo dormir.`, `Cobrir com um cobertor. Deixar dormir.`), { do: { care: 1, bond: { fena: 1 }, flag: 'fena_blanket' }, next: null }),
+          K('care', t(`Wake him properly and take him home.`, `Despertarlo bien y llevarlo a casa.`, `Acordar direito e levar pra casa.`), { do: { time: 35, bond: { fena: 2 }, call: 'af_fena_home', flag: 'fena_walked' }, next: null }),
+          K('care', t(`Ask Benjamin to take him home.`, `Pedirle a Benjamin que lo lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('benjamin'), do: { time: 6, bond: { fena: 1, benjamin: 1 }, call: 'af_fena_benjamin', flag: 'fena_benjamin' }, next: null }),
           K('chill', t(`Leave him.`, `Dejarlo.`, `Deixar.`), { free: true, next: null })
         ]
       },
       b: {
         text: t(`"I'm thirty-four," he says to the ceiling. "Tonight was the first time my body felt like it was just mine. Not for anyone. Not for a joke. Just mine." A pause. "I didn't know that was available."`, `«Tengo treinta y cuatro», le dice al techo. «Esta noche fue la primera vez que sentí mi cuerpo solo mío. No para alguien. No para un chiste. Solo mío». Una pausa. «No sabía que eso estaba disponible».`, `«Tenho trinta e quatro», ele diz pro teto. «Hoje foi a primeira vez que senti meu corpo só meu. Não pra alguém. Não pra uma piada. Só meu». Uma pausa. «Eu não sabia que isso existia».`),
         choices: [
-          K('honest', t(`"It's been available the whole time."`, `«Ha estado disponible todo el tiempo».`, `«Sempre esteve disponível».`), { do: { soc: 3, care: 1, bond: { tato: 1 }, flag: ['g_tato_open'] }, next: 'c' }),
-          K('ask', t(`"What do you want to do with it?"`, `«¿Qué quieres hacer con eso?»`, `«O que você quer fazer com isso?»`), { do: { soc: 3, care: 1, bond: { tato: 1 }, flag: ['g_tato_open'] }, next: 'c2' })
+          K('honest', t(`"It's been available the whole time."`, `«Ha estado disponible todo el tiempo».`, `«Sempre esteve disponível».`), { do: { soc: 3, care: 1, bond: { fena: 1 }, flag: ['g_fena_open'] }, next: 'c' }),
+          K('ask', t(`"What do you want to do with it?"`, `«¿Qué quieres hacer con eso?»`, `«O que você quer fazer com isso?»`), { do: { soc: 3, care: 1, bond: { fena: 1 }, flag: ['g_fena_open'] }, next: 'c2' })
         ]
       },
       c: { text: t(`"Yeah. It has." He closes his eyes. "Don't let me wake up weird. Walk me or leave me, but don't make me decide when I wake up."`, `«Sí. Lo ha estado». Cierra los ojos. «No me dejes despertar raro. Llévame o déjame, pero no me hagas decidir cuando despierte».`, `«É. Sempre esteve». Ele fecha os olhos. «Não me deixa acordar estranho. Me leva ou me deixa, mas não me faz decidir quando eu acordar».`), next: 'a2' },
@@ -612,9 +612,9 @@
       a2: {
         text: t(`He is asleep before you answer.`, `Está dormido antes de que respondas.`, `Ele dorme antes de você responder.`),
         choices: [
-          K('care', t(`Put a blanket over him. Let him sleep.`, `Taparlo con una manta. Dejarlo dormir.`, `Cobrir com um cobertor. Deixar dormir.`), { do: { care: 1, bond: { tato: 1 }, flag: 'tato_blanket' }, next: null }),
-          K('care', t(`Wake him gently and take him home.`, `Despertarlo con cuidado y llevarlo a casa.`, `Acordar com jeito e levar pra casa.`), { do: { time: 35, bond: { tato: 2 }, call: 'af_tato_home', flag: 'tato_walked' }, next: null }),
-          K('care', t(`Ask Benjamin to take him home.`, `Pedirle a Benjamin que lo lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('dani'), do: { time: 6, bond: { tato: 1, dani: 1 }, call: 'af_tato_dani', flag: 'tato_dani' }, next: null })
+          K('care', t(`Put a blanket over him. Let him sleep.`, `Taparlo con una manta. Dejarlo dormir.`, `Cobrir com um cobertor. Deixar dormir.`), { do: { care: 1, bond: { fena: 1 }, flag: 'fena_blanket' }, next: null }),
+          K('care', t(`Wake him gently and take him home.`, `Despertarlo con cuidado y llevarlo a casa.`, `Acordar com jeito e levar pra casa.`), { do: { time: 35, bond: { fena: 2 }, call: 'af_fena_home', flag: 'fena_walked' }, next: null }),
+          K('care', t(`Ask Benjamin to take him home.`, `Pedirle a Benjamin que lo lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('benjamin'), do: { time: 6, bond: { fena: 1, benjamin: 1 }, call: 'af_fena_benjamin', flag: 'fena_benjamin' }, next: null })
         ]
       }
     }
@@ -622,41 +622,41 @@
 
   /* ============================================================ 7. THE QUESTION: who walks whom home */
   D.af_question = {
-    forced: true, who: 'maru', role: t('THE QUESTION', 'LA PREGUNTA', 'A PERGUNTA'), start: 'a', nodes: {
+    forced: true, who: 'luisa', role: t('THE QUESTION', 'LA PREGUNTA', 'A PERGUNTA'), start: 'a', nodes: {
       a: {
         text: t(`Late morning, and three things happen at once. Luisa has gone quiet and is looking at her hands. Fernando has been asleep on the sofa for an hour. Benjamin is hunting for the next thing. You can't do all of it. You decide who walks whom home.`, `Media mañana, y pasan tres cosas a la vez. Luisa se quedó callada y se mira las manos. Feña lleva una hora dormido en el sofá. Benjamin busca lo siguiente. No puedes con todo. Decides quién acompaña a quién a casa.`, `Fim de manhã, e três coisas acontecem ao mesmo tempo. A Luisa ficou quieta e olha as próprias mãos. O Fernando dorme faz uma hora no sofá. O Benjamin procura a próxima coisa. Você não dá conta de tudo. Decide quem leva quem pra casa.`),
         next: 'm'
       },
-      m: { branch: [{ req: withF('maru'), to: 'maru' }, { req: function (s) { return !!(s.after && s.after.f.tato && s.after.f.tato.st === 'sofa'); }, to: 'tato' }, { req: function () { return true; }, to: 'end' }] },
-      maru: {
-        who: 'maru',
+      m: { branch: [{ req: withF('luisa'), to: 'luisa' }, { req: function (s) { return !!(s.after && s.after.f.fena && s.after.f.fena.st === 'sofa'); }, to: 'fena' }, { req: function () { return true; }, to: 'end' }] },
+      luisa: {
+        who: 'luisa',
         text: t(`"I'm okay," Luisa says, in the voice that means she isn't. "I'm tired. It's more than tired. I got an offer in Montevideo and I haven't told anyone, because telling makes it real, and I'm the one who organises everything, and I don't know how to be the one who leaves."`, `«Estoy bien», dice Luisa, con la voz que significa que no. «Estoy cansada. Es más que cansada. Me ofrecieron un trabajo en Montevideo y no se lo he dicho a nadie, porque decirlo lo hace real, y yo soy la que organiza todo, y no sé cómo ser la que se va».`, `«Tô bem», diz a Luisa, na voz que quer dizer que não. «Tô cansada. É mais que cansada. Recebi uma proposta em Montevidéu e não contei pra ninguém, porque contar torna real, e eu sou a que organiza tudo, e não sei como ser a que vai embora».`),
         choices: [
-          K('ask', t(`"What do you want to do?"`, `«¿Qué quieres hacer?»`, `«O que você quer fazer?»`), { do: { soc: 3, bond: { maru: 1 }, flag: ['g_maru_open'] }, next: 'maru2' }),
-          K('care', t(`Walk Luisa home yourself.`, `Acompañar tú a Luisa hasta su casa.`, `Levar a Luisa pra casa pessoalmente.`), { do: { time: 40, care: 1, bond: { maru: 2 }, call: 'af_maru_walk', flag: 'maru_walked' }, next: 'm2' }),
-          K('care', t(`Ask Benjamin to take her home.`, `Pedirle a Benjamin que la lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('dani'), do: { time: 6, bond: { maru: 1, dani: 1 }, call: 'af_maru_dani', flag: 'maru_dani' }, next: 'm2' }),
-          K('chill', t(`Book her a taxi and wait with her until it comes.`, `Pedirle un taxi y esperar con ella hasta que llegue.`, `Pedir um táxi e esperar com ela até chegar.`), { do: { time: 10, soc: -2, bond: { maru: 1 }, call: 'af_maru_taxi', flag: 'maru_taxi' }, next: 'm2' }),
-          K('silent', t(`Hug her, let her go, and promise to text.`, `Abrazarla, dejarla ir y prometer escribirle.`, `Abraçar, deixar ir e prometer mandar mensagem.`), { do: { bond: { maru: 1 }, call: 'af_maru_alone' }, next: 'm2' })
+          K('ask', t(`"What do you want to do?"`, `«¿Qué quieres hacer?»`, `«O que você quer fazer?»`), { do: { soc: 3, bond: { luisa: 1 }, flag: ['g_luisa_open'] }, next: 'luisa2' }),
+          K('care', t(`Walk Luisa home yourself.`, `Acompañar tú a Luisa hasta su casa.`, `Levar a Luisa pra casa pessoalmente.`), { do: { time: 40, care: 1, bond: { luisa: 2 }, call: 'af_luisa_walk', flag: 'luisa_walked' }, next: 'm2' }),
+          K('care', t(`Ask Benjamin to take her home.`, `Pedirle a Benjamin que la lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('benjamin'), do: { time: 6, bond: { luisa: 1, benjamin: 1 }, call: 'af_luisa_benjamin', flag: 'luisa_benjamin' }, next: 'm2' }),
+          K('chill', t(`Book her a taxi and wait with her until it comes.`, `Pedirle un taxi y esperar con ella hasta que llegue.`, `Pedir um táxi e esperar com ela até chegar.`), { do: { time: 10, soc: -2, bond: { luisa: 1 }, call: 'af_luisa_taxi', flag: 'luisa_taxi' }, next: 'm2' }),
+          K('silent', t(`Hug her, let her go, and promise to text.`, `Abrazarla, dejarla ir y prometer escribirle.`, `Abraçar, deixar ir e prometer mandar mensagem.`), { do: { bond: { luisa: 1 }, call: 'af_luisa_alone' }, next: 'm2' })
         ]
       },
-      maru2: {
-        who: 'maru',
+      luisa2: {
+        who: 'luisa',
         text: t(`"I want it. That's the problem. I want it and I want all of you. I can't have both and I keep pretending I can." She wipes her face with her sleeve and laughs. "Don't tell Benjamin I cried. He'll make it a song."`, `«Lo quiero. Ese es el problema. Lo quiero y los quiero a todos ustedes. No puedo tener las dos cosas y sigo fingiendo que sí». Se limpia la cara con la manga y se ríe. «No le digas a Benjamin que lloré. Va a hacer una canción».`, `«Eu quero. Esse é o problema. Quero isso e quero vocês todos. Não dá pra ter os dois e eu fico fingindo que dá». Ela limpa o rosto com a manga e ri. «Não conta pro Benjamin que eu chorei. Ele vai fazer uma música».`),
         choices: [
-          K('care', t(`Walk Luisa home yourself.`, `Acompañar tú a Luisa hasta su casa.`, `Levar a Luisa pra casa pessoalmente.`), { do: { time: 40, care: 1, bond: { maru: 2 }, call: 'af_maru_walk', flag: 'maru_walked' }, next: 'm2' }),
-          K('care', t(`Ask Benjamin to take her home.`, `Pedirle a Benjamin que la lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('dani'), do: { time: 6, bond: { maru: 1, dani: 1 }, call: 'af_maru_dani', flag: 'maru_dani' }, next: 'm2' }),
-          K('chill', t(`Book her a taxi and wait with her until it comes.`, `Pedirle un taxi y esperar con ella hasta que llegue.`, `Pedir um táxi e esperar com ela até chegar.`), { do: { time: 10, soc: -2, bond: { maru: 1 }, call: 'af_maru_taxi', flag: 'maru_taxi' }, next: 'm2' }),
-          K('silent', t(`Hug her, let her go, and promise to text.`, `Abrazarla, dejarla ir y prometer escribirle.`, `Abraçar, deixar ir e prometer mandar mensagem.`), { do: { bond: { maru: 1 }, call: 'af_maru_alone' }, next: 'm2' })
+          K('care', t(`Walk Luisa home yourself.`, `Acompañar tú a Luisa hasta su casa.`, `Levar a Luisa pra casa pessoalmente.`), { do: { time: 40, care: 1, bond: { luisa: 2 }, call: 'af_luisa_walk', flag: 'luisa_walked' }, next: 'm2' }),
+          K('care', t(`Ask Benjamin to take her home.`, `Pedirle a Benjamin que la lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('benjamin'), do: { time: 6, bond: { luisa: 1, benjamin: 1 }, call: 'af_luisa_benjamin', flag: 'luisa_benjamin' }, next: 'm2' }),
+          K('chill', t(`Book her a taxi and wait with her until it comes.`, `Pedirle un taxi y esperar con ella hasta que llegue.`, `Pedir um táxi e esperar com ela até chegar.`), { do: { time: 10, soc: -2, bond: { luisa: 1 }, call: 'af_luisa_taxi', flag: 'luisa_taxi' }, next: 'm2' }),
+          K('silent', t(`Hug her, let her go, and promise to text.`, `Abrazarla, dejarla ir y prometer escribirle.`, `Abraçar, deixar ir e prometer mandar mensagem.`), { do: { bond: { luisa: 1 }, call: 'af_luisa_alone' }, next: 'm2' })
         ]
       },
-      m2: { branch: [{ req: function (s) { return !!(s.after && s.after.f.tato && s.after.f.tato.st === 'sofa'); }, to: 'tato' }, { req: function () { return true; }, to: 'end' }] },
-      tato: {
-        who: 'tato',
+      m2: { branch: [{ req: function (s) { return !!(s.after && s.after.f.fena && s.after.f.fena.st === 'sofa'); }, to: 'fena' }, { req: function () { return true; }, to: 'end' }] },
+      fena: {
+        who: 'fena',
         text: t(`Fernando snores under his sleeve. Nobody should drag him out of a sleep like that. But a sofa is not a bed, and the hosts have a day ahead of them.`, `Feña ronca bajo su manga. Nadie debería sacarlo de un sueño así. Pero un sofá no es una cama, y los anfitriones tienen un día por delante.`, `O Fernando ronca na manga. Ninguém devia arrancar ele de um sono desses. Mas sofá não é cama, e os anfitriões têm um dia pela frente.`),
         choices: [
-          K('care', t(`Let him sleep. Dot says he can stay.`, `Dejarlo dormir. Dot dice que puede quedarse.`, `Deixar dormir. A Dot diz que ele pode ficar.`), { do: { bond: { tato: 1 }, flag: 'tato_stays' }, next: 'end' }),
-          K('care', t(`Wake him gently and walk him home.`, `Despertarlo con cuidado y llevarlo a casa.`, `Acordar com jeito e levar pra casa.`), { do: { time: 35, bond: { tato: 2 }, call: 'af_tato_home', flag: 'tato_walked' }, next: 'end' }),
-          K('care', t(`Ask Benjamin to take him home.`, `Pedirle a Benjamin que lo lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('dani'), do: { time: 6, bond: { tato: 1, dani: 1 }, call: 'af_tato_dani', flag: 'tato_dani' }, next: 'end' })
+          K('care', t(`Let him sleep. Dot says he can stay.`, `Dejarlo dormir. Dot dice que puede quedarse.`, `Deixar dormir. A Dot diz que ele pode ficar.`), { do: { bond: { fena: 1 }, flag: 'fena_stays' }, next: 'end' }),
+          K('care', t(`Wake him gently and walk him home.`, `Despertarlo con cuidado y llevarlo a casa.`, `Acordar com jeito e levar pra casa.`), { do: { time: 35, bond: { fena: 2 }, call: 'af_fena_home', flag: 'fena_walked' }, next: 'end' }),
+          K('care', t(`Ask Benjamin to take him home.`, `Pedirle a Benjamin que lo lleve a casa.`, `Pedir ao Benjamin pra levar pra casa.`), { req: withF('benjamin'), do: { time: 6, bond: { fena: 1, benjamin: 1 }, call: 'af_fena_benjamin', flag: 'fena_benjamin' }, next: 'end' })
         ]
       },
       end: { text: t(`Done. Nobody is lost, and everyone who leaves has a name next to theirs on the stairs.`, `Listo. Nadie está perdido, y quien se va tiene un nombre junto al suyo en la escalera.`, `Pronto. Ninguém tá perdido, e quem sai tem um nome do lado na escada.`), do: { quest: { q_af7: 'done' } }, next: null }

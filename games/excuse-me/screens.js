@@ -467,7 +467,7 @@
       fill('#14141C', 0, 60, W, H - 60); fill(N.org, 0, 60, W, 1); fill('#22222E', 0, 61, W, 3);
       const party = EM.FRIENDS.filter(function (f) { return EM.state.party.indexOf(f) !== -1; });
       if (kind === 'sunrise_legend') {
-        for (let i = 0; i < 30; i++) { const x = 6 + (i * 17) % (W - 12), fy = 74 + (i % 3) * 3; const lk = EM.CAST[['maru', 'dani', 'tato', 'sol', 'kiki', 'hugo', 'nuri', 'bruno'][i % 8]].look; person(Object.assign({}, lk, { ol: '#050508' }), x, fy, 'u'); }
+        for (let i = 0; i < 30; i++) { const x = 6 + (i * 17) % (W - 12), fy = 74 + (i % 3) * 3; const lk = EM.CAST[['luisa', 'benjamin', 'fena', 'sol', 'kiki', 'hugo', 'nuri', 'bruno'][i % 8]].look; person(Object.assign({}, lk, { ol: '#050508' }), x, fy, 'u'); }
         person(player, 70, 86); party.forEach(function (f, i) { person(EM.CAST[f].look, 92 + i * 17, 86); });
       } else if (kind === 'sunrise_romance') {
         person(player, 58, 84, 'r'); person(EM.CAST.sol.look, 78, 84, 'l');

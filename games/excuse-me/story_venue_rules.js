@@ -89,7 +89,7 @@
       return add ? [].concat(o, lateText) : lateText;
     };
   }
-  late('bar_menu', 'a', t(`Nico counts the till by feel. "Tap's free. Ice isn't, anymore."`, `Nico cuenta la caja a tientas. «El agua de la llave es gratis. El hielo ya no».`, `O Nico conta o caixa no tato. «A água da torneira é de graça. O gelo acabou».`));
+  late('bar_menu', 'a', t(`Nico counts the till by feel. "Tap's free. Ice isn't, anymore."`, `Nico cuenta la caja a tientas. «El agua de la llave es gratis. El hielo ya no».`, `O Nico conta o caixa no fena. «A água da torneira é de graça. O gelo acabou».`));
   const rosaLate = t(`Rosa sits on the upturned bucket, mop across her knees. "Floor's wet. I'm not getting up."`, `Rosa se sienta en el balde dado vuelta, el trapeador sobre las rodillas. «El piso está mojado. No me voy a parar».`, `A Rosa se senta no balde virado, o esfregão nos joelhos. «O chão tá molhado. Eu não vou levantar».`);
   late('rosa_wait', 'a', rosaLate);
   late('rosa_again', 'plain', rosaLate);

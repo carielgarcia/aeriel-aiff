@@ -141,7 +141,7 @@
       a: {
         text: function (s) {
           const out = [AF.invite ? AF.invite(s) : t(`Anselm and Dot: "Come to ours. Shoes off, no phones, no one has to do anything."`, `Anselm y Dot: «Vengan a casa. Zapatos fuera, sin celulares, nadie tiene que hacer nada».`, `Anselm e Dot: «Vem pra nossa casa. Sapato fora, sem celular, ninguém precisa fazer nada».`)];
-          if (L.hasFriend('maru')) out.push(t(`Luisa is already pulling at your sleeve. "Say yes. They said toast."`, `Luisa ya te jala de la manga. «Di que sí. Dijeron tostadas».`, `A Luisa já tá puxando sua manga. «Diz que sim. Eles falaram torrada».`));
+          if (L.hasFriend('luisa')) out.push(t(`Luisa is already pulling at your sleeve. "Say yes. They said toast."`, `Luisa ya te jala de la manga. «Di que sí. Dijeron tostadas».`, `A Luisa já tá puxando sua manga. «Diz que sim. Eles falaram torrada».`));
           return out;
         },
         choices: [

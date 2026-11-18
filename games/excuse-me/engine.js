@@ -542,7 +542,7 @@
     const bob = (d.pose === 'dance') ? (odd ? -1 : 0) : 0;
     const pose = d.pose === 'dance' ? (odd ? 'dance' : 'stand') : (d.pose === 'hug' ? 'stand' : d.pose);
     const sy = fy;
-    const cast = EM.CAST[e.cast] || EM.CAST.maru;
+    const cast = EM.CAST[e.cast] || EM.CAST.luisa;
     if (d.slit) {
       /* the rave door: no guard, a black steel door with a slit at eye height (a light moves behind it when you are close) */
       const x0 = Math.floor(p.x) * TS, y0 = (Math.floor(p.y) - 1) * TS, near = Math.hypot(S.x - cx, S.y - fy) < 40;

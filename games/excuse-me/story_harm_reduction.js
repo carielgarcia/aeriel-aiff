@@ -179,7 +179,7 @@
 
   /* ============================================================ CONVERSATIONS: gum offers and earplug misfires */
   D.earplug_fail = {
-    who: 'maru', role: t('YOUR EARPLUGS', 'TUS TAPONES', 'SEUS PROTETORES'), forced: true, start: 'a', nodes: {
+    who: 'luisa', role: t('YOUR EARPLUGS', 'TUS TAPONES', 'SEUS PROTETORES'), forced: true, start: 'a', nodes: {
       a: {
         text: t(`The mouth is moving. The words are somewhere behind the foam in your ears. You catch "…the…" and a lot of enthusiasm. They are waiting for you to answer. Maybe take the earplugs out for this one?`, `La boca se mueve. Las palabras están detrás de la espuma de tus oídos. Alcanzas a oír «…el…» y mucho entusiasmo. Esperan que respondas. ¿Quizás conviene sacarte los tapones para esta?`, `A boca se mexe. As palavras estão atrás da espuma nos seus ouvidos. Você capta «…o…» e muito entusiasmo. Esperam sua resposta. Que tal tirar os protetores pra essa?`),
         choices: [

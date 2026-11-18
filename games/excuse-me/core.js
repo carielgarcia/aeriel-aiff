@@ -47,11 +47,11 @@
     return s.replace(/\{name\}/g, name).replace(/\{([^{}|]*)\|([^{}|]*)\|([^{}|]*)\}/g, function (m, a, b, c) { return [a, b, c][gi]; });
   };
 
-  /* two of the three friends are renamed at display time (ids and save data stay tato / dani) */
+  /* two of the three friends are renamed at display time (ids are fena / benjamin; the old spellings Tato / Dani are swapped when displayed) */
   const NAMES = { Tato: { en: 'Fernando', es: 'Feña', pt: 'Fernando' }, Dani: { en: 'Benjamin', es: 'Benjamin', pt: 'Benjamin' } };
   /* the entourage: three people carry the night */
-  EM.FRIENDS = ['maru', 'dani', 'tato'];
-  EM.coreCount = function (s) { return ['maru', 'dani', 'tato'].filter(function (f) { return s.party.indexOf(f) !== -1; }).length; };
+  EM.FRIENDS = ['luisa', 'benjamin', 'fena'];
+  EM.coreCount = function (s) { return ['luisa', 'benjamin', 'fena'].filter(function (f) { return s.party.indexOf(f) !== -1; }).length; };
   /* the harm reduction stand has a proper name in every language */
   const STAND = [
     [/\ba la mesa de chequeo\b/gi, 'al stand de Reduciendo Da\u00f1o'], [/\b(una) mesa de chequeo\b/gi, 'un stand de Reduciendo Da\u00f1o'],
@@ -131,7 +131,7 @@
       items: { water: 1 },
       flags: {},
       quests: {},
-      bond: { maru: 0, dani: 0, tato: 0 },
+      bond: { luisa: 0, benjamin: 0, fena: 0 },
       party: [],            // friends currently following you
       away: {},             // friend id -> zone id where they are
       res: {},              // resolved npc/object ids
@@ -157,8 +157,10 @@
   };
   EM.load = function () {
     try {
-      const raw = localStorage.getItem(KEY);
+      let raw = localStorage.getItem(KEY);
       if (!raw) return null;
+      /* saves from before the rename: maru / dani / tato became luisa / benjamin / fena */
+      raw = raw.replace(/(^|[^A-Za-z])(maru|dani|tato)(?![a-z])/g, function (m, a, id) { return a + { maru: 'luisa', dani: 'benjamin', tato: 'fena' }[id]; });
       const s = JSON.parse(raw);
       return s && s.v === 2 ? s : null;
     } catch (e) { return null; }

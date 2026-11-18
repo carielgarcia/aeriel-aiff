@@ -102,7 +102,7 @@
     if (s.stats.soc < 25) p -= 0.15;
     if (s.stats.fun >= 70) p += 0.06;
     if ((s.freshUntil || 0) > s.time) p += 0.1;
-    if (L.hasFriend('dani') && s.flags.dani_wingman) p += 0.1;
+    if (L.hasFriend('benjamin') && s.flags.benjamin_wingman) p += 0.1;
     return clamp(p, 0.12, 0.9);
   };
   const MO_WIN = [

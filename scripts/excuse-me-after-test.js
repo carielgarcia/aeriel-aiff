@@ -28,7 +28,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.waitForFunction('window.EM && EM.ui && EM.scripts && EM.scripts.af_begin');
 
   /* story_autonomy.js: Maru leaves your side now and then. The older sections are scripted around her being with you, so they start with that switched off. */
-  await page.evaluate(function () { const ns = EM.newState; EM.newState = function () { const s = ns.apply(this, arguments); s.flags.maru_hold = true; return s; }; });
+  await page.evaluate(function () { const ns = EM.newState; EM.newState = function () { const s = ns.apply(this, arguments); s.flags.luisa_hold = true; return s; }; });
 
   /* helpers living in the page */
   await page.evaluate(function () {
@@ -55,8 +55,8 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
 
   /* ------------------------------------------------ 1. the sunrise, then THE AFTERS mission (story_roof_finale.js) */
   const r1 = await page.evaluate(function () {
-    const s = EM.state; s.time = 515; s.party = ['maru', 'dani', 'tato']; s.flags.roof_open = true; s.quests.q9 = 'active'; s.flags.wed_done = true;
-    s.bond.maru = 3; s.bond.dani = 1; s.bond.tato = 2;
+    const s = EM.state; s.time = 515; s.party = ['luisa', 'benjamin', 'fena']; s.flags.roof_open = true; s.quests.q9 = 'active'; s.flags.wed_done = true;
+    s.bond.luisa = 3; s.bond.benjamin = 1; s.bond.fena = 2;
     EM.scripts.sunrise(); H.settle();
     const star = Object.keys(EM.seekTargets(EM.state));
     return { ended: EM.state.ended || null, q9: EM.state.quests.q9, q13: EM.state.quests.q13, open: !!EM.state.flags.afters_open, star: star };
@@ -140,12 +140,12 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   });
   ok(r4d.called, 'calling for help is the right answer when they cannot be roused');
   const r4e = await page.evaluate(function () {
-    const s = EM.state; s.fx.mdma = 0; s.after.noise = 0; s.bond.maru = 3; s.bond.dani = 0; s.bond.tato = 1;
+    const s = EM.state; s.fx.mdma = 0; s.after.noise = 0; s.bond.luisa = 3; s.bond.benjamin = 0; s.bond.fena = 1;
     EM.ui.startDialogue('af_pasc', {}); H.pick("I'm good"); H.settle();
-    const no = { no: !!s.flags.one_no, took: !!s.fx.mdma, back: ['maru', 'dani', 'tato'].filter(function (f) { return s.flags['one_back_' + f]; }) };
+    const no = { no: !!s.flags.one_no, took: !!s.fx.mdma, back: ['luisa', 'benjamin', 'fena'].filter(function (f) { return s.flags['one_back_' + f]; }) };
     return no;
   });
-  ok(r4e.no && !r4e.took && r4e.back.indexOf('maru') !== -1 && r4e.back.indexOf('dani') === -1, 'ONE MORE: a plain no, no lecture; Maru (bond 3) backs you, Benjamin (bond 1) just decides for himself ' + JSON.stringify(r4e.back));
+  ok(r4e.no && !r4e.took && r4e.back.indexOf('luisa') !== -1 && r4e.back.indexOf('benjamin') === -1, 'ONE MORE: a plain no, no lecture; Maru (bond 3) backs you, Benjamin (bond 1) just decides for himself ' + JSON.stringify(r4e.back));
   const r4f = await page.evaluate(function () {
     const s = EM.state; s.fx.mdma = 120; const hp = s.stats.hp; delete s.flags.one_done;
     EM.ui.startDialogue('af_pasc', {}); H.pick('pinch'); H.settle();
@@ -198,7 +198,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.waitForTimeout(700);
   const r6 = await page.evaluate(function () {
     EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true;
-    const s = EM.state; s.time = 530; s.party = ['maru', 'dani', 'tato']; s.flags.after_go = true; s.flags.af_rules = true; s.flags.mb_open = true; s.flags.phone_basket = true;
+    const s = EM.state; s.time = 530; s.party = ['luisa', 'benjamin', 'fena']; s.flags.after_go = true; s.flags.af_rules = true; s.flags.mb_open = true; s.flags.phone_basket = true;
     EM.scripts.af_begin(); EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true;
     EM.engine.enter('a_living', 22, 4, 'u');
     s.fx.ket = 100;
@@ -275,19 +275,19 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.waitForTimeout(700);
   const r7 = await page.evaluate(function () {
     EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true;
-    const s = EM.state; s.time = 540; s.party = ['maru', 'dani', 'tato']; s.flags.after_go = true; EM.scripts.af_begin(); EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true;
+    const s = EM.state; s.time = 540; s.party = ['luisa', 'benjamin', 'fena']; s.flags.after_go = true; EM.scripts.af_begin(); EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true;
     EM.engine.enter('a_living', 13, 13, 'u');
     s.flags.af_rules = true; s.flags.sam_ok = true; s.flags.rey_ok = true; s.flags.af_clean = true; s.flags.brought_food = true;
-    s.after.at.question = 0; s.after.at.tato = 0; s.after.at.dani = 9999;
+    s.after.at.question = 0; s.after.at.fena = 0; s.after.at.benjamin = 9999;
     EM.logic.minute(); EM.logic.minute(); EM.logic.minute();
-    const out = { tato: s.after.f.tato.st, tatoAsleep: !!s.flags.tato_asleep, away: s.away.tato, q7: s.quests.q_af7, d: EM.ui.D && EM.ui.D.id };
+    const out = { fena: s.after.f.fena.st, fenaAsleep: !!s.flags.fena_asleep, away: s.away.fena, q7: s.quests.q_af7, d: EM.ui.D && EM.ui.D.id };
     H.settle(); H.pick('Walk Luisa home yourself'); H.settle(); H.pick('Let him sleep'); H.settle();
-    out.maru = s.after.f.maru.st + '/' + s.after.f.maru.mode; out.q7done = s.quests.q_af7; out.tatoStays = !!s.flags.tato_stays;
+    out.luisa = s.after.f.luisa.st + '/' + s.after.f.luisa.mode; out.q7done = s.quests.q_af7; out.fenaStays = !!s.flags.fena_stays;
     return out;
   });
-  ok(r7.tato === 'sofa' && r7.tatoAsleep && r7.d === 'af_question' && r7.maru === 'home/buddy' && r7.q7done === 'done' && r7.tatoStays, 'THE QUESTION: Maru fading, Fernando asleep on the sofa, you choose who walks whom (' + JSON.stringify(r7) + ')');
+  ok(r7.fena === 'sofa' && r7.fenaAsleep && r7.d === 'af_question' && r7.luisa === 'home/buddy' && r7.q7done === 'done' && r7.fenaStays, 'THE QUESTION: Maru fading, Fernando asleep on the sofa, you choose who walks whom (' + JSON.stringify(r7) + ')');
   const r7b = await page.evaluate(function () {
-    const s = EM.state; s.after.f.dani = { st: 'home', mode: 'alone' }; EM.logic.leave && EM.logic.leave('dani', 'home');
+    const s = EM.state; s.after.f.benjamin = { st: 'home', mode: 'alone' }; EM.logic.leave && EM.logic.leave('benjamin', 'home');
     EM.ui.openMenu('items'); const btns = Array.prototype.slice.call(document.querySelectorAll('#menu-body button')).map(function (b) { return b.textContent; });
     const textBtn = Array.prototype.slice.call(document.querySelectorAll('#menu-body button')).filter(function (b) { return /^TEXT$/i.test(b.textContent); });
     const n = textBtn.length; textBtn[0] && textBtn[0].click(); const d = EM.ui.D && EM.ui.D.id;
@@ -296,7 +296,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   });
   ok(r7b.n >= 2 && /^af_text_/.test(r7b.d) && r7b.texted.length === 1, 'friends who went home can be texted from the ITEMS menu (' + r7b.n + ' rows, dialogue ' + r7b.d + ')');
   const r7c = await page.evaluate(function () {
-    const s = EM.state; s.flags.quiroga_warned = true; s.flags.dani_toast = true; s.flags.lio_ok = true; s.time = 839; EM.logic.minute();
+    const s = EM.state; s.flags.quiroga_warned = true; s.flags.benjamin_toast = true; s.flags.lio_ok = true; s.time = 839; EM.logic.minute();
     return { ended: s.ended || null };
   });
   await page.waitForTimeout(1200);
@@ -320,7 +320,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.waitForTimeout(700);
   const r8b = await page.evaluate(function () {
     EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true;
-    const s = EM.state; s.time = 515; s.party = ['maru']; s.flags.roof_open = true; s.quests.q9 = 'active';
+    const s = EM.state; s.time = 515; s.party = ['luisa']; s.flags.roof_open = true; s.quests.q9 = 'active';
     EM.scripts.sunrise(); H.settle(); EM.ui.startDialogue('afters_invite', { npc: 'af_inviter' }); H.pick('going home'); H.settle(); /* THE AFTERS mission: home ends the night */
     return { home: !!s.flags.after_home, go: !!s.flags.after_go };
   });
@@ -401,7 +401,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.waitForTimeout(700);
   const r11 = await page.evaluate(function () {
     EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true;
-    const s = EM.state, out = {}; s.time = 520; s.party = ['maru', 'dani', 'tato']; s.away = {}; s.flags.after_go = true; s.flags.afters_open = true; EM.scripts.af_begin();
+    const s = EM.state, out = {}; s.time = 520; s.party = ['luisa', 'benjamin', 'fena']; s.away = {}; s.flags.after_go = true; s.flags.afters_open = true; EM.scripts.af_begin();
     EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true; EM.engine.enter('a_living', 13, 12, 'u');
     EM.logic.apply({ flag: ['af_rules', 'phone_basket'], quest: { q_af1: 'done', q_af2: 'done', q_af3: 'active' } });
     out.o2 = EM.tr(EM.story.objective(s)); out.spine = s.quests.q_af0;
@@ -437,26 +437,26 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.waitForTimeout(700);
   const r12 = await page.evaluate(function () {
     EM.ui.D = null; EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true;
-    const s = EM.state, out = {}; delete s.flags.maru_hold; s.time = 520; s.party = ['maru', 'dani', 'tato']; s.away = {}; s.flags.after_go = true; s.flags.afters_open = true; EM.scripts.af_begin();
+    const s = EM.state, out = {}; delete s.flags.luisa_hold; s.time = 520; s.party = ['luisa', 'benjamin', 'fena']; s.away = {}; s.flags.after_go = true; s.flags.afters_open = true; EM.scripts.af_begin();
     EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true; EM.engine.enter('a_living', 13, 12, 'u'); EM.story.enter('a_living');
     const calm = function () { EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true; };
-    const here = function () { return s.party.indexOf('maru') !== -1; };
+    const here = function () { return s.party.indexOf('luisa') !== -1; };
     EM.logic.apply({ flag: ['af_rules', 'phone_basket'], quest: { q_af1: 'done', q_af2: 'done', q_af3: 'active' } }); calm(); EM.logic.minute(); calm();
-    out.kitchen = s.away.maru; out.kDlg = EM.story.friendDialogue('maru', s);
+    out.kitchen = s.away.luisa; out.kDlg = EM.story.friendDialogue('luisa', s);
     EM.logic.apply({ flag: ['sam_done', 'sam_ok', 'rey_done', 'rey_ok'] }); calm(); EM.logic.minute(); calm(); EM.logic.minute(); calm();
-    out.dance = s.away.maru; out.dDlg = EM.story.friendDialogue('maru', s);
+    out.dance = s.away.luisa; out.dDlg = EM.story.friendDialogue('luisa', s);
     out.coatsActive = s.quests.q_af4; calm(); EM.logic.minute(); calm();
-    out.balcony = s.away.maru; out.bDlg = EM.story.friendDialogue('maru', s);
-    EM.engine.enter('a_master', 3, 7, 'u'); EM.story.enter('a_master'); out.inMaster = EM.zones.a_master && s.party.indexOf('dani') === -1;
+    out.balcony = s.away.luisa; out.bDlg = EM.story.friendDialogue('luisa', s);
+    EM.engine.enter('a_master', 3, 7, 'u'); EM.story.enter('a_master'); out.inMaster = EM.zones.a_master && s.party.indexOf('benjamin') === -1;
     EM.engine.enter('a_living', 13, 12, 'u'); EM.story.enter('a_living'); calm();
     EM.logic.apply({ flag: ['lio_done'], quest: { q_af4: 'done' } }); EM.logic.minute(); calm(); EM.logic.minute(); calm();
-    out.back = here(); out.q7 = s.quests.q_af7; out.uncounted = !!s.flags.maru_uncounted;
-    out.dialogs = ['maru_af_kitchen', 'maru_af_dance', 'maru_af_balcony', 'maru_break_found'].every(function (id) { return !!EM.DIALOGUES[id]; });
+    out.back = here(); out.q7 = s.quests.q_af7; out.uncounted = !!s.flags.luisa_uncounted;
+    out.dialogs = ['luisa_af_kitchen', 'luisa_af_dance', 'luisa_af_balcony', 'luisa_break_found'].every(function (id) { return !!EM.DIALOGUES[id]; });
     return out;
   });
-  ok(r12.kitchen === 'a_kitchen' && r12.kDlg === 'maru_af_kitchen', 'THE AFTER: after the house rules Maru goes to help Dot in the kitchen, on her own (' + r12.kitchen + ')');
-  ok(r12.dance === 'a_living' && r12.dDlg === 'maru_af_dance', 'the kitchen done, she is dancing on the rug without counting anybody (' + r12.dance + ')');
-  ok(r12.coatsActive === 'active' && r12.balcony === 'a_balcony' && r12.bDlg === 'maru_af_balcony', 'while you look in on the coats room she takes her call on the balcony (' + r12.balcony + ')');
+  ok(r12.kitchen === 'a_kitchen' && r12.kDlg === 'luisa_af_kitchen', 'THE AFTER: after the house rules Maru goes to help Dot in the kitchen, on her own (' + r12.kitchen + ')');
+  ok(r12.dance === 'a_living' && r12.dDlg === 'luisa_af_dance', 'the kitchen done, she is dancing on the rug without counting anybody (' + r12.dance + ')');
+  ok(r12.coatsActive === 'active' && r12.balcony === 'a_balcony' && r12.bDlg === 'luisa_af_balcony', 'while you look in on the coats room she takes her call on the balcony (' + r12.balcony + ')');
   ok(r12.inMaster, 'the master bedroom is yours alone: nobody follows you in');
   ok(r12.back && r12.q7 === 'active' && r12.uncounted, 'she comes back by herself for THE QUESTION, which still needs her');
   ok(r12.dialogs, 'her own scenes exist in all four places');

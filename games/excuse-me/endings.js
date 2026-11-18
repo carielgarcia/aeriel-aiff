@@ -113,22 +113,22 @@
   /* ------------------------------------------------------------ friend lines */
   story.friendLine = function (f, s, withYou) {
     const f1 = s.flags, b = s.bond[f] || 0;
-    if (f === 'maru') {
+    if (f === 'luisa') {
       if (b >= 4) return T('"You are my favourite person to survive a night with."', '«Eres mi persona favorita para sobrevivir una noche».', '«Você é minha pessoa favorita pra sobreviver a uma noite».');
       if (b >= 1) return T('"Thanks for not losing me."', '«Gracias por no perderme».', '«Valeu por não me perder».');
       return T('"It was a night."', '«Fue una noche».', '«Foi uma noite».');
     }
-    if (f === 'dani') {
+    if (f === 'benjamin') {
       if (f1.pill_binned) return T(`Held your hand while he gave the pill up. Still dancing.`, `Te sostuvo la mano mientras entregaba la pastilla. Sigue bailando.`, `Segurou sua mão enquanto entregava o comprimido. Continua dançando.`);
-      if (f1.dani_took && s.pill.type === 'pure') return T('Still glowing. He thinks he saw God and she was wearing mesh.', 'Todavía brilla. Cree que vio a Dios y llevaba malla.', 'Ainda brilha. Ele acha que viu Deus e ela usava tela.');
-      if (f1.dani_took && s.pill.type === 'mix') return T('Crashing. Sitting in a corner apologizing to nobody and drinking water.', 'Bajoneado. Sentado en un rincón pidiendo perdón a nadie y tomando agua.', 'Em baixão. Sentado num canto pedindo desculpa pra ninguém e bebendo água.');
-      if (f1.dani_took) return T('Has decided to start testing everything, including friends.', 'Decidió empezar a testear todo, incluidos los amigos.', 'Decidiu começar a testar tudo, inclusive amigos.');
+      if (f1.benjamin_took && s.pill.type === 'pure') return T('Still glowing. He thinks he saw God and she was wearing mesh.', 'Todavía brilla. Cree que vio a Dios y llevaba malla.', 'Ainda brilha. Ele acha que viu Deus e ela usava tela.');
+      if (f1.benjamin_took && s.pill.type === 'mix') return T('Crashing. Sitting in a corner apologizing to nobody and drinking water.', 'Bajoneado. Sentado en un rincón pidiendo perdón a nadie y tomando agua.', 'Em baixão. Sentado num canto pedindo desculpa pra ninguém e bebendo água.');
+      if (f1.benjamin_took) return T('Has decided to start testing everything, including friends.', 'Decidió empezar a testear todo, incluidos los amigos.', 'Decidiu começar a testar tudo, inclusive amigos.');
       return T(`Sober, and dancing anyway.`, `Sobrio, y bailando igual.`, `Sóbrio, e dançando mesmo assim.`);
     }
-    if (f === 'tato') {
-      if (f1.tato_closure) return T('Lighter. He said what he needed to say.', 'Más liviano. Dijo lo que necesitaba decir.', 'Mais leve. Disse o que precisava dizer.');
-      if (f1.tato_sat) return T('Needed the quiet room. You came back for him.', 'Necesitó la sala tranquila. Volviste por él.', 'Precisou da sala de calma. Você voltou por ele.');
-      if (f1.tato_calm) return T('Breathed with you in a stall. Hasn\'t forgotten.', 'Respiró contigo en una cabina. No lo olvidó.', 'Respirou com você numa cabine. Não esqueceu.');
+    if (f === 'fena') {
+      if (f1.fena_closure) return T('Lighter. He said what he needed to say.', 'Más liviano. Dijo lo que necesitaba decir.', 'Mais leve. Disse o que precisava dizer.');
+      if (f1.fena_sat) return T('Needed the quiet room. You came back for him.', 'Necesitó la sala tranquila. Volviste por él.', 'Precisou da sala de calma. Você voltou por ele.');
+      if (f1.fena_calm) return T('Breathed with you in a stall. Hasn\'t forgotten.', 'Respiró contigo en una cabina. No lo olvidó.', 'Respirou com você numa cabine. Não esqueceu.');
       return T('Held on.', 'Aguantó.', 'Aguentou.');
     }
     return null;
@@ -139,7 +139,7 @@
     [100, 'consent_violation', T('You pushed past a "no" in the dark room. Dario walked you out. It is the one thing the building does not forgive quickly.', 'Empujaste pasando un «no» en el cuarto oscuro. Dario te sacó. Es lo único que el edificio no perdona rápido.', 'Você forçou depois de um «não» na dark room. O Dario te levou pra fora. É a única coisa que o prédio não perdoa rápido.')],
     [98, 'fight_broh', T('You and Broh got physical. It was short, stupid and loud. Sofi remembers.', 'Tú y Broh se agarraron. Fue corto, estúpido y ruidoso. Sofi lo recuerda.', 'Você e o Broh trocaram empurrões. Foi curto, burro e barulhento. A Sofi lembra.')],
     [96, 'passed_out', T('You woke up in the quiet room an hour and twenty minutes later. Somebody carried you.', 'Despertaste en la sala tranquila una hora y veinte después. Alguien te cargó.', 'Você acordou na sala de calma uma hora e vinte depois. Alguém te carregou.')],
-    [95, 'tato_closure', T('Feña said goodbye to Mateo, and you were next to him for it.', 'Feña se despidió de Mateo, y tú estabas a su lado.', 'O Feña se despediu do Mateo, e você estava do lado dele.')],
+    [95, 'fena_closure', T('Feña said goodbye to Mateo, and you were next to him for it.', 'Feña se despidió de Mateo, y tú estabas a su lado.', 'O Feña se despediu do Mateo, e você estava do lado dele.')],
     [94, 'juno_found_friends', T('You sat with Juno in the tunnel until her friends found her.', 'Te sentaste con Juno en el túnel hasta que sus amigos la encontraron.', 'Você sentou com a Juno no túnel até os amigos dela a encontrarem.')],
     [94, 'juno_quiet', T('You walked Juno to the quiet room and handed her to people who knew what to do.', 'Llevaste a Juno a la sala tranquila y se la entregaste a quien sabía qué hacer.', 'Você levou a Juno pra sala de calma e entregou pra quem sabia o que fazer.')],
     [94, 'juno_medic', T('You called the medics for Juno. It was the right call.', 'Llamaste a los médicos por Juno. Fue la decisión correcta.', 'Você chamou os médicos pra Juno. Foi a decisão certa.')],

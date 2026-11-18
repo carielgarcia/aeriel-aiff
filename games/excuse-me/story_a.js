@@ -22,7 +22,7 @@
   /* ------------------------------------------------------------ framework */
   story.init = function (s) {
     s.quests.q1 = 'active';
-    s.away = { maru: 'main', dani: 'main', tato: 'main' };
+    s.away = { luisa: 'main', benjamin: 'main', fena: 'main' };
     s.party = [];
     s.items.water = 1;
   };
@@ -31,10 +31,10 @@
     const q = s.quests;
     if (q.q9 === 'active') return T('Get to the roof with everyone you can. Sunrise is coming.', 'Sube al techo con todos los que puedas. Viene el amanecer.', 'Suba ao terraço com quem puder. O amanhecer vem aí.');
     if (q.q8 === 'active') {
-      const lost = ['dani', 'tato'].filter(function (f) { return s.away[f]; });
+      const lost = ['benjamin', 'fena'].filter(function (f) { return s.away[f]; });
       if (lost.length === 2) return T('Find Benja and Feña. They went different ways.', 'Encuentra a Benja y a Feña. Se fueron por caminos distintos.', 'Encontre o Benja e o Feña. Foram por caminhos diferentes.');
-      if (lost[0] === 'dani') return T('Find Benja. Last seen: ' + EM.tr(EM.zones[s.away.dani].name).toLowerCase() + '.', 'Encuentra a Benja. Visto por última vez: ' + EM.tr(EM.zones[s.away.dani].name).toLowerCase() + '.', 'Encontre o Benja. Visto por último: ' + EM.tr(EM.zones[s.away.dani].name).toLowerCase() + '.');
-      if (lost[0] === 'tato') return T('Find Feña. Last seen: ' + EM.tr(EM.zones[s.away.tato].name).toLowerCase() + '.', 'Encuentra a Feña. Visto por última vez: ' + EM.tr(EM.zones[s.away.tato].name).toLowerCase() + '.', 'Encontre o Feña. Visto por último: ' + EM.tr(EM.zones[s.away.tato].name).toLowerCase() + '.');
+      if (lost[0] === 'benjamin') return T('Find Benja. Last seen: ' + EM.tr(EM.zones[s.away.benjamin].name).toLowerCase() + '.', 'Encuentra a Benja. Visto por última vez: ' + EM.tr(EM.zones[s.away.benjamin].name).toLowerCase() + '.', 'Encontre o Benja. Visto por último: ' + EM.tr(EM.zones[s.away.benjamin].name).toLowerCase() + '.');
+      if (lost[0] === 'fena') return T('Find Feña. Last seen: ' + EM.tr(EM.zones[s.away.fena].name).toLowerCase() + '.', 'Encuentra a Feña. Visto por última vez: ' + EM.tr(EM.zones[s.away.fena].name).toLowerCase() + '.', 'Encontre o Feña. Visto por último: ' + EM.tr(EM.zones[s.away.fena].name).toLowerCase() + '.');
     }
     if (q.q7 === 'active') return T('Take the group to the glowing centre of the main floor.', 'Lleva al grupo al centro brillante de la pista principal.', 'Leve o grupo ao centro brilhante da pista principal.');
     if (q.q5 === 'active') return s.pill.tested ? T('Decide what to do with the pill. Then find the dance floor.', 'Decide qué hacer con la pastilla. Luego busca la pista.', 'Decida o que fazer com o comprimido. Depois procure a pista.') : T('Get Benja\'s pill checked at the QUIET ROOM (the door left of the foyer).', 'Que revisen la pastilla de Benja en la SALA TRANQUILA (la puerta a la izquierda del foyer).', 'Mande checar o comprimido do Benja na SALA DE CALMA (a porta à esquerda do foyer).');

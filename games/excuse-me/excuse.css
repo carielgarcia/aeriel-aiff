@@ -249,8 +249,8 @@ button:focus-visible, button.on, button.sel { background: var(--yel); color: #0A
 .bubble { border: 1px solid #FFFFFF; padding: 6px 8px; margin: 8px 0; background: #121212; }
 .bubble .bh { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
 .bubble .bh strong { color: var(--mag); }
-.bubble.from-dani .bh strong { color: var(--cyn); }
-.bubble.from-tato .bh strong { color: var(--lim); }
+.bubble.from-benjamin .bh strong { color: var(--cyn); }
+.bubble.from-fena .bh strong { color: var(--lim); }
 .bubble.from-x .bh strong { color: var(--amb); }
 .bubble .bt { margin-top: 3px; line-height: 1.45; }
 

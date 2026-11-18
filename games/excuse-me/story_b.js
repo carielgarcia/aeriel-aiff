@@ -105,7 +105,7 @@
       },
       honest_check: {
         branch: [
-          { req: function (s) { return s.flags.tato_checked || (s.care || 0) >= 1 || s.flags.marga_helped || s.flags.queue_tip; }, to: 'ok_group' },
+          { req: function (s) { return s.flags.fena_checked || (s.care || 0) >= 1 || s.flags.marga_helped || s.flags.queue_tip; }, to: 'ok_group' },
           { req: function () { return true; }, to: 'honest_meh' }
         ]
       },
@@ -158,7 +158,7 @@
   };
 
   D.stall_split = {
-    forced: true, who: 'maru', start: 'a', nodes: {
+    forced: true, who: 'luisa', start: 'a', nodes: {
       a: {
         text: [
           T(`Luisa goes in. You, Benja and Feña stand against the wall, looking at the ceiling. Behind the door: a long, grateful sigh.`, `Luisa entra. Tú, Benja y Feña esperan contra la pared, mirando al techo. Detrás de la puerta: un suspiro largo y agradecido.`, `A Luisa entra. Você, o Benja e o Feña esperam encostados na parede, olhando pro teto. Atrás da porta: um suspiro longo e agradecido.`),
@@ -169,32 +169,32 @@
       },
       pill: { branch: [{ req: function () { return true; }, to: 'pill_a' }] },
       pill_a: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('He opens his palm. A pale pill, a little crown stamped on it. "A guy in the queue outside sold it to me. Said it is the good stuff. I have never been so happy or so scared."', 'Abre la palma. Una pastilla pálida con una coronita estampada. «Un tipo de la fila de afuera me la vendió. Dijo que es de la buena. Nunca estuve tan feliz ni tan asustado».', 'Abre a palma. Um comprimido pálido, com uma coroinha estampada. «Um cara da fila lá fora me vendeu. Disse que é do bom. Nunca fiquei tão feliz nem tão assustado».'),
         choices: [
           { tone: 'ask', t: T('"Who sold you that? What\'s in it?"', '«¿Quién te la vendió? ¿Qué tiene?»', '«Quem te vendeu? O que tem nisso?»'), next: 'ask' },
-          { tone: 'care', t: T('"We should get it checked. The quiet room has a table."', '«Deberíamos hacerla chequear. La sala tranquila tiene una mesa».', '«A gente devia mandar checar. A sala de calma tem uma mesa».'), req: { flag: 'quiet_known' }, do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'agree' },
-          { tone: 'care', t: T('"We should get it checked. Is there a table for that?"', '«Deberíamos hacerla chequear. ¿Hay una mesa para eso?»', '«A gente devia mandar checar. Tem alguma mesa pra isso?»'), req: { no: 'quiet_known' }, do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'agree' },
+          { tone: 'care', t: T('"We should get it checked. The quiet room has a table."', '«Deberíamos hacerla chequear. La sala tranquila tiene una mesa».', '«A gente devia mandar checar. A sala de calma tem uma mesa».'), req: { flag: 'quiet_known' }, do: { bond: { benjamin: 1 }, flag: 'plan_test' }, next: 'agree' },
+          { tone: 'care', t: T('"We should get it checked. Is there a table for that?"', '«Deberíamos hacerla chequear. ¿Hay una mesa para eso?»', '«A gente devia mandar checar. Tem alguma mesa pra isso?»'), req: { no: 'quiet_known' }, do: { bond: { benjamin: 1 }, flag: 'plan_test' }, next: 'agree' },
           { tone: 'yes', t: T('"Let\'s do it. Half each."', '«Hagámoslo. La mitad cada uno».', '«Vamos. Metade pra cada um».'), do: { weird: 3 }, call: 'take_pill_untested', next: null },
-          { tone: 'no', t: T('"Put that away. Not here, not like this."', '«Guárdalo. Aquí no, así no».', '«Guarda isso. Aqui não, assim não».'), do: { bond: { dani: -1 }, flag: 'dani_insists' }, next: 'no' }
+          { tone: 'no', t: T('"Put that away. Not here, not like this."', '«Guárdalo. Aquí no, así no».', '«Guarda isso. Aqui não, assim não».'), do: { bond: { benjamin: -1 }, flag: 'benjamin_insists' }, next: 'no' }
         ]
       },
       ask: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket." Benja looks at the pill like it might answer for itself.', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una chaqueta muy linda». Benja mira la pastilla como si pudiera responder por sí misma.', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal». O Benja olha pro comprimido como se ele pudesse responder por si.'),
         choices: [
-          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Let\'s get it checked."', '«Una chaqueta linda no es una lista de ingredientes. Hagámosla chequear».', '«Uma jaqueta bonita não é lista de ingredientes. Vamos mandar checar».'), do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'agree' },
+          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Let\'s get it checked."', '«Una chaqueta linda no es una lista de ingredientes. Hagámosla chequear».', '«Uma jaqueta bonita não é lista de ingredientes. Vamos mandar checar».'), do: { bond: { benjamin: 1 }, flag: 'plan_test' }, next: 'agree' },
           { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la chaqueta».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 3 }, call: 'take_pill_untested', next: null },
-          { tone: 'no', t: T('"No. Put it away."', '«No. Guárdalo».', '«Não. Guarda isso».'), do: { bond: { dani: -1 }, flag: 'dani_insists' }, next: 'no' }
+          { tone: 'no', t: T('"No. Put it away."', '«No. Guárdalo».', '«Não. Guarda isso».'), do: { bond: { benjamin: -1 }, flag: 'benjamin_insists' }, next: 'no' }
         ]
       },
       agree: {
-        who: 'dani',
+        who: 'benjamin',
         text: T(`"Checked. Okay. Yes. Responsible. We are responsible people!" He pockets the pill very carefully.`, `«Revisada. Bien. Sí. Responsables. ¡Somos gente responsable!» Guarda la pastilla con mucho cuidado.`, `«Checado. Tá. Sim. Responsáveis. Somos pessoas responsáveis!» Ele guarda o comprimido com muito cuidado.`),
         do: { quest: { q3: 'done', q4: 'done', q5: 'active' }, at: 200, flag: ['pill_known'] }
       },
       no: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('"Okay. Okay. Fine." He pockets it. "But it\'s mine, and I\'m taking it before sunrise. So maybe you want to help me make that a good idea?"', '«Ok. Ok. Bueno». Se la guarda. «Pero es mía, y me la voy a tomar antes del amanecer. ¿Y si me ayudas a que sea una buena idea?»', '«Tá. Tá. Beleza». Ele guarda. «Mas é meu, e vou tomar antes do amanhecer. Então talvez você queira me ajudar a fazer disso uma boa ideia?»'),
         do: { quest: { q3: 'done', q4: 'done', q5: 'active' }, at: 200, flag: ['pill_known'] }
       }
@@ -203,7 +203,7 @@
   S.stall_pill_node = function () { /* marker so the story flow knows the pill has been revealed */ };
 
   D.stall_group = {
-    forced: true, who: 'maru', after: 'rosa_start', start: 'a', nodes: {
+    forced: true, who: 'luisa', after: 'rosa_start', start: 'a', nodes: {
       a: {
         text: [
           T('Stall three. A single toilet, three or four people, zero dignity. Luisa sits. Benja leans against the door. Feña\'s breathing is a bellows. Your elbow is inside a coat hook.', 'Cabina tres. Un solo inodoro, tres o cuatro personas, cero dignidad. Luisa se sienta. Benja se apoya contra la puerta. La respiración de Feña es un fuelle. Tu codo está dentro de un perchero.', 'Cabine três. Um único vaso, três ou quatro pessoas, zero dignidade. A Luisa senta. O Benja encosta na porta. A respiração do Feña é um fole. Seu cotovelo está dentro de um cabide.'),
@@ -211,46 +211,46 @@
         ],
         choices: [
           { tone: 'chill', t: T('Hum loudly, eyes fixed on the ceiling.', 'Tararear fuerte, ojos fijos en el techo.', 'Cantarolar alto, olhos fixos no teto.'), do: { soc: 1 }, next: 'pill', react: T('You hum the national anthem of nowhere. Luisa laughs so hard she has to stop.', 'Tarareas el himno nacional de ninguna parte. Luisa se ríe tanto que tiene que parar.', 'Você cantarola o hino nacional de lugar nenhum. A Luisa ri tanto que precisa parar.') },
-          { tone: 'joke', t: T('Narrate it like a sports commentator, whispered.', 'Narrarlo como comentarista deportivo, susurrando.', 'Narrar como comentarista esportivo, sussurrando.'), do: { fun: 4, bond: { maru: 1, dani: 1 } }, next: 'pill', react: T('"And she\'s going for it, folks — Benja, I need you to be professional — and — YES. The crowd goes wild."', '«Y va por ella, señores — Benja, te necesito profesional — y — SÍ. El público enloquece».', '«E ela vai pra cima, senhores — Benja, preciso que você seja profissional — e — SIM. A torcida vai à loucura».') },
-          { tone: 'care', t: T('Hold the door shut with your back. "I\'ve got the door."', 'Sostener la puerta con la espalda. «Yo cuido la puerta».', 'Segurar a porta com as costas. «Eu seguro a porta».'), do: { bond: { maru: 1 }, soc: 1 }, next: 'pill' }
+          { tone: 'joke', t: T('Narrate it like a sports commentator, whispered.', 'Narrarlo como comentarista deportivo, susurrando.', 'Narrar como comentarista esportivo, sussurrando.'), do: { fun: 4, bond: { luisa: 1, benjamin: 1 } }, next: 'pill', react: T('"And she\'s going for it, folks — Benja, I need you to be professional — and — YES. The crowd goes wild."', '«Y va por ella, señores — Benja, te necesito profesional — y — SÍ. El público enloquece».', '«E ela vai pra cima, senhores — Benja, preciso que você seja profissional — e — SIM. A torcida vai à loucura».') },
+          { tone: 'care', t: T('Hold the door shut with your back. "I\'ve got the door."', 'Sostener la puerta con la espalda. «Yo cuido la puerta».', 'Segurar a porta com as costas. «Eu seguro a porta».'), do: { bond: { luisa: 1 }, soc: 1 }, next: 'pill' }
         ]
       },
       pill: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('BENJA, bouncing, whispering: "Okay okay okay. While nobody can see — look what I got." He opens his palm. A pale pill with a tiny crown stamped on it. "A guy in the queue outside sold it to me. Said it\'s the good stuff. I have never been so happy or so scared."', 'BENJA, rebotando, susurrando: «Ok ok ok. Mientras nadie ve — mira lo que conseguí». Abre la palma. Una pastilla pálida con una coronita estampada. «Un tipo de la fila de afuera me la vendió. Dijo que es de la buena. Nunca estuve tan feliz ni tan asustado».', 'BENJA, quicando, sussurrando: «Tá tá tá. Enquanto ninguém vê — olha o que eu consegui». Abre a palma. Um comprimido pálido com uma coroinha estampada. «Um cara da fila lá fora me vendeu. Disse que é do bom. Nunca fiquei tão feliz nem tão assustado».'),
         do: { flag: 'pill_known' },
         choices: [
           { tone: 'ask', t: T('"Who sold you that? What\'s in it?"', '«¿Quién te la vendió? ¿Qué tiene?»', '«Quem te vendeu? O que tem nisso?»'), next: 'ask' },
-          { tone: 'care', t: T('"We should get it checked. The quiet room has a table."', '«Deberíamos hacerla chequear. La sala tranquila tiene una mesa».', '«A gente devia mandar checar. A sala de calma tem uma mesa».'), req: { flag: 'quiet_known' }, do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'tato' },
-          { tone: 'care', t: T('"We should get it checked. Is there a table for that?"', '«Deberíamos hacerla chequear. ¿Hay una mesa para eso?»', '«A gente devia mandar checar. Tem alguma mesa pra isso?»'), req: { no: 'quiet_known' }, do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'tato' },
-          { tone: 'yes', t: T('"Let\'s do it. Half each."', '«Hagámoslo. La mitad cada uno».', '«Vamos. Metade pra cada um».'), do: { weird: 4 }, call: 'take_pill_untested', next: 'tato' },
-          { tone: 'no', t: T('"Put that away. Not in here, not like this."', '«Guárdalo. Aquí no, así no».', '«Guarda isso. Aqui não, assim não».'), do: { bond: { dani: -1 }, flag: 'dani_insists' }, next: 'tato' }
+          { tone: 'care', t: T('"We should get it checked. The quiet room has a table."', '«Deberíamos hacerla chequear. La sala tranquila tiene una mesa».', '«A gente devia mandar checar. A sala de calma tem uma mesa».'), req: { flag: 'quiet_known' }, do: { bond: { benjamin: 1 }, flag: 'plan_test' }, next: 'fena' },
+          { tone: 'care', t: T('"We should get it checked. Is there a table for that?"', '«Deberíamos hacerla chequear. ¿Hay una mesa para eso?»', '«A gente devia mandar checar. Tem alguma mesa pra isso?»'), req: { no: 'quiet_known' }, do: { bond: { benjamin: 1 }, flag: 'plan_test' }, next: 'fena' },
+          { tone: 'yes', t: T('"Let\'s do it. Half each."', '«Hagámoslo. La mitad cada uno».', '«Vamos. Metade pra cada um».'), do: { weird: 4 }, call: 'take_pill_untested', next: 'fena' },
+          { tone: 'no', t: T('"Put that away. Not in here, not like this."', '«Guárdalo. Aquí no, así no».', '«Guarda isso. Aqui não, assim não».'), do: { bond: { benjamin: -1 }, flag: 'benjamin_insists' }, next: 'fena' }
         ]
       },
       ask: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('"He said MDMA. He said a lot of things. He said it\'s \'clean\'. He had a really nice jacket."', '«Dijo MDMA. Dijo muchas cosas. Dijo que es “limpia”. Tenía una chaqueta muy linda».', '«Disse MDMA. Disse um monte de coisa. Disse que é “limpo”. Tinha uma jaqueta muito legal».'),
         choices: [
-          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Get it checked."', '«Una chaqueta linda no es una lista de ingredientes. Hay que chequearla».', '«Jaqueta bonita não é lista de ingredientes. Tem que checar».'), do: { bond: { dani: 1 }, flag: 'plan_test' }, next: 'tato' },
-          { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la chaqueta».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 4 }, call: 'take_pill_untested', next: 'tato' },
-          { tone: 'no', t: T('"No. Put it away."', '«No. Guárdalo».', '«Não. Guarda isso».'), do: { bond: { dani: -1 }, flag: 'dani_insists' }, next: 'tato' }
+          { tone: 'care', t: T('"A nice jacket is not an ingredient list. Get it checked."', '«Una chaqueta linda no es una lista de ingredientes. Hay que chequearla».', '«Jaqueta bonita não é lista de ingredientes. Tem que checar».'), do: { bond: { benjamin: 1 }, flag: 'plan_test' }, next: 'fena' },
+          { tone: 'yes', t: T('"…Fine. Half each. Trust the jacket."', '«…Bueno. La mitad cada uno. Confiemos en la chaqueta».', '«…Tá. Metade cada um. Confia na jaqueta».'), do: { weird: 4 }, call: 'take_pill_untested', next: 'fena' },
+          { tone: 'no', t: T('"No. Put it away."', '«No. Guárdalo».', '«Não. Guarda isso».'), do: { bond: { benjamin: -1 }, flag: 'benjamin_insists' }, next: 'fena' }
         ]
       },
-      tato: {
-        who: 'tato',
+      fena: {
+        who: 'fena',
         text: T(`In the corner by the bin, Feña is breathing fast and shallow, his hand flat on his chest. "I'm fine. I'm fine. It's just— small. And loud. And I can't—"`, `En la esquina junto al basurero, Feña respira rápido y poco, con la mano plana sobre el pecho. «Estoy bien. Estoy bien. Es solo… chico. Y fuerte. Y no puedo…»`, `No canto, perto da lixeira, o Feña respira rápido e raso, com a mão aberta no peito. «Tô bem. Tô bem. É só… pequeno. E alto. E eu não consigo…»`),
         choices: [
           { tone: 'care', t: T('Breathe with him. In, out. Slow. "Follow me."', 'Respirar con él. Adentro, afuera. Lento. «Sígueme».', 'Respirar com ele. Entra, sai. Devagar. «Me acompanha».'), call: 'stall_breath', do: { flag: 'breath_pending' }, next: null, free: true },
-          { tone: 'water', t: T('Hand him your water bottle.', 'Darle tu botella de agua.', 'Passar sua garrafa de água pra ele.'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, bond: { tato: 1 }, flag: 'tato_water' }, next: 'tato2', react: T(`He drinks, holding the bottle with both hands. Some of the shaking leaves his shoulders.`, `Bebe, sosteniendo la botella con las dos manos. Parte del temblor sale de sus hombros.`, `Ele bebe, segurando a garrafa com as duas mãos. Parte do tremor sai dos ombros dele.`) },
-          { tone: 'blunt', t: T('"Relax, bro. It\'s a toilet."', '«Relájate, bro. Es un baño».', '«Relaxa, mano. É um banheiro».'), do: { bond: { tato: -2 }, soc: -2, flag: 'tato_rough' }, next: 'knock', bad: true, react: T(`Feña's face closes. "…Right. Sorry."`, `La cara de Feña se cierra. «…Cierto. Perdón».`, `O rosto do Feña se fecha. «…Certo. Desculpa».`) }
+          { tone: 'water', t: T('Hand him your water bottle.', 'Darle tu botella de agua.', 'Passar sua garrafa de água pra ele.'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, bond: { fena: 1 }, flag: 'fena_water' }, next: 'fena2', react: T(`He drinks, holding the bottle with both hands. Some of the shaking leaves his shoulders.`, `Bebe, sosteniendo la botella con las dos manos. Parte del temblor sale de sus hombros.`, `Ele bebe, segurando a garrafa com as duas mãos. Parte do tremor sai dos ombros dele.`) },
+          { tone: 'blunt', t: T('"Relax, bro. It\'s a toilet."', '«Relájate, bro. Es un baño».', '«Relaxa, mano. É um banheiro».'), do: { bond: { fena: -2 }, soc: -2, flag: 'fena_rough' }, next: 'knock', bad: true, react: T(`Feña's face closes. "…Right. Sorry."`, `La cara de Feña se cierra. «…Cierto. Perdón».`, `O rosto do Feña se fecha. «…Certo. Desculpa».`) }
         ]
       },
-      tato2: {
-        who: 'tato',
+      fena2: {
+        who: 'fena',
         text: T('"Can you — can you stay close to me? Just for a few minutes." His breathing is still ragged, but there is a floor under it now.', '«¿Puedes — puedes quedarte cerca de mí? Solo unos minutos». Su respiración sigue entrecortada, pero ahora hay un piso debajo.', '«Você pode — pode ficar perto de mim? Só uns minutos». A respiração dele ainda tá ofegante, mas agora tem um chão embaixo.'),
         choices: [
           { tone: 'care', t: T('Breathe with him. In, out. Slow.', 'Respirar con él. Adentro, afuera. Lento.', 'Respirar com ele. Entra, sai. Devagar.'), call: 'stall_breath', do: { flag: 'breath_pending' }, next: null, free: true },
-          { tone: 'chill', t: T('"Right here. Not going anywhere."', '«Aquí mismo. No me voy a ninguna parte».', '«Aqui mesmo. Não vou a lugar nenhum».'), do: { bond: { tato: 1 }, flag: 'tato_calm' }, next: 'knock' }
+          { tone: 'chill', t: T('"Right here. Not going anywhere."', '«Aquí mismo. No me voy a ninguna parte».', '«Aqui mesmo. Não vou a lugar nenhum».'), do: { bond: { fena: 1 }, flag: 'fena_calm' }, next: 'knock' }
         ]
       },
       knock: {
@@ -266,15 +266,15 @@
     const s = EM.state;
     U.breathing(function (res) {
       if (res === 'calm') {
-        L.apply({ care: 1, bond: { tato: 2 }, flag: 'tato_calm' });
+        L.apply({ care: 1, bond: { fena: 2 }, flag: 'fena_calm' });
         U.toast({ icon: 'breath', text: T('His shoulders drop an inch. "Okay. Okay. That helped."', 'Sus hombros bajan un centímetro. «Ok. Ok. Eso ayudó».', 'Os ombros dele descem um centímetro. «Tá. Tá. Isso ajudou».'), kind: 'good' });
       } else {
-        L.apply({ bond: { tato: 0 }, flag: 'tato_rough', soc: -2 });
+        L.apply({ bond: { fena: 0 }, flag: 'fena_rough', soc: -2 });
         U.toast({ text: T('It doesn\'t quite land. He pushes through the door, breathing hard, and waits for you outside.', 'No termina de funcionar. Atraviesa la puerta respirando fuerte y te espera afuera.', 'Não pega direito. Ele empurra a porta, respirando forte, e espera você do lado de fora.'), kind: 'bad' });
       }
       delete s.flags.breath_pending;
       if (s.quests.q3 === 'active') EM.hooks.script('stall_knock');
-    }, 'tato');
+    }, 'fena');
   };
   S.stall_knock = function () { U.startDialogue('stall_knock', {}); };
   D.stall_knock = {
@@ -295,7 +295,7 @@
     /* the pill's true nature is decided now, silently */
     S.decidePill();
     s.pill.taken = true; s.pill.tested = false; s.pill.skipTest = true;
-    L.apply({ quest: { q5: 'done' }, flag: ['pill_known', 'pill_skip_test', 'dani_took'] });
+    L.apply({ quest: { q5: 'done' }, flag: ['pill_known', 'pill_skip_test', 'benjamin_took'] });
     S.applyPillEffects('you', true);
   };
 
@@ -361,7 +361,7 @@
         ],
         do: { flag: 'rosa_met' },
         choices: [
-          { tone: 'honest', t: T('"We\'re sorry. One of us was panicking and we didn\'t want to leave him alone."', '«Lo sentimos. Uno de nosotros estaba en pánico y no queríamos dejarlo solo».', '«A gente sente muito. Um de nós tava em pânico e a gente não queria deixar sozinho».'), req: { any: ['tato_checked', 'tato_calm', 'tato_water', 'tato_rough'] }, next: 'honest' },
+          { tone: 'honest', t: T('"We\'re sorry. One of us was panicking and we didn\'t want to leave him alone."', '«Lo sentimos. Uno de nosotros estaba en pánico y no queríamos dejarlo solo».', '«A gente sente muito. Um de nós tava em pânico e a gente não queria deixar sozinho».'), req: { any: ['fena_checked', 'fena_calm', 'fena_water', 'fena_rough'] }, next: 'honest' },
           { tone: 'honest', t: T('"Luisa had to pee, and we move together. We should have thought about you."', '«Luisa tenía que hacer pipí y nos movemos juntos. Deberíamos haber pensado en ti».', '«A Luisa precisava fazer xixi e a gente se move junto. A gente devia ter pensado em você».'), next: 'honest' },
           { tone: 'care', t: T('"Have you had any water today? Please, take this."', '«¿Tomaste agua hoy? Por favor, toma esto».', '«Você bebeu água hoje? Por favor, pega isso».'), req: { item: 'water' }, do: { item: { water: -1 }, care: 1, flag: 'rosa_water' }, next: 'warm' },
           { tone: 'care', t: T('"Let us help you clean up. We left it tidy, but let us check."', '«Déjanos ayudarte a limpiar. Lo dejamos ordenado, pero déjanos revisar».', '«Deixa a gente ajudar a limpar. A gente deixou arrumado, mas deixa conferir».'), do: { care: 1, time: 5, soc: -1, flag: 'rosa_helped_clean' }, next: 'warm' },

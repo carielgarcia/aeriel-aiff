@@ -12,9 +12,9 @@
   const SKIN_MAP = [0, 1, 3, 4], HC_MAP = [0, 5, 6, 3];
   function L(skin, hair, hc, expr, top, bottom, acc, wide) { return { skin: SKIN_MAP[skin], hair: hair, hc: HC_MAP[hc], expr: expr, top: top, bottom: bottom, acc: acc, wide: !!wide }; }
   const CAST = EM.CAST = {
-    maru:    { name: 'LUISA',    look: L(1, 7, 0, 1, 9, 0, 5) },
-    dani:    { get name() { return EM.rename('BENJA'); },   look: L(3, 4, 0, 2, 4, 2, 1) },
-    tato:    { get name() { return EM.rename('FEÑA'); },   look: L(0, 2, 1, 4, 3, 1, 0) },
+    luisa:    { name: 'LUISA',    look: L(1, 7, 0, 1, 9, 0, 5) },
+    benjamin:    { get name() { return EM.rename('BENJA'); },   look: L(3, 4, 0, 2, 4, 2, 1) },
+    fena:    { get name() { return EM.rename('FEÑA'); },   look: L(0, 2, 1, 4, 3, 1, 0) },
     vale:    { name: 'VALE',    look: L(2, 6, 2, 1, 5, 3, 2) },
     alex:    { name: 'ALEX',    look: L(1, 1, 1, 3, 10, 2, 4) },
     broh:    { name: 'BROH',    look: L(1, 1, 0, 3, 0, 4, 2, true) },
@@ -74,7 +74,7 @@
 
   /* colours: hc hair colour 0-9, tc top colour 0-11, bc bottom colour 0-9, skin 0-5 (overrides) */
   const STYLE = {
-    maru:    { hc: 7, tc: 9, bc: 1, skin: 1 }, dani:  { hc: 0, tc: 5, bc: 6, skin: 4 }, tato:   { hc: 2, tc: 8, bc: 1, skin: 0 },
+    luisa:    { hc: 7, tc: 9, bc: 1, skin: 1 }, benjamin:  { hc: 0, tc: 5, bc: 6, skin: 4 }, fena:   { hc: 2, tc: 8, bc: 1, skin: 0 },
     broh:    { hc: 1, tc: 0, bc: 4, skin: 2 }, sofi:  { hc: 0, tc: 6, bc: 0, skin: 3 }, brohF1: { hc: 3, tc: 10, bc: 4, skin: 0 }, brohF2: { hc: 1, tc: 2, bc: 5, skin: 1 },
     tobi:    { hc: 8, tc: 4, bc: 5, skin: 0 }, stomp1: { hc: 9, tc: 1, bc: 1, skin: 3 }, stomp2: { hc: 4, tc: 3, bc: 0, skin: 2 }, stomp3: { hc: 7, tc: 5, bc: 6, skin: 5 }, stomp4: { hc: 2, tc: 9, bc: 4, skin: 1 },
     fernet:  { hc: 0, tc: 7, bc: 1, skin: 3 }, hugo:  { hc: 5, tc: 0, bc: 0, skin: 1 }, tristan: { hc: 3, tc: 1, bc: 1, skin: 0 }, nico: { hc: 0, tc: 1, bc: 1, skin: 4 },
@@ -345,7 +345,7 @@
     Z.npc({ id: 'dante', x: 31, y: 7.5, dlg: 'dante', dir: 'l', reach: 16 });
     Z.npc({ id: 'sol', x: 34, y: 20, dlg: function (s) { return s.flags.sol_met ? 'sol_again' : 'sol'; }, dir: 'l', reach: 16 });
     Z.npc({ id: 'ofelia', x: 36, y: 12, dlg: 'ofelia', dir: 'l', reach: 22 });
-    Z.npc({ id: 'mateo', x: 19, y: 11, dlg: 'mateo', dir: 'r', reach: 16, when: function (s) { return s.away.tato === 'courtyard'; } });
+    Z.npc({ id: 'mateo', x: 19, y: 11, dlg: 'mateo', dir: 'r', reach: 16, when: function (s) { return s.away.fena === 'courtyard'; } });
     Z.obj({ id: 'cig', kind: 'smoke', x: 27, y: 12, w: 2, h: 1, label: T('LIGHT UP', 'PRENDER UNO', 'ACENDER UM') });
     Z.obj({ id: 'vend', kind: 'water', x: 36, y: 4, w: 2, h: 1, label: T('WATER TAP', 'CANILLA', 'TORNEIRA') });
     Z.obj({ id: 'rest_c1', kind: 'rest', x: 6, y: 6, w: 1, h: 1, label: T('SIT ON THE BENCH', 'SENTARSE EN EL BANCO', 'SENTAR NO BANCO') });

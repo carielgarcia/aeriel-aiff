@@ -61,7 +61,7 @@
       a: {
         text: T('"Hi. Water on the left, notebook on the right, nobody takes names. What are we doing?" Isi\'s vest has a cross on it. Her voice sounds tired and completely sincere.', '«Hola. Agua a la izquierda, cuaderno a la derecha, nadie anota nombres. ¿Qué hacemos?» El chaleco de Isi tiene una cruz. Su voz suena cansada y completamente sincera.', '«Oi. Água à esquerda, caderno à direita, ninguém anota nome. O que a gente vai fazer?» O colete da Isi tem uma cruz. A voz dela soa cansada e completamente sincera.'),
         choices: [
-          { tone: 'honest', t: T('"A friend has a pill. We want it looked at."', '«Un amigo tiene una pastilla. Queremos que la miren».', '«Um amigo tem um comprimido. A gente quer que seja olhado».'), req: function (s) { return s.flags.pill_known && !s.pill.taken && !s.pill.binned && !s.pill.tested && s.party.indexOf('dani') !== -1; }, next: 'bring' },
+          { tone: 'honest', t: T('"A friend has a pill. We want it looked at."', '«Un amigo tiene una pastilla. Queremos que la miren».', '«Um amigo tem um comprimido. A gente quer que seja olhado».'), req: function (s) { return s.flags.pill_known && !s.pill.taken && !s.pill.binned && !s.pill.tested && s.party.indexOf('benjamin') !== -1; }, next: 'bring' },
           { tone: 'ask', t: T('"How does the table work?"', '«¿Cómo funciona la mesa?»', '«Como funciona a mesa?»'), next: 'explain' },
           { tone: 'chill', t: T('"Just need a minute and some water."', '«Solo necesito un minuto y algo de agua».', '«Só preciso de um minuto e de água».'), do: { soc: 3, hp: 2 }, next: null, react: T('"Take as long as you need. The mattresses are for everyone."', '«Tómate el tiempo que necesites. Los colchones son para todos».', '«Fique o tempo que precisar. Os colchões são pra todo mundo».') }
         ]
@@ -138,50 +138,50 @@
         next: 'decide_fake'
       },
       decide_pure: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('BENJA, breathless: "It\'s REAL. It\'s the REAL thing. Can we? Please can we?" Luisa is watching you. Feña has retreated half a step toward the water.', 'BENJA, sin aire: «Es REAL. Es la COSA REAL. ¿Podemos? ¿Por favor podemos?» Luisa te mira. Feña retrocedió medio paso hacia el agua.', 'BENJA, sem fôlego: «É REAL. É a COISA REAL. A gente pode? Por favor, a gente pode?» A Luisa te olha. O Feña recuou meio passo em direção à água.'),
         choices: [
-          { tone: 'yes', t: T('"Okay. Together. Slowly."', '«Bueno. Juntos. Despacio».', '«Tá. Juntos. Devagar».'), do: { bond: { dani: 1, maru: 1 }, flag: ['dani_took', 'maru_took', 'tato_declined'] }, call: 'pill_take', next: 'end' },
-          { tone: 'care', t: T('"A small piece each. Then we wait and drink water."', '«Un pedacito cada uno. Después esperamos y tomamos agua».', '«Um pedacinho cada um. Depois a gente espera e bebe água».'), do: { bond: { dani: 1, maru: 1 }, flag: ['dani_took', 'maru_took', 'tato_declined', 'pill_careful'] }, call: 'pill_take_careful', next: 'end' },
-          { tone: 'no', t: T('"Not for me tonight. You do you."', '«Esta noche no para mí. Tú haz lo tuyo».', '«Hoje não pra mim. Faça o que quiser».'), do: { flag: ['dani_took', 'tato_declined', 'pill_skipped'] }, next: 'end', react: T('Benja takes his without ceremony and hugs you for allowing him to. It is a good hug.', 'Benja toma la suya sin ceremonia y te abraza por dejarlo. Es un buen abrazo.', 'O Benja toma o dele sem cerimônia e te abraça por deixar. É um bom abraço.') },
+          { tone: 'yes', t: T('"Okay. Together. Slowly."', '«Bueno. Juntos. Despacio».', '«Tá. Juntos. Devagar».'), do: { bond: { benjamin: 1, luisa: 1 }, flag: ['benjamin_took', 'luisa_took', 'fena_declined'] }, call: 'pill_take', next: 'end' },
+          { tone: 'care', t: T('"A small piece each. Then we wait and drink water."', '«Un pedacito cada uno. Después esperamos y tomamos agua».', '«Um pedacinho cada um. Depois a gente espera e bebe água».'), do: { bond: { benjamin: 1, luisa: 1 }, flag: ['benjamin_took', 'luisa_took', 'fena_declined', 'pill_careful'] }, call: 'pill_take_careful', next: 'end' },
+          { tone: 'no', t: T('"Not for me tonight. You do you."', '«Esta noche no para mí. Tú haz lo tuyo».', '«Hoje não pra mim. Faça o que quiser».'), do: { flag: ['benjamin_took', 'fena_declined', 'pill_skipped'] }, next: 'end', react: T('Benja takes his without ceremony and hugs you for allowing him to. It is a good hug.', 'Benja toma la suya sin ceremonia y te abraza por dejarlo. Es un buen abrazo.', 'O Benja toma o dele sem cerimônia e te abraça por deixar. É um bom abraço.') },
           { tone: 'care', t: T('"Let\'s bin it. Tonight is already good."', '«Tirémosla. Esta noche ya está buena».', '«Vamos jogar fora. A noite já tá boa».'), next: 'bin_try' }
         ]
       },
       decide_mix: {
-        who: 'dani',
+        who: 'benjamin',
         text: T(`BENJA: "…Mixed. But it still has the good thing in it? Right? RIGHT?" He turns the pill over in his palm.`, `BENJA: «…Mezclada. Pero igual tiene lo bueno, ¿no? ¿¡NO!?» Da vuelta la pastilla en la palma.`, `BENJA: «…Misturado. Mas ainda tem a parte boa, né? NÉ?» Ele vira o comprimido na palma da mão.`),
         choices: [
           { tone: 'care', t: T('"It isn\'t what you were told. It isn\'t worth it."', '«No es lo que te dijeron. No vale la pena».', '«Não é o que te disseram. Não vale a pena».'), next: 'bin_try' },
-          { tone: 'yes', t: T('"…A small piece. We wait."', '«…Un pedacito. Esperamos».', '«…Um pedacinho. A gente espera».'), do: { weird: 0, flag: ['dani_took', 'pill_careful'], bond: { dani: 1 } }, call: 'pill_take_careful', next: 'end' },
-          { tone: 'yes', t: T('"Full send."', '«Con todo».', '«Com tudo».'), do: { flag: ['dani_took', 'maru_took'] }, call: 'pill_take', next: 'end', react: T('Luisa looks at you, then at the pill, then at her own hands. She does not take any. She takes your elbow instead. "Okay. I\'m with you."', 'Luisa te mira a ti, luego a la pastilla, luego a sus manos. No toma nada. Te toma del codo. «Ok. Estoy contigo».', 'A Luisa olha pra você, depois pro comprimido, depois pras próprias mãos. Não toma nada. Segura seu cotovelo. «Tá. Tô com você».') },
-          { tone: 'no', t: T('"I\'m out. You decide."', '«Yo me bajo. Decide tú».', '«Eu fora. Você decide».'), do: { flag: ['dani_took', 'pill_skipped'] }, next: 'end', react: T('Benja looks at you with a face you will remember. Then he swallows it. "It\'s my night." You hold his shoulders for a second. That is all you can do.', 'Benja te mira con una cara que vas a recordar. Luego se la traga. «Es mi noche». Le sostienes los hombros un segundo. Es todo lo que puedes hacer.', 'O Benja te olha com um rosto de que você vai se lembrar. Depois engole. «É minha noite». Você segura os ombros dele por um segundo. É tudo o que pode fazer.') }
+          { tone: 'yes', t: T('"…A small piece. We wait."', '«…Un pedacito. Esperamos».', '«…Um pedacinho. A gente espera».'), do: { weird: 0, flag: ['benjamin_took', 'pill_careful'], bond: { benjamin: 1 } }, call: 'pill_take_careful', next: 'end' },
+          { tone: 'yes', t: T('"Full send."', '«Con todo».', '«Com tudo».'), do: { flag: ['benjamin_took', 'luisa_took'] }, call: 'pill_take', next: 'end', react: T('Luisa looks at you, then at the pill, then at her own hands. She does not take any. She takes your elbow instead. "Okay. I\'m with you."', 'Luisa te mira a ti, luego a la pastilla, luego a sus manos. No toma nada. Te toma del codo. «Ok. Estoy contigo».', 'A Luisa olha pra você, depois pro comprimido, depois pras próprias mãos. Não toma nada. Segura seu cotovelo. «Tá. Tô com você».') },
+          { tone: 'no', t: T('"I\'m out. You decide."', '«Yo me bajo. Decide tú».', '«Eu fora. Você decide».'), do: { flag: ['benjamin_took', 'pill_skipped'] }, next: 'end', react: T('Benja looks at you with a face you will remember. Then he swallows it. "It\'s my night." You hold his shoulders for a second. That is all you can do.', 'Benja te mira con una cara que vas a recordar. Luego se la traga. «Es mi noche». Le sostienes los hombros un segundo. Es todo lo que puedes hacer.', 'O Benja te olha com um rosto de que você vai se lembrar. Depois engole. «É minha noite». Você segura os ombros dele por um segundo. É tudo o que pode fazer.') }
         ]
       },
       decide_fake: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('BENJA: "…So I paid for nothing. I paid for NOTHING." He looks at the pill, offended on the pill\'s behalf.', 'BENJA: «…O sea que pagué por nada. Pagué por NADA». Mira la pastilla, ofendido en nombre de la pastilla.', 'BENJA: «…Então eu paguei por nada. Paguei por NADA». Ele olha o comprimido, ofendido em nome do comprimido.'),
         choices: [
           { tone: 'care', t: T('"Bin it. You got a free lesson."', '«Tírala. Te llevas una lección gratis».', '«Joga fora. Você ganhou uma lição de graça».'), next: 'bin_try' },
-          { tone: 'joke', t: T('"Keep it as a lucky charm?"', '«¿Guárdala como amuleto?»', '«Guarda como amuleto?»'), do: { fun: 2, flag: ['dani_took', 'dani_pocketed'] }, next: 'end', react: T('He kisses it, pockets it, and walks off humming. You have a bad feeling about the word "lucky".', 'La besa, se la guarda y se va tarareando. Tienes un mal presentimiento sobre la palabra «amuleto».', 'Ele beija, guarda e sai cantarolando. Você tem um mau pressentimento sobre a palavra «amuleto».') },
-          { tone: 'yes', t: T('"Let\'s find out what it does."', '«Averigüemos qué hace».', '«Vamos descobrir o que faz».'), do: { flag: ['dani_took'], weird: 0 }, call: 'pill_take', next: 'end' }
+          { tone: 'joke', t: T('"Keep it as a lucky charm?"', '«¿Guárdala como amuleto?»', '«Guarda como amuleto?»'), do: { fun: 2, flag: ['benjamin_took', 'benjamin_pocketed'] }, next: 'end', react: T('He kisses it, pockets it, and walks off humming. You have a bad feeling about the word "lucky".', 'La besa, se la guarda y se va tarareando. Tienes un mal presentimiento sobre la palabra «amuleto».', 'Ele beija, guarda e sai cantarolando. Você tem um mau pressentimento sobre a palavra «amuleto».') },
+          { tone: 'yes', t: T('"Let\'s find out what it does."', '«Averigüemos qué hace».', '«Vamos descobrir o que faz».'), do: { flag: ['benjamin_took'], weird: 0 }, call: 'pill_take', next: 'end' }
         ]
       },
       bin_try: {
         branch: [
-          { req: { bondMin: { dani: 2 } }, to: 'binned' },
+          { req: { bondMin: { benjamin: 2 } }, to: 'binned' },
           { req: function () { return true; }, to: 'defies' }
         ]
       },
       binned: {
         who: 'nuri',
         text: T('Benja\'s hand opens over the bin. It takes a long time. Isi says "Thank you" like you gave her something. "Water? A hug? Both are free."', 'La mano de Benja se abre sobre el bote de basura. Tarda mucho. Isi dice «Gracias» como si le hubieras dado algo. «¿Agua? ¿Un abrazo? Ambos son gratis».', 'A mão do Benja se abre sobre a lixeira. Demora muito. A Isi diz «Obrigada» como se você tivesse dado algo a ela. «Água? Um abraço? Os dois são de graça».'),
-        do: { flag: ['pill_binned'], bond: { dani: 2, maru: 1 }, soc: 4, fun: 3, care: 1 },
+        do: { flag: ['pill_binned'], bond: { benjamin: 2, luisa: 1 }, soc: 4, fun: 3, care: 1 },
         next: 'end'
       },
       defies: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('"No." Benja closes his fist. "My body, my night. I\'m not asking permission. I just wanted you with me." He pockets it. He isn\'t angry, and you almost wish he were.', '«No». Benja cierra el puño. «Mi cuerpo, mi noche. No pido permiso. Solo quería que estuvieras conmigo». Se la guarda. No está enojado, y casi preferirías que lo estuviera.', '«Não». O Benja fecha o punho. «Meu corpo, minha noite. Não tô pedindo permissão. Só queria você comigo». Ele guarda. Não está bravo, e você quase preferia que estivesse.'),
-        do: { flag: ['dani_took', 'dani_defied'], bond: { dani: -1 } },
+        do: { flag: ['benjamin_took', 'benjamin_defied'], bond: { benjamin: -1 } },
         next: 'end'
       },
       end: {
@@ -287,15 +287,15 @@
     const s = EM.state, f = s.flags;
     S.decidePill();
     let dz = 'tunnel';
-    if (f.dani_took && f.dani_took && (f.pill_taken || s.pill.type)) {
+    if (f.benjamin_took && f.benjamin_took && (f.pill_taken || s.pill.type)) {
       if (s.pill.type === 'pure') dz = 'darkroom';
       else if (s.pill.type === 'mix') dz = 'attic';
       else dz = s.pill.fake === 'faint' ? 'welfare' : (s.pill.fake === 'glitch' ? 'courtyard' : 'tunnel');
     }
-    if (!f.dani_took) dz = 'tunnel';
-    L.leave('dani', dz);
-    L.leave('tato', f.tato_rough ? 'welfare' : 'courtyard');
-    f.dani_zone = dz;
+    if (!f.benjamin_took) dz = 'tunnel';
+    L.leave('benjamin', dz);
+    L.leave('fena', f.fena_rough ? 'welfare' : 'courtyard');
+    f.benjamin_zone = dz;
     EM.hooks.toast({ icon: 'question', text: T('Benja and Feña are gone. Check the map in your head: the dark room, the attic, the tunnel, the smoking area, the quiet room.', 'Benja y Feña desaparecieron. Revisa el mapa en tu cabeza: el cuarto oscuro, el ático, el túnel, la zona de fumar, la sala tranquila.', 'O Benja e o Feña sumiram. Confira o mapa na sua cabeça: a dark room, o sótão, o túnel, a área de fumantes, a sala de calma.'), kind: 'info', ms: 6500 });
     if (EM.state.stats.hp < 20) EM.hooks.toast({ text: T('You are running on fumes. Sit down for a minute.', 'Estás con el tanque vacío. Siéntate un minuto.', 'Você tá no talo. Senta um minuto.'), kind: 'bad' });
   };
@@ -303,7 +303,7 @@
   /* ------------------------------------------------------------ finding them again (Q8) */
   S.regroup_check = function () {
     const s = EM.state;
-    if (s.quests.q8 === 'active' && s.party.indexOf('dani') !== -1 && s.party.indexOf('tato') !== -1) {
+    if (s.quests.q8 === 'active' && s.party.indexOf('benjamin') !== -1 && s.party.indexOf('fena') !== -1) {
       L.apply({ quest: { q8: 'done', q10: 'active' }, at: 400 });
       s.flags.regrouped = true;
     }
@@ -311,84 +311,84 @@
   function B(f, n) { const o = {}; o[f] = n; return o; }
   function joinAndCheck(f, extra) { return Object.assign({ join: f, call: 'regroup_check' }, extra || {}); }
 
-  D.found_dani_darkroom = {
-    who: 'dani', start: 'a', nodes: {
+  D.found_benjamin_darkroom = {
+    who: 'benjamin', start: 'a', nodes: {
       a: {
         text: T('Benja is at the centre of a happy pile of strangers, every hand on someone\'s shoulder, everyone laughing like they have known each other since birth. His eyes find you across the pile. "I\'m — incredible. Everyone is incredible. Come here. COME HERE."', 'Benja está en el centro de una pila feliz de desconocidos, cada mano en el hombro de alguien, todos riendo como si se conocieran de toda la vida. Sus ojos te encuentran por encima de la pila. «Estoy — increíble. Todos son increíbles. Ven. VEN».', 'O Benja tá no centro de uma pilha feliz de desconhecidos, cada mão no ombro de alguém, todo mundo rindo como se se conhecessem desde sempre. Os olhos dele te acham no meio da pilha. «Eu tô — incrível. Todo mundo é incrível. Vem. VEM».'),
         choices: [
-          { tone: 'care', t: T('"Benja. Water. Sit for five. Then back in, I promise."', '«Benja. Agua. Siéntate cinco minutos. Luego vuelves, te lo prometo».', '«Benja. Água. Senta cinco minutos. Depois você volta, prometo».'), req: { item: 'water' }, do: Object.assign(joinAndCheck('dani', { item: { water: -1 }, care: 1, bond: B('dani', 2), time: 12, flag: 'dani_water' })), next: null, react: T('He drinks the whole bottle, laughing between gulps, and lets you pull him out with a dozen hands waving goodbye.', 'Toma toda la botella, riendo entre sorbos, y deja que lo saques con una docena de manos despidiéndose.', 'Ele bebe a garrafa inteira, rindo entre goles, e deixa você tirá-lo dali com uma dúzia de mãos acenando.') },
-          { tone: 'hug', t: T('Hug him. Dance with the pile for ten minutes.', 'Abrazarlo. Bailar diez minutos con la pila.', 'Abraçá-lo. Dançar dez minutos com a pilha.'), do: joinAndCheck('dani', { fun: 8, soc: 4, time: 10, bond: B('dani', 1) }), next: null, react: T('The pile adopts you for ten minutes. Then Benja says "okay okay we should go find Feña" with real tenderness, and brings you both out.', 'La pila te adopta diez minutos. Luego Benja dice «ok ok tenemos que ir a buscar a Feña» con ternura de verdad, y los saca a los dos.', 'A pilha te adota por dez minutos. Depois o Benja diz «tá tá a gente tem que achar o Feña» com ternura de verdade, e leva vocês dois pra fora.') },
-          { tone: 'blunt', t: T('"We\'re leaving. Now."', '«Nos vamos. Ya».', '«A gente vai. Agora».'), do: joinAndCheck('dani', { soc: -3, bond: B('dani', -1), weird: 3 }), next: null, bad: true }
+          { tone: 'care', t: T('"Benja. Water. Sit for five. Then back in, I promise."', '«Benja. Agua. Siéntate cinco minutos. Luego vuelves, te lo prometo».', '«Benja. Água. Senta cinco minutos. Depois você volta, prometo».'), req: { item: 'water' }, do: Object.assign(joinAndCheck('benjamin', { item: { water: -1 }, care: 1, bond: B('benjamin', 2), time: 12, flag: 'benjamin_water' })), next: null, react: T('He drinks the whole bottle, laughing between gulps, and lets you pull him out with a dozen hands waving goodbye.', 'Toma toda la botella, riendo entre sorbos, y deja que lo saques con una docena de manos despidiéndose.', 'Ele bebe a garrafa inteira, rindo entre goles, e deixa você tirá-lo dali com uma dúzia de mãos acenando.') },
+          { tone: 'hug', t: T('Hug him. Dance with the pile for ten minutes.', 'Abrazarlo. Bailar diez minutos con la pila.', 'Abraçá-lo. Dançar dez minutos com a pilha.'), do: joinAndCheck('benjamin', { fun: 8, soc: 4, time: 10, bond: B('benjamin', 1) }), next: null, react: T('The pile adopts you for ten minutes. Then Benja says "okay okay we should go find Feña" with real tenderness, and brings you both out.', 'La pila te adopta diez minutos. Luego Benja dice «ok ok tenemos que ir a buscar a Feña» con ternura de verdad, y los saca a los dos.', 'A pilha te adota por dez minutos. Depois o Benja diz «tá tá a gente tem que achar o Feña» com ternura de verdade, e leva vocês dois pra fora.') },
+          { tone: 'blunt', t: T('"We\'re leaving. Now."', '«Nos vamos. Ya».', '«A gente vai. Agora».'), do: joinAndCheck('benjamin', { soc: -3, bond: B('benjamin', -1), weird: 3 }), next: null, bad: true }
         ]
       }
     }
   };
 
-  D.found_dani_attic = {
-    who: 'dani', start: 'a', nodes: {
+  D.found_benjamin_attic = {
+    who: 'benjamin', start: 'a', nodes: {
       a: {
         text: T(`Benja is in the middle of a dance cult in Sala 2, wired, jaw working, sweat on his collar. "I can't STOP! Why would I stop? I've done forty minutes! Forty minutes of NOTHING BUT DANCING!" His pupils are huge.`, `Benja está en medio de un culto de baile en la Sala 2, acelerado, con la mandíbula trabajando y sudor en el cuello. «¡No puedo PARAR! ¿Para qué voy a parar? ¡Llevo cuarenta minutos! ¡Cuarenta minutos de PURO BAILE!» Tiene las pupilas enormes.`, `O Benja está no meio de um culto de dança na Sala 2, ligadão, mandíbula trabalhando, suor no colarinho. «Eu não consigo PARAR! Por que eu pararia? Já faz quarenta minutos! Quarenta minutos de SÓ DANÇAR!» As pupilas dele estão enormes.`),
         choices: [
-          { tone: 'care', t: T('"Water. Sit down for a minute. Your heart is going to thank you."', '«Agua. Siéntate un minuto. Tu corazón te lo va a agradecer».', '«Água. Senta um minuto. Seu coração vai agradecer».'), req: { item: 'water' }, do: joinAndCheck('dani', { item: { water: -1 }, care: 1, bond: B('dani', 2), time: 15, flag: 'dani_water', hp: 0 }), next: null, react: T('He drinks, he sits, he sweats through half a shirt and tells you everything he has seen in forty minutes. It is mostly the ceiling. You listen to all of it.', 'Toma, se sienta, suda media camiseta y te cuenta todo lo que vio en cuarenta minutos. Es sobre todo el techo. Lo escuchas todo.', 'Ele bebe, senta, transpira metade da camiseta e te conta tudo o que viu em quarenta minutos. Principalmente o teto. Você escuta tudo.') },
-          { tone: 'dance', t: T('Join the cult. Three minutes. Then he comes with you.', 'Unirte a la secta. Tres minutos. Luego él viene contigo.', 'Entrar na seita. Três minutos. Depois ele vem com você.'), call: 'cult_dance_dani', next: null, free: true },
-          { tone: 'blunt', t: T('Grab his arm. "We\'re going."', 'Agarrarlo del brazo. «Nos vamos».', 'Pegar no braço dele. «A gente vai».'), do: joinAndCheck('dani', { soc: -4, bond: B('dani', -2), weird: 5, hp: -2 }), next: null, bad: true, react: T('He yanks free, then sees your face, then deflates. "…Okay. Sorry. I don\'t know what\'s— okay." He comes. He doesn\'t look at you for a while.', 'Se suelta de un tirón, luego ve tu cara, luego se desinfla. «…Ok. Perdón. No sé qué me— ok». Viene. No te mira por un rato.', 'Ele se solta num puxão, depois vê seu rosto, depois murcha. «…Tá. Desculpa. Não sei o que tá— tá». Ele vem. Não te olha por um tempo.') }
+          { tone: 'care', t: T('"Water. Sit down for a minute. Your heart is going to thank you."', '«Agua. Siéntate un minuto. Tu corazón te lo va a agradecer».', '«Água. Senta um minuto. Seu coração vai agradecer».'), req: { item: 'water' }, do: joinAndCheck('benjamin', { item: { water: -1 }, care: 1, bond: B('benjamin', 2), time: 15, flag: 'benjamin_water', hp: 0 }), next: null, react: T('He drinks, he sits, he sweats through half a shirt and tells you everything he has seen in forty minutes. It is mostly the ceiling. You listen to all of it.', 'Toma, se sienta, suda media camiseta y te cuenta todo lo que vio en cuarenta minutos. Es sobre todo el techo. Lo escuchas todo.', 'Ele bebe, senta, transpira metade da camiseta e te conta tudo o que viu em quarenta minutos. Principalmente o teto. Você escuta tudo.') },
+          { tone: 'dance', t: T('Join the cult. Three minutes. Then he comes with you.', 'Unirte a la secta. Tres minutos. Luego él viene contigo.', 'Entrar na seita. Três minutos. Depois ele vem com você.'), call: 'cult_dance_benjamin', next: null, free: true },
+          { tone: 'blunt', t: T('Grab his arm. "We\'re going."', 'Agarrarlo del brazo. «Nos vamos».', 'Pegar no braço dele. «A gente vai».'), do: joinAndCheck('benjamin', { soc: -4, bond: B('benjamin', -2), weird: 5, hp: -2 }), next: null, bad: true, react: T('He yanks free, then sees your face, then deflates. "…Okay. Sorry. I don\'t know what\'s— okay." He comes. He doesn\'t look at you for a while.', 'Se suelta de un tirón, luego ve tu cara, luego se desinfla. «…Ok. Perdón. No sé qué me— ok». Viene. No te mira por un rato.', 'Ele se solta num puxão, depois vê seu rosto, depois murcha. «…Tá. Desculpa. Não sei o que tá— tá». Ele vem. Não te olha por um tempo.') }
         ]
       }
     }
   };
-  S.cult_dance_dani = function () {
+  S.cult_dance_benjamin = function () {
     U.danceGate({ seq: 'RLUDRL', attempts: 2 }, function (res) {
-      const o = { join: 'dani', time: 6, bond: B('dani', res === 'win' ? 2 : 1), fun: res === 'win' ? 10 : 4, call: 'regroup_check' };
+      const o = { join: 'benjamin', time: 6, bond: B('benjamin', res === 'win' ? 2 : 1), fun: res === 'win' ? 10 : 4, call: 'regroup_check' };
       if (res === 'fail') o.soc = -2;
       L.apply(o);
       U.toast({ text: res === 'win' ? T('The cult chants your name. Benja follows you out, still moving.', 'La secta canta tu nombre. Benja te sigue afuera, todavía moviéndose.', 'A seita canta seu nome. O Benja te segue pra fora, ainda se movendo.') : T('Not your best, but Benja likes that you tried. He comes.', 'No fue lo mejor, pero a Benja le gusta que lo hayas intentado. Viene.', 'Não foi o melhor, mas o Benja gosta que você tentou. Ele vem.'), kind: 'good' });
     });
   };
 
-  D.found_dani_welfare = {
-    who: 'dani', start: 'a', nodes: {
+  D.found_benjamin_welfare = {
+    who: 'benjamin', start: 'a', nodes: {
       a: {
         text: T('Benja is lying on a mattress under a folded blanket, face slack, breathing slow. Teo is sitting next to him with a clipboard, entirely calm. "He\'s okay. Came in about forty minutes ago. Passed out. Vitals are fine. He\'ll wake up groggy. Nothing was wrong that sleep and water won\'t fix."', 'Benja está en un colchón bajo una manta doblada, la cara floja, respirando lento. Teo está sentado a su lado con una carpeta, totalmente calmo. «Está bien. Llegó hace cuarenta minutos. Se desmayó. Los signos están bien. Se va a despertar atontado. No pasó nada que el sueño y el agua no arreglen».', 'O Benja tá deitado num colchão sob um cobertor dobrado, rosto mole, respirando devagar. O Teo tá sentado ao lado dele com uma prancheta, completamente calmo. «Ele tá bem. Chegou faz uns quarenta minutos. Desmaiou. Sinais vitais ok. Vai acordar grogue. Nada que sono e água não resolvam».'),
         choices: [
-          { tone: 'care', t: T('Sit with him until he wakes. (An hour.)', 'Sentarte con él hasta que despierte. (Una hora).', 'Sentar com ele até acordar. (Uma hora.)'), do: joinAndCheck('dani', { care: 1, bond: B('dani', 2), time: 60, hp: 10, soc: 10, flag: 'dani_sat' }), next: null, react: T('You hold a paper cup of water for an hour. He wakes up and says "…did I miss it?" You say no. You say there is still a night. He cries a little and calls you the best person alive.', 'Sostienes un vasito de agua durante una hora. Despierta y dice «…¿me lo perdí?» Dices que no. Dices que todavía queda noche. Llora un poco y te llama la mejor persona del mundo.', 'Você segura um copinho d\'água por uma hora. Ele acorda e diz «…eu perdi?» Você diz que não. Diz que ainda tem noite. Ele chora um pouco e te chama de a melhor pessoa viva.') },
-          { tone: 'plan', t: T('Wake him gently and take him with you now.', 'Despertarlo con suavidad y llevarlo ahora.', 'Acordar com delicadeza e levar agora.'), do: joinAndCheck('dani', { bond: B('dani', 0), time: 5, hp: -2, flag: 'dani_woken' }), next: null, react: T('Teo gives you a look with exactly one eyebrow. "He\'s allowed. Make sure he drinks."', 'Teo te da una mirada con exactamente una ceja. «Puede irse. Asegúrate de que tome agua».', 'O Teo te lança um olhar com exatamente uma sobrancelha. «Ele pode ir. Garanta que beba água».') }
+          { tone: 'care', t: T('Sit with him until he wakes. (An hour.)', 'Sentarte con él hasta que despierte. (Una hora).', 'Sentar com ele até acordar. (Uma hora.)'), do: joinAndCheck('benjamin', { care: 1, bond: B('benjamin', 2), time: 60, hp: 10, soc: 10, flag: 'benjamin_sat' }), next: null, react: T('You hold a paper cup of water for an hour. He wakes up and says "…did I miss it?" You say no. You say there is still a night. He cries a little and calls you the best person alive.', 'Sostienes un vasito de agua durante una hora. Despierta y dice «…¿me lo perdí?» Dices que no. Dices que todavía queda noche. Llora un poco y te llama la mejor persona del mundo.', 'Você segura um copinho d\'água por uma hora. Ele acorda e diz «…eu perdi?» Você diz que não. Diz que ainda tem noite. Ele chora um pouco e te chama de a melhor pessoa viva.') },
+          { tone: 'plan', t: T('Wake him gently and take him with you now.', 'Despertarlo con suavidad y llevarlo ahora.', 'Acordar com delicadeza e levar agora.'), do: joinAndCheck('benjamin', { bond: B('benjamin', 0), time: 5, hp: -2, flag: 'benjamin_woken' }), next: null, react: T('Teo gives you a look with exactly one eyebrow. "He\'s allowed. Make sure he drinks."', 'Teo te da una mirada con exactamente una ceja. «Puede irse. Asegúrate de que tome agua».', 'O Teo te lança um olhar com exatamente uma sobrancelha. «Ele pode ir. Garanta que beba água».') }
         ]
       }
     }
   };
 
-  D.found_dani_tunnel = {
-    who: 'dani', start: 'a', nodes: {
+  D.found_benjamin_tunnel = {
+    who: 'benjamin', start: 'a', nodes: {
       a: {
         text: T(`Benja is sitting cross-legged on the concrete next to Ximena, holding a can of spray paint in both hands. He is fine. He is extremely fine. "She's teaching me to write my name so it looks like a crack. Look. LOOK. It says BENJA and also it says the end of the world."`, `Benja está sentado en el cemento junto a Ximena, con las piernas cruzadas, sosteniendo una lata de aerosol con las dos manos. Está bien. Está requetebién. «Me enseña a escribir mi nombre para que parezca una grieta. Mira. MIRA. Dice BENJA y también dice el fin del mundo».`, `O Benja está sentado de pernas cruzadas no concreto ao lado da Ximena, segurando uma lata de spray com as duas mãos. Ele tá bem. Tá muito bem. «Ela tá me ensinando a escrever meu nome pra parecer uma rachadura. Olha. OLHA. Tá escrito BENJA e também o fim do mundo».`),
         choices: [
-          { tone: 'chill', t: T('"It looks perfect. Come on, we need to find Feña."', '«Se ve perfecto. Vamos, tenemos que encontrar a Feña».', '«Ficou perfeito. Vem, a gente precisa achar o Feña».'), do: joinAndCheck('dani', { bond: B('dani', 1), fun: 3 }), next: null },
+          { tone: 'chill', t: T('"It looks perfect. Come on, we need to find Feña."', '«Se ve perfecto. Vamos, tenemos que encontrar a Feña».', '«Ficou perfeito. Vem, a gente precisa achar o Feña».'), do: joinAndCheck('benjamin', { bond: B('benjamin', 1), fun: 3 }), next: null },
           { tone: 'ask', t: T('"Did you take the pill?"', '«¿Tomaste la pastilla?»', '«Você tomou o comprimido?»'), next: 'pill' }
         ]
       },
       pill: {
-        who: 'dani',
+        who: 'benjamin',
         text: T('"No! No. I thought about it. Then Ximena handed me a can of spray paint and said she\'d give me something better. It turned out to be this." He holds up the can. "It\'s better."', '«¡No! No. Lo pensé. Después Ximena me dio una lata de aerosol y dijo que me daría algo mejor. Resultó ser esto». Levanta la lata. «Es mejor».', '«Não! Não. Pensei nisso. Aí a Ximena me deu uma lata de spray e disse que ia me dar uma coisa melhor. Era isso». Ele levanta a lata. «É melhor».'),
-        do: joinAndCheck('dani', { bond: B('dani', 2), fun: 4, flag: 'dani_clean' }),
+        do: joinAndCheck('benjamin', { bond: B('benjamin', 2), fun: 4, flag: 'benjamin_clean' }),
         next: null
       }
     }
   };
 
-  D.found_dani_courtyard = {
-    who: 'dani', start: 'a', nodes: {
+  D.found_benjamin_courtyard = {
+    who: 'benjamin', start: 'a', nodes: {
       a: {
         text: T('Benja is sitting in front of a fire barrel having a deep, whispered conversation with the flames. "The fire says hi. The fire says I should be more gentle with myself. I think the fire might be right." His pupils are the size of the moon. Everything he does arrives a little after he does it.', 'Benja está sentado frente a un barril de fuego manteniendo una conversación profunda y susurrada con las llamas. «El fuego dice hola. El fuego dice que debería ser más amable conmigo. Creo que el fuego puede tener razón». Sus pupilas tienen el tamaño de la luna. Todo lo que hace llega un poco después de hacerlo.', 'O Benja tá sentado diante de um barril de fogo tendo uma conversa profunda e sussurrada com as chamas. «O fogo disse oi. O fogo disse que eu devia ser mais gentil comigo. Acho que o fogo pode ter razão». As pupilas dele têm o tamanho da lua. Tudo o que ele faz chega um pouco depois de fazer.'),
         choices: [
-          { tone: 'care', t: T('Sit next to him. "Let\'s let the fire rest. Water first."', 'Sentarte a su lado. «Dejemos descansar al fuego. Primero agua».', 'Sentar do lado dele. «Vamos deixar o fogo descansar. Primeiro água».'), do: joinAndCheck('dani', { care: 1, bond: B('dani', 2), time: 15, soc: 3, flag: 'dani_fire' }), next: null, react: T('You sit with him until his pupils are the size of a normal moon. The fire looks a little offended. Benja waves goodbye to it twice.', 'Te sientas con él hasta que sus pupilas tienen el tamaño de una luna normal. El fuego parece un poco ofendido. Benja se despide del fuego dos veces.', 'Você senta com ele até as pupilas terem o tamanho de uma lua normal. O fogo parece um pouco ofendido. O Benja se despede dele duas vezes.') },
-          { tone: 'joke', t: T('"Tell the fire I said thanks. Benja, up."', '«Dile al fuego que gracias de mi parte. Benja, arriba».', '«Diz pro fogo que valeu da minha parte. Benja, em pé».'), do: joinAndCheck('dani', { bond: B('dani', 1), fun: 2, time: 4 }), next: null }
+          { tone: 'care', t: T('Sit next to him. "Let\'s let the fire rest. Water first."', 'Sentarte a su lado. «Dejemos descansar al fuego. Primero agua».', 'Sentar do lado dele. «Vamos deixar o fogo descansar. Primeiro água».'), do: joinAndCheck('benjamin', { care: 1, bond: B('benjamin', 2), time: 15, soc: 3, flag: 'benjamin_fire' }), next: null, react: T('You sit with him until his pupils are the size of a normal moon. The fire looks a little offended. Benja waves goodbye to it twice.', 'Te sientas con él hasta que sus pupilas tienen el tamaño de una luna normal. El fuego parece un poco ofendido. Benja se despide del fuego dos veces.', 'Você senta com ele até as pupilas terem o tamanho de uma lua normal. O fogo parece um pouco ofendido. O Benja se despede dele duas vezes.') },
+          { tone: 'joke', t: T('"Tell the fire I said thanks. Benja, up."', '«Dile al fuego que gracias de mi parte. Benja, arriba».', '«Diz pro fogo que valeu da minha parte. Benja, em pé».'), do: joinAndCheck('benjamin', { bond: B('benjamin', 1), fun: 2, time: 4 }), next: null }
         ]
       }
     }
   };
 
-  D.found_tato_courtyard = {
-    who: 'tato', start: 'a', nodes: {
+  D.found_fena_courtyard = {
+    who: 'fena', start: 'a', nodes: {
       a: {
         text: [
           T('By a fire barrel at the far end of the smoking area, Feña is standing very straight in front of a man in a leather jacket. Mateo. Feña\'s ex. You know the name because Feña has said it exactly four times in two years and each time it was in a different voice.', 'Junto a un barril de fuego al fondo de la zona de fumar, Feña está muy derecho frente a un hombre con chaqueta de cuero. Mateo. El ex de Feña. Sabes el nombre porque Feña lo dijo exactamente cuatro veces en dos años y cada vez con una voz distinta.', 'Perto de um barril de fogo no fundo da área de fumantes, o Feña tá muito empertigado diante de um homem de jaqueta de couro. Mateo. O ex do Feña. Você sabe o nome porque o Feña disse exatamente quatro vezes em dois anos e cada vez com uma voz diferente.'),
@@ -396,32 +396,32 @@
         ],
         choices: [
           { tone: 'care', t: T('(To Feña, low) "Do you want to leave? I\'m here either way."', '(A Feña, en voz baja) «¿Quieres irte? Estoy contigo de cualquier modo».', '(Pro Feña, em voz baixa) «Você quer ir embora? Eu tô aqui de qualquer jeito».'), next: 'care' },
-          { tone: 'blunt', t: T('(To Mateo) "He\'s with us. Back off."', '(A Mateo) «Está con nosotros. Retrocede».', '(Pro Mateo) «Ele tá com a gente. Recua».'), do: { weird: 8, soc: -4, bond: B('tato', -1), flag: 'mateo_backoff' }, next: 'blunt', bad: true },
+          { tone: 'blunt', t: T('(To Mateo) "He\'s with us. Back off."', '(A Mateo) «Está con nosotros. Retrocede».', '(Pro Mateo) «Ele tá com a gente. Recua».'), do: { weird: 8, soc: -4, bond: B('fena', -1), flag: 'mateo_backoff' }, next: 'blunt', bad: true },
           { tone: 'ask', t: T('(To Feña) "What do YOU want from this conversation?"', '(A Feña) «¿Qué quieres TÚ de esta conversación?»', '(Pro Feña) «O que VOCÊ quer dessa conversa?»'), next: 'ask' }
         ]
       },
       care: {
         text: T('Feña breathes in. "No. Stay. I want to say it. But stay." He turns to Mateo. What follows is eleven minutes, mostly quiet, and neither raises their voice. At the end Feña says "I forgive you, and I\'m going to go dance now," and walks into the smoke with his shoulders three centimetres lower.', 'Feña respira hondo. «No. Quédate. Quiero decirlo. Pero quédate». Se vuelve hacia Mateo. Lo que sigue son once minutos, casi todos en silencio, y ninguno alza la voz. Al final Feña dice «Te perdono, y ahora voy a ir a bailar», y camina hacia el humo con los hombros tres centímetros más bajos.', 'O Feña respira fundo. «Não. Fica. Quero falar. Mas fica». Ele se vira pro Mateo. O que vem são onze minutos, quase todos em silêncio, e nenhum levanta a voz. No fim o Feña diz «Eu te perdoo, e agora vou dançar», e caminha pra fumaça com os ombros três centímetros mais baixos.'),
-        do: joinAndCheck('tato', { care: 1, bond: B('tato', 3), time: 11, flag: ['tato_closure', 'tato_checked'], fun: 4 })
+        do: joinAndCheck('fena', { care: 1, bond: B('fena', 3), time: 11, flag: ['fena_closure', 'fena_checked'], fun: 4 })
       },
       blunt: {
         text: T('Mateo raises both palms. "Whoa. Easy. I only came to say hi." Feña rounds on you, hurt and furious: "I didn\'t ask you to do that." He stares at Mateo for a long second, then turns and walks away across the courtyard. You follow. It takes ten minutes to get him to look at you.', 'Mateo levanta las dos palmas. «Eh. Tranquilo. Solo vine a saludar». Feña se da vuelta hacia ti, herido y furioso: «No te pedí que hicieras eso». Mira a Mateo un largo segundo, luego se va caminando por el patio. Lo sigues. Tardas diez minutos en que te mire.', 'O Mateo ergue as duas palmas. «Opa. Calma. Só vim dar um oi». O Feña se vira pra você, magoado e furioso: «Eu não pedi que você fizesse isso». Ele encara o Mateo por um longo segundo, depois vira e sai caminhando pelo pátio. Você segue. Leva dez minutos pra ele olhar pra você.'),
-        do: joinAndCheck('tato', { time: 10, bond: B('tato', 0), flag: 'tato_hurt' })
+        do: joinAndCheck('fena', { time: 10, bond: B('fena', 0), flag: 'fena_hurt' })
       },
       ask: {
         text: T('Feña opens his mouth. Closes it. Opens it. "I want to say one thing. And I want him to listen. And then I want to never see him again for the rest of the night." Mateo: "I can do that." What follows is shorter and more honest than either of them expected. When it ends, Feña turns to you, red-eyed and lighter: "Thank you for asking. Nobody asks."', 'Feña abre la boca. La cierra. La abre. «Quiero decir una sola cosa. Y quiero que me escuche. Y después no quiero volver a verlo el resto de la noche». Mateo: «Puedo hacer eso». Lo que sigue es más corto y más honesto de lo que ninguno esperaba. Al terminar, Feña se vuelve hacia ti, de ojos rojos y más liviano: «Gracias por preguntar. Nadie pregunta».', 'O Feña abre a boca. Fecha. Abre. «Quero dizer uma coisa só. E quero que ele escute. E depois não quero mais ver ele pelo resto da noite». O Mateo: «Posso fazer isso». O que vem é mais curto e mais honesto do que os dois esperavam. Quando acaba, o Feña se vira pra você, de olhos vermelhos e mais leve: «Obrigado por perguntar. Ninguém pergunta».'),
-        do: joinAndCheck('tato', { care: 1, bond: B('tato', 3), time: 8, flag: ['tato_closure', 'tato_checked'], fun: 3, soc: 2 })
+        do: joinAndCheck('fena', { care: 1, bond: B('fena', 3), time: 8, flag: ['fena_closure', 'fena_checked'], fun: 3, soc: 2 })
       }
     }
   };
 
-  D.found_tato_welfare = {
-    who: 'tato', start: 'a', nodes: {
+  D.found_fena_welfare = {
+    who: 'fena', start: 'a', nodes: {
       a: {
         text: T(`Feña is curled on a mattress in the quiet room with his shoes off and a paper cup of water in both hands. Isi raises one eyebrow at you across the room: gently. "He came in forty minutes ago. Didn't want to talk. Wanted the dark and a blanket. I gave him both."`, `Feña está hecho un ovillo en un colchón de la sala tranquila, sin zapatos y con un vaso de papel con agua en las dos manos. Isi levanta una ceja hacia ti desde el otro lado: con cuidado. «Llegó hace cuarenta minutos. No quiso hablar. Quería oscuridad y una manta. Le di las dos cosas».`, `O Feña está encolhido num colchão na sala de calma, sem sapatos e com um copo de papel com água nas duas mãos. A Isi ergue uma sobrancelha pra você do outro lado da sala: com cuidado. «Ele chegou faz quarenta minutos. Não quis conversar. Queria escuro e um cobertor. Dei os dois».`),
         choices: [
-          { tone: 'care', t: T('Sit next to him. Say nothing for as long as it takes.', 'Sentarte a su lado. No decir nada el tiempo que haga falta.', 'Sentar do lado dele. Não dizer nada pelo tempo que for preciso.'), do: joinAndCheck('tato', { care: 1, bond: B('tato', 3), time: 30, hp: 6, soc: 8, flag: ['tato_sat', 'tato_checked'] }), next: null, react: T('Thirty minutes of nothing. Then Feña says, to the ceiling: "You came back." You say you came back. That is the entire conversation.', 'Treinta minutos de nada. Luego Feña dice, al techo: «Volviste». Dices que volviste. Esa es toda la conversación.', 'Trinta minutos de nada. Depois o Feña diz, pro teto: «Você voltou». Você diz que voltou. Essa é a conversa toda.') },
-          { tone: 'plan', t: T('"Come on. We\'ll stay near the walls, I promise."', '«Vamos. Nos quedaremos cerca de las paredes, lo prometo».', '«Vem. A gente fica perto das paredes, prometo».'), do: joinAndCheck('tato', { bond: B('tato', 1), time: 8, soc: -1 }), next: null }
+          { tone: 'care', t: T('Sit next to him. Say nothing for as long as it takes.', 'Sentarte a su lado. No decir nada el tiempo que haga falta.', 'Sentar do lado dele. Não dizer nada pelo tempo que for preciso.'), do: joinAndCheck('fena', { care: 1, bond: B('fena', 3), time: 30, hp: 6, soc: 8, flag: ['fena_sat', 'fena_checked'] }), next: null, react: T('Thirty minutes of nothing. Then Feña says, to the ceiling: "You came back." You say you came back. That is the entire conversation.', 'Treinta minutos de nada. Luego Feña dice, al techo: «Volviste». Dices que volviste. Esa es toda la conversación.', 'Trinta minutos de nada. Depois o Feña diz, pro teto: «Você voltou». Você diz que voltou. Essa é a conversa toda.') },
+          { tone: 'plan', t: T('"Come on. We\'ll stay near the walls, I promise."', '«Vamos. Nos quedaremos cerca de las paredes, lo prometo».', '«Vem. A gente fica perto das paredes, prometo».'), do: joinAndCheck('fena', { bond: B('fena', 1), time: 8, soc: -1 }), next: null }
         ]
       }
     }

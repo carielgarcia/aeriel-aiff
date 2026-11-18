@@ -338,9 +338,9 @@
   };
 
   /* ============================================================ THE PICKPOCKET: 1 in 150 encounters */
-    const FRIENDS = ['dani', 'tato', 'maru'];
+    const FRIENDS = ['benjamin', 'fena', 'luisa'];
   D.pickpocket = {
-    who: 'dani', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), forced: true, start: 'a', nodes: {
+    who: 'benjamin', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), forced: true, start: 'a', nodes: {
       a: {
         text: [
           t(`You reach for your pocket and find the pocket. Only the pocket. A thin, clean absence where a phone and a little paper folded for later used to be. Somewhere behind you a hand has been through the crowd.`, `Buscas tu bolsillo y encuentras el bolsillo. Solo el bolsillo. Una ausencia fina y limpia donde antes había un celular y un papelito doblado para después. En algún lugar detrás de ti, una mano ya pasó por la multitud.`, `Você leva a mão ao bolso e encontra o bolso. Só o bolso. Uma ausência fina e limpa onde antes ficavam um celular e um papelzinho dobrado pra depois. Em algum lugar atrás de você, uma mão já passou pela multidão.`),
@@ -393,7 +393,7 @@
   U.startDialogue = function (id, opts) {
     const def = EM.DIALOGUES[id];
     if (opts && opts.npc && def && !def.forced && id !== 'pickpocket' && maybePick()) {
-      sd0('pickpocket', { npc: 'dani' });
+      sd0('pickpocket', { npc: 'benjamin' });
       return;
     }
     sd0(id, opts);
@@ -408,6 +408,6 @@
     R.push({ id: 'klaus_txt', who: '#KLAUS', ok: on('klaus_met'), t: t(`I have thought about the warehouse. It was the best night I've had in three months and I hate that it happened outside Berlin. Please tell no one. Also, the queue was nice. There wasn't one.`, `He pensado en la bodega. Fue la mejor noche que he tenido en tres meses y odio que pasara fuera de Berlín. Por favor no se lo digas a nadie. Además, la fila estuvo bien. No había.`, `Pensei no galpão. Foi a melhor noite que tive em três meses e odeio que tenha acontecido fora de Berlim. Por favor não conte pra ninguém. Aliás, a fila foi legal. Não tinha.`) });
     R.push({ id: 'madison_txt', who: '#MADISON', ok: on('madison_met'), t: t(`my newsletter about last night has 11 subscribers and 40,000 quotes. i am between lofts and between selves. the silence set is booked again. dm me, it's a bit.`, `mi boletín sobre anoche tiene 11 suscriptores y 40,000 citas. estoy entre lofts y entre yoes. el set de silencio se volvió a agendar. mándame mensaje, es un chiste.`, `minha newsletter sobre ontem tem 11 assinantes e 40 mil citações. tô entre lofts e entre eus. o set de silêncio foi remarcado. me chama, é piada.`) });
     R.push({ id: 'juniper_txt', who: '#JUNIPER', ok: on('juniper_met'), t: t(`the committee has adopted 'dancefloor' as a working term pending review. we're calling it a win. a very small, procedural, deeply felt win.`, `el comité adoptó “pista” como término de trabajo en espera de revisión. lo llamamos victoria. una victoria muy pequeña, procedimental y profundamente sentida.`, `o comitê adotou «pista» como termo de trabalho pendente de revisão. a gente tá chamando de vitória. uma vitória bem pequena, procedimental e profundamente sentida.`) });
-    R.push({ id: 'pick_friends', who: 'dani', ok: function (s) { return !!s.flags.pickpocketed; }, t: t(`we are not letting you out of our sight for a month. we have decided that last night was a heist and you were the loot. we will be insufferable about it. we're making breakfast.`, `no te dejaremos fuera de la vista un mes. decidimos que anoche fue un atraco y tú el botín. seremos insoportables con eso. hacemos el desayuno.`, `a gente não vai te deixar fora de vista por um mês. decidimos que ontem foi assalto e você foi o butim. vamos ser insuportáveis com isso. tamo fazendo café da manhã.`) });
+    R.push({ id: 'pick_friends', who: 'benjamin', ok: function (s) { return !!s.flags.pickpocketed; }, t: t(`we are not letting you out of our sight for a month. we have decided that last night was a heist and you were the loot. we will be insufferable about it. we're making breakfast.`, `no te dejaremos fuera de la vista un mes. decidimos que anoche fue un atraco y tú el botín. seremos insoportables con eso. hacemos el desayuno.`, `a gente não vai te deixar fora de vista por um mês. decidimos que ontem foi assalto e você foi o butim. vamos ser insuportáveis com isso. tamo fazendo café da manhã.`) });
   }
 })();

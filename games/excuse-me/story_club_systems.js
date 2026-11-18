@@ -99,9 +99,9 @@
 
   /* barks about Æ000.X from your friends */
   story.extraBarks = {
-    maru: [T('LUISA: "I got onto the Æ000.X list once. I told everyone for a month."', 'LUISA: «Una vez entré a la lista de Æ000.X. Se lo conté a todo el mundo durante un mes».', 'LUISA: «Uma vez entrei na lista da Æ000.X. Contei pra todo mundo por um mês».')],
-    dani: [T('BENJA: "Æ000.X rejected me twice and I respect it so much."', 'BENJA: «Æ000.X me rechazó dos veces y lo respeto muchísimo».', 'BENJA: «A Æ000.X me recusou duas vezes e eu respeito demais».')],
-    tato: [T('FEÑA: "I read the Æ000.X FAQ. It cared about me more than my last relationship."', 'FEÑA: «Leí el FAQ de Æ000.X. Se preocupó más por mí que mi última relación».', 'FEÑA: «Li o FAQ da Æ000.X. Ele se preocupou mais comigo do que meu último relacionamento».')]
+    luisa: [T('LUISA: "I got onto the Æ000.X list once. I told everyone for a month."', 'LUISA: «Una vez entré a la lista de Æ000.X. Se lo conté a todo el mundo durante un mes».', 'LUISA: «Uma vez entrei na lista da Æ000.X. Contei pra todo mundo por um mês».')],
+    benjamin: [T('BENJA: "Æ000.X rejected me twice and I respect it so much."', 'BENJA: «Æ000.X me rechazó dos veces y lo respeto muchísimo».', 'BENJA: «A Æ000.X me recusou duas vezes e eu respeito demais».')],
+    fena: [T('FEÑA: "I read the Æ000.X FAQ. It cared about me more than my last relationship."', 'FEÑA: «Leí el FAQ de Æ000.X. Se preocupó más por mí que mi última relación».', 'FEÑA: «Li o FAQ da Æ000.X. Ele se preocupou mais comigo do que meu último relacionamento».')]
   };
 
   /* posters you can read */
@@ -200,7 +200,7 @@
     /* the part-lover is easier to dance with, the drunk one is not */
     const hk = parseInt(String(ctx && ctx.dialogue || '').replace('hostile_', ''), 10);
     const odds = hk === 1 ? 0.70 : hk === 3 ? 0.35 : 0.55;
-    const ok = Math.random() < odds || L.hasFriend('dani');
+    const ok = Math.random() < odds || L.hasFriend('benjamin');
     if (h) E.settle(h.id);
     if (ok) {
       L.apply({ fun: 4, soc: 1 });
@@ -219,7 +219,7 @@
     { x: 19, y: 5.5, r: 4.5, icon: 'spark', text: T('Warm air. Breathing in a rhythm of three. Something sweet in the dark: grapes.', 'Aire tibio. Respiración en un ritmo de tres. Algo dulce en la oscuridad: uvas.', 'Ar morno. Respiração num ritmo de três. Algo doce no escuro: uvas.') },
     { x: 4, y: 13.5, r: 2.6, icon: 'sweat', text: T('A small, tight breath by the wall. Someone trying to take up less space than they have.', 'Una respiración pequeña y tensa junto a la pared. Alguien tratando de ocupar menos espacio del que tiene.', 'Uma respiração pequena e tensa perto da parede. Alguém tentando ocupar menos espaço do que tem.') },
     { x: 3, y: 4.5, r: 3, icon: 'zzz', text: T('An empty couch. Old leather, somebody\'s quiet afternoon. A place to sit and let your eyes learn the dark.', 'Un sofá vacío. Cuero viejo, la tarde tranquila de alguien. Un lugar para sentarse y dejar que los ojos aprendan la oscuridad.', 'Um sofá vazio. Couro velho, a tarde tranquila de alguém. Um lugar pra sentar e deixar os olhos aprenderem o escuro.') },
-    { x: 6.5, y: 6.5, r: 5, icon: 'hug', text: T('A laugh you know. A hug that smells like mesh and sunglasses. That is Benja.', 'Una risa que conoces. Un abrazo que huele a malla y a lentes. Eso es Benja.', 'Uma risada que você conhece. Um abraço que cheira a tela e óculos. Esse é o Benja.'), when: function (s) { return s.away.dani === 'darkroom'; } }
+    { x: 6.5, y: 6.5, r: 5, icon: 'hug', text: T('A laugh you know. A hug that smells like mesh and sunglasses. That is Benja.', 'Una risa que conoces. Un abrazo que huele a malla y a lentes. Eso es Benja.', 'Uma risada que você conhece. Um abraço que cheira a tela e óculos. Esse é o Benja.'), when: function (s) { return s.away.benjamin === 'darkroom'; } }
   ];
   Z.darkroom.obj({ id: 'rest_dr', kind: 'rest', x: 2, y: 4, w: 3, h: 1, label: T('SIT ON THE COUCH', 'SENTARSE EN EL SOFÁ', 'SENTAR NO SOFÁ') });
   S.enter_darkroom = function () {
@@ -235,9 +235,9 @@
   ]);
 
   /* ============================================================ THE NIGHT COLLAPSES */
-  S.fed_up = function () { U.startDialogue('fed_up', { npc: 'maru' }); };
+  S.fed_up = function () { U.startDialogue('fed_up', { npc: 'luisa' }); };
   D.fed_up = {
-    forced: true, who: 'maru', after: 'end_fedup', start: 'a', nodes: {
+    forced: true, who: 'luisa', after: 'end_fedup', start: 'a', nodes: {
       a: {
         branch: [
           { req: function (s) { return s.party.length > 0; }, to: 'group' },
@@ -348,14 +348,14 @@
   ['hostile_0', 'hostile_1', 'hostile_2', 'hostile_3'].forEach(function (id) {
     const a = D[id].nodes.a.choices, esc = D[id].nodes.esc.choices;
     a.forEach(function (c) {
-      if (c.tone === 'sorry') { c.do = Object.assign({}, c.do, { time: 2, rep: -0.3, hp: -1, pb: { tato: 1 }, flag: 'hostile_kind' }); }
-      else if (c.tone === 'chill') { c.do = Object.assign({}, c.do, { rep: -0.6, pb: { tato: 1 }, flag: 'hostile_kind' }); }
-      else if (c.tone === 'blunt') { c.do = Object.assign({}, c.do, { rep: 0.5, pb: { maru: -1, tato: -1 }, flag: 'hostile_rude' }); }
-      else if (c.tone === 'care') { c.do = Object.assign({}, c.do, c.do && c.do.care ? { rep: -1.2, pb: { maru: 1, dani: 1, tato: 1 }, flag: 'hostile_kind' } : { rep: -0.2, flag: 'hostile_kind' }); } /* a sip they did not need earns only a nod */
+      if (c.tone === 'sorry') { c.do = Object.assign({}, c.do, { time: 2, rep: -0.3, hp: -1, pb: { fena: 1 }, flag: 'hostile_kind' }); }
+      else if (c.tone === 'chill') { c.do = Object.assign({}, c.do, { rep: -0.6, pb: { fena: 1 }, flag: 'hostile_kind' }); }
+      else if (c.tone === 'blunt') { c.do = Object.assign({}, c.do, { rep: 0.5, pb: { luisa: -1, fena: -1 }, flag: 'hostile_rude' }); }
+      else if (c.tone === 'care') { c.do = Object.assign({}, c.do, c.do && c.do.care ? { rep: -1.2, pb: { luisa: 1, benjamin: 1, fena: 1 }, flag: 'hostile_kind' } : { rep: -0.2, flag: 'hostile_kind' }); } /* a sip they did not need earns only a nod */
     });
     esc.forEach(function (c) {
-      if (c.tone === 'sorry') { c.do = Object.assign({}, c.do, { rep: -0.3, time: 3, pb: { tato: 1 }, flag: 'hostile_kind' }); }
-      else if (c.tone === 'push') { c.do = Object.assign({}, c.do, { rep: 2, pb: { tato: -2, dani: -1, maru: -1 }, flag: ['hostile_rude', 'sec_noted'] }); }
+      if (c.tone === 'sorry') { c.do = Object.assign({}, c.do, { rep: -0.3, time: 3, pb: { fena: 1 }, flag: 'hostile_kind' }); }
+      else if (c.tone === 'push') { c.do = Object.assign({}, c.do, { rep: 2, pb: { fena: -2, benjamin: -1, luisa: -1 }, flag: ['hostile_rude', 'sec_noted'] }); }
       else if (c.tone === 'silent') { c.do = Object.assign({}, c.do, { rep: 0.2, time: 4, hp: -1 }); }
     });
   });
@@ -364,8 +364,8 @@
     const before = EM.state.stats.fun;
     oldGamble();
     const s = EM.state;
-    if (s.stats.fun > before) { L.rep(-1); s.flags.hostile_kind = true; L.apply({ pb: { dani: 1 } }); }
-    else { L.rep(1); s.flags.hostile_rude = true; L.apply({ pb: { tato: -1 } }); }
+    if (s.stats.fun > before) { L.rep(-1); s.flags.hostile_kind = true; L.apply({ pb: { benjamin: 1 } }); }
+    else { L.rep(1); s.flags.hostile_rude = true; L.apply({ pb: { fena: -1 } }); }
   };
 
   /* ============================================================ RUNNING GAGS THAT ESCALATE */
@@ -424,19 +424,19 @@
     const lvl = Math.min(4, s.attempt - 1);
     const f = EM.pick(s.party);
     const LINES = {
-      maru: [
+      luisa: [
         T('LUISA: "Weird. I\'ve had this exact thought about the queue before."', 'LUISA: «Qué raro. Ya tuve exactamente este pensamiento sobre la fila».', 'LUISA: «Estranho. Já tive exatamente esse pensamento sobre a fila antes».'),
         T('LUISA: "Have we done this before? Do not answer. I will get sad."', 'LUISA: «¿Ya hicimos esto antes? No contestes. Me voy a poner triste».', 'LUISA: «A gente já fez isso antes? Não responde. Vou ficar triste».'),
         T('LUISA: "I am going to start writing notes to myself on my arm. The note says: believe them."', 'LUISA: «Voy a empezar a escribirme notas en el brazo. La nota dice: créeles».', 'LUISA: «Vou começar a escrever bilhetes pra mim no braço. O bilhete diz: acredita neles».'),
         T('LUISA: "At this point I should just run the door."', 'LUISA: «A estas alturas debería manejar yo la puerta».', 'LUISA: «A essa altura eu devia tocar a porta».')
       ],
-      dani: [
+      benjamin: [
         T('BENJA: "Have we done this before? I have the strangest feeling about the toilets."', 'BENJA: «¿Ya hicimos esto antes? Tengo la sensación más rara con los baños».', 'BENJA: «A gente já fez isso antes? Tô com a sensação mais estranha sobre os banheiros».'),
         T('BENJA: "I think I\'ve already hugged that exact person. It was great both times."', 'BENJA: «Creo que ya abracé a esa persona exacta. Estuvo genial las dos veces».', 'BENJA: «Acho que eu já abracei exatamente essa pessoa. Foi ótimo nas duas vezes».'),
         T('BENJA: "Déjà vu is just the universe going: you again! I love that for us."', 'BENJA: «El déjà vu es el universo diciendo: ¡tú otra vez! Eso me encanta para nosotros».', 'BENJA: «Déjà vu é o universo falando: você de novo! Eu amo isso pra nós».'),
         T('BENJA: "Okay but what if it\'s the same night forever and it keeps being good?"', 'BENJA: «Pero ¿y si es la misma noche para siempre y sigue siendo buena?»', 'BENJA: «Mas e se for a mesma noite pra sempre e continuar sendo boa?»')
       ],
-      tato: [
+      fena: [
         T('FEÑA: "I know I said I\'m fine. I\'m fine in a way that feels rehearsed."', 'FEÑA: «Sé que dije que estoy bien. Estoy bien de una forma que se siente ensayada».', 'FEÑA: «Sei que falei que tô bem. Tô bem de um jeito que parece ensaiado».'),
         T('FEÑA: "Is it weird that I know where the water is?"', 'FEÑA: «¿Es raro que sepa dónde está el agua?»', 'FEÑA: «É estranho eu saber onde tá a água?»'),
         T('FEÑA: "I think the DJ knows us. That\'s not a thing, right?"', 'FEÑA: «Creo que el DJ nos conoce. Eso no es una cosa, ¿verdad?»', 'FEÑA: «Acho que a DJ conhece a gente. Isso não é uma coisa, né?»'),

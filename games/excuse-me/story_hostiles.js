@@ -228,7 +228,7 @@
   const FRIEND = {
     kiki: t(`"Babe, I heard. Why didn't you say something?"`, `«Amigo, me enteré. ¿Por qué no dijiste nada?»`, `«Amigo, fiquei sabendo. Por que você não disse nada?»`),
     hugo: t(`"I stayed quiet for forty years. Do better."`, `«Yo me quedé callado cuarenta años. Hazlo mejor».`, `«Eu fiquei calado quarenta anos. Faz melhor».`),
-    dani: t(`"Wait, were you the one in the toilets? I thought it was somebody else. You were so quiet."`, `«Espera, ¿fuiste tú en los baños? Pensé que era otra persona. Estuviste tan callado».`, `«Espera, foi você nos banheiros? Achei que era outra pessoa. Você ficou tão quieto».`),
+    benjamin: t(`"Wait, were you the one in the toilets? I thought it was somebody else. You were so quiet."`, `«Espera, ¿fuiste tú en los baños? Pensé que era otra persona. Estuviste tan callado».`, `«Espera, foi você nos banheiros? Achei que era outra pessoa. Você ficou tão quieto».`),
     other: t(`"You were in the queue. I saw you not say anything."`, `«Estabas en la fila. Te vi no decir nada».`, `«Você tava na fila. Eu vi você não dizer nada».`)
   };
   D.rq_cb = {

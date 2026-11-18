@@ -41,10 +41,10 @@
     if (!s.flags.roof_first) {
       s.flags.roof_first = true;
       /* away friends with good bonds find their own way up */
-      ['dani', 'tato'].forEach(function (f) {
+      ['benjamin', 'fena'].forEach(function (f) {
         if (s.away[f] && (s.bond[f] || 0) >= 2) { L.join(f); U.toast({ icon: 'heart', text: T(EM.CAST[f].name + ' found their own way up. Of course they did.', EM.CAST[f].name + ' encontró su propio camino hasta aquí. Claro que sí.', EM.CAST[f].name + ' achou o próprio caminho até aqui. Claro que achou.'), kind: 'good', ms: 5000 }); }
       });
-      if (s.quests.q8 === 'active' && s.party.indexOf('dani') !== -1 && s.party.indexOf('tato') !== -1) L.apply({ quest: { q8: 'done' } });
+      if (s.quests.q8 === 'active' && s.party.indexOf('benjamin') !== -1 && s.party.indexOf('fena') !== -1) L.apply({ quest: { q8: 'done' } });
       if (!s.quests.q9) L.setQuest('q9', 'active');
       s.flags.roof_open = true;
     }
@@ -261,13 +261,13 @@
       },
       mine: {
         branch: [
-          { req: { with: 'maru', flag: 'tato_closure' }, to: 'tato' },
+          { req: { with: 'luisa', flag: 'fena_closure' }, to: 'fena' },
           { req: function (s) { return EM.coreCount(s) === 3; }, to: 'allthree' },
           { req: function (s) { return s.party.length >= 1; }, to: 'some' },
           { req: function () { return true; }, to: 'alone' }
         ]
       },
-      tato: {
+      fena: {
         text: T('Feña is standing at the rail beside you with his face turned up, lit from underneath by the new light. "I said what I needed to say. I thought it would hurt more." He leans against your shoulder. "Thanks for asking."', 'Feña está de pie junto a la baranda a tu lado con la cara hacia arriba, iluminada por debajo con la luz nueva. «Dije lo que necesitaba decir. Pensé que dolería más». Se apoya en tu hombro. «Gracias por preguntar».', 'O Feña tá de pé no parapeito ao seu lado com o rosto virado pra cima, iluminado por baixo pela luz nova. «Falei o que eu precisava falar. Achei que doeria mais». Ele encosta no seu ombro. «Obrigado por perguntar».'),
         next: 'allthree'
       },

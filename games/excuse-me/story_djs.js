@@ -365,7 +365,7 @@
   };
 
   /* ---------------------------------------------------------------- the conversation, on the sofa */
-  const gate1 = function (s) { return flagsAny(s, ['sam_ok', 'rey_ok', 'vik_ok', 'lio_ok', 'lio_called', 'brought_food', 'af_clean', 'af_trash', 'tato_blanket']); };
+  const gate1 = function (s) { return flagsAny(s, ['sam_ok', 'rey_ok', 'vik_ok', 'lio_ok', 'lio_called', 'brought_food', 'af_clean', 'af_trash', 'fena_blanket']); };
   const gate2 = function (s) { return opened(s) >= 2; };
   const gate3 = function (s) { return Q(s, 'q_af6') === 'done' || !!s.flags.quiroga_warned; };
   const gate4 = function (s) { return Q(s, 'q_af7') === 'done'; };

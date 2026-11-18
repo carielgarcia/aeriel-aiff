@@ -41,7 +41,7 @@
           T('SOFI slides out of his arms like toothpaste from a tube. "Honestly? Yes. Thank you. I have been standing here for forty minutes."', 'SOFI se desliza de sus brazos como pasta dental de un tubo. «¿Sinceramente? Sí. Gracias. Llevo cuarenta minutos parada aquí».', 'A SOFI escorrega dos braços dele como pasta de dente do tubo. «Sinceramente? Sim. Valeu. Tô aqui parada faz quarenta minutos».'),
           T(`BROH: "Babe—?!" She pats his chest twice. "I'm fine. Go dance with me, then come back. You can sulk in the meantime."`, `BROH: «¿¡Amor…!?» Le da dos palmadas en el pecho. «Estoy bien. Ven a bailar conmigo y luego vuelves. Mientras tanto puedes enfurruñarte».`, `BROH: «Amor…?!» Ela dá dois tapinhas no peito dele. «Eu tô bem. Vem dançar comigo, depois você volta. Enquanto isso você pode emburrar».`)
         ],
-        do: { open: 'broh', flag: ['broh_hostile', 'sofi_ally'], soc: -2, fun: 4, bond: { maru: 0 } }
+        do: { open: 'broh', flag: ['broh_hostile', 'sofi_ally'], soc: -2, fun: 4, bond: { luisa: 0 } }
       },
       e: {
         text: [

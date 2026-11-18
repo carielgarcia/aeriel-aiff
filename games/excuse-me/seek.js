@@ -15,15 +15,15 @@
     return out;
   };
   function lostFriend(s, f) { return !!s.away[f] && s.party.indexOf(f) === -1; }
-  const FR_NAME = { maru: 'M', dani: 'B', tato: 'F' };
+  const FR_NAME = { luisa: 'M', benjamin: 'B', fena: 'F' };
   /* your group: the first mission (all three), the scattering, and the friends who wander off on their own */
   EM.seekers.push(function (s) {
     const q = s.quests, res = [];
     const want = {};
-    if (q.q1 === 'active') { want.maru = want.dani = want.tato = 1; }
-    if (q.q8 === 'active') { want.dani = want.tato = 1; }
-    if (s.flags.benji_out) want.dani = 1;
-    if (s.flags.tato_dark_stay && !s.flags.tato_dark_back) want.tato = 1;
+    if (q.q1 === 'active') { want.luisa = want.benjamin = want.fena = 1; }
+    if (q.q8 === 'active') { want.benjamin = want.fena = 1; }
+    if (s.flags.benji_out) want.benjamin = 1;
+    if (s.flags.fena_dark_stay && !s.flags.fena_dark_back) want.fena = 1;
     Object.keys(want).forEach(function (f) { if (lostFriend(s, f)) res.push({ key: f, zone: s.away[f], label: FR_NAME[f] }); });
     return res;
   });
@@ -51,7 +51,7 @@
 
   /* ------------------------------------------------------------ clues when somebody goes */
   const CLUE = {
-    dani: {
+    benjamin: {
       darkroom: t(`Benja's last text: "going somewhere with the lights off, very respectful." Behind the black curtain, a laugh you would know anywhere.`, `Último mensaje de Benja: «voy a un lugar con las luces apagadas, muy respetuoso». Tras la cortina negra, una risa que reconocerías en cualquier parte.`, `Última mensagem do Benja: «tô indo num lugar com as luzes apagadas, bem respeitoso». Atrás da cortina preta, uma risada que você reconheceria em qualquer lugar.`),
       attic: t(`Someone says a man in a bucket hat went up the stairs to SALA 2 shouting "I'm a capybara!"`, `Alguien dice que un tipo con gorro de pescador subió las escaleras a la SALA 2 gritando «¡soy un capibara!»`, `Alguém diz que um cara de chapéu bucket subiu a escada pra SALA 2 gritando «eu sou uma capivara!»`),
       tunnel: t(`From the tunnel, an echo: "LISTEN TO THE ACOUSTICS." That is Benja. That is definitely Benja.`, `Desde el túnel llega un eco: «ESCUCHEN LA ACÚSTICA». Ese es Benja. Definitivamente es Benja.`, `Do túnel vem um eco: «OUÇAM A ACÚSTICA». É o Benja. Com certeza é o Benja.`),
@@ -60,7 +60,7 @@
       rooftop: t(`Someone coming down from the roof says a man up there is explaining nature to the sky.`, `Alguien que baja del techo cuenta que arriba hay un tipo explicándole la naturaleza al cielo.`, `Alguém descendo do terraço conta que tem um cara lá em cima explicando a natureza pro céu.`),
       main: t(`Benja is somewhere on the main floor, easy to miss, hard to lose. Check the corners.`, `Benja anda por la pista principal, fácil de perder y difícil de extraviar. Mira las esquinas.`, `O Benja tá em algum lugar da pista principal. Dá uma olhada nos cantos.`)
     },
-    tato: {
+    fena: {
       darkroom: t(`Feña walked into the dark and the dark said "welcome". Look past the black curtain.`, `Feña entró a la oscuridad y la oscuridad dijo «bienvenido». Mira más allá de la cortina negra.`, `O Feña entrou no escuro e o escuro disse «bem-vindo». Olha depois da cortina preta.`),
       courtyard: t(`Feña's laugh drifts in from the smoking area. He does not smoke. He is "just there for the conversations".`, `La risa de Feña llega desde la zona de fumadores. Él no fuma. Está «solo por las conversaciones».`, `A risada do Feña vem da área de fumantes. Ele não fuma. Tá «só pelas conversas».`),
       welfare: t(`A volunteer says a friend of yours was walked to the quiet room, "talking a lot but fine".`, `Un voluntario dice que acompañaron a un amigo tuyo a la sala tranquila, «hablando mucho pero bien».`, `Um voluntário diz que levaram um amigo seu pra sala tranquila, «falando muito mas bem».`)

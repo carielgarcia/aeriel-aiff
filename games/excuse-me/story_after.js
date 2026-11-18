@@ -12,7 +12,7 @@
   const F = function (f) { return function (s) { return !!s.flags[f]; }; };
   const NF = function (f) { return function (s) { return !s.flags[f]; }; };
   const AF = EM.AF = {};
-  const FR = ['maru', 'dani', 'tato'];
+  const FR = ['luisa', 'benjamin', 'fena'];
 
   /* ============================================================ new people (Anselm and Dot already exist: story_v23.js) */
   cast('lio', 'LIO', { skin: 3, hair: 1, hc: 0, expr: 4, top: 1, tc: 5, bottom: 1, bc: 2 });
@@ -103,7 +103,7 @@
     Z.npc({ id: 'dot_m', cast: 'dot', x: 20.5, y: 2.4, dlg: 'af_dot_mb', dir: 'd', reach: 16, when: F('mb_escort') });
     Z.npc({ id: 'pasc', x: 5.5, y: 4.8, dlg: 'af_pasc', dir: 'r', reach: 16, when: function (s) { return !!s.flags.after_go && !s.flags.one_done && !s.flags.pasc_spooked; } });
     Z.npc({ id: 'dot_sleep', cast: 'dot', x: 6.6, y: 4.2, dlg: 'af_dot_asleep', dir: 'd', pose: 'lie', reach: 14, when: F('dot_asleep') });
-    Z.npc({ id: 'tato_sofa', cast: 'tato', x: 4.5, y: 4.2, dlg: 'af_tato_sofa', dir: 'd', pose: 'lie', reach: 16, when: F('tato_asleep') });
+    Z.npc({ id: 'fena_sofa', cast: 'fena', x: 4.5, y: 4.2, dlg: 'af_fena_sofa', dir: 'd', pose: 'lie', reach: 16, when: F('fena_asleep') });
   })();
 
   /* kitchen: the aftercare, with no stand and no table of reagents */
@@ -367,7 +367,7 @@
       s.after.f[f] = { st: 'here', leave: 0, mode: null };
     });
     /* the schedule: Maru fades first, Feña falls asleep on the sofa, Benjamin wants the next thing */
-    s.after.at = { door: s.time + 105 + Math.floor(s.after.wk[1] * 20), question: s.time + 150 + Math.floor(s.after.wk[0] * 40), tato: s.time + 70, dani: s.time + 115, lio: s.time + 55, pasc: s.time + 90, home: s.time + 215 + Math.floor(s.after.wk[1] * 30) };
+    s.after.at = { door: s.time + 105 + Math.floor(s.after.wk[1] * 20), question: s.time + 150 + Math.floor(s.after.wk[0] * 40), fena: s.time + 70, benjamin: s.time + 115, lio: s.time + 55, pasc: s.time + 90, home: s.time + 215 + Math.floor(s.after.wk[1] * 30) };
     L.apply({ quest: { q_af1: 'active' } });
     U.startDialogue('af_travel', { npc: 'anselm' });
   };
@@ -408,8 +408,8 @@
   AF.schedule = function (s) {
     const a = s.after, at = a.at, now = s.time;
     /* Feña falls asleep on the sofa and is moved aside to sleep */
-    if (a.f.tato && a.f.tato.st === 'here' && !s.flags.tato_asleep && now >= at.tato) {
-      s.flags.tato_asleep = true; L.leave('tato', 'a_living'); a.f.tato.st = 'sofa';
+    if (a.f.fena && a.f.fena.st === 'here' && !s.flags.fena_asleep && now >= at.fena) {
+      s.flags.fena_asleep = true; L.leave('fena', 'a_living'); a.f.fena.st = 'sofa';
       U.toast({ icon: 'zzz', kind: 'info', ms: 6000, text: t(`Fernando has lain down on the sofa, one shoe on, one off. He is asleep before you can say goodnight.`, `Feña se tendió en el sofá, un zapato puesto y otro no. Está dormido antes de que puedas darle las buenas noches.`, `O Fernando deitou no sofá, um sapato calçado e outro não. Dormiu antes de você dar boa noite.`) });
     }
     if (!s.quests.q_af4 && now >= at.lio) { L.setQuest('q_af4', 'active'); U.toast({ icon: 'exclam', kind: 'info', ms: 6500, text: t(`Dot, passing with a tray: "Somebody's lying in the coats room alone. Could you look in on them? I can't leave the stove."`, `Dot, pasando con una bandeja: «Hay alguien tirado solo en el cuarto de los abrigos. ¿Puedes ir a ver? No puedo dejar la cocina».`, `A Dot, passando com uma bandeja: «Tem alguém deitado sozinho no quarto dos casacos. Você pode dar uma olhada? Eu não posso largar o fogão».`) }); }
@@ -419,15 +419,15 @@
     /* Dot sleeps an hour, then takes the door back */
     if (s.flags.dot_asleep && now >= ((s.flagAt || {}).dot_asleep || now) + 60) { s.flags.dot_asleep = false; s.flags.door_closed = true; U.toast({ icon: 'heart', kind: 'good', ms: 6000, text: t(`Dot is up, hair flat on one side, taking the keys back. «Thank you for the hour.»`, `Dot se levantó, con el pelo aplastado de un lado, recuperando las llaves. «Gracias por la hora».`, `A Dot acordou, cabelo achatado de um lado, pegando as chaves de volta. «Obrigada pela hora».`) }); }
     /* Benjamin wants the next thing */
-    if (a.f.dani && a.f.dani.st === 'here' && !s.flags.dani_next && now >= at.dani && !U.D && U.mode === 'play' && AF.isFlat(s.zone)) { s.flags.dani_next = true; U.startDialogue('af_dani_next', { npc: 'dani' }); return; }
+    if (a.f.benjamin && a.f.benjamin.st === 'here' && !s.flags.benjamin_next && now >= at.benjamin && !U.D && U.mode === 'play' && AF.isFlat(s.zone)) { s.flags.benjamin_next = true; U.startDialogue('af_benjamin_next', { npc: 'benjamin' }); return; }
     /* THE QUESTION: Maru is fading */
     if (!s.quests.q_af7 && now >= at.question && AF.present(s).length) { L.setQuest('q_af7', 'active'); }
-    if (s.quests.q_af7 === 'active' && !s.flags.question_done && !U.D && U.mode === 'play' && AF.isFlat(s.zone) && now >= at.question + 4) { s.flags.question_done = true; U.startDialogue('af_question', { npc: AF.present(s)[0] || 'maru' }); return; }
+    if (s.quests.q_af7 === 'active' && !s.flags.question_done && !U.D && U.mode === 'play' && AF.isFlat(s.zone) && now >= at.question + 4) { s.flags.question_done = true; U.startDialogue('af_question', { npc: AF.present(s)[0] || 'luisa' }); return; }
     /* the rest leave on their own late in the morning: they text, you can text them */
     if (now >= at.home) FR.forEach(function (f) {
       const x = a.f[f]; if (!x || x.st === 'gone' || x.st === 'home') return;
-      if (f === 'dani' && !s.flags.dani_next) return;
-      const leaves = f === 'maru' ? true : (f === 'tato' ? a.wk[2] < 0.4 : a.wk[2] >= 0.5);
+      if (f === 'benjamin' && !s.flags.benjamin_next) return;
+      const leaves = f === 'luisa' ? true : (f === 'fena' ? a.wk[2] < 0.4 : a.wk[2] >= 0.5);
       if (!leaves) return;
       AF.sendHome(f, 'alone');
     });
@@ -437,14 +437,14 @@
   AF.sendHome = function (f, mode) {
     const s = EM.state, a = s.after; if (!a || !a.f[f] || a.f[f].st === 'home') return;
     L.leave(f, 'home'); a.f[f] = { st: 'home', mode: mode, at: s.time }; delete s.flags[f + '_asleep'];
-    if (f === 'tato') s.flags.tato_asleep = false;
+    if (f === 'fena') s.flags.fena_asleep = false;
     U.toast({ icon: 'phone', kind: 'info', ms: 6500, text: t(`${EM.CAST[f].name} has gone home. You can text them from MENU > ITEMS.`, `${EM.CAST[f].name} se fue a casa. Puedes escribirle desde MENÚ > OBJETOS.`, `${EM.CAST[f].name} foi pra casa. Você pode mandar mensagem em MENU > ITENS.`) });
   };
 
   /* Feña, asleep, is not a friend you can talk into rejoining */
   const fd0 = story.friendDialogue;
   story.friendDialogue = function (id, s) {
-    if (s && s.flags.after_go && s.after && s.after.f[id] && s.after.f[id].st === 'sofa') return 'af_tato_sofa';
+    if (s && s.flags.after_go && s.after && s.after.f[id] && s.after.f[id].st === 'sofa') return 'af_fena_sofa';
     return fd0 ? fd0(id, s) : null;
   };
 
@@ -540,7 +540,7 @@
   const D = EM.DIALOGUES, S = EM.scripts, AF = EM.AF;
   const t = function (en, es, pt) { return T(en, es, pt); };
   const K = function (tone, tx, o) { return Object.assign({ tone: tone, t: tx }, o || {}); };
-  const FR = ['maru', 'dani', 'tato'];
+  const FR = ['luisa', 'benjamin', 'fena'];
   const nm = function (f) { return EM.CAST[f].name; };
   const withF = function (f) { return function (s) { return L.hasFriend(f); }; };
   const F = function (f) { return function (s) { return !!s.flags[f]; }; };
@@ -576,12 +576,12 @@
       else s.flags['one_took_' + f] = true;
     });
   };
-  S.af_maru_walk = function () { AF.sendHome('maru', 'buddy'); AF.noise(6); };
-  S.af_maru_taxi = function () { AF.sendHome('maru', 'buddy'); };
-  S.af_maru_dani = function () { AF.sendHome('maru', 'buddy'); AF.sendHome('dani', 'buddy'); };
-  S.af_maru_alone = function () { AF.sendHome('maru', 'alone'); EM.state.flags.promised_text = true; };
-  S.af_tato_home = function () { AF.sendHome('tato', 'buddy'); };
-  S.af_tato_dani = function () { AF.sendHome('tato', 'buddy'); AF.sendHome('dani', 'buddy'); };
+  S.af_luisa_walk = function () { AF.sendHome('luisa', 'buddy'); AF.noise(6); };
+  S.af_luisa_taxi = function () { AF.sendHome('luisa', 'buddy'); };
+  S.af_luisa_benjamin = function () { AF.sendHome('luisa', 'buddy'); AF.sendHome('benjamin', 'buddy'); };
+  S.af_luisa_alone = function () { AF.sendHome('luisa', 'alone'); EM.state.flags.promised_text = true; };
+  S.af_fena_home = function () { AF.sendHome('fena', 'buddy'); };
+  S.af_fena_benjamin = function () { AF.sendHome('fena', 'buddy'); AF.sendHome('benjamin', 'buddy'); };
 
   /* ============================================================ the later hooks: buddies, the lone sleeper, the missions that close by themselves */
   const sch0 = AF.schedule;

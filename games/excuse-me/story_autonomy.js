@@ -9,7 +9,7 @@
    4. THE AFTER: Maru has her own night. After the house rules she helps Dot in the kitchen, then dances without counting anybody, then
       takes a call on the balcony (the news she promised to tell you first stays hers). She comes back for THE QUESTION. You can talk to
       her where she is; she is not waiting for you.
-   Everything is seeded, so BEGIN AGAIN repeats it. Test hook: `s.flags.maru_hold` switches the errands and the beats off.
+   Everything is seeded, so BEGIN AGAIN repeats it. Test hook: `s.flags.luisa_hold` switches the errands and the beats off.
    Loads after story_v39.js and before compact.js. */
 'use strict';
 (function () {
@@ -18,12 +18,12 @@
   const t = function (en, es, pt) { return T(en, es, pt); };
   const K = function (tone, tx, o) { return Object.assign({ tone: tone, t: tx }, o || {}); };
   const FR = EM.FRIENDS;
-  const NM = { maru: ['LUISA', 'LUISA', 'LUISA'], dani: ['BENJAMIN', 'BENJAMIN', 'BENJAMIN'], tato: ['FERNANDO', 'FEÑA', 'FERNANDO'] };
+  const NM = { luisa: ['LUISA', 'LUISA', 'LUISA'], benjamin: ['BENJAMIN', 'BENJAMIN', 'BENJAMIN'], fena: ['FERNANDO', 'FEÑA', 'FERNANDO'] };
   const gen = function (f, en, es, pt) { return t(en.replace(/\{n\}/g, NM[f][0]), es.replace(/\{n\}/g, NM[f][1]), pt.replace(/\{n\}/g, NM[f][2])); };
   const MU = function (s) { return s.mu || (s.mu = { wait: {}, brk: null, last: -999, n: 0, prev: null, b: {} }); };
   const Qd = function (s, id) { return s.quests[id] === 'done'; };
   const inParty = function (s, f) { return s.party.indexOf(f) !== -1; };
-  const frozen = function (s) { return !!(s.flags.friends_stick || s.flags.maru_hold); };
+  const frozen = function (s) { return !!(s.flags.friends_stick || s.flags.luisa_hold); };
   /* a mission that needs the whole group at your side keeps everyone close */
   const NEEDS = ['q2', 'q3', 'q4', 'q7', 'q10', 'q9', 'q13'];
   const needs = function (s) { return NEEDS.some(function (q) { return s.quests[q] === 'active'; }); };
@@ -55,7 +55,7 @@
     a_bath: t(`LUISA: "It's a one-person room. I'll be out here."`, `LUISA: «Es un cuarto para una persona. Aquí afuera estaré».`, `A LUISA: «É um banheiro pra uma pessoa. Vou ficar aqui fora».`)
   };
   const OTHER_STAYS = function (f, zone) {
-    if (f === 'dani' && zone === 'darkroom') return t(`BENJAMIN peers past the curtain, sniffs the air and withdraws with great dignity. "I'll be at the bar being interesting. Go."`, `BENJAMIN se asoma por la cortina, huele el aire y se retira con gran dignidad. «Estaré en la barra siendo interesante. Ve».`, `O BENJAMIN espia pela cortina, cheira o ar e se retira com muita dignidade. «Vou ficar no bar sendo interessante. Vai».`);
+    if (f === 'benjamin' && zone === 'darkroom') return t(`BENJAMIN peers past the curtain, sniffs the air and withdraws with great dignity. "I'll be at the bar being interesting. Go."`, `BENJAMIN se asoma por la cortina, huele el aire y se retira con gran dignidad. «Estaré en la barra siendo interesante. Ve».`, `O BENJAMIN espia pela cortina, cheira o ar e se retira com muita dignidade. «Vou ficar no bar sendo interessante. Vai».`);
     return gen(f, `{n} stays outside. "Go on. I'll be right here."`, `{n} se queda afuera. «Ve. Aquí estoy».`, `{n} fica do lado de fora. «Vai. Tô aqui».`);
   };
   const BACK = {
@@ -68,8 +68,8 @@
     const m = MU(s);
     delete m.wait[f];
     if (!inParty(s, f)) L.join(f);
-    const line = why === 'darkroom' && f === 'maru' ? BACK.darkroom : (why === 'ahead' && f === 'maru' ? BACK.ahead : BACK_GEN(f));
-    if (why === 'darkroom' && f === 'maru') s.items.water = Math.min(3, (s.items.water || 0) + 1);
+    const line = why === 'darkroom' && f === 'luisa' ? BACK.darkroom : (why === 'ahead' && f === 'luisa' ? BACK.ahead : BACK_GEN(f));
+    if (why === 'darkroom' && f === 'luisa') s.items.water = Math.min(3, (s.items.water || 0) + 1);
     U.toast({ icon: 'heart', kind: 'good', ms: 6000, text: line });
   };
 
@@ -86,9 +86,9 @@
       const park = EM.zones[prev] && Object.keys(EM.zones[prev].friendAt).length ? prev : 'main';
       FR.forEach(function (f) {
         if (!inParty(s, f)) return;
-        if ((zone === 'darkroom' && f === 'tato') || (zone === 'welfare' && f !== 'maru')) return; /* Feña has his own dark room scene; the pill needs Benjamin */
+        if ((zone === 'darkroom' && f === 'fena') || (zone === 'welfare' && f !== 'luisa')) return; /* Feña has his own dark room scene; the pill needs Benjamin */
         L.leave(f, park); m.wait[f] = { zone: park, since: s.time, why: zone };
-        U.toast({ icon: 'eyes', kind: 'info', ms: 6200, text: f === 'maru' ? MARU_STAYS[zone] : OTHER_STAYS(f, zone) });
+        U.toast({ icon: 'eyes', kind: 'info', ms: 6200, text: f === 'luisa' ? MARU_STAYS[zone] : OTHER_STAYS(f, zone) });
       });
     }
     m.prev = zone;
@@ -110,14 +110,14 @@
   const okZone = { main: 1, foyer: 1, courtyard: 1, attic: 1, tunnel: 1 };
   const endBreak = function (s, early) {
     const m = MU(s), b = m.brk; if (!b) return;
-    m.brk = null; L.join('maru');
+    m.brk = null; L.join('luisa');
     const kd = kindOf(b.k);
     if (!early) {
       if (b.k === 'water') s.items.water = Math.min(3, (s.items.water || 0) + 1);
       if (b.k === 'song') L.apply({ fun: 3 });
       if (b.k === 'air') L.apply({ soc: 2 });
       U.toast({ icon: 'heart', kind: 'good', ms: 6200, text: kd.back });
-    } else U.toast({ icon: 'heart', kind: 'info', ms: 4200, text: BACK_GEN('maru') });
+    } else U.toast({ icon: 'heart', kind: 'info', ms: 4200, text: BACK_GEN('luisa') });
   };
   S.mu_end = function () { endBreak(EM.state, true); };
 
@@ -138,20 +138,20 @@
     /* an errand ends by itself, or when a mission needs her */
     if (m.brk && (s.time >= m.brk.until || needs(s)) && !U.D && U.mode === 'play') endBreak(s, false);
     /* the roof: she goes up first and saves a spot */
-    if (s.quests.q9 === 'active' && s.flags.roof_open && !s.after && !s.flags.after_go && inParty(s, 'maru') && !m.b.ahead && s.zone !== 'rooftop' && !U.D && U.mode === 'play') {
+    if (s.quests.q9 === 'active' && s.flags.roof_open && !s.after && !s.flags.after_go && inParty(s, 'luisa') && !m.b.ahead && s.zone !== 'rooftop' && !U.D && U.mode === 'play') {
       m.b.ahead = true; m.brk = null;
-      L.leave('maru', 'rooftop'); m.wait.maru = { zone: 'rooftop', since: s.time, why: 'ahead' };
+      L.leave('luisa', 'rooftop'); m.wait.luisa = { zone: 'rooftop', since: s.time, why: 'ahead' };
       U.toast({ icon: 'star', kind: 'info', ms: 6500, text: t(`LUISA: "The roof is open. I'll go up and save us a spot at the rail. Don't be long."`, `LUISA: «El techo está abierto. Subo a guardarnos un lugar en la baranda. No tardes».`, `LUISA: «O terraço abriu. Vou subir e guardar um lugar pra gente no parapeito. Não demora».`) });
       return;
     }
     /* an errand starts: only when nothing needs the group, in the club, in a room she can wander from */
-    if (s.after || m.brk || !inParty(s, 'maru') || s.away.maru || needs(s) || U.D || U.mode !== 'play' || !okZone[s.zone] || s.time < 100 || m.n >= 4 || s.time - m.last < 45) return;
+    if (s.after || m.brk || !inParty(s, 'luisa') || s.away.luisa || needs(s) || U.D || U.mode !== 'play' || !okZone[s.zone] || s.time < 100 || m.n >= 4 || s.time - m.last < 45) return;
     const slot = Math.floor(s.time / 15);
     if (EM.hash2((s.seed | 0) + 4040, slot, 7) > 0.34) return;
     const kd = KINDS[Math.floor(EM.hash2((s.seed | 0) + 4041, slot, 9) * KINDS.length) % KINDS.length];
     const where = kd.where;
-    L.leave('maru', where); m.brk = { k: kd.k, until: s.time + kd.dur, zone: where }; m.last = s.time; m.n++;
-    s.flags.maru_breath = true;
+    L.leave('luisa', where); m.brk = { k: kd.k, until: s.time + kd.dur, zone: where }; m.last = s.time; m.n++;
+    s.flags.luisa_breath = true;
     U.toast({ icon: 'eyes', kind: 'info', ms: 6200, text: kd.go });
   };
 
@@ -159,16 +159,16 @@
   const fd0 = story.friendDialogue;
   story.friendDialogue = function (id, s) {
     const m = s && s.mu;
-    if (id === 'maru' && m && m.brk) return 'maru_break_found';
-    if (id === 'maru' && s.after && m && m.at && s.away.maru && AF && AF.isFlat(s.zone)) return 'maru_af_' + m.at;
+    if (id === 'luisa' && m && m.brk) return 'luisa_break_found';
+    if (id === 'luisa' && s.after && m && m.at && s.away.luisa && AF && AF.isFlat(s.zone)) return 'luisa_af_' + m.at;
     return fd0(id, s);
   };
-  D.maru_break_found = {
-    who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
+  D.luisa_break_found = {
+    who: 'luisa', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
       a: {
         text: t(`Luisa is mid-thought, one foot still on the beat. "Five more minutes? I'm having a moment. Don't make it a headcount."`, `Luisa está a medio pensamiento, con un pie todavía en el ritmo. «¿Cinco minutos más? Estoy en mi momento. No lo conviertas en un conteo».`, `A Luisa tá no meio de um pensamento, com um pé ainda na batida. «Mais cinco minutos? Tô num momento. Não transforma isso em contagem».`),
         choices: [
-          K('chill', t(`"Take your time."`, `«Tómate tu tiempo».`, `«Leva o tempo que precisar».`), { free: true, do: { bond: { maru: 1 }, soc: 1 }, next: null }),
+          K('chill', t(`"Take your time."`, `«Tómate tu tiempo».`, `«Leva o tempo que precisar».`), { free: true, do: { bond: { luisa: 1 }, soc: 1 }, next: null }),
           K('care', t(`"Come with me now."`, `«Ven conmigo ahora».`, `«Vem comigo agora».`), { free: true, call: 'mu_end', next: null })
         ]
       }
@@ -184,27 +184,27 @@
       back: t(`Luisa comes in from the balcony, face washed, phone away. "Okay. I'm back. I'm not counting. I'm just here."`, `Luisa entra desde el balcón, con la cara lavada y el celular guardado. «Listo. Volví. No estoy contando. Solo estoy aquí».`, `A Luisa entra da varanda, de cara lavada e celular guardado. «Pronto. Voltei. Não tô contando. Só tô aqui».`)
     };
     const go = function (s, m, at, zone, line) {
-      m.at = at; s.flags.maru_uncounted = true;
-      if (inParty(s, 'maru')) { L.leave('maru', zone); U.toast({ icon: 'heart', kind: 'info', ms: 6800, text: line }); }
-      else L.leave('maru', zone);
+      m.at = at; s.flags.luisa_uncounted = true;
+      if (inParty(s, 'luisa')) { L.leave('luisa', zone); U.toast({ icon: 'heart', kind: 'info', ms: 6800, text: line }); }
+      else L.leave('luisa', zone);
     };
     const sch1 = AF.schedule;
     AF.schedule = function (s) {
       const a = s.after;
-      if (a && a.f && a.f.maru && a.f.maru.st === 'here' && !frozen(s)) {
-        const m = MU(s), f = s.flags, q = s.quests, here = inParty(s, 'maru');
+      if (a && a.f && a.f.luisa && a.f.luisa.st === 'here' && !frozen(s)) {
+        const m = MU(s), f = s.flags, q = s.quests, here = inParty(s, 'luisa');
         if (f.af_rules && !m.b.k && here && !Qd(s, 'q_af3')) { m.b.k = true; go(s, m, 'kitchen', 'a_kitchen', BEAT.kitchen); }
         else if (Qd(s, 'q_af3') && m.b.k && !m.b.d && !Qd(s, 'q_af4')) { m.b.d = true; go(s, m, 'dance', 'a_living', BEAT.dance); }
         else if (q.q_af4 === 'active' && m.b.d && !m.b.c && !Qd(s, 'q_af4')) { m.b.c = true; go(s, m, 'balcony', 'a_balcony', BEAT.balcony); }
         /* she is back, on her own, before THE QUESTION (it needs her) */
-        if (Qd(s, 'q_af4') && m.at && !here && s.away.maru) {
-          m.at = null; L.join('maru'); U.toast({ icon: 'heart', kind: 'good', ms: 6500, text: BEAT.back });
+        if (Qd(s, 'q_af4') && m.at && !here && s.away.luisa) {
+          m.at = null; L.join('luisa'); U.toast({ icon: 'heart', kind: 'good', ms: 6500, text: BEAT.back });
         }
       }
       sch1(s);
     };
-    D.maru_af_kitchen = {
-      who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
+    D.luisa_af_kitchen = {
+      who: 'luisa', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
         a: {
           text: t(`Luisa has an apron on over her jacket and a spatula she was handed half a minute ago. "Dot gave me a job. A job that is not counting." She flips something. "I flipped it. Nobody died."`, `Luisa tiene un delantal sobre la chaqueta y una espátula que le dieron hace medio minuto. «Dot me dio un trabajo. Un trabajo que no es contar». Da vuelta algo. «Lo di vuelta. Nadie se murió».`, `A Luisa tá de avental por cima da jaqueta e com uma espátula que lhe deram meio minuto atrás. «A Dot me deu um trabalho. Um trabalho que não é contar». Ela vira alguma coisa. «Virei. Ninguém morreu».`),
           choices: [
@@ -213,28 +213,28 @@
             K('chill', t(`"Go on. I'll be around."`, `«Sigue. Ando por ahí».`, `«Continua. Tô por perto».`), { free: true, next: null })
           ]
         },
-        b: { text: t(`"I lost track of where you were for two whole minutes. Two. I did not die." She points the spatula at you. "Don't tell anyone, I'll lose my reputation."`, `«Perdí la pista de dónde estabas por dos minutos enteros. Dos. No me morí». Te apunta con la espátula. «No se lo cuentes a nadie, pierdo la reputación».`, `«Perdi a noção de onde você tava por dois minutos inteiros. Dois. Não morri». Ela aponta a espátula pra você. «Não conta pra ninguém, eu perco a reputação».`), once: true, do: { bond: { maru: 1 }, soc: 2 }, next: null },
+        b: { text: t(`"I lost track of where you were for two whole minutes. Two. I did not die." She points the spatula at you. "Don't tell anyone, I'll lose my reputation."`, `«Perdí la pista de dónde estabas por dos minutos enteros. Dos. No me morí». Te apunta con la espátula. «No se lo cuentes a nadie, pierdo la reputación».`, `«Perdi a noção de onde você tava por dois minutos inteiros. Dois. Não morri». Ela aponta a espátula pra você. «Não conta pra ninguém, eu perco a reputação».`), once: true, do: { bond: { luisa: 1 }, soc: 2 }, next: null },
         c: { text: t(`"No. Go. Be useful somewhere. I'll find you when the toast runs out."`, `«No. Ve. Sé útil en otro lado. Te busco cuando se acaben las tostadas».`, `«Não. Vai. Seja útil em outro lugar. Eu te acho quando a torrada acabar».`), do: { soc: 1 }, next: null }
       }
     };
-    D.maru_af_dance = {
-      who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
+    D.luisa_af_dance = {
+      who: 'luisa', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
         a: {
           text: t(`Luisa is dancing in the middle of the rug with her eyes shut and one hand in the air, among people who have no idea she organises their whole lives. She opens one eye at you. "Not now. This is my song." She closes it.`, `Luisa baila en medio de la alfombra con los ojos cerrados y una mano en alto, entre gente que no tiene idea de que les organiza la vida entera. Te abre un ojo. «Ahora no. Esta es mi canción». Lo cierra.`, `A Luisa dança no meio do tapete de olhos fechados e uma mão pra cima, no meio de gente que não faz ideia de que ela organiza a vida de todo mundo. Ela abre um olho pra você. «Agora não. Essa é a minha música». Fecha de novo.`),
           choices: [
-            K('care', t(`Dance next to her for one song.`, `Bailar a su lado una canción.`, `Dançar do lado dela uma música.`), { do: { fun: 4, time: 6, bond: { maru: 1 } }, next: 'b' }),
+            K('care', t(`Dance next to her for one song.`, `Bailar a su lado una canción.`, `Dançar do lado dela uma música.`), { do: { fun: 4, time: 6, bond: { luisa: 1 } }, next: 'b' }),
             K('chill', t(`Leave her to it.`, `Dejarla en lo suyo.`, `Deixar ela na dela.`), { free: true, next: null })
           ]
         },
         b: { text: t(`She doesn't count anyone for the whole length of the song. You can tell. She is a different shape.`, `No cuenta a nadie durante toda la canción. Se nota. Tiene otra forma.`, `Ela não conta ninguém durante a música inteira. Dá pra ver. Ela tem outro formato.`), next: null }
       }
     };
-    D.maru_af_balcony = {
-      who: 'maru', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
+    D.luisa_af_balcony = {
+      who: 'luisa', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GENTE'), start: 'a', nodes: {
         a: {
           text: t(`Luisa is on the balcony with the phone face down on the rail, looking at the street. "Don't ask me yet. It's the thing I said I'd tell you first. It isn't today. It's close." She breathes out. "Go do your thing. I'll be in for the hard part."`, `Luisa está en el balcón con el celular boca abajo en la baranda, mirando la calle. «No me preguntes todavía. Es lo que dije que te contaría primero. No es hoy. Está cerca». Suelta el aire. «Ve a lo tuyo. Entro para la parte difícil».`, `A Luisa tá na varanda com o celular virado pra baixo no parapeito, olhando a rua. «Não pergunta ainda. É a coisa que eu disse que te contava primeiro. Não é hoje. Tá perto». Ela solta o ar. «Vai fazer o que você tem que fazer. Eu entro pra parte difícil».`),
           choices: [
-            K('care', t(`"I'm here when you want."`, `«Aquí estoy cuando quieras».`, `«Tô aqui quando você quiser».`), { do: { soc: 2, bond: { maru: 1 } }, next: null }),
+            K('care', t(`"I'm here when you want."`, `«Aquí estoy cuando quieras».`, `«Tô aqui quando você quiser».`), { do: { soc: 2, bond: { luisa: 1 } }, next: null }),
             K('chill', t(`"Take your hour."`, `«Tómate tu hora».`, `«Leva a sua hora».`), { free: true, next: null })
           ]
         }
@@ -244,7 +244,7 @@
 
   /* the morning after remembers it */
   if (story.morningRefs) {
-    story.morningRefs.push({ id: 'maru_uncounted', who: 'maru', ok: function (s) { return !!s.flags.maru_uncounted; }, t: t(`Update: I danced a whole song without counting anyone. I'm treating it as medicine. Also Dot taught me her toast. Nobody has been lost. I checked once, only once.`, `Actualización: bailé una canción entera sin contar a nadie. Lo tomo como medicina. Además Dot me enseñó sus tostadas. Nadie se perdió. Revisé una vez, solo una.`, `Atualização: dancei uma música inteira sem contar ninguém. Tô tratando como remédio. Além disso a Dot me ensinou a torrada dela. Ninguém se perdeu. Conferi uma vez, só uma.`) });
-    story.morningRefs.push({ id: 'maru_breath', who: 'maru', ok: function (s) { return !!s.flags.maru_breath && !s.flags.maru_uncounted; }, t: t(`Thank you for letting me walk off a few times last night. I always come back. I just have to be allowed not to.`, `Gracias por dejarme alejarme unas veces anoche. Siempre vuelvo. Solo necesito que me dejen no hacerlo.`, `Obrigada por me deixar sair andando algumas vezes ontem. Eu sempre volto. Só preciso que me deixem não voltar.`) });
+    story.morningRefs.push({ id: 'luisa_uncounted', who: 'luisa', ok: function (s) { return !!s.flags.luisa_uncounted; }, t: t(`Update: I danced a whole song without counting anyone. I'm treating it as medicine. Also Dot taught me her toast. Nobody has been lost. I checked once, only once.`, `Actualización: bailé una canción entera sin contar a nadie. Lo tomo como medicina. Además Dot me enseñó sus tostadas. Nadie se perdió. Revisé una vez, solo una.`, `Atualização: dancei uma música inteira sem contar ninguém. Tô tratando como remédio. Além disso a Dot me ensinou a torrada dela. Ninguém se perdeu. Conferi uma vez, só uma.`) });
+    story.morningRefs.push({ id: 'luisa_breath', who: 'luisa', ok: function (s) { return !!s.flags.luisa_breath && !s.flags.luisa_uncounted; }, t: t(`Thank you for letting me walk off a few times last night. I always come back. I just have to be allowed not to.`, `Gracias por dejarme alejarme unas veces anoche. Siempre vuelvo. Solo necesito que me dejen no hacerlo.`, `Obrigada por me deixar sair andando algumas vezes ontem. Eu sempre volto. Só preciso que me deixem não voltar.`) });
   }
 })();

@@ -8,8 +8,8 @@
   const t = function (en, es, pt) { return T(en, es, pt); };
   const K = function (tone, tx, o) { return Object.assign({ tone: tone, t: tx }, o || {}); };
   const MOODS = ['warm', 'wild', 'soft'];
-  const NEED = { maru: 'warm', dani: 'wild', tato: 'soft' };
-  const ORDER = ['maru', 'dani', 'tato'];
+  const NEED = { luisa: 'warm', benjamin: 'wild', fena: 'soft' };
+  const ORDER = ['luisa', 'benjamin', 'fena'];
   const mk = function (s, f) { return s.flags[f] ? '[X]' : '[ ]'; };
 
   /* ============================================================ ROSA: a shorter scene, a plain gate, errands on the map */
@@ -92,7 +92,7 @@
   (function () {
     const q = EM.QUESTS.q11; if (!q) return;
     const base = q.desc;
-    const NAMES = { maru: ['Luisa', 'Luisa', 'Luisa'], dani: ['Benjamin', 'Benjamin', 'Benjamin'], tato: ['Fernando', 'Feña', 'Fernando'] };
+    const NAMES = { luisa: ['Luisa', 'Luisa', 'Luisa'], benjamin: ['Benjamin', 'Benjamin', 'Benjamin'], fena: ['Fernando', 'Feña', 'Fernando'] };
     const W = { warm: ['warm', 'cálido', 'quente'], wild: ['loud', 'fuerte', 'alto'], soft: ['soft', 'suave', 'suave'] };
     q.desc = function (s) {
       const got = ORDER.filter(function (f) { return s.flags['learned_' + f]; });
@@ -164,14 +164,14 @@
     scatter0();
   };
   D.split_dark = {
-    who: 'dani', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GALERA'), forced: true, start: 'a', nodes: {
+    who: 'benjamin', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GALERA'), forced: true, start: 'a', nodes: {
       a: {
         text: [
           t(`BENJA, hand up, opening a meeting: "We are splitting up. Openly. On purpose. I'm announcing it so nobody has to find us by accident."`, `BENJA, con la mano en alto como quien abre una reunión: «Nos separamos. Abiertamente. A propósito. Lo anuncio para que nadie tenga que encontrarnos por accidente».`, `O BENJA, de mão erguida como quem abre uma reunião: «A gente vai se separar. Abertamente. De propósito. Tô anunciando pra ninguém ter que nos achar por acidente».`),
           t(`FEÑA, glowing and trying not to: "You take the dark room. Somebody has to, and it should be someone who asks first. We'll hold the wall out here, and we'll be right here when you come out." He looks across the floor at the black curtain. "I'm not jealous. I'm monitoring."`, `FEÑA, radiante y tratando de que no se note: «Tú te encargas del cuarto oscuro. Alguien tiene que ir y mejor que sea alguien que pregunta primero. Nosotros sostenemos la pared aquí afuera, y aquí estaremos cuando salgas». Mira hacia la cortina negra al otro lado de la pista. «No estoy celoso. Estoy monitoreando».`, `O FEÑA, radiante e tentando disfarçar: «Você cuida da dark room. Alguém tem que ir e melhor que seja alguém que pergunta primeiro. A gente segura a parede aqui fora, e vai tá aqui quando você sair». Ele olha pra cortina preta do outro lado da pista. «Não tô com ciúme. Tô monitorando».`)
         ],
         choices: [
-          K('care', t(`"Go. I'll report back."`, `«Vayan. Les cuento al salir».`, `«Podem ir. Eu conto quando sair».`), { free: true, do: { bond: { dani: 1, tato: 1 } }, call: 'split_go', next: null }),
+          K('care', t(`"Go. I'll report back."`, `«Vayan. Les cuento al salir».`, `«Podem ir. Eu conto quando sair».`), { free: true, do: { bond: { benjamin: 1, fena: 1 } }, call: 'split_go', next: null }),
           K('joke', t(`"Reconnaissance. Respect."`, `«Reconocimiento. Respeto».`, `«Reconhecimento. Respeito».`), { free: true, do: { fun: 3 }, call: 'split_go', next: null })
         ]
       }
@@ -179,24 +179,24 @@
   };
   S.split_go = function () {
     const s = EM.state;
-    s.party = s.party.filter(function (x) { return x !== 'dani' && x !== 'tato'; });
-    s.away.dani = 'main'; s.away.tato = 'main';
+    s.party = s.party.filter(function (x) { return x !== 'benjamin' && x !== 'fena'; });
+    s.away.benjamin = 'main'; s.away.fena = 'main';
     s.flags.split_dark = true;
     U.toast({ icon: 'exclam', kind: 'info', ms: 6500, text: t(`NEW OBJECTIVE: the dark room. The door is on the west side of the main floor.`, `NUEVO OBJETIVO: el cuarto oscuro. La puerta está en el lado oeste de la pista principal.`, `NOVO OBJETIVO: a dark room. A porta fica no lado oeste da pista principal.`) });
   };
-  D.dark_wait_dani = {
-    who: 'dani', role: t('HOLDING THE WALL', 'SOSTENIENDO LA PARED', 'SEGURANDO A PAREDE'), start: 'a', nodes: {
+  D.dark_wait_benjamin = {
+    who: 'benjamin', role: t('HOLDING THE WALL', 'SOSTENIENDO LA PARED', 'SEGURANDO A PAREDE'), start: 'a', nodes: {
       a: { text: t(`BENJA is leaning on the wall exactly where he said he would. "Why are you here? The dark room is over there. We are performing 'holding the wall'. Report back!"`, `BENJA está apoyado en la pared justo donde dijo que estaría. «¿Qué haces aquí? El cuarto oscuro está allá. Estamos haciendo 'sostener la pared'. ¡Informa luego!»`, `O BENJA tá encostado na parede exatamente onde disse que estaria. «Por que você tá aqui? A dark room é lá. A gente tá fazendo 'segurar a parede'. Volta e conta!»`), choices: [K('chill', t(`"On my way."`, `«Voy».`, `«Já vou».`), { free: true, next: null })] }
     }
   };
-  D.dark_wait_tato = {
-    who: 'tato', role: t('HOLDING THE WALL', 'SOSTENIENDO LA PARED', 'SEGURANDO A PAREDE'), start: 'a', nodes: {
+  D.dark_wait_fena = {
+    who: 'fena', role: t('HOLDING THE WALL', 'SOSTENIENDO LA PARED', 'SEGURANDO A PAREDE'), start: 'a', nodes: {
       a: { text: t(`FEÑA holds the wall with both hands and great dignity. "Go. I'm fine. I'm absolutely fine. I'm… monitoring the curtain from here."`, `FEÑA sostiene la pared con las dos manos y mucha dignidad. «Ve. Estoy bien. Estoy perfectamente bien. Estoy… monitoreando la cortina desde aquí».`, `O FEÑA segura a parede com as duas mãos e muita dignidade. «Vai. Eu tô bem. Tô absolutamente bem. Tô… monitorando a cortina daqui».`), choices: [K('chill', t(`"On my way."`, `«Voy».`, `«Já vou».`), { free: true, next: null })] }
     }
   };
-  const REGROUP = { join: ['dani', 'tato'], quest: { q8d: 'done', q10: 'active' }, at: 400, flag: 'regrouped' };
+  const REGROUP = { join: ['benjamin', 'fena'], quest: { q8d: 'done', q10: 'active' }, at: 400, flag: 'regrouped' };
   D.dark_regroup = {
-    who: 'dani', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GALERA'), forced: true, start: 'a', nodes: {
+    who: 'benjamin', role: t('YOUR PEOPLE', 'TU GENTE', 'SUA GALERA'), forced: true, start: 'a', nodes: {
       a: {
         text: [
           t(`BENJA springs off the wall. "You're out! Did you see anything? You don't have to say. You can say."`, `BENJA se despega de la pared de un salto. «¡Saliste! ¿Viste algo? No tienes que contar. Puedes contar».`, `O BENJA desgruda da parede num pulo. «Você saiu! Viu alguma coisa? Não precisa contar. Pode contar».`),
@@ -205,29 +205,29 @@
         choices: [
           K('honest', t(`"Quiet, and careful. They ask first. All of it."`, `«Tranquilo y cuidadoso. Preguntan primero. Todo».`, `«Quieto e cuidadoso. Perguntam primeiro. Tudo».`), { free: true, do: Object.assign({ soc: 3, fun: 2 }, REGROUP), next: null }),
           K('joke', t(`"I'm not allowed to say. Dario made me promise."`, `«No puedo decirlo. Dario me hizo prometer».`, `«Não posso dizer. O Dario me fez prometer».`), { free: true, do: Object.assign({ fun: 4 }, REGROUP), next: null }),
-          K('care', t(`"You'd both like it. Slowly. When you're ready."`, `«A los dos les gustaría. Despacio. Cuando estén listos».`, `«Vocês dois iam gostar. Devagar. Quando estiverem prontos».`), { free: true, do: Object.assign({ soc: 2, bond: { dani: 1, tato: 1 } }, REGROUP), next: null })
+          K('care', t(`"You'd both like it. Slowly. When you're ready."`, `«A los dos les gustaría. Despacio. Cuando estén listos».`, `«Vocês dois iam gostar. Devagar. Quando estiverem prontos».`), { free: true, do: Object.assign({ soc: 2, bond: { benjamin: 1, fena: 1 } }, REGROUP), next: null })
         ]
       }
     }
   };
   const fd1 = story.friendDialogue;
   story.friendDialogue = function (id, s) {
-    if (s.flags.split_dark && s.quests.q8d === 'active' && (id === 'dani' || id === 'tato')) return s.flags.dark_explored ? 'dark_regroup' : 'dark_wait_' + id;
+    if (s.flags.split_dark && s.quests.q8d === 'active' && (id === 'benjamin' || id === 'fena')) return s.flags.dark_explored ? 'dark_regroup' : 'dark_wait_' + id;
     return fd1(id, s);
   };
   const tick0 = story.tick;
   story.tick = function (dt) {
     if (tick0) tick0(dt);
     const s = EM.state; if (!s || s.ended) return;
-    if (s.flags.split_pending && !U.D && U.mode === 'play') { s.flags.split_pending = false; U.startDialogue('split_dark', { npc: 'dani' }); return; }
+    if (s.flags.split_pending && !U.D && U.mode === 'play') { s.flags.split_pending = false; U.startDialogue('split_dark', { npc: 'benjamin' }); return; }
     if (s.quests.q8d === 'active') {
       if (s.flags.dario_rules && !s.flags.dark_explored && darkCount(s) >= 2) {
         s.flags.dark_explored = true;
         U.toast({ icon: 'star', kind: 'good', ms: 6500, text: t(`You have seen the dark room. Benjamin and Fernando are waiting on the main floor.`, `Ya conoces el cuarto oscuro. Benjamin y Feña te esperan en la pista principal.`, `Você conheceu a dark room. O Benjamin e o Fernando esperam na pista principal.`) });
       }
-      if (s.flags.dark_regroup_pending && s.zone === 'main' && !U.D && U.mode === 'play') { s.flags.dark_regroup_pending = false; U.startDialogue('dark_regroup', { npc: 'dani' }); }
+      if (s.flags.dark_regroup_pending && s.zone === 'main' && !U.D && U.mode === 'play') { s.flags.dark_regroup_pending = false; U.startDialogue('dark_regroup', { npc: 'benjamin' }); }
       /* if the roof opens first, they find their own way up */
-      if (s.flags.roof_open) { L.join('dani'); L.join('tato'); L.setQuest('q8d', 'done'); }
+      if (s.flags.roof_open) { L.join('benjamin'); L.join('fena'); L.setQuest('q8d', 'done'); }
     }
   };
 })();
@@ -303,13 +303,13 @@
 
   /* ============================================================ each lost friend gets a joke of their own */
   const JOKES = {
-    found_dani_darkroom: ['dani', t(`"Is this a pile or a committee?"`, `«¿Esto es una pila o un comité?»`, `«Isso é uma pilha ou um comitê?»`), t(`"A pile with minutes!" He takes the minutes. They say: "hug".`, `«¡Una pila con actas!» Toma el acta. Dice: «abrazo».`, `«Uma pilha com ata!» Ele registra a ata. Diz: «abraço».`)],
-    found_dani_attic: ['dani', t(`"Benja, the DJ asked who you were. I said a capybara."`, `«Benja, el DJ preguntó quién eras. Dije que un capibara».`, `«Benja, o DJ perguntou quem você era. Eu disse que uma capivara».`), t(`"…I AM." He bows to the whole cult, which bows back, wired and sincere.`, `«…LO SOY». Le hace una reverencia a toda la secta, que se la devuelve, acelerada y sincera.`, `«…EU SOU». Ele faz uma reverência pra seita inteira, que retribui, acelerada e sincera.`)],
-    found_dani_welfare: ['dani', t(`"Is the chair for the vibes or for the dizziness?"`, `«¿La silla es por el vibe o por el mareo?»`, `«A cadeira é pela vibe ou pela tontura?»`), t(`"The vibes! Mostly vibes. Eighty per cent vibes." Teo, from across the room: "Sixty."`, `«¡El vibe! Casi todo vibe. Ochenta por ciento vibe». Teo, desde el otro lado: «Sesenta».`, `«A vibe! Quase tudo vibe. Oitenta por cento vibe». O Teo, do outro lado: «Sessenta».`)],
-    found_dani_tunnel: ['dani', t(`"The acoustics in here are great. The acoustics on the main floor are better."`, `«La acústica aquí es genial. La de la pista principal es mejor».`, `«A acústica aqui é ótima. A da pista principal é melhor».`), t(`"BETTER?" He is already walking, shouting about reverb at his own echo, which agrees.`, `«¿MEJOR?» Ya camina, gritándole sobre reverb a su propio eco, que está de acuerdo.`, `«MELHOR?» Ele já tá andando, gritando sobre reverb pro próprio eco, que concorda.`)],
-    found_dani_courtyard: ['dani', t(`Point at the lighter. "That's not yours."`, `Señalar el encendedor. «Ese no es tuyo».`, `Apontar o isqueiro. «Esse não é seu».`), t(`"I'M HOLDING IT FOR A FRIEND. THE FRIEND IS THE CAT." The cat looks at you. The cat is not a friend.`, `«LO TENGO PARA UN AMIGO. EL AMIGO ES EL GATO». El gato te mira. El gato no es amigo.`, `«TÔ SEGURANDO PRA UM AMIGO. O AMIGO É O GATO». O gato te olha. O gato não é amigo.`)],
-    found_tato_courtyard: ['tato', t(`"Are you here for the conversations?"`, `«¿Estás aquí por las conversaciones?»`, `«Você tá aqui pelas conversas?»`), t(`"I'm collecting them. I have eleven. Nobody's counting." He is counting.`, `«Las estoy coleccionando. Tengo once. Nadie las cuenta». Las cuenta.`, `«Tô colecionando. Tenho onze. Ninguém tá contando». Ele tá contando.`)],
-    found_tato_welfare: ['tato', t(`"Rank the mattresses."`, `«Ordena los colchones».`, `«Classifica os colchões».`), t(`"This one's a solid seven. The one by the plant is a nine, but it has a plant." He is better already.`, `«Este es un siete sólido. El de la planta es un nueve, pero tiene planta». Ya está mejor.`, `«Esse é um sete sólido. O da planta é um nove, mas tem planta». Ele já tá melhor.`)]
+    found_benjamin_darkroom: ['benjamin', t(`"Is this a pile or a committee?"`, `«¿Esto es una pila o un comité?»`, `«Isso é uma pilha ou um comitê?»`), t(`"A pile with minutes!" He takes the minutes. They say: "hug".`, `«¡Una pila con actas!» Toma el acta. Dice: «abrazo».`, `«Uma pilha com ata!» Ele registra a ata. Diz: «abraço».`)],
+    found_benjamin_attic: ['benjamin', t(`"Benja, the DJ asked who you were. I said a capybara."`, `«Benja, el DJ preguntó quién eras. Dije que un capibara».`, `«Benja, o DJ perguntou quem você era. Eu disse que uma capivara».`), t(`"…I AM." He bows to the whole cult, which bows back, wired and sincere.`, `«…LO SOY». Le hace una reverencia a toda la secta, que se la devuelve, acelerada y sincera.`, `«…EU SOU». Ele faz uma reverência pra seita inteira, que retribui, acelerada e sincera.`)],
+    found_benjamin_welfare: ['benjamin', t(`"Is the chair for the vibes or for the dizziness?"`, `«¿La silla es por el vibe o por el mareo?»`, `«A cadeira é pela vibe ou pela tontura?»`), t(`"The vibes! Mostly vibes. Eighty per cent vibes." Teo, from across the room: "Sixty."`, `«¡El vibe! Casi todo vibe. Ochenta por ciento vibe». Teo, desde el otro lado: «Sesenta».`, `«A vibe! Quase tudo vibe. Oitenta por cento vibe». O Teo, do outro lado: «Sessenta».`)],
+    found_benjamin_tunnel: ['benjamin', t(`"The acoustics in here are great. The acoustics on the main floor are better."`, `«La acústica aquí es genial. La de la pista principal es mejor».`, `«A acústica aqui é ótima. A da pista principal é melhor».`), t(`"BETTER?" He is already walking, shouting about reverb at his own echo, which agrees.`, `«¿MEJOR?» Ya camina, gritándole sobre reverb a su propio eco, que está de acuerdo.`, `«MELHOR?» Ele já tá andando, gritando sobre reverb pro próprio eco, que concorda.`)],
+    found_benjamin_courtyard: ['benjamin', t(`Point at the lighter. "That's not yours."`, `Señalar el encendedor. «Ese no es tuyo».`, `Apontar o isqueiro. «Esse não é seu».`), t(`"I'M HOLDING IT FOR A FRIEND. THE FRIEND IS THE CAT." The cat looks at you. The cat is not a friend.`, `«LO TENGO PARA UN AMIGO. EL AMIGO ES EL GATO». El gato te mira. El gato no es amigo.`, `«TÔ SEGURANDO PRA UM AMIGO. O AMIGO É O GATO». O gato te olha. O gato não é amigo.`)],
+    found_fena_courtyard: ['fena', t(`"Are you here for the conversations?"`, `«¿Estás aquí por las conversaciones?»`, `«Você tá aqui pelas conversas?»`), t(`"I'm collecting them. I have eleven. Nobody's counting." He is counting.`, `«Las estoy coleccionando. Tengo once. Nadie las cuenta». Las cuenta.`, `«Tô colecionando. Tenho onze. Ninguém tá contando». Ele tá contando.`)],
+    found_fena_welfare: ['fena', t(`"Rank the mattresses."`, `«Ordena los colchones».`, `«Classifica os colchões».`), t(`"This one's a solid seven. The one by the plant is a nine, but it has a plant." He is better already.`, `«Este es un siete sólido. El de la planta es un nueve, pero tiene planta». Ya está mejor.`, `«Esse é um sete sólido. O da planta é um nove, mas tem planta». Ele já tá melhor.`)]
   };
   Object.keys(JOKES).forEach(function (id) {
     const d = D[id]; if (!d || !d.nodes.a || !d.nodes.a.choices) return;
@@ -318,8 +318,8 @@
   });
 
   /* ============================================================ the capybara, in the set talk */
-  if (D.need_tell_dani) {
-    const nd = D.need_tell_dani.nodes.a;
+  if (D.need_tell_benjamin) {
+    const nd = D.need_tell_benjamin.nodes.a;
     nd.text = [].concat(nd.text, t(`"Also: I'm a capybara now. I've been meaning to say. It's going well."`, `«Además: ahora soy un capibara. Quería decirlo. Me está yendo bien».`, `«Além disso: agora sou uma capivara. Eu queria dizer. Tá indo bem».`));
   }
 
@@ -338,7 +338,7 @@
 
   /* ============================================================ the jacket: Tico, and Isi's reagent */
   if (D.tico) {
-    D.tico.nodes.st = { branch: [{ req: function (s) { return !!(s.flags.pill_known && L.hasFriend('dani') && !s.flags.tico_jacket); }, to: 'jacket' }, { req: function () { return true; }, to: 'a' }] };
+    D.tico.nodes.st = { branch: [{ req: function (s) { return !!(s.flags.pill_known && L.hasFriend('benjamin') && !s.flags.tico_jacket); }, to: 'jacket' }, { req: function () { return true; }, to: 'a' }] };
     D.tico.nodes.jacket = {
       text: [
         t(`BENJA, pointing, voice cracking with joy: "THAT'S THE JACKET."`, `BENJA, señalando, con la voz quebrada de alegría: «ESA ES LA CHAQUETA».`, `O BENJA, apontando, com a voz falhando de alegria: «ESSA É A JAQUETA».`),
@@ -399,14 +399,14 @@
     L.apply({ fun: 2 * n, soc: n, care: 1 });
   };
 
-  if (D.need_maru && D.need_maru.nodes && D.need_maru.nodes.a) {
-    D.need_maru.nodes.tell = {
+  if (D.need_luisa && D.need_luisa.nodes && D.need_luisa.nodes.a) {
+    D.need_luisa.nodes.tell = {
       text: t(`LUISA, smiling without stopping: "You got me to the toilet in time. I owe you one, no dance needed. What I need from the last hour: warm. A long chord. Nothing sudden."`, `LUISA, sonriendo sin detenerse: «Me llevaste al baño a tiempo. Te debo una, sin baile. Lo que necesito de la última hora: cálido. Un acorde largo. Nada brusco».`, `A LUISA, sorrindo sem parar: «Você me levou ao banheiro a tempo. Te devo uma, sem dança. O que eu preciso da última hora: quente. Um acorde longo. Nada brusco».`),
       choices: [
-        K('care', t(`"Warm, a long chord. Got it."`, `«Cálido, un acorde largo. Entendido».`, `«Quente, um acorde longo. Entendi».`), { do: { flag: ['need_done_maru', 'learned_maru', 'maru_owes_paid'], fun: 4, bond: { maru: 1 } }, call: 'v22_q10check', next: null })
+        K('care', t(`"Warm, a long chord. Got it."`, `«Cálido, un acorde largo. Entendido».`, `«Quente, um acorde longo. Entendi».`), { do: { flag: ['need_done_luisa', 'learned_luisa', 'luisa_owes_paid'], fun: 4, bond: { luisa: 1 } }, call: 'v22_q10check', next: null })
       ]
     };
-    D.need_maru.nodes.a.choices.splice(1, 0, K('care', t(`"You owe me one from the toilets. Tell me without the dance."`, `«Me debes una de los baños. Dímelo sin bailar».`, `«Você me deve uma do banheiro. Me fala sem dançar».`), { req: function (s) { return !!s.flags.maru_owes && !s.flags.maru_owes_paid; }, free: true, next: 'tell' }));
+    D.need_luisa.nodes.a.choices.splice(1, 0, K('care', t(`"You owe me one from the toilets. Tell me without the dance."`, `«Me debes una de los baños. Dímelo sin bailar».`, `«Você me deve uma do banheiro. Me fala sem dançar».`), { req: function (s) { return !!s.flags.luisa_owes && !s.flags.luisa_owes_paid; }, free: true, next: 'tell' }));
   }
 
   const tick0 = story.tick;
@@ -414,12 +414,12 @@
     if (tick0) tick0(dt);
     const s = EM.state; if (!s || s.ended || U.mode !== 'play') return;
     /* Maru's emergency escalates while you cross the floor */
-    if (s.quests.q2 === 'active' && L.hasFriend('maru') && !U.D) {
+    if (s.quests.q2 === 'active' && L.hasFriend('luisa') && !U.D) {
       q2t += dt;
       const gate = [30, 80, 140][q2n];
       if (gate !== undefined && q2t >= gate) { U.toast({ icon: 'exclam', kind: 'info', ms: 5200, text: MARU[q2n] }); q2n++; }
     }
-    if (s.quests.q2 === 'done' && !s.flags.maru_owes) s.flags.maru_owes = true;
+    if (s.quests.q2 === 'done' && !s.flags.luisa_owes) s.flags.luisa_owes = true;
     if (s.flags.team_pending && s.zone === 'rooftop' && !U.D) { s.flags.team_pending = false; U.startDialogue('team_thanks', {}); }
   };
 })();
@@ -520,8 +520,8 @@
   });
   if (story.morningRefs) {
     const R = story.morningRefs;
-    R.push({ id: 'after_feel', who: 'maru', ok: function (s) { return !!(s.flags.drug_taken || s.flags.took_stash); }, t: t(`how do you feel? i'm at the "everything is slightly too loud" stage. water, a real meal, a long sleep. tuesday is coming for all of us and it is not your fault, it is chemistry.`, `¿cómo te sientes? yo estoy en la etapa de «todo es un poco demasiado fuerte». agua, una comida de verdad, un sueño largo. el martes viene por todos y no es tu culpa, es química.`, `como você tá? eu tô na fase «tudo tá um pouco alto demais». água, uma refeição de verdade, um sono longo. a terça vem pra todo mundo e não é culpa sua, é química.`) });
-    R.push({ id: 'after_mix', who: 'dani', ok: function (s) { return !!(s.flags.redosed || s.flags.mixed_alc); }, t: t(`i heard you redosed or mixed. not judging. i'm a capybara, i have no standing. just: next time, no. next time you tell me and i sit with you.`, `me enteré de que repetiste o mezclaste. no juzgo. soy un capibara, no tengo autoridad. solo: la próxima, no. la próxima me avisas y me siento contigo.`, `fiquei sabendo que você repetiu ou misturou. não tô julgando. sou uma capivara, não tenho autoridade. só: da próxima, não. da próxima você me avisa e eu sento com você.`) });
+    R.push({ id: 'after_feel', who: 'luisa', ok: function (s) { return !!(s.flags.drug_taken || s.flags.took_stash); }, t: t(`how do you feel? i'm at the "everything is slightly too loud" stage. water, a real meal, a long sleep. tuesday is coming for all of us and it is not your fault, it is chemistry.`, `¿cómo te sientes? yo estoy en la etapa de «todo es un poco demasiado fuerte». agua, una comida de verdad, un sueño largo. el martes viene por todos y no es tu culpa, es química.`, `como você tá? eu tô na fase «tudo tá um pouco alto demais». água, uma refeição de verdade, um sono longo. a terça vem pra todo mundo e não é culpa sua, é química.`) });
+    R.push({ id: 'after_mix', who: 'benjamin', ok: function (s) { return !!(s.flags.redosed || s.flags.mixed_alc); }, t: t(`i heard you redosed or mixed. not judging. i'm a capybara, i have no standing. just: next time, no. next time you tell me and i sit with you.`, `me enteré de que repetiste o mezclaste. no juzgo. soy un capibara, no tengo autoridad. solo: la próxima, no. la próxima me avisas y me siento contigo.`, `fiquei sabendo que você repetiu ou misturou. não tô julgando. sou uma capivara, não tenho autoridade. só: da próxima, não. da próxima você me avisa e eu sento com você.`) });
   }
 
   /* ============================================================ 3. WHERE THE FLOOR COMES FROM: Hugo */

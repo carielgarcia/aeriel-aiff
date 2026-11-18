@@ -62,7 +62,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   ok(st, 'the host (Mika) and FRAMES SHELL conversations are wired and return to their menu');
   const f = await page.evaluate(function () {
     const s = EM.state, out = {};
-    ['maru', 'dani', 'tato'].forEach(function (id) {
+    ['luisa', 'benjamin', 'fena'].forEach(function (id) {
       EM.ui.D = null; EM.ui.mode = 'play'; EM.ui.startDialogue('need_tell_' + id, { npc: id });
       let steps = 0; const seen = [];
       while (EM.ui.D && steps++ < 20) {
@@ -74,7 +74,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     });
     return out;
   });
-  ok(['maru', 'dani', 'tato'].every(function (k) { return f[k].open && f[k].learned && /d1/.test(f[k].seen); }), 'the friends\' song scenes open into a real conversation and still set learned_* ' + JSON.stringify(f));
+  ok(['luisa', 'benjamin', 'fena'].every(function (k) { return f[k].open && f[k].learned && /d1/.test(f[k].seen); }), 'the friends\' song scenes open into a real conversation and still set learned_* ' + JSON.stringify(f));
   const v = await page.evaluate(function () {
     let stale = 0; const D = EM.DIALOGUES;
     Object.keys(D).forEach(function (id) { Object.keys(D[id].nodes || {}).forEach(function (k) { (D[id].nodes[k].choices || []).forEach(function (c) { if (c && c.t && c.t.en === '"Later."') stale++; }); }); });
@@ -152,7 +152,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   ok(here.f && here.a, 'Leonidas stands by the coat check and in the after-party living room');
   const ae = await page.evaluate(function () {
     const s = EM.state, H = window.H2, out = {};
-    s.time = 540; s.party = ['maru', 'dani', 'tato']; s.flags.after_go = true;
+    s.time = 540; s.party = ['luisa', 'benjamin', 'fena']; s.flags.after_go = true;
     EM.scripts.af_begin(); EM.ui.D = null; EM.ui.mode = 'play'; document.getElementById('dialog').hidden = true;
     out.always = s.after.cameos.indexOf('resident') !== -1;
     const talk = function () { EM.ui.D = null; EM.ui.mode = 'play'; s.stats.hp = 90; s.fx.glitch = 0; EM.ui.startDialogue('af_cam_resident', { npc: 'resident' }); H.settle(); return H.pick('about the project'); };
