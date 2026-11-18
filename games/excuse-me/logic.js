@@ -94,7 +94,7 @@
   };
   /* ------------------------------------------------------------ MAKING OUT */
   /* Always after asking. It works out (FUN up) or it does not (FUN down, and half the time WEIRDNESS up). */
-  L.makeoutChance = function (base, who) { /* who: the person being asked; story_v16 lets each one read your pockets */
+  L.makeoutChance = function (base, who) { /* who: the person being asked; story_harm_reduction.js lets each one read your pockets */
     const s = EM.state; let p = base === undefined ? 0.6 : base;
     if (s.fx.mdma || s.fx.ket) p += 0.12;
     if (s.drinks >= 3) p -= 0.18; else if (s.drinks >= 1) p += 0.06;
@@ -300,7 +300,7 @@
     if (st.hp <= 0) { L.passOut(T(`Your body stops cooperating.`, `Tu cuerpo deja de cooperar.`, `Seu corpo para de cooperar.`)); return; }
     if (st.soc <= 0) { L.end('burnout'); return; }
     if ((s.boredFor || 0) >= 45 && !s.flags.afters_open && !s.flags.after_go) { L.end('bored'); return; }
-    if (s.flags.after_go) { if (s.time >= EM.AFTER_END) { L.end('after'); return; } } /* THE AFTER (story_v29*.js) runs to noon */
+    if (s.flags.after_go) { if (s.time >= EM.AFTER_END) { L.end('after'); return; } } /* THE AFTER (story_after.js) runs to noon */
     else if (s.time >= (s.flags.afters_open ? 660 : 600)) { L.end('closing'); return; } /* afters_open gives a 1h grace window after sunrise to answer THE AFTERS */
   };
 

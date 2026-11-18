@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* EXCUSE ME: scripted play for THE AFTER (story_v29*.js). Drives the real game in headless Chromium: the sunrise choice, the hosts'
+/* EXCUSE ME: scripted play for THE AFTER (story_after.js). Drives the real game in headless Chromium: the sunrise choice, the hosts'
    rules, the kitchen, the bedroom, the bag, the whole knock ladder (warning, then OUT), the master bedroom's consent gate and
    encounters, the host rule, the phone, the noon ending, the go-home route, and a trilingual scan of every new string.
    Run from the repo root:  node scripts/excuse-me-after-test.js   (needs Playwright; set PW to its path if it is not at the default) */
@@ -27,7 +27,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   await page.goto('http://localhost:' + port + '/games/excuse-me/index.html', { waitUntil: 'load' });
   await page.waitForFunction('window.EM && EM.ui && EM.scripts && EM.scripts.af_begin');
 
-  /* story_v40.js: Maru leaves your side now and then. The older sections are scripted around her being with you, so they start with that switched off. */
+  /* story_autonomy.js: Maru leaves your side now and then. The older sections are scripted around her being with you, so they start with that switched off. */
   await page.evaluate(function () { const ns = EM.newState; EM.newState = function () { const s = ns.apply(this, arguments); s.flags.maru_hold = true; return s; }; });
 
   /* helpers living in the page */
@@ -53,7 +53,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   /* dismiss the intro if it opened */
   await page.evaluate(function () { if (EM.ui.D) { EM.ui.D = null; } EM.ui.mode = 'play'; EM.engine.paused = false; document.getElementById('dialog').hidden = true; });
 
-  /* ------------------------------------------------ 1. the sunrise, then THE AFTERS mission (story_v30.js) */
+  /* ------------------------------------------------ 1. the sunrise, then THE AFTERS mission (story_roof_finale.js) */
   const r1 = await page.evaluate(function () {
     const s = EM.state; s.time = 515; s.party = ['maru', 'dani', 'tato']; s.flags.roof_open = true; s.quests.q9 = 'active'; s.flags.wed_done = true;
     s.bond.maru = 3; s.bond.dani = 1; s.bond.tato = 2;
@@ -72,7 +72,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   const r1c = await page.evaluate(function () { return { go: !!EM.state.flags.after_go, after: !!EM.state.after, d: EM.ui.D && EM.ui.D.id, ended: EM.state.ended || null, q: EM.state.quests.q_af1 }; });
   ok(r1b === 'ok' && r1c.go && r1c.after && r1c.d === 'af_travel' && !r1c.ended && r1c.q === 'active', 'going to the after keeps the same night (no ending), starts GETTING THERE');
 
-  /* the test walks the missions out of order; THE QUESTION is held until its own section (the game releases it when the coats room is done, story_v39.js) */
+  /* the test walks the missions out of order; THE QUESTION is held until its own section (the game releases it when the coats room is done, story_after_spine.js) */
   await page.evaluate(function () { if (EM.state.after) EM.state.after.holdQuestion = true; });
 
   /* ------------------------------------------------ 2. getting there: the buddy rule */
@@ -119,7 +119,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   const r4b = await page.evaluate(function () {
     const s = EM.state; const out = {};
     /* the rousable branch, and the one who cannot be roused */
-    s.seed = (function () { for (let i = 0; i < 200; i++) if (EM.mulberry32(i + 777)() >= 0.3) return i; })(); EM.ui.startDialogue('af_lio', {}); out.first = EM.ui.D ? EM.ui.D.nid : 'NULL ' + EM.ui.mode + ' ' + (EM.state.ended || '');
+    delete s.flags.one_yes; delete s.flags.one_no; s.after.st = 0; EM.ui.startDialogue('af_lio', {}); out.first = EM.ui.D ? EM.ui.D.nid : 'NULL ' + EM.ui.mode + ' ' + (EM.state.ended || '');
     H.pick('Sit. Ask'); H.pick('Stay. Breathe'); H.settle();
     out.ok = !!s.flags.lio_ok; out.q = s.quests.q_af4; return out;
   });
@@ -127,15 +127,14 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   const r4c = await page.evaluate(function () {
     const s = EM.state; delete s.flags.lio_done; delete s.flags.lio_ok; s.flags.lio_alone = false;
     /* find a seed where Lio cannot be roused */
-    let seed = 0; for (; seed < 200; seed++) if (EM.mulberry32(seed + 777)() < 0.3) break;
-    s.seed = seed; const hp = s.stats.hp;
+    s.flags.one_yes = true; const hp = s.stats.hp;
     EM.ui.startDialogue('af_lio', {}); const first = EM.ui.D.nid;
     H.pick('Leave them to sleep'); H.settle();
     return { first: first, neglect: !!s.flags.lio_neglect, dhp: s.stats.hp - hp };
   });
   ok(r4c.first === 'deep' && r4c.neglect && r4c.dhp < 0, 'walking away from someone who cannot be roused is the costly choice (HEALTH ' + Math.round(r4c.dhp) + ')');
   const r4d = await page.evaluate(function () {
-    const s = EM.state; delete s.flags.lio_done; delete s.flags.lio_neglect; s.seed = (function () { for (let i = 0; i < 200; i++) if (EM.mulberry32(i + 777)() < 0.3) return i; })();
+    const s = EM.state; delete s.flags.lio_done; delete s.flags.lio_neglect; s.flags.one_yes = true;
     EM.ui.startDialogue('af_lio', {}); H.pick('call for help'); H.settle();
     return { called: !!s.flags.lio_called };
   });
@@ -282,7 +281,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     s.after.at.question = 0; s.after.at.tato = 0; s.after.at.dani = 9999;
     EM.logic.minute(); EM.logic.minute(); EM.logic.minute();
     const out = { tato: s.after.f.tato.st, tatoAsleep: !!s.flags.tato_asleep, away: s.away.tato, q7: s.quests.q_af7, d: EM.ui.D && EM.ui.D.id };
-    H.settle(); H.pick('Walk Maru home yourself'); H.settle(); H.pick('Let him sleep'); H.settle();
+    H.settle(); H.pick('Walk Luisa home yourself'); H.settle(); H.pick('Let him sleep'); H.settle();
     out.maru = s.after.f.maru.st + '/' + s.after.f.maru.mode; out.q7done = s.quests.q_af7; out.tatoStays = !!s.flags.tato_stays;
     return out;
   });
@@ -393,7 +392,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   });
   ok(r10.bad.length === 0, 'random walks: ' + r10.walks + ' playthroughs of ' + r10.n + ' after dialogues, no exceptions or dead ends ' + (r10.bad.length ? JSON.stringify(r10.bad) : ''));
 
-  /* ------------------------------------------------ 11. the spine (story_v39.js): one ordered list, a door that says what it needs, a noise bar that says why */
+  /* ------------------------------------------------ 11. the spine (story_after_spine.js): one ordered list, a door that says what it needs, a noise bar that says why */
   await page.waitForTimeout(1500); /* let the earlier sections' delayed endings fire before a fresh night */
   await page.evaluate(function () {
     const player = { name: 'TEST', gender: 'x', look: Object.assign({}, EM.CHAR.random()) };
@@ -429,7 +428,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
   ok(/NOISE \d+ ▲ LOUD MUSIC/.test(r11.cap) && /NOISE \+12/.test(r11.tst), 'the noise bar says why it moves: caption and a toast with the cause (' + r11.cap + ')');
   ok(r11.tag === 'FRONT DOOR' && r11.people >= 15, 'the front door is tagged, and the flat is full of dancers and circles (' + r11.people + ' guests)');
 
-  /* ------------------------------------------------ 12. Maru is her own person (story_v40.js) */
+  /* ------------------------------------------------ 12. Maru is her own person (story_autonomy.js) */
   await page.waitForTimeout(1500);
   await page.evaluate(function () {
     const player = { name: 'TEST', gender: 'x', look: Object.assign({}, EM.CHAR.random()) };

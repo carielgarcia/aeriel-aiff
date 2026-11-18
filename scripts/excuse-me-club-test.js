@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* EXCUSE ME: checks for the club's depth layer (story_v34.js). Every DEEP conversation reaches its close and sets g_<id>_open, the
+/* EXCUSE ME: checks for the club's depth layer (story_depth.js). Every DEEP conversation reaches its close and sets g_<id>_open, the
    friends' need_tell_* scenes branch into their second half, the identical exits are gone, and random walks through every club
    dialogue finish without errors. Run from the repo root: node scripts/excuse-me-club-test.js */
 'use strict';
@@ -101,7 +101,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     return { bad: bad.slice(0, 6), walks: walks, n: ids.length };
   });
   ok(w.bad.length === 0, 'random walks: ' + w.walks + ' playthroughs of ' + w.n + ' club dialogues, no exceptions ' + (w.bad.length ? JSON.stringify(w.bad) : ''));
-  /* ------------------------------------------------ the DJs, Leonidas and ÆRIEL's project (story_v35.js, story_v36.js) */
+  /* ------------------------------------------------ the DJs, Leonidas and ÆRIEL's project (story_djs.js, story_djs.js) */
   const dj = await page.evaluate(function () {
     EM.state.ended = null; EM.state.time = 200; EM.ui.D = null; EM.ui.mode = 'play';
     const out = {}, s = EM.state;
@@ -164,7 +164,7 @@ const ok = function (c, msg) { if (c) { passes++; console.log('ok    ' + msg); }
     return out;
   });
   ok(ae.always && ae.q1a === 'active' && ae.q1 === 'done' && ae.q2 === 'active' && ae.q2d === 'done' && ae.q3 === 'active' && ae.cities && ae.q3d === 'done' && ae.q4 === 'active' && ae.q4d === 'done' && ae.known, 'ÆRIEL is always at the after, and the four side quests unlock one after another and complete ' + JSON.stringify(ae));
-  /* ------------------------------------------------ ELOY K, the glam dancer by the note (story_v37.js) */
+  /* ------------------------------------------------ ELOY K, the glam dancer by the note (story_sidequests.js) */
   const el = await page.evaluate(function () {
     const s = EM.state, H = window.H2, out = {};
     s.ended = null; s.time = 200; EM.ui.D = null; EM.ui.mode = 'play';

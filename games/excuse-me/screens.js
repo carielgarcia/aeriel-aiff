@@ -153,7 +153,7 @@
     U.screen('creator');
     buildCreator();
   };
-  /* a pop-up for the stylist (Leonidas, story_v35.js): the same creator, on the look only. DONE applies it to the person you are playing. */
+  /* a pop-up for the stylist (Leonidas, story_djs.js): the same creator, on the look only. DONE applies it to the person you are playing. */
   const REMAKE = { title: T('LEONIDAS // YOUR LOOK', 'LEONIDAS // TU LOOK', 'LEONIDAS // SEU VISUAL'), go: T('DONE', 'LISTO', 'PRONTO'), back: T('KEEP MINE', 'QUEDARME CON EL MÍO', 'FICAR COM O MEU') };
   U.openRemake = function (onDone) {
     const pl = EM.state.player;
